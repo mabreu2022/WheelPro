@@ -129,6 +129,8 @@ type
     CBLinhas: TComboBox;
     Label7: TLabel;
     ShadowEffect15: TShadowEffect;
+    CBProdutos: TComboBox;
+    Label8: TLabel;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -171,6 +173,9 @@ type
     procedure CBMarcasChange(Sender: TObject);
     procedure CBModeloChange(Sender: TObject);
     procedure CBFabricantesChange(Sender: TObject);
+    procedure CBCategoriasChange(Sender: TObject);
+    procedure CBLinhasChange(Sender: TObject);
+    procedure CBProdutosChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -181,6 +186,12 @@ type
     NewImagem: TImage;
     FIdMarcaSelecionada: integer;
     FIdFabricante: integer;
+    FIdCategoria: integer;
+    FidLinha: integer;
+    FMemoryStream: TMemoryStream;
+    FBlobStream: TStream;
+    FIdProduto: integer;
+    ProdutoDS: TDataSet;
     qry: TFDQuery;
     procedure Modo_Edicao(editar: Boolean);
     procedure Modo_Edicao2(editar: Boolean);
@@ -228,18 +239,45 @@ begin
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
 end;
 
+procedure TFrmPrincipal.CBCategoriasChange(Sender: TObject);
+begin
+   FIdCategoria:= Integer(CBCategorias.Items.Objects[CBCategorias.ItemIndex]);
+ { Carregar o combobox LINHAS}
+   qry:= TFDQuery.Create(nil);
+   qry.Connection:= DM.FDConnection1;
+   try
+     qry.Close;
+     qry.SQL.Text:='SELECT L.IDLINHA, L.LINHA, L.IDCATEGORIA FROM LINHA L ' +
+                   ' INNER JOIN CATEGORIAS C ON(C.IDCATEGORIAS = L.IDCATEGORIA)' +
+                   ' WHERE L.ATIVO=''S'' ' +
+                   //'  AND L.IDCATEGORIA = :IDCATEGORIA' +
+                   '    ORDER BY L.IDLINHA ASC';
+
+     //qry.ParamByName('IDCATEGORIA').DataType   := ftSmallint;
+     //qry.ParamByName('IDCATEGORIA').AsSmallint := FIdCategoria;
+     qry.Open;
+     Showmessage('No Onchange de CBCAtegorias a qtde. de Registros é de: ' +IntToStr(qry.RecordCount));
+
+     qry.First;
+     While Not qry.Eof do
+     begin
+       CBLinhas.Items.Add(qry.FieldByName('LINHA').AsString);
+       qry.Next;
+     end;
+   finally
+     qry.Close;
+     qry.Free;
+   end;
+
+end;
+
 procedure TFrmPrincipal.CBFabricantesChange(Sender: TObject);
 begin
-  //carregar as categorias
-  {
-  SELECT * FROM fulanorodas.categorias
-  WHERE ativo='S'
-    AND IDFABRICANTE=1;
-  }
+ 
   {Precisa preencher a variável com o valor do idMarca escolhi no combobox Marcas}
   FIdFabricante:= Integer(CBFabricantes.Items.Objects[CBFabricantes.ItemIndex]);
 
-   { Carregar o combobox Modelos}
+   { Carregar o combobox CATEGORIAS}
    qry:= TFDQuery.Create(nil);
    qry.Connection:= DM.FDConnection1;
    try
@@ -253,6 +291,7 @@ begin
      qry.ParamByName('IDFABRICANTE').DataType   := ftSmallint;
      qry.ParamByName('IDFABRICANTE').AsSmallint := FIdFabricante;
      qry.Open;
+     //ShowMessage('No On Change do CBFabricante  a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
 
      qry.First;
      While Not qry.Eof do
@@ -264,6 +303,44 @@ begin
      qry.Close;
      qry.Free;
    end;
+
+end;
+
+procedure TFrmPrincipal.CBLinhasChange(Sender: TObject);
+begin
+  //Colocar a foto na Roda Matrix.
+
+  FidLinha:= Integer(CBLinhas.Items.Objects[CBLinhas.ItemIndex]);  //vem zero
+  { Carregar o combobox LINHAS}
+   qry:= TFDQuery.Create(nil);
+   qry.Connection:= DM.FDConnection1;
+   try
+     qry.Close;
+     qry.SQL.Text:='SELECT P.IDPRODUTOS, P.PRODUTO, P.FOTO, P.PRECO, P.IDFABRICANTE,' +
+                   ' P.ARO, P.LANCAMENTO,P.FURACAO, P.OFFSET_ET, P.IDACABAMENTO, P.IDLINHA' +
+                   ' FROM PRODUTOS P ' +
+                   ' INNER JOIN LINHA L ON(L.IDLINHA = P.IDLINHA)' +
+                   ' WHERE P.ATIVO=''S'' ' +
+                  // '  AND P.IDLINHA = :IDLINHA' +
+                   '    ORDER BY P.PRODUTO ASC';
+
+     //qry.ParamByName('IDLINHA').DataType   := ftSmallint;
+     //qry.ParamByName('IDLINHA').AsSmallint := FidLinha;
+     qry.Open;
+     //Showmessage('No CBLinhas Change a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
+
+     qry.First;
+     While Not qry.Eof do
+     begin
+       //CBProdutos.Items.Add(qry.FieldByName('PRODUTO').AsString);
+        CBProdutos.Items.AddObject(qry.FieldByName('PRODUTO').AsString, TObject(qRY.FieldByName('IDPRODUTOS').AsInteger));
+       qry.Next;
+     end;
+   finally
+     qry.Close;
+     qry.Free;
+   end;
+
 
 end;
 
@@ -302,6 +379,46 @@ end;
 procedure TFrmPrincipal.CBModeloChange(Sender: TObject);
 begin
   //Carregar as Rodas Compatíveis com o modelo
+end;
+
+procedure TFrmPrincipal.CBProdutosChange(Sender: TObject);
+begin
+  // CARREGAR A FOTO NA MATRIX DE RODAS
+  FIdProduto:= Integer(CBProdutos.Items.Objects[CBProdutos.ItemIndex]);
+
+  qry:= TFDQuery.Create(nil);
+  qry.Connection:= DM.FDConnection1;
+  try
+    qry.Close;
+    qry.SQL.Text:='SELECT P.IDPRODUTOS, P.PRODUTO, P.FOTO, P.PRECO, P.IDFABRICANTE, ' +
+                  ' P.ARO, P.LANCAMENTO,P.FURACAO, P.OFFSET_ET, P.IDACABAMENTO, P.IDLINHA' +
+                  ' FROM PRODUTOS P' +
+                  ' WHERE P.IDPRODUTOS =:IDPRODUTOS';
+    qry.ParamByName('IDPRODUTOS').DataType   := ftSmallint;
+    qry.ParamByName('IDPRODUTOS').AsSmallint := FIdProduto;
+    qry.Open;
+    ShowMessage('A qtde. de produto encontrados é de :' + IntToStr(qry.RecordCount));
+
+    //Carregar a foto na Matrix da  Roda
+    ProdutoDS   := qry;
+    FMemoryStream := TMemoryStream.Create;
+    FBlobStream := ProdutoDS.CreateBlobStream(ProdutoDS.FieldByName('foto'), bmRead);
+    try
+      FMemoryStream := TMemoryStream.Create;
+      try
+        FMemoryStream.LoadFromStream(FBlobStream);
+        iMAGE4.Bitmap.LoadFromStream(FMemoryStream);
+      finally
+        FMemoryStream.Free;
+      end;
+    finally
+      FBlobStream.Free;
+    end;
+  finally
+    qry.Close;
+    qry.Free;
+  end;
+
 end;
 
 procedure TFrmPrincipal.Circle1Click(Sender: TObject);
@@ -554,8 +671,22 @@ begin
     NewCircle.Parent := Self;
   end
   else
-  begin
-    Exit;
+  begin //apagar o mesmo ou receber a copia da Matrix Atual
+    //Criar o TImage dentro do NewCircle
+    NewImagem.BitMap.Clear($000000);
+    NewImagem:= TImage.Create(NewCircle);
+    NewImagem.Parent:= NewCircle;
+    NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
+    NewImagem.Align:=  TalignLayout.Client;
+
+    // Copy the events from the original TImage to the new TImage
+    NewImagem.OnClick      :=  NewImagemClick;
+    NewImagem.OnDblClick   :=  NewImagemDbClick;
+    NewImagem.OnGesture    :=  NewImagemGesture;
+    NewImagem.OnMouseDown  :=  NewImagemMouseDown;
+    NewImagem.OnMouseUp    :=  NewImagemMouseUp;
+    NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
+    //Exit;
   end;
 
 end;

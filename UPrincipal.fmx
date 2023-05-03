@@ -3,7 +3,7 @@ object FrmPrincipal: TFrmPrincipal
   Top = 0
   Caption = 'Wheel Pro - v.1.0 - By Conect Solutions 2023'
   ClientHeight = 596
-  ClientWidth = 876
+  ClientWidth = 1476
   Position = ScreenCenter
   WindowState = wsMaximized
   FormFactor.Width = 320
@@ -14,7 +14,7 @@ object FrmPrincipal: TFrmPrincipal
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Client
-    Size.Width = 876.000000000000000000
+    Size.Width = 1476.000000000000000000
     Size.Height = 596.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
@@ -22,14 +22,14 @@ object FrmPrincipal: TFrmPrincipal
     object Panel1: TPanel
       Align = Bottom
       Position.Y = 548.000000000000000000
-      Size.Width = 876.000000000000000000
+      Size.Width = 1476.000000000000000000
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       object RectangleBottom: TRectangle
         Align = Contents
         Fill.Color = claDarkseagreen
-        Size.Width = 876.000000000000000000
+        Size.Width = 1476.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
@@ -861,7 +861,7 @@ object FrmPrincipal: TFrmPrincipal
               FileName = 'C:\Fontes\ProjetoRodas3\Imagens\Logo\Conect Solutions (1).png'
             end>
           Align = Right
-          Position.X = 701.000000000000000000
+          Position.X = 1301.000000000000000000
           Size.Width = 175.000000000000000000
           Size.Height = 48.000000000000000000
           Size.PlatformDefault = False
@@ -2195,6 +2195,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 6
+          OnChange = CBCategoriasChange
           object ShadowEffect12: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -2259,6 +2260,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 11
+          OnChange = CBLinhasChange
           object ShadowEffect15: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -2273,11 +2275,26 @@ object FrmPrincipal: TFrmPrincipal
           Text = 'Linhas'
           TabOrder = 12
         end
+        object CBProdutos: TComboBox
+          Position.X = 5.000000000000000000
+          Position.Y = 316.000000000000000000
+          Size.Width = 153.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 13
+          OnChange = CBProdutosChange
+        end
+        object Label8: TLabel
+          Position.X = 5.000000000000000000
+          Position.Y = 296.000000000000000000
+          Text = 'Produtos'
+          TabOrder = 14
+        end
       end
     end
     object Panel4: TPanel
       Align = Right
-      Position.X = 716.000000000000000000
+      Position.X = 1316.000000000000000000
       Size.Width = 160.000000000000000000
       Size.Height = 548.000000000000000000
       Size.PlatformDefault = False
@@ -2302,7 +2319,7 @@ object FrmPrincipal: TFrmPrincipal
     end
     object Panel5: TPanel
       Align = Client
-      Size.Width = 547.000000000000000000
+      Size.Width = 1147.000000000000000000
       Size.Height = 548.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
@@ -20050,19 +20067,19 @@ object FrmPrincipal: TFrmPrincipal
               '_o.jpg'
           end>
         Align = Client
-        Size.Width = 547.000000000000000000
+        Size.Width = 1147.000000000000000000
         Size.Height = 548.000000000000000000
         Size.PlatformDefault = False
         object Panel6: TPanel
           Align = Top
-          Size.Width = 547.000000000000000000
+          Size.Width = 1147.000000000000000000
           Size.Height = 48.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           object RectangleTop: TRectangle
             Align = Client
             Fill.Color = claDarkseagreen
-            Size.Width = 547.000000000000000000
+            Size.Width = 1147.000000000000000000
             Size.Height = 48.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
@@ -20071,14 +20088,14 @@ object FrmPrincipal: TFrmPrincipal
         object Panel7: TPanel
           Align = Top
           Position.Y = 48.000000000000000000
-          Size.Width = 547.000000000000000000
+          Size.Width = 1147.000000000000000000
           Size.Height = 57.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 1
           object LblNomeModelo: TLabel
             Align = Contents
             StyledSettings = [Family, FontColor]
-            Size.Width = 547.000000000000000000
+            Size.Width = 1147.000000000000000000
             Size.Height = 57.000000000000000000
             Size.PlatformDefault = False
             TextSettings.Font.Size = 20.000000000000000000
