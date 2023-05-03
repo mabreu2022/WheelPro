@@ -88,4 +88,14 @@ object DM: TDM
     Left = 40
     Top = 512
   end
+  object FDQCategorias: TFDQuery
+    Connection = FDConnection1
+    Left = 48
+    Top = 600
+  end
+  object DSCategorias: TDataSource
+    DataSet = FDQCategorias
+    Left = 168
+    Top = 600
+  end
 end

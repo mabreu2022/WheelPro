@@ -2,7 +2,7 @@ object FrmPrincipal: TFrmPrincipal
   Left = 0
   Top = 0
   Caption = 'Wheel Pro - v.1.0 - By Conect Solutions 2023'
-  ClientHeight = 508
+  ClientHeight = 596
   ClientWidth = 876
   Position = ScreenCenter
   WindowState = wsMaximized
@@ -15,13 +15,13 @@ object FrmPrincipal: TFrmPrincipal
   object Layout1: TLayout
     Align = Client
     Size.Width = 876.000000000000000000
-    Size.Height = 508.000000000000000000
+    Size.Height = 596.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     OnMouseMove = Layout1MouseMove
     object Panel1: TPanel
       Align = Bottom
-      Position.Y = 460.000000000000000000
+      Position.Y = 548.000000000000000000
       Size.Width = 876.000000000000000000
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
@@ -892,7 +892,7 @@ object FrmPrincipal: TFrmPrincipal
     object Panel2: TPanel
       Align = Left
       Size.Width = 169.000000000000000000
-      Size.Height = 460.000000000000000000
+      Size.Height = 548.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
       object Panel3: TPanel
@@ -2119,7 +2119,7 @@ object FrmPrincipal: TFrmPrincipal
         Align = Client
         Fill.Color = claDarkseagreen
         Size.Width = 169.000000000000000000
-        Size.Height = 299.000000000000000000
+        Size.Height = 387.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
         object CBMarcas: TComboBox
@@ -2141,7 +2141,7 @@ object FrmPrincipal: TFrmPrincipal
         object Label3: TLabel
           Position.X = 5.000000000000000000
           Position.Y = 99.000000000000000000
-          Text = 'Modelo'
+          Text = 'Modelos'
           TabOrder = 7
         end
         object CBModelo: TComboBox
@@ -2150,7 +2150,8 @@ object FrmPrincipal: TFrmPrincipal
           Size.Width = 153.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
-          TabOrder = 4
+          TabOrder = 3
+          OnChange = CBModeloChange
           object ShadowEffect8: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -2165,22 +2166,15 @@ object FrmPrincipal: TFrmPrincipal
           Text = 'Fabricante Rodas'
           TabOrder = 8
         end
-        object ComboBox3: TComboBox
+        object CBFabricantes: TComboBox
           Position.X = 5.000000000000000000
           Position.Y = 172.000000000000000000
+          Size.Width = 153.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 5
-        end
-        object Label5: TLabel
-          Position.X = 5.000000000000000000
-          Position.Y = 199.000000000000000000
-          Text = 'Polegadas'
-          TabOrder = 9
-        end
-        object ComboBox4: TComboBox
-          Position.X = 5.000000000000000000
-          Position.Y = 220.000000000000000000
-          TabOrder = 6
-          object ShadowEffect12: TShadowEffect
+          OnChange = CBFabricantesChange
+          object ShadowEffect14: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
             Softness = 0.300000011920929000
@@ -2188,23 +2182,20 @@ object FrmPrincipal: TFrmPrincipal
             ShadowColor = claBlack
           end
         end
-        object Label2: TLabel
+        object Label5: TLabel
           Position.X = 5.000000000000000000
-          Position.Y = 256.000000000000000000
-          Text = 'Opacidade das Rodas'
-          TabOrder = 3
+          Position.Y = 199.000000000000000000
+          Text = 'Categorias'
+          TabOrder = 9
         end
-        object TrackBar1: TTrackBar
-          CanParentFocus = True
-          Orientation = Horizontal
+        object CBCategorias: TComboBox
           Position.X = 5.000000000000000000
-          Position.Y = 276.000000000000000000
-          Size.Width = 137.000000000000000000
-          Size.Height = 19.000000000000000000
+          Position.Y = 220.000000000000000000
+          Size.Width = 153.000000000000000000
+          Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
-          TabOrder = 2
-          OnChange = TrackBar1Change
-          object ShadowEffect13: TShadowEffect
+          TabOrder = 6
+          object ShadowEffect12: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
             Softness = 0.300000011920929000
@@ -2215,7 +2206,7 @@ object FrmPrincipal: TFrmPrincipal
         object Label6: TLabel
           Position.X = 5.000000000000000000
           Position.Y = 48.000000000000000000
-          Text = 'Fabricantes'
+          Text = 'Marcas'
           TabOrder = 10
         end
         object Label1: TLabel
@@ -2237,28 +2228,82 @@ object FrmPrincipal: TFrmPrincipal
             ShadowColor = claBlack
           end
         end
+        object Label2: TLabel
+          Position.X = 5.000000000000000000
+          Position.Y = 344.000000000000000000
+          Text = 'Opacidade das Rodas'
+          TabOrder = 4
+        end
+        object TrackBar1: TTrackBar
+          CanParentFocus = True
+          Orientation = Horizontal
+          Position.X = 5.000000000000000000
+          Position.Y = 364.000000000000000000
+          Size.Width = 137.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          OnChange = TrackBar1Change
+          object ShadowEffect13: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object CBLinhas: TComboBox
+          Position.X = 5.000000000000000000
+          Position.Y = 269.000000000000000000
+          Size.Width = 153.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 11
+          object ShadowEffect15: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Label7: TLabel
+          Position.X = 8.000000000000000000
+          Position.Y = 248.000000000000000000
+          Text = 'Linhas'
+          TabOrder = 12
+        end
       end
     end
     object Panel4: TPanel
       Align = Right
       Position.X = 716.000000000000000000
       Size.Width = 160.000000000000000000
-      Size.Height = 460.000000000000000000
+      Size.Height = 548.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
       object RectanguleLaretalDireito: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
         Size.Width = 160.000000000000000000
-        Size.Height = 460.000000000000000000
+        Size.Height = 548.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
+        object VertScrollBoxRodas: TVertScrollBox
+          Align = Client
+          Size.Width = 160.000000000000000000
+          Size.Height = 548.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Viewport.Width = 160.000000000000000000
+          Viewport.Height = 548.000000000000000000
+        end
       end
     end
     object Panel5: TPanel
       Align = Client
       Size.Width = 547.000000000000000000
-      Size.Height = 460.000000000000000000
+      Size.Height = 548.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
       object Image1: TImage
@@ -20006,7 +20051,7 @@ object FrmPrincipal: TFrmPrincipal
           end>
         Align = Client
         Size.Width = 547.000000000000000000
-        Size.Height = 460.000000000000000000
+        Size.Height = 548.000000000000000000
         Size.PlatformDefault = False
         object Panel6: TPanel
           Align = Top

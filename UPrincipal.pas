@@ -110,20 +110,25 @@ type
     Label3: TLabel;
     CBModelo: TComboBox;
     Label4: TLabel;
-    ComboBox3: TComboBox;
+    CBFabricantes: TComboBox;
     Label5: TLabel;
-    ComboBox4: TComboBox;
-    Label2: TLabel;
-    TrackBar1: TTrackBar;
+    CBCategorias: TComboBox;
     ShadowEffect8: TShadowEffect;
     ShadowEffect12: TShadowEffect;
-    ShadowEffect13: TShadowEffect;
     Label6: TLabel;
     Label1: TLabel;
     ShadowEffect7: TShadowEffect;
     Image2: TImage;
     MenuItem17: TMenuItem;
     MenuItem18: TMenuItem;
+    ShadowEffect14: TShadowEffect;
+    VertScrollBoxRodas: TVertScrollBox;
+    Label2: TLabel;
+    TrackBar1: TTrackBar;
+    ShadowEffect13: TShadowEffect;
+    CBLinhas: TComboBox;
+    Label7: TLabel;
+    ShadowEffect15: TShadowEffect;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -164,6 +169,8 @@ type
     procedure TrackBar1Change(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure CBMarcasChange(Sender: TObject);
+    procedure CBModeloChange(Sender: TObject);
+    procedure CBFabricantesChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -173,6 +180,7 @@ type
     NewCircle: TCircle;
     NewImagem: TImage;
     FIdMarcaSelecionada: integer;
+    FIdFabricante: integer;
     qry: TFDQuery;
     procedure Modo_Edicao(editar: Boolean);
     procedure Modo_Edicao2(editar: Boolean);
@@ -220,6 +228,45 @@ begin
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
 end;
 
+procedure TFrmPrincipal.CBFabricantesChange(Sender: TObject);
+begin
+  //carregar as categorias
+  {
+  SELECT * FROM fulanorodas.categorias
+  WHERE ativo='S'
+    AND IDFABRICANTE=1;
+  }
+  {Precisa preencher a variável com o valor do idMarca escolhi no combobox Marcas}
+  FIdFabricante:= Integer(CBFabricantes.Items.Objects[CBFabricantes.ItemIndex]);
+
+   { Carregar o combobox Modelos}
+   qry:= TFDQuery.Create(nil);
+   qry.Connection:= DM.FDConnection1;
+   try
+     qry.Close;
+     qry.SQL.Text:='SELECT C.IDCATEGORIAS,  C.CATEGORIA FROM CATEGORIAS C ' +
+                   ' INNER JOIN FABRICANTES F ON(F.IDFABRICANTES = C.IDFABRICANTE)' +
+                   ' WHERE C.ATIVO=''S'' ' +
+                   '  AND IDFABRICANTE = :IDFABRICANTE' +
+                   '    ORDER BY C.CATEGORIA ASC';
+
+     qry.ParamByName('IDFABRICANTE').DataType   := ftSmallint;
+     qry.ParamByName('IDFABRICANTE').AsSmallint := FIdFabricante;
+     qry.Open;
+
+     qry.First;
+     While Not qry.Eof do
+     begin
+       CBCategorias.Items.Add(qry.FieldByName('CATEGORIA').AsString);
+       qry.Next;
+     end;
+   finally
+     qry.Close;
+     qry.Free;
+   end;
+
+end;
+
 procedure TFrmPrincipal.CBMarcasChange(Sender: TObject);
 begin
   {Precisa preencher a variável com o valor do idMarca escolhi no combobox Marcas}
@@ -232,13 +279,13 @@ begin
      qry.Close;
      qry.SQL.Text:='SELECT MO.IDMARCA,MO.MODELO FROM MODELOS MO ' +
                    ' INNER JOIN MARCA MA ON(MO.IDMARCA = MA.IDMARCA)' +
-                   ' WHERE MO.IDMARCA =:IDMARCA';
-     Showmessage(IntToStr(FIdMarcaSelecionada));
+                   ' WHERE MO.IDMARCA =:IDMARCA' +
+                   '    ORDER BY MO.MODELO ASC';
+
      qry.ParamByName('IDMARCA').DataType   := ftSmallint;
      qry.ParamByName('IDMARCA').AsSmallint := FIdMarcaSelecionada;
      qry.Open;
      qry.SQL.SaveToFile('c:\sql.txt');
-     ShowMessage('A Qtde de Modelos é de: ' +IntToStr(qry.RecordCount));
 
      qry.First;
      While Not qry.Eof do
@@ -250,6 +297,11 @@ begin
      qry.Close;
      qry.Free;
    end;
+end;
+
+procedure TFrmPrincipal.CBModeloChange(Sender: TObject);
+begin
+  //Carregar as Rodas Compatíveis com o modelo
 end;
 
 procedure TFrmPrincipal.Circle1Click(Sender: TObject);
@@ -307,31 +359,6 @@ end;
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
 begin
   Modo_Edicao(false);
-
-
-//   { Carregar o combobox Modelos}
-//   qry:= TFDQuery.Create(nil);
-//   qry.Connection:= DM.FDConnection1;
-//   try
-//     qry.Close;
-//     qry.SQL.Text:='SELECT MO.IDMARCA,MO.MODELO FROM MODELOS MO ' +
-//                   ' INNER JOIN MARCA MA ON(MO.IDMARCA = MA.IDMARCA)' +
-//                   ' WHERE MO.IDMARCA =:IDMARCA';
-//     Showmessage(IntToStr(FIdMarcaSelecionada));
-//     qry.ParamByName('IDMARCA').DataType   := ftSmallint;
-//     qry.ParamByName('IDMARCA').AsSmallint := FIdMarcaSelecionada;
-//     qry.Open;
-//
-//     qry.First;
-//     While  NOT qry.Eof do
-//     begin
-//       CBModelo.Items.Add(qry.FieldByName('modelo').AsString);
-//       qry.Next;
-//     end;
-//   finally
-//     qry.Close;
-//     qry.Free;
-//   end;
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
@@ -339,16 +366,21 @@ begin
    //Carregar todos os fabricantes no Combobox1
    DM.FDQMarcas.Open;
 
-   //Showmessage(IntToStr(DM.FDQMarcas.RecordCount));
    DM.FDQMarcas.First;
-   While  NOT DM.FDQMarcas.Eof do
+   While NOT DM.FDQMarcas.Eof do
    begin
-//   CBMarcas.Items.Add(DM.FDQMarcas.FieldByName('marca').AsString);
-//   CBMarcas.Items.AddPair(DM.FDQMarcas.FieldByName('marca').AsString, DM.FDQMarcas.FieldByName('IDMARCA').AsString);
      CBMarcas.Items.AddObject(DM.FDQMarcas.FieldByName('marca').AsString, TObject(DM.FDQMarcas.FieldByName('IDMARCA').AsInteger));
      DM.FDQMarcas.Next;
    end;
 
+   //Carregar os Fabricantes das Rodas no CBFabricantes
+   DM.FDQFabricantes.Open;
+   DM.FDQFabricantes.First;
+   while NOT DM.FDQFabricantes.Eof do
+   begin
+     CBFabricantes.Items.AddObject(DM.FDQFabricantes.FieldByName('razao').AsString, TObject(DM.FDQFabricantes.FieldByName('idfabricantes').AsInteger));
+     DM.FDQFabricantes.Next;
+   end;
 
 end;
 

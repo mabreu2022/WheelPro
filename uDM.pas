@@ -25,6 +25,8 @@ type
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     DSModelos: TDataSource;
     FDQModelos: TFDQuery;
+    FDQCategorias: TFDQuery;
+    DSCategorias: TDataSource;
   private
     { Private declarations }
   public

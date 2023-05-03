@@ -1987,9 +1987,6 @@ inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
         inherited CBModelo: TComboBox
           Size.Height = 32.000000000000000000
         end
-        inherited TrackBar1: TTrackBar
-          Size.Height = 32.000000000000000000
-        end
         inherited Label1: TLabel
           TextSettings.Font.StyleExt = {00070000000000000004000000}
         end
@@ -2000,6 +1997,11 @@ inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
       Size.Height = 648.000000000000000000
       inherited RectanguleLaretalDireito: TRectangle
         Size.Height = 648.000000000000000000
+        inherited VertScrollBoxRodas: TVertScrollBox
+          Size.Height = 648.000000000000000000
+          Viewport.Width = 50.000000000000000000
+          Viewport.Height = 50.000000000000000000
+        end
       end
     end
     inherited Panel5: TPanel
