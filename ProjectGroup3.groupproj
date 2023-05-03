@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{7F5B220A-B589-4725-88F6-09C91AB91E89}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ProjetoRodasv3.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\ProjetoRodas2\PRojetoRodas.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\TesteEmprego\TesteEmprego.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ProjetoRodasv3">
+        <MSBuild Projects="ProjetoRodasv3.dproj"/>
+    </Target>
+    <Target Name="ProjetoRodasv3:Clean">
+        <MSBuild Projects="ProjetoRodasv3.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProjetoRodasv3:Make">
+        <MSBuild Projects="ProjetoRodasv3.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="PRojetoRodas">
+        <MSBuild Projects="..\ProjetoRodas2\PRojetoRodas.dproj"/>
+    </Target>
+    <Target Name="PRojetoRodas:Clean">
+        <MSBuild Projects="..\ProjetoRodas2\PRojetoRodas.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PRojetoRodas:Make">
+        <MSBuild Projects="..\ProjetoRodas2\PRojetoRodas.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TesteEmprego">
+        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj"/>
+    </Target>
+    <Target Name="TesteEmprego:Clean">
+        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TesteEmprego:Make">
+        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ProjetoRodasv3;PRojetoRodas;TesteEmprego"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ProjetoRodasv3:Clean;PRojetoRodas:Clean;TesteEmprego:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ProjetoRodasv3:Make;PRojetoRodas:Make;TesteEmprego:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
