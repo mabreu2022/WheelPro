@@ -2,7 +2,7 @@ object FrmPrincipal: TFrmPrincipal
   Left = 0
   Top = 0
   Caption = 'Wheel Pro - v.1.0 - By Conect Solutions 2023'
-  ClientHeight = 596
+  ClientHeight = 696
   ClientWidth = 1476
   Position = ScreenCenter
   WindowState = wsMaximized
@@ -15,13 +15,13 @@ object FrmPrincipal: TFrmPrincipal
   object Layout1: TLayout
     Align = Client
     Size.Width = 1476.000000000000000000
-    Size.Height = 596.000000000000000000
+    Size.Height = 696.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     OnMouseMove = Layout1MouseMove
     object Panel1: TPanel
       Align = Bottom
-      Position.Y = 548.000000000000000000
+      Position.Y = 648.000000000000000000
       Size.Width = 1476.000000000000000000
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
@@ -907,7 +907,7 @@ object FrmPrincipal: TFrmPrincipal
     object Panel2: TPanel
       Align = Left
       Size.Width = 169.000000000000000000
-      Size.Height = 548.000000000000000000
+      Size.Height = 648.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
       object Panel3: TPanel
@@ -2134,7 +2134,7 @@ object FrmPrincipal: TFrmPrincipal
         Align = Client
         Fill.Color = claDarkseagreen
         Size.Width = 169.000000000000000000
-        Size.Height = 387.000000000000000000
+        Size.Height = 487.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
         object CBMarcas: TComboBox
@@ -2158,6 +2158,13 @@ object FrmPrincipal: TFrmPrincipal
           Position.Y = 99.000000000000000000
           Text = 'Modelos'
           TabOrder = 7
+          object ShadowEffect22: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
         object CBModelo: TComboBox
           Position.X = 5.000000000000000000
@@ -2180,6 +2187,13 @@ object FrmPrincipal: TFrmPrincipal
           Position.Y = 152.000000000000000000
           Text = 'Fabricante Rodas'
           TabOrder = 8
+          object ShadowEffect23: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
         object CBFabricantes: TComboBox
           Position.X = 5.000000000000000000
@@ -2202,6 +2216,13 @@ object FrmPrincipal: TFrmPrincipal
           Position.Y = 199.000000000000000000
           Text = 'Categorias'
           TabOrder = 9
+          object ShadowEffect24: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
         object CBCategorias: TComboBox
           Position.X = 5.000000000000000000
@@ -2224,6 +2245,13 @@ object FrmPrincipal: TFrmPrincipal
           Position.Y = 48.000000000000000000
           Text = 'Marcas'
           TabOrder = 10
+          object ShadowEffect21: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
         object Label1: TLabel
           Align = Top
@@ -2246,15 +2274,22 @@ object FrmPrincipal: TFrmPrincipal
         end
         object Label2: TLabel
           Position.X = 5.000000000000000000
-          Position.Y = 344.000000000000000000
+          Position.Y = 400.000000000000000000
           Text = 'Opacidade das Rodas'
           TabOrder = 4
+          object ShadowEffect28: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
         object TrackBar1: TTrackBar
           CanParentFocus = True
           Orientation = Horizontal
           Position.X = 5.000000000000000000
-          Position.Y = 364.000000000000000000
+          Position.Y = 420.000000000000000000
           Size.Width = 137.000000000000000000
           Size.Height = 19.000000000000000000
           Size.PlatformDefault = False
@@ -2289,6 +2324,13 @@ object FrmPrincipal: TFrmPrincipal
           Position.Y = 248.000000000000000000
           Text = 'Linhas'
           TabOrder = 12
+          object ShadowEffect25: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
         object CBProdutos: TComboBox
           Position.X = 5.000000000000000000
@@ -2298,12 +2340,83 @@ object FrmPrincipal: TFrmPrincipal
           Size.PlatformDefault = False
           TabOrder = 13
           OnChange = CBProdutosChange
+          object ShadowEffect17: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
         object Label8: TLabel
           Position.X = 5.000000000000000000
           Position.Y = 296.000000000000000000
           Text = 'Produtos'
           TabOrder = 14
+          object ShadowEffect26: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object ComboBox1: TComboBox
+          Position.X = 5.000000000000000000
+          Position.Y = 368.000000000000000000
+          Size.Width = 153.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 15
+          object ShadowEffect18: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Label9: TLabel
+          Position.X = 5.000000000000000000
+          Position.Y = 344.000000000000000000
+          Text = 'Acabamento'
+          TabOrder = 16
+          object ShadowEffect27: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Edit1: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 17
+          Position.X = 5.000000000000000000
+          Position.Y = 472.000000000000000000
+          Size.Width = 153.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect19: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Label10: TLabel
+          Position.X = 5.000000000000000000
+          Position.Y = 448.000000000000000000
+          Text = 'Procurar'
+          TabOrder = 18
+          object ShadowEffect29: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
         end
       end
     end
@@ -2311,31 +2424,31 @@ object FrmPrincipal: TFrmPrincipal
       Align = Right
       Position.X = 1316.000000000000000000
       Size.Width = 160.000000000000000000
-      Size.Height = 548.000000000000000000
+      Size.Height = 648.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
       object RectanguleLaretalDireito: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
         Size.Width = 160.000000000000000000
-        Size.Height = 548.000000000000000000
+        Size.Height = 648.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
         object VertScrollBoxRodas: TVertScrollBox
           Align = Client
           Size.Width = 160.000000000000000000
-          Size.Height = 548.000000000000000000
+          Size.Height = 648.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           Viewport.Width = 160.000000000000000000
-          Viewport.Height = 548.000000000000000000
+          Viewport.Height = 648.000000000000000000
         end
       end
     end
     object Panel5: TPanel
       Align = Client
       Size.Width = 1147.000000000000000000
-      Size.Height = 548.000000000000000000
+      Size.Height = 648.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
       object Image1: TImage
@@ -20126,6 +20239,93 @@ object FrmPrincipal: TFrmPrincipal
               ShadowColor = claBlack
             end
           end
+        end
+      end
+      object GroupBox_CaracTeristicas_Produto: TGroupBox
+        Align = Bottom
+        Position.Y = 548.000000000000000000
+        Size.Width = 1147.000000000000000000
+        Size.Height = 100.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Caracter'#237'sticas T'#233'cnicas do Produto Escolhido'
+        TabOrder = 2
+        object LblProduto: TLabel
+          Position.X = 24.000000000000000000
+          Position.Y = 24.000000000000000000
+          Size.Width = 57.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Produto :'
+          TabOrder = 38
+        end
+        object Lbl_Descricao_Produto: TLabel
+          Position.X = 90.000000000000000000
+          Position.Y = 24.000000000000000000
+          Text = 'Lbl_Descricao_Produto'
+          TabOrder = 39
+        end
+        object ShadowEffect20: TShadowEffect
+          Distance = 3.000000000000000000
+          Direction = 45.000000000000000000
+          Softness = 0.300000011920929000
+          Opacity = 0.600000023841857900
+          ShadowColor = claBlack
+        end
+        object LblPreco: TLabel
+          Position.X = 24.000000000000000000
+          Position.Y = 48.000000000000000000
+          Size.Width = 57.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Pre'#231'o......:'
+          TabOrder = 40
+        end
+        object Lbl_Preco: TLabel
+          Position.X = 90.000000000000000000
+          Position.Y = 48.000000000000000000
+          Text = 'Lbl_Preco'
+          TabOrder = 41
+          object Label11: TLabel
+            Position.X = 80.000000000000000000
+            Text = ' X 4 = '
+            TabOrder = 4
+          end
+        end
+        object LblFabricante: TLabel
+          Position.X = 24.000000000000000000
+          Position.Y = 72.000000000000000000
+          Size.Width = 65.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Fabricante:'
+          TabOrder = 42
+        end
+        object Lbl_Fabricante: TLabel
+          Position.X = 90.000000000000000000
+          Position.Y = 72.000000000000000000
+          Text = 'Lbl_Fabricante'
+          TabOrder = 43
+        end
+        object Lbl_ValorTotal: TLabel
+          StyledSettings = [Family, FontColor]
+          Position.X = 256.000000000000000000
+          Position.Y = 24.000000000000000000
+          Size.Width = 97.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'Valor Total'
+          TabOrder = 44
+        end
+        object Lbl_VAlor_Total_Cliente: TLabel
+          StyledSettings = [Family, FontColor]
+          Position.X = 256.000000000000000000
+          Position.Y = 48.000000000000000000
+          TextSettings.Font.Size = 20.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'R$ 0,00'
+          TabOrder = 46
         end
       end
     end

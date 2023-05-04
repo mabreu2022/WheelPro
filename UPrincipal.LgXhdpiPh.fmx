@@ -1,12 +1,9 @@
 inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
-  ClientHeight = 696
   ClientWidth = 448
   DesignerMasterStyle = 3
   inherited Layout1: TLayout
     Size.Width = 448.000000000000000000
-    Size.Height = 696.000000000000000000
     inherited Panel1: TPanel
-      Position.Y = 648.000000000000000000
       Size.Width = 448.000000000000000000
       inherited RectangleBottom: TRectangle
         Size.Width = 448.000000000000000000
@@ -774,7 +771,6 @@ inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
       end
     end
     inherited Panel2: TPanel
-      Size.Height = 648.000000000000000000
       inherited Panel3: TPanel
         inherited Rectangle1: TRectangle
           inherited Image2: TImage
@@ -1981,7 +1977,6 @@ inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
         end
       end
       inherited RectanguleLateralEsquerda: TRectangle
-        Size.Height = 487.000000000000000000
         inherited CBMarcas: TComboBox
           Size.Height = 32.000000000000000000
         end
@@ -1995,11 +1990,8 @@ inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
     end
     inherited Panel4: TPanel
       Position.X = 288.000000000000000000
-      Size.Height = 648.000000000000000000
       inherited RectanguleLaretalDireito: TRectangle
-        Size.Height = 648.000000000000000000
         inherited VertScrollBoxRodas: TVertScrollBox
-          Size.Height = 648.000000000000000000
           Viewport.Width = 50.000000000000000000
           Viewport.Height = 50.000000000000000000
         end
@@ -2007,7 +1999,6 @@ inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
     end
     inherited Panel5: TPanel
       Size.Width = 119.000000000000000000
-      Size.Height = 648.000000000000000000
       inherited Image1: TImage
         MultiResBitmap.Height = 1200
         MultiResBitmap.Width = 1600
@@ -2025,6 +2016,14 @@ inherited FrmPrincipal_LgXhdpiPh: TFrmPrincipal_LgXhdpiPh
             Size.Width = 119.000000000000000000
             TextSettings.Font.StyleExt = {00070000000000000004000000}
           end
+        end
+      end
+      inherited GroupBox_CaracTeristicas_Produto: TGroupBox
+        inherited Lbl_ValorTotal: TLabel
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+        end
+        inherited Lbl_VAlor_Total_Cliente: TLabel
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
         end
       end
     end

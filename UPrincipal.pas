@@ -49,7 +49,7 @@ uses
   Winapi.Windows,
   System.IOUtils,
   FMX.Colors,
-  System.UIConsts;
+  System.UIConsts, FMX.Edit;
 
 
 type
@@ -128,6 +128,33 @@ type
     Label8: TLabel;
     BtnCopiarRoda: TButton;
     ShadowEffect16: TShadowEffect;
+    ComboBox1: TComboBox;
+    Label9: TLabel;
+    Edit1: TEdit;
+    Label10: TLabel;
+    ShadowEffect17: TShadowEffect;
+    ShadowEffect18: TShadowEffect;
+    ShadowEffect19: TShadowEffect;
+    ShadowEffect21: TShadowEffect;
+    ShadowEffect22: TShadowEffect;
+    ShadowEffect23: TShadowEffect;
+    ShadowEffect24: TShadowEffect;
+    ShadowEffect25: TShadowEffect;
+    ShadowEffect26: TShadowEffect;
+    ShadowEffect27: TShadowEffect;
+    ShadowEffect28: TShadowEffect;
+    ShadowEffect29: TShadowEffect;
+    GroupBox_CaracTeristicas_Produto: TGroupBox;
+    LblProduto: TLabel;
+    Lbl_Descricao_Produto: TLabel;
+    ShadowEffect20: TShadowEffect;
+    LblPreco: TLabel;
+    Lbl_Preco: TLabel;
+    Label11: TLabel;
+    LblFabricante: TLabel;
+    Lbl_Fabricante: TLabel;
+    Lbl_ValorTotal: TLabel;
+    Lbl_VAlor_Total_Cliente: TLabel;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -185,6 +212,7 @@ type
     FMemoryStream: TMemoryStream;
     FBlobStream: TStream;
     FIdProduto: integer;
+    FValorTotalOrcamento: Double;
     ProdutoDS: TDataSet;
     qry: TFDQuery;
     procedure Modo_Edicao(editar: Boolean);
@@ -290,16 +318,17 @@ begin
    qry.Connection:= DM.FDConnection1;
    try
      qry.Close;
-     qry.SQL.Text:='SELECT L.IDLINHA, L.LINHA, L.IDCATEGORIA FROM LINHA L ' +
-                   ' INNER JOIN CATEGORIAS C ON(C.IDCATEGORIAS = L.IDCATEGORIA)' +
+     qry.SQL.Text:='SELECT L.IDLINHA, L.LINHA, L.IDCATEGORIA '+
+                   ' FROM LINHA L ' +
+                   ' INNER JOIN CATEGORIAS C ON (L.IDCATEGORIA = C.IDCATEGORIAS)' +
                    ' WHERE L.ATIVO=''S'' ' +
-                   //'  AND L.IDCATEGORIA = :IDCATEGORIA' +
-                   '    ORDER BY L.IDLINHA ASC';
+                   '   AND L.IDCATEGORIA = :IDCATEGORIA' +
+                   ' ORDER BY L.IDLINHA ASC';
 
-     //qry.ParamByName('IDCATEGORIA').DataType   := ftSmallint;
-     //qry.ParamByName('IDCATEGORIA').AsSmallint := FIdCategoria;
+     qry.ParamByName('IDCATEGORIA').DataType   := ftSmallint;
+     qry.ParamByName('IDCATEGORIA').AsSmallint := FIdCategoria;
      qry.Open;
-     //Showmessage('No Onchange de CBCAtegorias a qtde. de Registros é de: ' +IntToStr(qry.RecordCount));
+     Showmessage('No Onchange de CBCAtegorias a qtde. de Registros é de: ' +IntToStr(qry.RecordCount));
 
      //Limpar o CBLinhas
      CBLinhas.Clear;
@@ -345,7 +374,7 @@ begin
      qry.First;
      While Not qry.Eof do
      begin
-       CBCategorias.Items.Add(qry.FieldByName('CATEGORIA').AsString);
+       CBCategorias.Items.AddObject(qry.FieldByName('CATEGORIA').AsString, TObject(qry.FieldByName('IDCATEGORIAS').AsInteger));
        qry.Next;
      end;
    finally
@@ -358,8 +387,8 @@ end;
 procedure TFrmPrincipal.CBLinhasChange(Sender: TObject);
 begin
   //Colocar a foto na Roda Matrix.
+  FidLinha:= FIdCategoria; //Integer(CBLinhas.Items.Objects[CBLinhas.ItemIndex]);  //vem zero
 
-  FidLinha:= Integer(CBLinhas.Items.Objects[CBLinhas.ItemIndex]);  //vem zero
   { Carregar o combobox LINHAS}
    qry:= TFDQuery.Create(nil);
    qry.Connection:= DM.FDConnection1;
@@ -370,13 +399,13 @@ begin
                    ' FROM PRODUTOS P ' +
                    ' INNER JOIN LINHA L ON(L.IDLINHA = P.IDLINHA)' +
                    ' WHERE P.ATIVO=''S'' ' +
-                  // '  AND P.IDLINHA = :IDLINHA' +
+                   '  AND P.IDLINHA = :IDLINHA' +
                    '    ORDER BY P.PRODUTO ASC';
 
-     //qry.ParamByName('IDLINHA').DataType   := ftSmallint;
-     //qry.ParamByName('IDLINHA').AsSmallint := FidLinha;
+     qry.ParamByName('IDLINHA').DataType   := ftSmallint;
+     qry.ParamByName('IDLINHA').AsSmallint := FidLinha;
      qry.Open;
-     //Showmessage('No CBLinhas Change a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
+     Showmessage('No CBLinhas Change a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
 
      //Limpar  o CBProdutos
      CBProdutos.Clear;
@@ -384,14 +413,13 @@ begin
      qry.First;
      While Not qry.Eof do
      begin
-       CBProdutos.Items.AddObject(qry.FieldByName('PRODUTO').AsString, TObject(qRY.FieldByName('IDPRODUTOS').AsInteger));
+       CBProdutos.Items.AddObject(qry.FieldByName('PRODUTO').AsString, TObject(qry.FieldByName('IDPRODUTOS').AsInteger));
        qry.Next;
      end;
    finally
      qry.Close;
      qry.Free;
    end;
-
 
 end;
 
@@ -467,6 +495,18 @@ begin
     finally
       FBlobStream.Free;
     end;
+
+    //Preenche as características Técnicas do Produto
+    Lbl_Descricao_Produto.Text:= qry.FieldByName('PRODUTO').AsString;
+    Lbl_Preco.Text            := FormatFloat('R$ ###,###.00', qry.FieldByName('PRECO').AsFloat);
+
+    //Calcular o Orçamento do Jogo de Rodas/Calotas
+    FVAlorTotalOrcamento:=0;
+    FValorTotalOrcamento:= FValorTotalOrcamento + qry.FieldByName('PRECO').AsFloat * 4;
+    Lbl_VAlor_Total_Cliente.Text:= FormatFloat('R$ ###,###.00', FValorTotalOrcamento);
+
+    Lbl_Fabricante.Text       := CBFabricantes.Items[CBFabricantes.ItemIndex];
+
   finally
     qry.Close;
     qry.Free;
