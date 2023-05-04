@@ -58,10 +58,6 @@ type
     Image4: TImage;
     GestureManager1: TGestureManager;
     Layout1: TLayout;
-    PopupMenu1: TPopupMenu;
-    MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
-    MenuItem3: TMenuItem;
     Panel1: TPanel;
     MainMenu1: TMainMenu;
     MenuItem4: TMenuItem;
@@ -82,7 +78,7 @@ type
     Button4: TButton;
     RectanguleLateralEsquerda: TRectangle;
     Panel4: TPanel;
-    Button5: TButton;
+    BtnCarregarFoto: TButton;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
     ShadowEffect3: TShadowEffect;
@@ -98,8 +94,7 @@ type
     Panel6: TPanel;
     RectangleTop: TRectangle;
     RectanguleLaretalDireito: TRectangle;
-    MenuItem16: TMenuItem;
-    Button6: TButton;
+    BtnCopiarFoto: TButton;
     ShadowEffect10: TShadowEffect;
     Rectangle1: TRectangle;
     Panel7: TPanel;
@@ -131,6 +126,8 @@ type
     ShadowEffect15: TShadowEffect;
     CBProdutos: TComboBox;
     Label8: TLabel;
+    BtnCopiarRoda: TButton;
+    ShadowEffect16: TShadowEffect;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -141,7 +138,6 @@ type
       Shift: TShiftState; X, Y: Single);
     procedure Layout1MouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Single);
-    procedure Image4Click(Sender: TObject);
     procedure Image4Gesture(Sender: TObject; const EventInfo: TGestureEventInfo;
       var Handled: Boolean);
     procedure Image4MouseDown(Sender: TObject; Button: TMouseButton;
@@ -151,8 +147,6 @@ type
     procedure Circle1DblClick(Sender: TObject);
     procedure Image4DblClick(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
-
-    procedure NewImagemClick(Sender: TObject);
     procedure NewImagemDbClick(Sender: TObject);
     procedure NewImagemMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
@@ -162,20 +156,20 @@ type
     procedure NewImagemMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
     procedure FormShow(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
+    procedure BtnCarregarFotoClick(Sender: TObject);
     procedure MenuItem14Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
-    procedure Button6Click(Sender: TObject);
+    procedure BtnCopiarFotoClick(Sender: TObject);
     procedure Image4MouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; var Handled: Boolean);
     procedure TrackBar1Change(Sender: TObject);
-    procedure MenuItem3Click(Sender: TObject);
     procedure CBMarcasChange(Sender: TObject);
     procedure CBModeloChange(Sender: TObject);
     procedure CBFabricantesChange(Sender: TObject);
     procedure CBCategoriasChange(Sender: TObject);
     procedure CBLinhasChange(Sender: TObject);
     procedure CBProdutosChange(Sender: TObject);
+    procedure BtnCopiarRodaClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -198,8 +192,6 @@ type
     procedure NewImagemMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; var Handled: Boolean);
 
-    //function RGBToAlphaColor(R, G, B: Byte): TAlphaColor;
-
   public
     { Public declarations }
 
@@ -213,7 +205,7 @@ implementation
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
 
-procedure TFrmPrincipal.Button5Click(Sender: TObject);
+procedure TFrmPrincipal.BtnCarregarFotoClick(Sender: TObject);
 var
   OpenDialog: TOpenDialog;
 begin
@@ -231,7 +223,7 @@ begin
 
 end;
 
-procedure TFrmPrincipal.Button6Click(Sender: TObject);
+procedure TFrmPrincipal.BtnCopiarFotoClick(Sender: TObject);
 begin
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), 0, 0); // Pressiona a tecla Alt
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), 0, 0); // Pressiona a tecla Print Screen
@@ -239,10 +231,61 @@ begin
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
 end;
 
+procedure TFrmPrincipal.BtnCopiarRodaClick(Sender: TObject);
+begin
+  if NOT Assigned(NewCircle) then
+    begin
+      // Create a new TCircle component
+      NewCircle := TCircle.Create(Self);
+
+      // Copy the properties of the original TCircle component
+      NewCircle.Position.X := Circle1.Position.X + 50;
+      NewCircle.Position.Y := Circle1.Position.Y + 50;
+      NewCircle.Width      := Circle1.Width;
+      NewCircle.Height     := Circle1.Height;
+      NewCircle.Fill.Color := Circle1.Fill.Color;
+
+      //Criar o TImage dentro do NewCircle
+      NewImagem:= TImage.Create(NewCircle);
+      NewImagem.Parent:= NewCircle;
+      NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
+      NewImagem.Align:=  TalignLayout.Client;
+
+      // Eventos
+      //NewImagem.OnClick      :=  NewImagemClick;
+      NewImagem.OnDblClick   :=  NewImagemDbClick;
+      NewImagem.OnGesture    :=  NewImagemGesture;
+      NewImagem.OnMouseDown  :=  NewImagemMouseDown;
+      NewImagem.OnMouseUp    :=  NewImagemMouseUp;
+      NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
+
+      NewCircle.Parent := Self; //Cria no Formulário Principal
+    end
+    else
+    begin //apagar o mesmo ou receber a copia da Matrix Atual
+      //Criar o TImage dentro do NewCircle
+      NewImagem.BitMap.Clear($000000);
+      NewImagem:= TImage.Create(NewCircle);
+      NewImagem.Parent:= NewCircle;
+      NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
+      NewImagem.Align:=  TalignLayout.Client;
+
+      // Copy the events from the original TImage to the new TImage
+      //NewImagem.OnClick      :=  NewImagemClick; //Ficou com o clique esquerdo sem função
+      NewImagem.OnDblClick   :=  NewImagemDbClick;
+      NewImagem.OnGesture    :=  NewImagemGesture;
+      NewImagem.OnMouseDown  :=  NewImagemMouseDown;
+      NewImagem.OnMouseUp    :=  NewImagemMouseUp;
+      NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
+      //Exit;
+    end;
+end;
+
 procedure TFrmPrincipal.CBCategoriasChange(Sender: TObject);
 begin
-   FIdCategoria:= Integer(CBCategorias.Items.Objects[CBCategorias.ItemIndex]);
- { Carregar o combobox LINHAS}
+  FIdCategoria:= Integer(CBCategorias.Items.Objects[CBCategorias.ItemIndex]);
+
+  { Carregar o combobox LINHAS}
    qry:= TFDQuery.Create(nil);
    qry.Connection:= DM.FDConnection1;
    try
@@ -256,7 +299,10 @@ begin
      //qry.ParamByName('IDCATEGORIA').DataType   := ftSmallint;
      //qry.ParamByName('IDCATEGORIA').AsSmallint := FIdCategoria;
      qry.Open;
-     Showmessage('No Onchange de CBCAtegorias a qtde. de Registros é de: ' +IntToStr(qry.RecordCount));
+     //Showmessage('No Onchange de CBCAtegorias a qtde. de Registros é de: ' +IntToStr(qry.RecordCount));
+
+     //Limpar o CBLinhas
+     CBLinhas.Clear;
 
      qry.First;
      While Not qry.Eof do
@@ -277,7 +323,7 @@ begin
   {Precisa preencher a variável com o valor do idMarca escolhi no combobox Marcas}
   FIdFabricante:= Integer(CBFabricantes.Items.Objects[CBFabricantes.ItemIndex]);
 
-   { Carregar o combobox CATEGORIAS}
+  { Carregar o combobox CATEGORIAS}
    qry:= TFDQuery.Create(nil);
    qry.Connection:= DM.FDConnection1;
    try
@@ -292,6 +338,9 @@ begin
      qry.ParamByName('IDFABRICANTE').AsSmallint := FIdFabricante;
      qry.Open;
      //ShowMessage('No On Change do CBFabricante  a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
+
+     //Limpar o CBCategorias
+     CBCategorias.Clear;
 
      qry.First;
      While Not qry.Eof do
@@ -329,11 +378,13 @@ begin
      qry.Open;
      //Showmessage('No CBLinhas Change a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
 
+     //Limpar  o CBProdutos
+     CBProdutos.Clear;
+
      qry.First;
      While Not qry.Eof do
      begin
-       //CBProdutos.Items.Add(qry.FieldByName('PRODUTO').AsString);
-        CBProdutos.Items.AddObject(qry.FieldByName('PRODUTO').AsString, TObject(qRY.FieldByName('IDPRODUTOS').AsInteger));
+       CBProdutos.Items.AddObject(qry.FieldByName('PRODUTO').AsString, TObject(qRY.FieldByName('IDPRODUTOS').AsInteger));
        qry.Next;
      end;
    finally
@@ -363,6 +414,9 @@ begin
      qry.ParamByName('IDMARCA').AsSmallint := FIdMarcaSelecionada;
      qry.Open;
      qry.SQL.SaveToFile('c:\sql.txt');
+
+     //Limpar o CBModelo
+     CBModelo.Clear;
 
      qry.First;
      While Not qry.Eof do
@@ -397,9 +451,8 @@ begin
     qry.ParamByName('IDPRODUTOS').DataType   := ftSmallint;
     qry.ParamByName('IDPRODUTOS').AsSmallint := FIdProduto;
     qry.Open;
-    ShowMessage('A qtde. de produto encontrados é de :' + IntToStr(qry.RecordCount));
+    //ShowMessage('A qtde. de produto encontrados é de :' + IntToStr(qry.RecordCount));
 
-    //Carregar a foto na Matrix da  Roda
     ProdutoDS   := qry;
     FMemoryStream := TMemoryStream.Create;
     FBlobStream := ProdutoDS.CreateBlobStream(ProdutoDS.FieldByName('foto'), bmRead);
@@ -431,6 +484,7 @@ end;
 
 procedure TFrmPrincipal.Circle1DblClick(Sender: TObject);
 begin
+  //Aumenta o tamanho da roda em um em um pixel
   Circle1.Width  := Circle1.Width + 1;
   Circle1.Height := Circle1.Height + 1;
 end;
@@ -451,19 +505,19 @@ procedure TFrmPrincipal.Circle1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Single);
 begin
 
- //Seta o Layout para capturar o mouse
- if circle1.Tag = 1 then
-   layout1.Root.Captured := layout1;
+  //Seta o Layout para capturar o mouse
+  if circle1.Tag = 1 then
+    layout1.Root.Captured := layout1;
 
- //Indica que o objeto pode se mover
- MoveObjeto:= True;
+  //Indica que o objeto pode se mover
+  MoveObjeto:= True;
 
- OffSet.X := X;
- OffSet.Y := Y;
+  OffSet.X := X;
+  OffSet.Y := Y;
 
- //Windows: Botão direito muda o modoedição...
- if Button = TMouseButton.mbRight then
-   Modo_Edicao(NOT Circle1.Tag.ToBoolean);
+  //Botão direito muda o modo edição...
+  if Button = TMouseButton.mbRight then
+    Modo_Edicao(NOT Circle1.Tag.ToBoolean);
 
 end;
 
@@ -476,13 +530,13 @@ end;
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
 begin
   Modo_Edicao(false);
+  Modo_Edicao2(False);
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
 begin
    //Carregar todos os fabricantes no Combobox1
    DM.FDQMarcas.Open;
-
    DM.FDQMarcas.First;
    While NOT DM.FDQMarcas.Eof do
    begin
@@ -499,14 +553,6 @@ begin
      DM.FDQFabricantes.Next;
    end;
 
-end;
-
-procedure TFrmPrincipal.Image4Click(Sender: TObject);
-begin
-  if circle1.Tag = 0 then
-  begin
-    Popupmenu1.Popup(OffSet.X, OffSet.Y);
-  end;
 end;
 
 procedure TFrmPrincipal.Image4DblClick(Sender: TObject);
@@ -538,7 +584,8 @@ begin
   OffSet.X := X;
   OffSet.Y := Y;
 
-   //Windows: Botão direito muda o modo de edição...
+
+  //Botão direito muda o modo de edição...
   if Button = TMouseButton.mbRight then
     Modo_Edicao(NOT Circle1.Tag.ToBoolean);
 
@@ -572,7 +619,7 @@ begin
       Circle1.Height := Circle1.Height + 3;
     end;
   end
-  else
+  else //Se não estiver em modo de edição cai fora
     Exit;
 
 end;
@@ -593,14 +640,9 @@ begin
       NewCircle.Height := NewCircle.Height + 3;
     end;
   end
-  else
+  else //Se não estiver em modo de edição cai fora
     Exit;
 end;
-
-//function TFrmPrincipal.RGBToAlphaColor(R, G, B: Byte): TAlphaColor;
-//begin
-//  Result := MakeColor(R, G, B);
-//end;
 
 procedure TFrmPrincipal.TrackBar1Change(Sender: TObject);
 begin
@@ -661,14 +703,14 @@ begin
     NewImagem.Align:=  TalignLayout.Client;
 
     // Copy the events from the original TImage to the new TImage
-    NewImagem.OnClick      :=  NewImagemClick;
+    //NewImagem.OnClick      :=  NewImagemClick;
     NewImagem.OnDblClick   :=  NewImagemDbClick;
     NewImagem.OnGesture    :=  NewImagemGesture;
     NewImagem.OnMouseDown  :=  NewImagemMouseDown;
     NewImagem.OnMouseUp    :=  NewImagemMouseUp;
     NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
 
-    NewCircle.Parent := Self;
+    NewCircle.Parent := Self; //Cria no Formulário
   end
   else
   begin //apagar o mesmo ou receber a copia da Matrix Atual
@@ -679,22 +721,15 @@ begin
     NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
     NewImagem.Align:=  TalignLayout.Client;
 
-    // Copy the events from the original TImage to the new TImage
-    NewImagem.OnClick      :=  NewImagemClick;
+    // Eventos
+    //NewImagem.OnClick      :=  NewImagemClick;
     NewImagem.OnDblClick   :=  NewImagemDbClick;
     NewImagem.OnGesture    :=  NewImagemGesture;
     NewImagem.OnMouseDown  :=  NewImagemMouseDown;
     NewImagem.OnMouseUp    :=  NewImagemMouseUp;
     NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
-    //Exit;
   end;
 
-end;
-
-procedure TFrmPrincipal.MenuItem3Click(Sender: TObject);
-begin
-  Modo_Edicao(false);
-  Modo_Edicao2(false);
 end;
 
 procedure TFrmPrincipal.Modo_Edicao(editar: Boolean);
@@ -735,20 +770,12 @@ begin
       begin
         Newcircle.Stroke.Color := $000000;//$FFFD5872; //vermelho
         NewCircle.Stroke.Dash  := TStrokeDash.Solid;// linha sólida
-        NewCircle.Tag:= 0; //indica não modo deedição
+        NewCircle.Tag:= 0; //indica não modo de edição
         NewCircle.Opacity:= 1;
       end;
     end;
   end;
 
-end;
-
-procedure TFrmPrincipal.NewImagemClick(Sender: TObject);
-begin
-  if NewCircle.Tag = 0 then
-  begin
-    Popupmenu1.Popup(OffSet.X, OffSet.Y);
-  end;
 end;
 
 procedure TFrmPrincipal.NewImagemDbClick(Sender: TObject);
@@ -780,7 +807,7 @@ begin
   OffSet.X := X;
   OffSet.Y := Y;
 
-   //Windows: Botão direito muda o modoedição...
+  //Windows: Botão direito muda o modoedição...
   if Button = TMouseButton.mbRight then
     Modo_Edicao2(NOT NewCircle.Tag.ToBoolean);
 
