@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "WheelPro"
-#define MyAppVersion "1.0"
-#define MyAppPublisher "Conect Solutions em Serviços em TI Ltda"
+#define MyAppVersion "1.5"
+#define MyAppPublisher "Conect Solutionns"
 #define MyAppURL "https://conectsolutionsti.com.br"
 #define MyAppExeName "ProjetoRodasv3.exe"
 
@@ -11,7 +11,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{7E75ACB8-1E46-49A6-983F-F41EFA6D1321}
+AppId={{D1A7EE13-7B5B-4507-9374-EFDA1ABFD5D1}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -24,7 +24,7 @@ DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=C:\Fontes\ProjetoRodas3\Instalador
-OutputBaseFilename=WheelPro_Setup
+OutputBaseFilename=setup
 SetupIconFile=C:\Fontes\ProjetoRodas3\Instalador\Icone.ico
 Password=123456
 Encryption=yes
@@ -46,6 +46,7 @@ Source: "C:\Fontes\ProjetoRodas3\Imagens\*"; DestDir: "{app}"; Flags: ignorevers
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon

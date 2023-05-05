@@ -49,7 +49,8 @@ uses
   Winapi.Windows,
   System.IOUtils,
   FMX.Colors,
-  System.UIConsts, FMX.Edit;
+  System.UIConsts, FMX.Edit, UCadastroClientes, UCadastroCategorias,
+  UCadastroVeiculos, UCadastroFabricantes, UCadastroOrcamentos, URegistrar;
 
 
 type
@@ -102,19 +103,18 @@ type
     ShadowEffect11: TShadowEffect;
     CBMarcas: TComboBox;
     ShadowEffect6: TShadowEffect;
-    Label3: TLabel;
+    LblModelos: TLabel;
     CBModelo: TComboBox;
-    Label4: TLabel;
+    LblFabricanteRodas: TLabel;
     CBFabricantes: TComboBox;
-    Label5: TLabel;
+    LblCategorias: TLabel;
     CBCategorias: TComboBox;
     ShadowEffect8: TShadowEffect;
     ShadowEffect12: TShadowEffect;
-    Label6: TLabel;
+    lblMarcas: TLabel;
     Label1: TLabel;
     ShadowEffect7: TShadowEffect;
     Image2: TImage;
-    MenuItem17: TMenuItem;
     MenuItem18: TMenuItem;
     ShadowEffect14: TShadowEffect;
     VertScrollBoxRodas: TVertScrollBox;
@@ -122,16 +122,16 @@ type
     TrackBar1: TTrackBar;
     ShadowEffect13: TShadowEffect;
     CBLinhas: TComboBox;
-    Label7: TLabel;
+    LblLinhas: TLabel;
     ShadowEffect15: TShadowEffect;
     CBProdutos: TComboBox;
-    Label8: TLabel;
+    LblProdutos: TLabel;
     BtnCopiarRoda: TButton;
     ShadowEffect16: TShadowEffect;
     ComboBox1: TComboBox;
-    Label9: TLabel;
+    LblAcabamento: TLabel;
     Edit1: TEdit;
-    Label10: TLabel;
+    LblProcurar: TLabel;
     ShadowEffect17: TShadowEffect;
     ShadowEffect18: TShadowEffect;
     ShadowEffect19: TShadowEffect;
@@ -155,6 +155,8 @@ type
     Lbl_Fabricante: TLabel;
     Lbl_ValorTotal: TLabel;
     Lbl_VAlor_Total_Cliente: TLabel;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -197,6 +199,11 @@ type
     procedure CBLinhasChange(Sender: TObject);
     procedure CBProdutosChange(Sender: TObject);
     procedure BtnCopiarRodaClick(Sender: TObject);
+    procedure MenuItem8Click(Sender: TObject);
+    procedure MenuItem9Click(Sender: TObject);
+    procedure MenuItem11Click(Sender: TObject);
+    procedure MenuItem10Click(Sender: TObject);
+    procedure MenuItem15Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -709,9 +716,24 @@ begin
   end;
 end;
 
+procedure TFrmPrincipal.MenuItem10Click(Sender: TObject);
+begin
+  FrmOrcamentos.ShowModal;
+end;
+
+procedure TFrmPrincipal.MenuItem11Click(Sender: TObject);
+begin
+  FrmFabricantes.ShowModal;
+end;
+
 procedure TFrmPrincipal.MenuItem14Click(Sender: TObject);
 begin
   //Chamar algum componente de cores.
+end;
+
+procedure TFrmPrincipal.MenuItem15Click(Sender: TObject);
+begin
+  FrmRegistrar.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItem16Click(Sender: TObject);
@@ -724,52 +746,63 @@ end;
 
 procedure TFrmPrincipal.MenuItem1Click(Sender: TObject);
 begin
-  if NOT Assigned(NewCircle) then
-  begin
-    // Create a new TCircle component
-    NewCircle := TCircle.Create(Self);
+  FrmCategorias.ShowModal;
+//  if NOT Assigned(NewCircle) then
+//  begin
+//    // Create a new TCircle component
+//    NewCircle := TCircle.Create(Self);
+//
+//    // Copy the properties of the original TCircle component
+//    NewCircle.Position.X := Circle1.Position.X + 50;
+//    NewCircle.Position.Y := Circle1.Position.Y + 50;
+//    NewCircle.Width      := Circle1.Width;
+//    NewCircle.Height     := Circle1.Height;
+//    NewCircle.Fill.Color := Circle1.Fill.Color;
+//
+//    //Criar o TImage dentro do NewCircle
+//    NewImagem:= TImage.Create(NewCircle);
+//    NewImagem.Parent:= NewCircle;
+//    NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
+//    NewImagem.Align:=  TalignLayout.Client;
+//
+//    // Copy the events from the original TImage to the new TImage
+//    //NewImagem.OnClick      :=  NewImagemClick;
+//    NewImagem.OnDblClick   :=  NewImagemDbClick;
+//    NewImagem.OnGesture    :=  NewImagemGesture;
+//    NewImagem.OnMouseDown  :=  NewImagemMouseDown;
+//    NewImagem.OnMouseUp    :=  NewImagemMouseUp;
+//    NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
+//
+//    NewCircle.Parent := Self; //Cria no Formulário
+//  end
+//  else
+//  begin //apagar o mesmo ou receber a copia da Matrix Atual
+//    //Criar o TImage dentro do NewCircle
+//    NewImagem.BitMap.Clear($000000);
+//    NewImagem:= TImage.Create(NewCircle);
+//    NewImagem.Parent:= NewCircle;
+//    NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
+//    NewImagem.Align:=  TalignLayout.Client;
+//
+//    // Eventos
+//    //NewImagem.OnClick      :=  NewImagemClick;
+//    NewImagem.OnDblClick   :=  NewImagemDbClick;
+//    NewImagem.OnGesture    :=  NewImagemGesture;
+//    NewImagem.OnMouseDown  :=  NewImagemMouseDown;
+//    NewImagem.OnMouseUp    :=  NewImagemMouseUp;
+//    NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
+//  end;
 
-    // Copy the properties of the original TCircle component
-    NewCircle.Position.X := Circle1.Position.X + 50;
-    NewCircle.Position.Y := Circle1.Position.Y + 50;
-    NewCircle.Width      := Circle1.Width;
-    NewCircle.Height     := Circle1.Height;
-    NewCircle.Fill.Color := Circle1.Fill.Color;
+end;
 
-    //Criar o TImage dentro do NewCircle
-    NewImagem:= TImage.Create(NewCircle);
-    NewImagem.Parent:= NewCircle;
-    NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
-    NewImagem.Align:=  TalignLayout.Client;
+procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);
+begin
+  FrmCadastroClientes.ShowModal;
+end;
 
-    // Copy the events from the original TImage to the new TImage
-    //NewImagem.OnClick      :=  NewImagemClick;
-    NewImagem.OnDblClick   :=  NewImagemDbClick;
-    NewImagem.OnGesture    :=  NewImagemGesture;
-    NewImagem.OnMouseDown  :=  NewImagemMouseDown;
-    NewImagem.OnMouseUp    :=  NewImagemMouseUp;
-    NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
-
-    NewCircle.Parent := Self; //Cria no Formulário
-  end
-  else
-  begin //apagar o mesmo ou receber a copia da Matrix Atual
-    //Criar o TImage dentro do NewCircle
-    NewImagem.BitMap.Clear($000000);
-    NewImagem:= TImage.Create(NewCircle);
-    NewImagem.Parent:= NewCircle;
-    NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
-    NewImagem.Align:=  TalignLayout.Client;
-
-    // Eventos
-    //NewImagem.OnClick      :=  NewImagemClick;
-    NewImagem.OnDblClick   :=  NewImagemDbClick;
-    NewImagem.OnGesture    :=  NewImagemGesture;
-    NewImagem.OnMouseDown  :=  NewImagemMouseDown;
-    NewImagem.OnMouseUp    :=  NewImagemMouseUp;
-    NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
-  end;
-
+procedure TFrmPrincipal.MenuItem9Click(Sender: TObject);
+begin
+  FrmCadastroVeiculos.ShowModal;
 end;
 
 procedure TFrmPrincipal.Modo_Edicao(editar: Boolean);

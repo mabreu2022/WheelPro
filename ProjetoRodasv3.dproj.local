@@ -20,6 +20,24 @@
     <Transaction>2023/05/02 14:57:41.000.474,C:\Fontes\ProjetoRodas3\uDM.pas=C:\Fontes\ProjetoRodas3\Unit1.pas</Transaction>
     <Transaction>2023/05/02 14:57:41.000.474,C:\Fontes\ProjetoRodas3\uDM.dfm=C:\Fontes\ProjetoRodas3\Unit1.dfm</Transaction>
     <Transaction>2023/05/02 15:12:21.000.231,C:\Fontes\ProjetoRodas3\ProjetoRodasv3.dproj=C:\Fontes\ProjetoRodas3\ProjetoRodas.dproj</Transaction>
+    <Transaction>2023/05/05 07:53:52.691,=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 07:58:13.730,C:\Fontes\ProjetoRodas3\UCadastroClientes.pas=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 07:58:13.730,C:\Fontes\ProjetoRodas3\UCadastroClientes.fmx=C:\Fontes\ProjetoRodas3\Unit2.fmx</Transaction>
+    <Transaction>2023/05/05 08:14:30.550,=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 08:17:36.851,C:\Fontes\ProjetoRodas3\UCadastroCategorias.pas=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 08:17:36.851,C:\Fontes\ProjetoRodas3\UCadastroCategorias.fmx=C:\Fontes\ProjetoRodas3\Unit2.fmx</Transaction>
+    <Transaction>2023/05/05 08:30:28.626,=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 08:34:15.356,C:\Fontes\ProjetoRodas3\UCadastroVeiculos.fmx=C:\Fontes\ProjetoRodas3\Unit2.fmx</Transaction>
+    <Transaction>2023/05/05 08:34:15.356,C:\Fontes\ProjetoRodas3\UCadastroVeiculos.pas=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 08:58:41.079,=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 09:02:35.100,C:\Fontes\ProjetoRodas3\UCadastroFabricantes.fmx=C:\Fontes\ProjetoRodas3\Unit2.fmx</Transaction>
+    <Transaction>2023/05/05 09:02:35.100,C:\Fontes\ProjetoRodas3\UCadastroFabricantes.pas=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 09:13:00.522,=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 09:16:39.370,C:\Fontes\ProjetoRodas3\UCadastroOrcamentos.fmx=C:\Fontes\ProjetoRodas3\Unit2.fmx</Transaction>
+    <Transaction>2023/05/05 09:16:39.370,C:\Fontes\ProjetoRodas3\UCadastroOrcamentos.pas=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 09:21:32.124,=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
+    <Transaction>2023/05/05 09:25:29.539,C:\Fontes\ProjetoRodas3\URegistrar.fmx=C:\Fontes\ProjetoRodas3\Unit2.fmx</Transaction>
+    <Transaction>2023/05/05 09:25:29.539,C:\Fontes\ProjetoRodas3\URegistrar.pas=C:\Fontes\ProjetoRodas3\Unit2.pas</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<NoProfile Android64=""/>
