@@ -49,8 +49,14 @@ uses
   Winapi.Windows,
   System.IOUtils,
   FMX.Colors,
-  System.UIConsts, FMX.Edit, UCadastroClientes, UCadastroCategorias,
-  UCadastroVeiculos, UCadastroFabricantes, UCadastroOrcamentos, URegistrar;
+  System.UIConsts,
+  FMX.Edit,
+  UCadastroClientes,
+  UCadastroCategorias,
+  UCadastroVeiculos,
+  UCadastroFabricantes,
+  UCadastroOrcamentos,
+  URegistrar;
 
 
 type
@@ -157,6 +163,8 @@ type
     Lbl_VAlor_Total_Cliente: TLabel;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
+    Button5: TButton;
+    ShadowEffect30: TShadowEffect;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -204,6 +212,7 @@ type
     procedure MenuItem11Click(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -314,6 +323,22 @@ begin
       NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
       //Exit;
     end;
+end;
+
+procedure TFrmPrincipal.Button5Click(Sender: TObject);
+var
+  OpenDialog: TOpenDialog;
+begin
+  OpenDialog := TOpenDialog.Create(Self);
+  try
+    OpenDialog.Filter := 'Arquivos de Imagem|*.bmp;*.jpg;*.jpeg;*.png';
+    if OpenDialog.Execute then
+    begin
+      Image4.Bitmap.LoadFromFile(OpenDialog.FileName);
+    end;
+  finally
+    OpenDialog.Free;
+  end;
 end;
 
 procedure TFrmPrincipal.CBCategoriasChange(Sender: TObject);
@@ -496,6 +521,7 @@ begin
       try
         FMemoryStream.LoadFromStream(FBlobStream);
         iMAGE4.Bitmap.LoadFromStream(FMemoryStream);
+
       finally
         FMemoryStream.Free;
       end;
@@ -718,12 +744,20 @@ end;
 
 procedure TFrmPrincipal.MenuItem10Click(Sender: TObject);
 begin
-  FrmOrcamentos.ShowModal;
+ if not Assigned(FrmRegistrar) then
+  begin
+    Application.CreateForm(TFrmOrcamentos, FrmOrcamentos);
+    FrmOrcamentos.ShowModal;
+  end;
 end;
 
 procedure TFrmPrincipal.MenuItem11Click(Sender: TObject);
 begin
-  FrmFabricantes.ShowModal;
+  if not Assigned(FrmFabricantes) then
+  begin
+    Application.CreateForm(TFrmFabricantes, FrmFabricantes);
+    FrmFabricantes.ShowModal;
+  end;
 end;
 
 procedure TFrmPrincipal.MenuItem14Click(Sender: TObject);
@@ -733,7 +767,11 @@ end;
 
 procedure TFrmPrincipal.MenuItem15Click(Sender: TObject);
 begin
-  FrmRegistrar.ShowModal;
+  if not Assigned(FrmRegistrar) then
+  begin
+    Application.CreateForm(TFrmRegistrar, FrmRegistrar);
+    FrmRegistrar.ShowModal;
+  end;
 end;
 
 procedure TFrmPrincipal.MenuItem16Click(Sender: TObject);
@@ -746,63 +784,29 @@ end;
 
 procedure TFrmPrincipal.MenuItem1Click(Sender: TObject);
 begin
-  FrmCategorias.ShowModal;
-//  if NOT Assigned(NewCircle) then
-//  begin
-//    // Create a new TCircle component
-//    NewCircle := TCircle.Create(Self);
-//
-//    // Copy the properties of the original TCircle component
-//    NewCircle.Position.X := Circle1.Position.X + 50;
-//    NewCircle.Position.Y := Circle1.Position.Y + 50;
-//    NewCircle.Width      := Circle1.Width;
-//    NewCircle.Height     := Circle1.Height;
-//    NewCircle.Fill.Color := Circle1.Fill.Color;
-//
-//    //Criar o TImage dentro do NewCircle
-//    NewImagem:= TImage.Create(NewCircle);
-//    NewImagem.Parent:= NewCircle;
-//    NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
-//    NewImagem.Align:=  TalignLayout.Client;
-//
-//    // Copy the events from the original TImage to the new TImage
-//    //NewImagem.OnClick      :=  NewImagemClick;
-//    NewImagem.OnDblClick   :=  NewImagemDbClick;
-//    NewImagem.OnGesture    :=  NewImagemGesture;
-//    NewImagem.OnMouseDown  :=  NewImagemMouseDown;
-//    NewImagem.OnMouseUp    :=  NewImagemMouseUp;
-//    NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
-//
-//    NewCircle.Parent := Self; //Cria no Formulário
-//  end
-//  else
-//  begin //apagar o mesmo ou receber a copia da Matrix Atual
-//    //Criar o TImage dentro do NewCircle
-//    NewImagem.BitMap.Clear($000000);
-//    NewImagem:= TImage.Create(NewCircle);
-//    NewImagem.Parent:= NewCircle;
-//    NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
-//    NewImagem.Align:=  TalignLayout.Client;
-//
-//    // Eventos
-//    //NewImagem.OnClick      :=  NewImagemClick;
-//    NewImagem.OnDblClick   :=  NewImagemDbClick;
-//    NewImagem.OnGesture    :=  NewImagemGesture;
-//    NewImagem.OnMouseDown  :=  NewImagemMouseDown;
-//    NewImagem.OnMouseUp    :=  NewImagemMouseUp;
-//    NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
-//  end;
-
+  if not Assigned(FrmRegistrar) then
+  begin
+    Application.CreateForm(TFrmCategorias, FrmCategorias);
+    FrmCategorias.ShowModal;
+  end;
 end;
 
 procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);
 begin
-  FrmCadastroClientes.ShowModal;
+  if not Assigned(FrmRegistrar) then
+  begin
+    Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
+    FrmCadastroClientes.ShowModal;
+  end;
 end;
 
 procedure TFrmPrincipal.MenuItem9Click(Sender: TObject);
 begin
-  FrmCadastroVeiculos.ShowModal;
+   if not Assigned(FrmRegistrar) then
+  begin
+    Application.CreateForm(TFrmCadastroVeiculos, FrmCadastroVeiculos);
+    FrmCadastroVeiculos.ShowModal;
+  end;
 end;
 
 procedure TFrmPrincipal.Modo_Edicao(editar: Boolean);

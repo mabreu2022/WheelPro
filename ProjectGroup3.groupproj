@@ -6,7 +6,7 @@
         <Projects Include="ProjetoRodasv3.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\ProjetoRodas2\PRojetoRodas.dproj">
+        <Projects Include="..\TesteEmprego\TesteEmprego.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -26,23 +26,23 @@
     <Target Name="ProjetoRodasv3:Make">
         <MSBuild Projects="ProjetoRodasv3.dproj" Targets="Make"/>
     </Target>
-    <Target Name="PRojetoRodas">
-        <MSBuild Projects="..\ProjetoRodas2\PRojetoRodas.dproj"/>
+    <Target Name="TesteEmprego">
+        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj"/>
     </Target>
-    <Target Name="PRojetoRodas:Clean">
-        <MSBuild Projects="..\ProjetoRodas2\PRojetoRodas.dproj" Targets="Clean"/>
+    <Target Name="TesteEmprego:Clean">
+        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="PRojetoRodas:Make">
-        <MSBuild Projects="..\ProjetoRodas2\PRojetoRodas.dproj" Targets="Make"/>
+    <Target Name="TesteEmprego:Make">
+        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProjetoRodasv3;PRojetoRodas"/>
+        <CallTarget Targets="ProjetoRodasv3;TesteEmprego"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProjetoRodasv3:Clean;PRojetoRodas:Clean"/>
+        <CallTarget Targets="ProjetoRodasv3:Clean;TesteEmprego:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProjetoRodasv3:Make;PRojetoRodas:Make"/>
+        <CallTarget Targets="ProjetoRodasv3:Make;TesteEmprego:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

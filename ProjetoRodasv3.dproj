@@ -278,37 +278,39 @@
         </DelphiCompile>
         <DCCReference Include="UPrincipal.pas">
             <Form>FrmPrincipal</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="uDM.pas">
+        <DCCReference Include="DAO\uDM.pas">
             <Form>DM</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="UCadastroClientes.pas">
+        <DCCReference Include="View\Login.pas">
+            <Form>FrmLogin</Form>
+        </DCCReference>
+        <DCCReference Include="DAO\Dao.Login.pas"/>
+        <DCCReference Include="View\UCadastroClientes.pas">
             <Form>FrmCadastroClientes</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="UCadastroCategorias.pas">
+        <DCCReference Include="View\UCadastroCategorias.pas">
             <Form>FrmCategorias</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="UCadastroVeiculos.pas">
+        <DCCReference Include="View\UCadastroVeiculos.pas">
             <Form>FrmCadastroVeiculos</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="UCadastroFabricantes.pas">
+        <DCCReference Include="View\UCadastroFabricantes.pas">
             <Form>FrmFabricantes</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="UCadastroOrcamentos.pas">
+        <DCCReference Include="View\UCadastroOrcamentos.pas">
             <Form>FrmOrcamentos</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="URegistrar.pas">
+        <DCCReference Include="View\URegistrar.pas">
             <Form>FrmRegistrar</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="DAO\Dao.Conexao.pas">
+            <Form>$R *.res</Form>
+        </DCCReference>
+        <DCCReference Include="DAO\DAO.Clientes.pas"/>
+        <DCCReference Include="Model\Model.Clientes.pas"/>
+        <DCCReference Include="Interfaces\Interfaces.Clientes.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

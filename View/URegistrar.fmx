@@ -1,0 +1,379 @@
+object FrmRegistrar: TFrmRegistrar
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = Single
+  Caption = 'Formul'#225'rio de Registro do Wheel Pro'
+  ClientHeight = 584
+  ClientWidth = 640
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Layout1: TLayout
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 584.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Layout2: TLayout
+      Align = Top
+      Size.Width = 640.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object Rectangle1: TRectangle
+        Align = Client
+        Fill.Color = claDarkseagreen
+        Size.Width = 640.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        object Label1: TLabel
+          Align = Contents
+          StyledSettings = [Family, FontColor]
+          Size.Width = 640.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 20.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.HorzAlign = Center
+          Text = 'Registro do Wheel Pro'
+          TabOrder = 0
+          object ShadowEffect1: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+      end
+    end
+    object Layout3: TLayout
+      Align = Bottom
+      Position.Y = 534.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object Rectangle2: TRectangle
+        Align = Client
+        Fill.Color = claDarkseagreen
+        Size.Width = 640.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        object Button1: TButton
+          Position.X = 552.000000000000000000
+          Position.Y = 16.000000000000000000
+          TabOrder = 0
+          Text = 'Registrar'
+          object ShadowEffect14: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+      end
+    end
+    object Label2: TLabel
+      Position.X = 35.000000000000000000
+      Position.Y = 64.000000000000000000
+      Text = 'Raz'#227'o Social / Nome'
+      TabOrder = 8
+      object ShadowEffect2: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit1: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 2
+      Position.X = 32.000000000000000000
+      Position.Y = 88.000000000000000000
+      Size.Width = 433.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect8: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label3: TLabel
+      Position.X = 36.000000000000000000
+      Position.Y = 115.000000000000000000
+      Text = 'CNPJ / CPF'
+      TabOrder = 9
+      object Label4: TLabel
+        Position.Y = 48.000000000000000000
+        Text = 'Endere'#231'o'
+        TabOrder = 4
+        object ShadowEffect4: TShadowEffect
+          Distance = 3.000000000000000000
+          Direction = 45.000000000000000000
+          Softness = 0.300000011920929000
+          Opacity = 0.600000023841857900
+          ShadowColor = claBlack
+        end
+      end
+      object ShadowEffect3: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit2: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 3
+      Position.X = 32.000000000000000000
+      Position.Y = 136.000000000000000000
+      Size.Width = 185.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect9: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit3: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 4
+      Position.X = 32.000000000000000000
+      Position.Y = 184.000000000000000000
+      Size.Width = 433.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect10: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label5: TLabel
+      Position.X = 480.000000000000000000
+      Position.Y = 165.000000000000000000
+      Text = 'N'#250'mero'
+      TabOrder = 10
+      object ShadowEffect5: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label6: TLabel
+      Position.X = 36.000000000000000000
+      Position.Y = 212.000000000000000000
+      Text = 'Complemento'
+      TabOrder = 11
+      object ShadowEffect6: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit4: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 5
+      Position.X = 480.000000000000000000
+      Position.Y = 184.000000000000000000
+      Size.Width = 129.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect11: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit5: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 6
+      Position.X = 32.000000000000000000
+      Position.Y = 232.000000000000000000
+      Size.Width = 185.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect12: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label7: TLabel
+      Position.X = 225.000000000000000000
+      Position.Y = 214.000000000000000000
+      Text = 'CEP'
+      TabOrder = 12
+      object ShadowEffect7: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit6: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 7
+      Position.X = 224.000000000000000000
+      Position.Y = 232.000000000000000000
+      object ShadowEffect13: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object GroupBox1: TGroupBox
+      Position.X = 32.000000000000000000
+      Position.Y = 376.000000000000000000
+      Size.Width = 337.000000000000000000
+      Size.Height = 129.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Dados sobre a licen'#231'a'
+      TabOrder = 13
+      object Grid1: TGrid
+        CanFocus = True
+        ClipChildren = True
+        Position.Y = 16.000000000000000000
+        Size.Width = 329.000000000000000000
+        Size.Height = 113.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 13
+        Options = [ColLines, RowLines, Tabs, Header, AutoDisplacement]
+        Viewport.Width = 309.000000000000000000
+        Viewport.Height = 88.000000000000000000
+        object Column1: TColumn
+          Header = 'Data Inicio'
+        end
+        object Column2: TColumn
+          Header = 'Vencimento'
+        end
+        object Column3: TColumn
+          Header = 'Situa'#231#227'o Pgto.'
+        end
+      end
+      object ShadowEffect17: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label8: TLabel
+      Position.X = 36.000000000000000000
+      Position.Y = 264.000000000000000000
+      Size.Width = 285.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Nome do respons'#225'vel pelo registro'
+      TabOrder = 14
+      object ShadowEffect15: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit7: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 15
+      Position.X = 36.000000000000000000
+      Position.Y = 285.000000000000000000
+      Size.Width = 285.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect16: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label9: TLabel
+      Position.X = 344.000000000000000000
+      Position.Y = 264.000000000000000000
+      Text = 'Telefone/WhatsApp'
+      TabOrder = 16
+      object ShadowEffect18: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit8: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 17
+      Position.X = 344.000000000000000000
+      Position.Y = 285.000000000000000000
+      Size.Width = 121.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect19: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label10: TLabel
+      Position.X = 36.000000000000000000
+      Position.Y = 315.000000000000000000
+      Text = 'E-mail'
+      TabOrder = 18
+      object ShadowEffect20: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit9: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 19
+      Position.X = 36.000000000000000000
+      Position.Y = 336.000000000000000000
+      Size.Width = 429.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect21: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+  end
+end
