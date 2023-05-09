@@ -6,9 +6,6 @@
         <Projects Include="ProjetoRodasv3.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\TesteEmprego\TesteEmprego.dproj">
-            <Dependencies/>
-        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -26,23 +23,14 @@
     <Target Name="ProjetoRodasv3:Make">
         <MSBuild Projects="ProjetoRodasv3.dproj" Targets="Make"/>
     </Target>
-    <Target Name="TesteEmprego">
-        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj"/>
-    </Target>
-    <Target Name="TesteEmprego:Clean">
-        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="TesteEmprego:Make">
-        <MSBuild Projects="..\TesteEmprego\TesteEmprego.dproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProjetoRodasv3;TesteEmprego"/>
+        <CallTarget Targets="ProjetoRodasv3"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProjetoRodasv3:Clean;TesteEmprego:Clean"/>
+        <CallTarget Targets="ProjetoRodasv3:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProjetoRodasv3:Make;TesteEmprego:Make"/>
+        <CallTarget Targets="ProjetoRodasv3:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

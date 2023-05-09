@@ -99,7 +99,7 @@ begin
      bairro      := qry.FieldByName('BAIRRO').AsString;
      ativo       := qry.FieldByName('ATIVO').AsString;
 
-     //Associar os valores aos campos na tela
+     //Associar os valores aos campos na tela ?
 
 
   finally

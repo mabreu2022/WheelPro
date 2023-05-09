@@ -76,7 +76,7 @@ begin
     if Login.Login(EdtUsuario.Text, EdtSenha.Text) then
     begin
       FrmPrincipal.ShowModal;
-      FrmLogin.Close;
+      FrmLogin.Destroy;
     end
     else
     begin
@@ -91,9 +91,7 @@ end;
 
 procedure TFrmLogin.Button2Click(Sender: TObject);
 begin
-  EdtUsuario.Text:= '';
-  EdtSenha.Text:='';
-  EdtUsuario.SetFocus;
+  FrmPrincipal.Close;
 end;
 
 constructor TFrmLogin.create;

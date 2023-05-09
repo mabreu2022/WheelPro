@@ -98,4 +98,50 @@ object DM: TDM
     Left = 168
     Top = 600
   end
+  object CDS_Permissoes: TClientDataSet
+    PersistDataPacket.Data = {
+      AA0000009619E0BD010000001800000006000000000003000000AA000C696470
+      65726D6973736F657304000100000000000969647573756172696F0400010000
+      0000000669644D656E750400010000000000097065726D697469646F01004900
+      00000100055749445448020002000100077573756172696F0100490000000100
+      0557494454480200020064000B63617074696F6E6D656E750100490000000100
+      0557494454480200020064000000}
+    Active = True
+    Aggregates = <>
+    Params = <>
+    Left = 296
+    Top = 176
+    object CDS_Permissoesidpermissoes: TIntegerField
+      FieldName = 'idpermissoes'
+    end
+    object CDS_Permissoesidusuario: TIntegerField
+      FieldName = 'idusuario'
+    end
+    object CDS_PermissoesidMenu: TIntegerField
+      FieldName = 'idMenu'
+    end
+    object CDS_Permissoespermitido: TStringField
+      FieldName = 'permitido'
+      Size = 1
+    end
+    object CDS_Permissoesusuario: TStringField
+      FieldName = 'usuario'
+      Size = 100
+    end
+    object CDS_Permissoescaptionmenu: TStringField
+      FieldName = 'captionmenu'
+      Size = 100
+    end
+    object CDS_Permissoestipo: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'tipo'
+      Size = 1
+      Calculated = True
+    end
+  end
+  object DS_Permissoes: TDataSource
+    DataSet = CDS_Permissoes
+    Left = 432
+    Top = 176
+  end
 end

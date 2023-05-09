@@ -4055,6 +4055,7 @@ object FrmLogin: TFrmLogin
   object EdtUsuario: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 2
+    MaxLength = 45
     Position.X = 64.000000000000000000
     Position.Y = 160.000000000000000000
     Size.Width = 161.000000000000000000
@@ -4064,6 +4065,8 @@ object FrmLogin: TFrmLogin
   object EdtSenha: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 3
+    Password = True
+    MaxLength = 45
     Position.X = 64.000000000000000000
     Position.Y = 200.000000000000000000
     Size.Width = 161.000000000000000000

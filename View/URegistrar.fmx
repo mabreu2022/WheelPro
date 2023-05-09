@@ -225,7 +225,7 @@ object FrmRegistrar: TFrmRegistrar
     object Label7: TLabel
       Position.X = 225.000000000000000000
       Position.Y = 214.000000000000000000
-      Text = 'CEP'
+      Text = 'Cidade'
       TabOrder = 12
       object ShadowEffect7: TShadowEffect
         Distance = 3.000000000000000000
@@ -240,6 +240,9 @@ object FrmRegistrar: TFrmRegistrar
       TabOrder = 7
       Position.X = 224.000000000000000000
       Position.Y = 232.000000000000000000
+      Size.Width = 241.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
       object ShadowEffect13: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000

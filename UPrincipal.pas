@@ -56,8 +56,8 @@ uses
   UCadastroVeiculos,
   UCadastroFabricantes,
   UCadastroOrcamentos,
-  URegistrar;
-
+  URegistrar,
+  Dao.Conexao, System.Actions, FMX.ActnList;
 
 type
   TFrmPrincipal = class(TForm)
@@ -165,6 +165,11 @@ type
     MenuItem2: TMenuItem;
     Button5: TButton;
     ShadowEffect30: TShadowEffect;
+    MenuItem3: TMenuItem;
+    ActionList1: TActionList;
+    Sair: TAction;
+    MenuItem16: TMenuItem;
+    LogOff: TAction;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -213,11 +218,14 @@ type
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure SairExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure LogOffExecute(Sender: TObject);
+
 
   private
     { Private declarations }
     MoveObjeto: Boolean;
-    MoveObjeto2: Boolean;
     OffSet: TPointF;
     NewCircle: TCircle;
     NewImagem: TImage;
@@ -231,13 +239,22 @@ type
     FValorTotalOrcamento: Double;
     ProdutoDS: TDataSet;
     qry: TFDQuery;
+    FConexao: TFDConnection;
+
+
+
     procedure Modo_Edicao(editar: Boolean);
     procedure Modo_Edicao2(editar: Boolean);
     procedure NewImagemMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; var Handled: Boolean);
+    procedure SetidUsuario(const Value: Integer);
 
   public
     { Public declarations }
+     FidUsuario: Integer;
+     property idUsuario: Integer read FidUsuario write SetidUsuario;
+     constructor create;
+     destructor destroy;override;
 
   end;
 
@@ -247,7 +264,14 @@ var
 implementation
 
 {$R *.fmx}
+
+uses Login;
 {$R *.LgXhdpiPh.fmx ANDROID}
+
+procedure TFrmPrincipal.SairExecute(Sender: TObject);
+begin
+  Close;
+end;
 
 procedure TFrmPrincipal.BtnCarregarFotoClick(Sender: TObject);
 var
@@ -600,13 +624,44 @@ begin
   MoveObjeto:= False;
 end;
 
+constructor TFrmPrincipal.create;
+begin
+  FConexao := TConnection.CreateConnection;
+end;
+
+destructor TFrmPrincipal.destroy;
+begin
+  FConexao.Free;
+  inherited;
+end;
+
+procedure TFrmPrincipal.FormActivate(Sender: TObject);
+begin
+//  Application.CreateForm(TFrmLogin, FrmLogin);
+//  FrmLogin.ShowModal;
+//  FrmLogin.Destroy;
+end;
+
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
+var
+  I: Integer;
+  Index: integer;
+  CaptionToFind: string;
+
+  MainMenu: TMainMenu;
 begin
   Modo_Edicao(false);
   Modo_Edicao2(False);
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
+var
+  I: Integer;
+  Index: integer;
+  CaptionToFind: string;
+
+  MainMenu: TMainMenu;
+
 begin
    //Carregar todos os fabricantes no Combobox1
    DM.FDQMarcas.Open;
@@ -624,6 +679,94 @@ begin
    begin
      CBFabricantes.Items.AddObject(DM.FDQFabricantes.FieldByName('razao').AsString, TObject(DM.FDQFabricantes.FieldByName('idfabricantes').AsInteger));
      DM.FDQFabricantes.Next;
+   end;
+
+   //Carrega as permissões dos usuários
+   try
+     FConexao := TConnection.CreateConnection;
+     qry:= TFDQuery.Create(Self);
+     qry.Connection:= FConexao;
+     qry.Close;
+     qry.SQL.Add('SELECT p.idpermissoes, p.idusuario, p.idmenu, p.permitido, m.captionmenu ');
+     qry.SQL.Add('FROM permissoes p ');
+     qry.SQL.Add('JOIN menus m ON (m.idmenus = p.idmenu) ');
+     qry.SQL.Add('WHERE p.idusuario = :idusuario');
+     qry.ParamByName('idusuario').DataType:= ftInteger;
+     qry.ParamByName('idusuario').AsInteger:= FIdUsuario; //vindo 0
+     qry.Open;
+//     ShowMessage('A quantidade de registros foi de : ' + IntToStr(qry.RecordCount));
+
+     i:=0;
+     DM.CDS_Permissoes.EmptyDataSet;
+     DM.CDS_Permissoes.Close;
+     DM.CDS_Permissoes.Open;
+     qry.First;
+     while Not qry.Eof do
+     begin
+       inc(i);
+       DM.CDS_Permissoes.Append;
+       DM.CDS_Permissoes.FieldByName('IDPERMISSOES').AsInteger := i;
+       DM.CDS_Permissoes.FieldByName('IDUSUARIO').AsInteger    := FIdUsuario;//DE ONDE VIRÁ O IDUSUARIO?;
+       DM.CDS_Permissoes.FieldByName('IDMENU').AsInteger       := qry.FieldByName('idmenu').AsInteger;
+       DM.CDS_Permissoes.FieldByName('PERMITIDO').AsString     := qry.FieldByName('permitido').AsString;
+       //DM.CDS_Permissoes.FieldByName('USUARIO').AsString     := qry.FieldByName('USUARIO').AsString;
+       DM.CDS_Permissoes.FieldByName('CAPTIONMENU').AsString   := qry.FieldByName('CAPTIONMENU').AsString;
+       //DM.CDS_Permissoes.FieldByName('TIPO').AsString          := qry.FieldByName('TIPO').AsString;
+
+       DM.CDS_Permissoes.Post;
+
+       //LER OS ITENS DE MENU QUE BATEM COM O CAPTIONMENU E DESATIVAR OS COM N
+       {$IFDEF MSWINDOWS}
+        CaptionToFind := DM.CDS_Permissoes.FieldByName('CAPTIONMENU').AsString;
+
+       for I := 0 to MainMenu1.ItemsCount - 1 do
+       begin
+         if (MainMenu1.Items[i] is TMenuItem) and (
+             TMenuItem(MainMenu1.Items[i]).Text = CaptionToFind) then
+         begin
+           // Salve uma referência aos itens de menu existentes
+           //MainMenu := TMainMenu.Create(nil);
+           //MainMenu.Clone(MainMenu1);
+
+           // Encontrou o texto correspondente
+           if qry.FieldByName('PERMITIDO').AsString = 'N' then
+           begin
+             TMenuItem(MainMenu1.Items[i]).BeginUpdate;
+             TMenuItem(MainMenu1.Items[i]).Enabled:= False;
+             TMenuItem(MainMenu1.Items[i]).EndUpdate;
+           end
+           else
+           begin
+             TMenuItem(MainMenu1.Items[i]).BeginUpdate;
+             TMenuItem(MainMenu1.Items[i]).Enabled:= True;
+             TMenuItem(MainMenu1.Items[i]).EndUpdate;
+             Break;
+           end;
+         end;
+       end;
+       {$ENDIF}
+//       {$IFDEF MSWINDOWS}
+//        CaptionToFind := DM.CDS_Permissoes.FieldByName('CAPTIONMENU').AsString;
+//
+//       for I := 0 to MainMenu1.ItemsCount - 1 do
+//       begin
+//         if (MainMenu1.Items[i] is TMenuItem) and (
+//             TMenuItem(MainMenu1.Items[i]).Text = CaptionToFind) then
+//         begin
+//           // Encontrou o texto correspondente
+//           if qry.FieldByName('PERMITIDO').AsString = 'N' then
+//             TMenuItem(MainMenu1.Items[i]).Enabled:= False
+//           else
+//             TMenuItem(MainMenu1.Items[i]).Enabled:= True;
+//             Break;
+//         end;
+//       end;
+//       {$ENDIF}
+       qry.Next;
+     end;
+
+   finally
+     qry.Free;
    end;
 
 end;
@@ -717,6 +860,11 @@ begin
     Exit;
 end;
 
+procedure TFrmPrincipal.SetidUsuario(const Value: Integer);
+begin
+  FidUsuario := Value;
+end;
+
 procedure TFrmPrincipal.TrackBar1Change(Sender: TObject);
 begin
   Image4.Opacity    := TrackBar1.Value / TrackBar1.Max;
@@ -740,6 +888,12 @@ begin
       NewCircle.Position.Y := Y - OffSet.Y;
     end;
   end;
+end;
+
+procedure TFrmPrincipal.LogOffExecute(Sender: TObject);
+begin
+//  FrmLogin.ShowModal;
+//  FrmLogin.Destroy;
 end;
 
 procedure TFrmPrincipal.MenuItem10Click(Sender: TObject);

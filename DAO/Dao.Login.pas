@@ -30,20 +30,27 @@ type
   TLogin = class
     private
 
+    procedure Setidusuario(const Value: Integer);
+
     public
+      Fidusuario: Integer;
       class function Login(aUsuario: string; aSenha: string):Boolean;
+      property idusuario: Integer read Fidusuario write Setidusuario;
       
   end;
 
 implementation
 
+uses
+   uPrincipal;
+
 { TLogin }
 
 class function TLogin.Login(aUsuario, aSenha: string): Boolean;
 var
-  FConexao            : TFDConnection;
-  FDQuery1            : TFDQuery;
-
+  FConexao   : TFDConnection;
+  FDQuery1   : TFDQuery;
+  FidUsuario : Integer;
 begin
 
   FConexao            := TConnection.CreateConnection;
@@ -57,11 +64,14 @@ begin
     FDQuery1.SQL.Add('SELECT * FROM LOGIN');
     FDQuery1.SQL.Add('WHERE USUARIO=:USUARIO');
     FDQuery1.SQL.Add('  AND SENHA=:SENHA');
-    FDQuery1.ParamByName('USUARIO').DataType :=ftString;
+    FDQuery1.ParamByName('USUARIO').DataType := ftString;
     FDQuery1.ParamByName('USUARIO').Value    := aUsuario;
     FDQuery1.ParamByName('SENHA').DataType   := ftString;
     FDQuery1.ParamByName('SENHA').Value      := aSenha;
     FDQuery1.Active:= True;
+
+    //Define o IDUsuario para os direitos de usuário
+    FrmPrincipal.FidUsuario := FDQuery1.FieldByName('idlogin').AsInteger;
 
     if FDQuery1.RecordCount > 0 then
       Result:= True
@@ -72,6 +82,11 @@ begin
   end;
 
 
+end;
+
+procedure TLogin.Setidusuario(const Value: Integer);
+begin
+  Fidusuario := Value;
 end;
 
 end.
