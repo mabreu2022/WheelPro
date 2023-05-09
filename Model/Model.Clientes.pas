@@ -35,6 +35,8 @@ implementation
 
 class function TRegrasDeNegocio.TestaseTemEndereco(aCliente: TClientes): Boolean;
 begin
+  Result:=False;
+
   if aCliente.CEP.Length < 8  then
   begin
     raise Exception.Create('O CEP não pode ser menor que 8 caracteres.');

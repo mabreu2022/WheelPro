@@ -24,7 +24,9 @@ uses
   FireDAC.DApt,
   Dao.Conexao,
   FireDAC.Phys.MySQLDef,
-  FireDAC.Phys.MySQL;
+  FireDAC.Phys.MySQL,
+  FMX.Dialogs,
+  Datasnap.DBClient;
 
 type
   TClientes = class
@@ -68,8 +70,8 @@ type
       property ativo: string read Fativo write Setativo;
 
       function ObterClientePorId(Id: Integer): TClientes;
-      function CarregarTodosClientes: TClientes;
-      procedure SalvarCliente(Cliente: TClientes);
+      function CarregarTodosClientes(aDataSet: TClientDataSet): TFDquery;
+      procedure SalvarCliente(Cliente: TClientes;aIDCliente: Integer);
       procedure RemoverCliente(Cliente: TClientes);
 
       constructor create;
@@ -81,36 +83,24 @@ implementation
 
 { TCadastroClientes }
 
-function TClientes.CarregarTodosClientes: TClientes;
+function TClientes.CarregarTodosClientes(aDataSet: TClientDataSet):TFDquery;
 begin
   try
-     qry.close;
-     qry.sql.text:='SELECT * FROM CLIENTES WHERE IDCLIENTES=:IDCLIENTES';
-     qry.open;
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('SELECT * FROM CLIENTES');
+    qry.Open;
 
-     //Carregar Classe  de clientes
-     razaosocial := qry.FieldByName('RAZAO').AsString;
-     cnpj        := qry.FieldByName('CNPJ').AsString;
-     endereco    := qry.FieldByName('ENDERECO').AsString;
-     numero      := qry.FieldByName('NUMERO').AsInteger;
-     complemento := qry.FieldByName('COMPLEMENTO').AsString;
-     cep         := qry.FieldByName('CEP').AsString;
-     cidade      := qry.FieldByName('CIDADE').AsString;
-     bairro      := qry.FieldByName('BAIRRO').AsString;
-     ativo       := qry.FieldByName('ATIVO').AsString;
-
-     //Associar os valores aos campos na tela ?
-
-
-  finally
-     qry.Free;
+    Result := Qry;
+  except
+    Result := nil;
   end;
 end;
 
 constructor TClientes.create;
 begin
   FConn             := TConnection.CreateConnection;
-  FCliente          := TClientes.Create;
+  //FCliente          := TClientes.Create;
   Qry               := TFDQuery.Create(nil);
   Qry.Connection    := FConn;
 end;
@@ -118,7 +108,6 @@ end;
 destructor TClientes.destroy;
 begin
   FConn.Free;
-  FCliente.Free;
   Qry.Free;
   inherited;
 end;
@@ -168,12 +157,67 @@ begin
   end;
 end;
 
-procedure TClientes.SalvarCliente(Cliente: TClientes);
+procedure TClientes.SalvarCliente(Cliente: TClientes;aIDCliente: Integer);
 begin
+  //Receber os dados dos Edts e gravar no banco
   try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('INSERT INTO '  +
+                ' Clientes'     +
+                'idclientes, '  +
+                'razao, '       +
+                'cnpj_cpf, '    +
+                'endereco, '    +
+                'numero, '      +
+                'complemento, ' +
+                'cep, '         +
+                'cidade, '      +
+                'bairro, '      +
+                'ativo, '       +
+                'uf, '          +
+                'VALUES ('      +
+                ':idclientes, ' +
+                ':razao, '      +
+                ':cnpj_cpf, '   +
+                ':endereco, '   +
+                ':numero,  '    +
+                ':complemento, '+
+                ':cep, '        +
+                ':cidade, '     +
+                ':bairro, '     +
+                ':ativo,  '     +
+                ':uf)'          +
+                'WHERE IDCLIENTE=:IDCLIENTE');
+
+     qry.ParamByName('razao').DataType       := ftString;
+     qry.ParamByName('razao').AsString       := Cliente.razaosocial;
+     qry.ParamByName('cnpj_cpf').DataType    := ftString;
+     qry.ParamByName('cnpj_cpf').AsString    := Cliente.cnpj ;
+     qry.ParamByName('endereco').DataType    := ftString;
+     qry.ParamByName('endereco').AsString    := Cliente.endereco;
+     qry.ParamByName('numero').DataType      := ftInteger;
+     qry.ParamByName('numero').AsInteger     := Cliente.numero;
+     qry.ParamByName('complemento').DataType :=ftString;
+     qry.ParamByName('complemento').AsString;
+     qry.ParamByName('cep').DataType:=ftString;
+     qry.ParamByName('cep').AsString;
+     qry.ParamByName('cidade').DataType:=ftString;
+     qry.ParamByName('cidade').AsString;
+     qry.ParamByName('bairro').DataType:=ftString;
+     qry.ParamByName('bairro').AsString;
+     qry.ParamByName('ativo').DataType:=ftString; //ver como vai ser pois é CB
+     qry.ParamByName('ativo').AsString; //ver como vai ser pois é CB
+     qry.ParamByName('uf').DataType:=ftString; //ver como vai ser pois é CB
+     qry.ParamByName('uf').AsString; //ver como vai ser pois é CB
+
+     qry.ParamByName('IDCLIENTES').DataType := ftInteger;
+     qry.ParamByName('IDCLIENTES').AsInteger:= aIDCliente;
+
+     qry.ExecSQL;
 
   finally
-
+    qry.Free;
   end;
 end;
 
