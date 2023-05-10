@@ -170,6 +170,7 @@ type
     Sair: TAction;
     MenuItem16: TMenuItem;
     LogOff: TAction;
+    ShadowEffect31: TShadowEffect;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);

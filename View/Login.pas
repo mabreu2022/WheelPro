@@ -35,18 +35,27 @@ uses
   System.IniFiles,
   FireDAC.Phys.PGDef,
   FireDAC.Phys.PG,
-  FireDAC.Comp.UI;
+  FireDAC.Comp.UI, FMX.Layouts, FMX.Effects;
 
 type
   TFrmLogin = class(TForm)
     Panel1: TPanel;
-    Image1: TImage;
-    EdtUsuario: TEdit;
-    EdtSenha: TEdit;
-    Label1: TLabel;
-    Label2: TLabel;
     Button1: TButton;
     Button2: TButton;
+    Rectangle1: TRectangle;
+    Image1: TImage;
+    Layout1: TLayout;
+    Rectangle2: TRectangle;
+    Label1: TLabel;
+    EdtUsuario: TEdit;
+    Label2: TLabel;
+    EdtSenha: TEdit;
+    ShadowEffect1: TShadowEffect;
+    ShadowEffect2: TShadowEffect;
+    ShadowEffect3: TShadowEffect;
+    ShadowEffect4: TShadowEffect;
+    ShadowEffect5: TShadowEffect;
+    ShadowEffect6: TShadowEffect;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);

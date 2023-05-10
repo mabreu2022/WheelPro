@@ -106,7 +106,7 @@ object FrmOrcamentos: TFrmOrcamentos
           Position.X = 272.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 3
-          Text = '|>'
+          Text = '>|'
           object ShadowEffect5: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000

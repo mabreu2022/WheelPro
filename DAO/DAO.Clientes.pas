@@ -122,7 +122,7 @@ end;
 constructor TClientes.create;
 begin
   FConn             := TConnection.CreateConnection;
-  //FCliente          := TClientes.Create;
+  //FCliente        := TClientes.Create;
   Qry               := TFDQuery.Create(nil);
   Qry.Connection    := FConn;
 end;
@@ -162,6 +162,7 @@ var
   UF    : string;
 begin
   try
+    qry.Connection:= FConn;
     qry.Close;
     qry.SQL.Clear;
     qry.SQL.Add('INSERT INTO '  +
