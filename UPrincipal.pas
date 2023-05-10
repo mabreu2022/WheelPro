@@ -949,8 +949,12 @@ procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);
 begin
   if not Assigned(FrmRegistrar) then
   begin
-    Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
-    FrmCadastroClientes.ShowModal;
+    try
+      Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
+      FrmCadastroClientes.ShowModal;
+    finally
+      FreeAndNil(FrmCadastroClientes);
+    end;
   end;
 end;
 

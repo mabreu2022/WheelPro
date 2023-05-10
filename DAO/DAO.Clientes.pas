@@ -69,10 +69,11 @@ type
       property UF: string read FUF write SetUF;
       property ativo: string read Fativo write Setativo;
 
-      function ObterClientePorId(Id: Integer): TClientes;
+      function ObterClientePorId(aId: Integer): TFDQuery;
       function CarregarTodosClientes(aDataSet: TClientDataSet): TFDquery;
-      procedure SalvarCliente(Cliente: TClientes;aIDCliente: Integer);
-      procedure RemoverCliente(Cliente: TClientes);
+      procedure SalvarCliente(Cliente: TClientes);
+      function RemoverCliente(aId: Integer): Boolean;
+      function ClienteExiste(aCNPJ: string):Boolean;
 
       constructor create;
       destructor destroy;override;
@@ -97,6 +98,27 @@ begin
   end;
 end;
 
+function TClientes.ClienteExiste(aCNPJ: string): Boolean;
+begin
+  Result:= False;
+  qry:= TFDquery.Create(nil);
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('SELECT * FROM CLIENTES');
+    qry.SQL.Add('WHERE CNPJ_CPF=:CNPJ_CPF');
+    qry.ParamByName('cnpj_cpf').DataType := ftString;
+    qry.ParamByName('cnpj_cpf').AsString := acNPJ;
+    qry.Open;
+
+    if qry.RecordCount > 0 then
+      Result:= True;
+
+  finally
+    qry.Free;
+  end;
+end;
+
 constructor TClientes.create;
 begin
   FConn             := TConnection.CreateConnection;
@@ -112,43 +134,20 @@ begin
   inherited;
 end;
 
-function TClientes.ObterClientePorId(Id: Integer): TClientes;
-var
-  Clientes: TArray<TClientes>;
-  i: Integer;
+function TClientes.ObterClientePorId(aId: Integer): TFDQuery;
 begin
   qry.Close;
-  qry.SQL.Text := 'SELECT * FROM CLIENTES';
+  qry.SQL.Text := 'SELECT * FROM CLIENTES ' +
+                  'WHERE IDCLIENTES=:IDCLIENTES';
+  qry.ParamByName('IDCLIENTES').DataType:= ftInteger;
+  qry.ParamByName('IDCLIENTES').AsInteger:= aId;
   qry.Open;
 
-  qry.First;
-  SetLength(Clientes, qry.RecordCount);
-
-  i := 0;
-  while not qry.Eof do
-  begin
-    Clientes[i]             := TClientes.Create;
-    Clientes[i].RazaoSocial := qry.FieldByName('RAZAO').AsString;
-    Clientes[i].Cnpj        := qry.FieldByName('CNPJ').AsString;
-    Clientes[i].Endereco    := qry.FieldByName('ENDERECO').AsString;
-    Clientes[i].Numero      := qry.FieldByName('NUMERO').AsInteger;
-    Clientes[i].Complemento := qry.FieldByName('COMPLEMENTO').AsString;
-    Clientes[i].Cep         := qry.FieldByName('CEP').AsString;
-    Clientes[i].Cidade      := qry.FieldByName('CIDADE').AsString;
-    Clientes[i].Bairro      := qry.FieldByName('BAIRRO').AsString;
-    Clientes[i].Ativo       := qry.FieldByName('ATIVO').AsString;
-
-    qry.Next;
-    Inc(i);
-  end;
-
-  qry.Close;
-
-  Result := Clientes[i];
+  Result := qry;
 
 end;
 
-procedure TClientes.RemoverCliente(Cliente: TClientes);
+function TClientes.RemoverCliente(aId: Integer):Boolean;
 begin
   try
 
@@ -157,15 +156,17 @@ begin
   end;
 end;
 
-procedure TClientes.SalvarCliente(Cliente: TClientes;aIDCliente: Integer);
+procedure TClientes.SalvarCliente(Cliente: TClientes);
+var
+  Ativo : string;
+  UF    : string;
 begin
-  //Receber os dados dos Edts e gravar no banco
   try
     qry.Close;
     qry.SQL.Clear;
     qry.SQL.Add('INSERT INTO '  +
-                ' Clientes'     +
-                'idclientes, '  +
+                ' Clientes '    +
+                '(idclientes, ' +
                 'razao, '       +
                 'cnpj_cpf, '    +
                 'endereco, '    +
@@ -175,7 +176,7 @@ begin
                 'cidade, '      +
                 'bairro, '      +
                 'ativo, '       +
-                'uf, '          +
+                'uf) '          +
                 'VALUES ('      +
                 ':idclientes, ' +
                 ':razao, '      +
@@ -186,37 +187,49 @@ begin
                 ':cep, '        +
                 ':cidade, '     +
                 ':bairro, '     +
-                ':ativo,  '     +
-                ':uf)'          +
-                'WHERE IDCLIENTE=:IDCLIENTE');
+                ':ativo, '      +
+                ':uf)');
 
-     qry.ParamByName('razao').DataType       := ftString;
-     qry.ParamByName('razao').AsString       := Cliente.razaosocial;
-     qry.ParamByName('cnpj_cpf').DataType    := ftString;
-     qry.ParamByName('cnpj_cpf').AsString    := Cliente.cnpj ;
-     qry.ParamByName('endereco').DataType    := ftString;
-     qry.ParamByName('endereco').AsString    := Cliente.endereco;
-     qry.ParamByName('numero').DataType      := ftInteger;
-     qry.ParamByName('numero').AsInteger     := Cliente.numero;
-     qry.ParamByName('complemento').DataType :=ftString;
-     qry.ParamByName('complemento').AsString;
-     qry.ParamByName('cep').DataType:=ftString;
-     qry.ParamByName('cep').AsString;
-     qry.ParamByName('cidade').DataType:=ftString;
-     qry.ParamByName('cidade').AsString;
-     qry.ParamByName('bairro').DataType:=ftString;
-     qry.ParamByName('bairro').AsString;
-     qry.ParamByName('ativo').DataType:=ftString; //ver como vai ser pois é CB
-     qry.ParamByName('ativo').AsString; //ver como vai ser pois é CB
-     qry.ParamByName('uf').DataType:=ftString; //ver como vai ser pois é CB
-     qry.ParamByName('uf').AsString; //ver como vai ser pois é CB
+     qry.ParamByName('idclientes').DataType    := ftInteger;
+     qry.ParamByName('razao').DataType         := ftString;
+     qry.ParamByName('razao').AsString         := Cliente.razaosocial;
+     qry.ParamByName('cnpj_cpf').DataType      := ftString;
+     qry.ParamByName('cnpj_cpf').AsString      := Cliente.cnpj ;
+     qry.ParamByName('endereco').DataType      := ftString;
+     qry.ParamByName('endereco').AsString      := Cliente.endereco;
+     qry.ParamByName('numero').DataType        := ftInteger;
+     qry.ParamByName('numero').AsInteger       := Cliente.numero;
+     qry.ParamByName('complemento').DataType   := ftString;
+     qry.ParamByName('complemento').AsString   := Cliente.complemento;
+     qry.ParamByName('cep').DataType           := ftString;
+     qry.ParamByName('cep').AsString           := Cliente.CEP;
+     qry.ParamByName('cidade').DataType        := ftString;
+     qry.ParamByName('cidade').AsString        := Cliente.Cidade;
+     qry.ParamByName('bairro').DataType        := ftString;
+     qry.ParamByName('bairro').AsString        := Cliente.Bairro;
 
-     qry.ParamByName('IDCLIENTES').DataType := ftInteger;
-     qry.ParamByName('IDCLIENTES').AsInteger:= aIDCliente;
+     qry.ParamByName('uf').DataType            := ftString; //ver como vai ser pois é CB
+
+     if Length(Cliente.UF) > 0 then
+       UF := Copy(Cliente.UF, 1, 2)
+     else
+       UF := '';
+
+     qry.ParamByName('uf').AsString            := UF; //ver como vai ser pois é CB
+
+     qry.ParamByName('ativo').DataType         := ftString; //ver como vai ser pois é CB
+
+     if Length(Cliente.ativo) > 0 then
+       Ativo := Copy(Cliente.ativo, 1, 1)
+     else
+       Ativo := '';
+
+     qry.ParamByName('ativo').AsString         := Ativo; //ver como vai ser pois é CB
 
      qry.ExecSQL;
 
   finally
+    qry.Close;
     qry.Free;
   end;
 end;

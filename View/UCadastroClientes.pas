@@ -78,7 +78,7 @@ type
     btnAnterior: TButton;
     BtnProximo: TButton;
     BtnUltimo: TButton;
-    BtnIncluir: TButton;
+    BtnNovo: TButton;
     BtnAlterar: TButton;
     BtnExcluir: TButton;
     ShadowEffect14: TShadowEffect;
@@ -105,20 +105,27 @@ type
     ShadowEffect28: TShadowEffect;
     ShadowEffect29: TShadowEffect;
     ShadowEffect30: TShadowEffect;
+    BtnGravar: TButton;
+    ShadowEffect23: TShadowEffect;
     procedure FormShow(Sender: TObject);
-    procedure BtnIncluirClick(Sender: TObject);
+    procedure BtnNovoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure BtnPrimeiroClick(Sender: TObject);
     procedure btnAnteriorClick(Sender: TObject);
     procedure BtnProximoClick(Sender: TObject);
     procedure BtnUltimoClick(Sender: TObject);
     procedure BtnAlterarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BtnGravarClick(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
     FCliente: TClientes;
     PodeGravar: Boolean;
     qry: TFDQuery;
+    RegrasDeNegocios: TRegrasDeNegocio;
+    procedure DesabilitaBotoes;
+    procedure HabilitarBotoes;
   public
     { Public declarations }
     DataSet: TClientDataSet;
@@ -146,10 +153,13 @@ begin
   PodeGravar :=  RegrasDeNeogicios.TestaseTemEndereco(Fcliente);
 
   if PodeGravar then
-    Cliente.SalvarCliente(FCliente)
+    Cliente.SalvarCliente(FCliente) //e o idcliente?
   else
+  begin
     ShowMessage('Não foi possível alterar os dados do cliente');
-
+    if EdtRazao.CanFocus then
+      EdtRazao.SetFocus;
+  end;
 end;
 
 procedure TFrmCadastroClientes.btnAnteriorClick(Sender: TObject);
@@ -158,17 +168,67 @@ begin
   OnDataSetChange;
 end;
 
-procedure TFrmCadastroClientes.BtnIncluirClick(Sender: TObject);
+procedure TFrmCadastroClientes.BtnGravarClick(Sender: TObject);
 var
-  RegrasDeNeogicios: TRegrasDeNegocio;
   Cliente: TClientes;
+  Abortar: Boolean;
 begin
-  PodeGravar :=  RegrasDeNeogicios.TestaseTemEndereco(Fcliente);
+  BtnGravar.Enabled:= False;
 
-  if PodeGravar then
-    Cliente.SalvarCliente(FCliente)
-  else
-    ShowMessage('Não foi possível salvar os dados do cliente');
+  Cliente:= TClientes.create;
+  try
+     //Testar se os campos foram todos preenchidos
+     RegrasDeNegocios:= TRegrasDeNegocio.Create;
+     PodeGravar :=  RegrasDeNegocios.TestaseTemEndereco(Fcliente);
+
+     if PodeGravar then //testar preenchimento dos campos
+     begin
+       PopularClientes;
+       Abortar:= Cliente.ClienteExiste(EdtCnpj.text);
+       if Abortar then
+       begin
+         ShowMessage('Cliente já existe no Cadastro!');
+         Exit;
+       end
+       else
+         Cliente.SalvarCliente(FCliente);
+     end
+     else
+     begin
+       ShowMessage('Não foi possível salvar os dados do cliente');
+
+       if EdtRazao.CanFocus then
+         EdtRazao.SetFocus;
+     end;
+
+     HabilitarBotoes;
+  finally
+    Cliente.Free;
+    RegrasDeNegocios.Free;
+  end;
+
+end;
+
+procedure TFrmCadastroClientes.BtnNovoClick(Sender: TObject);
+begin
+  BtnGravar.Enabled:= True;
+  DesabilitaBotoes;
+
+  //Limpar todos os campos da tela
+  EdtRazao.Text       := '';
+  EdtCnpj.Text        := '';
+  EdtEndereco.Text    := '';
+  EdtNumero.Text      := '';
+  EdtComplemento.Text := '';
+  EdtCep.Text         := '';
+  EdtCidade.Text      := '';
+  EdtBairro.Text      := '';
+  CBUF.Index          := 1;
+  CBAtivo.Index       := 1;
+
+  //Foco no campo EdtRazao
+  if EdtRazao.CanFocus then
+    EdtRazao.SetFocus;
 
 end;
 
@@ -193,6 +253,7 @@ end;
 constructor TFrmCadastroClientes.create;
 begin
   FConexao := TConnection.CreateConnection;
+  FCliente := TClientes.create;
 end;
 
 Function TFrmCadastroClientes.CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
@@ -210,7 +271,7 @@ begin
     CDS.FieldDefs.Add('CIDADE', ftString, 100);
     CDS.FieldDefs.Add('BAIRRO', ftString, 100);
     CDS.FieldDefs.Add('UF', ftString, 2);
-    CDS.FieldDefs.Add('ATIVO', ftBoolean);
+    CDS.FieldDefs.Add('ATIVO', ftString,1);
 
     CDS.CreateDataSet;
 
@@ -227,12 +288,36 @@ begin
   inherited;
 end;
 
+procedure TFrmCadastroClientes.HabilitarBotoes;
+begin
+  //Habillitar Botoes
+  BtnAlterar.Enabled := True;
+  BtnExcluir.Enabled := True;
+  BtnPrimeiro.Enabled := True;
+  BtnAnterior.Enabled := True;
+  BtnProximo.Enabled := True;
+  BtnUltimo.Enabled := True;
+end;
+
+procedure TFrmCadastroClientes.DesabilitaBotoes;
+begin
+  BtnAlterar.Enabled  := False;
+  BtnExcluir.Enabled  := False;
+  BtnPrimeiro.Enabled := False;
+  BtnAnterior.Enabled := False;
+  BtnProximo.Enabled  := False;
+  BtnUltimo.Enabled   := False;
+end;
+
+procedure TFrmCadastroClientes.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  FCliente.Free;
+end;
+
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
 var
   Cliente: TClientes;
-  UFCliente: string;
-  Ativo: string;
-  Index: Integer;
 
 begin
   Cliente:= TClientes.create;
@@ -265,22 +350,6 @@ begin
      DataSet.First;
      OnDataSetChange;
 
-
-
-//     // Carregar ComboBox CBUF com a UF do cliente
-//     CBUF.Clear;
-//     UFCliente := DataSet.FieldByName('uf').AsString;
-//     Index := CBUF.Items.IndexOf(UFCliente);
-//     if Index <> -1 then
-//       CBUF.ItemIndex := Index;
-//
-//     // Carregar ComboBox CBAtivo
-//     CBAtivo.Clear;
-//     Ativo := DataSet.FieldByName('Ativo').AsString;
-//     Index := CBAtivo.Items.IndexOf(Ativo);
-//     if Index <> -1 then
-//       CBAtivo.ItemIndex := Index;
-
   finally
 
   end;
@@ -290,9 +359,15 @@ procedure TFrmCadastroClientes.FormShow(Sender: TObject);
 begin
   if EdtRazao.CanFocus then
     EdtRazao.SetFocus;
+
+  BtnGravar.Enabled:= False;
 end;
 
 procedure TFrmCadastroClientes.OnDataSetChange;
+var
+  ufCliente: string;
+  ativoCliente: string;
+  Index: Integer;
 begin
   EdtRazao.Text       := DataSet.FieldByName('razao').AsString;
   EdtCnpj.Text        := DataSet.FieldByName('cnpj_cpf').AsString;
@@ -302,20 +377,48 @@ begin
   EdtCep.Text         := DataSet.FieldByName('CEP').AsString;
   EdtCidade.Text      := DataSet.FieldByName('Cidade').AsString;
   EdtBairro.Text      := DataSet.FieldByName('Bairro').AsString;
+
+  // Definir o valor do campo UF no combobox CBUF
+  // Obter o valor dos campos UF e Ativo do DataSet
+  ufCliente := DataSet.FieldByName('uf').AsString;
+  ativoCliente := DataSet.FieldByName('Ativo').AsString;
+
+  // Definir o valor do campo UF no combobox CBUF
+  if CBUF.Items.IndexOf(ufCliente) > -1 then
+    CBUF.ItemIndex := CBUF.Items.IndexOf(ufCliente)
+  else
+    CBUF.ItemIndex := -1; // ou algum valor padrão, caso UF não seja válido
+
+  // Definir o valor do campo Ativo no combobox CBATivo
+  if ativoCliente = 'S' then
+    CBATivo.ItemIndex := CBATivo.Items.IndexOf('S')
+  else if ativoCliente = 'N' then
+    CBATivo.ItemIndex := CBATivo.Items.IndexOf('N')
+  else
+    CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
+
   PopularClientes;
 end;
 
 procedure TFrmCadastroClientes.PopularClientes;
 begin
   //popular a classe clientes;
-  FCliente.razaosocial := EdtRazao.Text;
-  FCliente.cnpj        := EdtCnpj.Text;
-  EdtEndereco.Text     := EdtEndereco.Text;
-  EdtNumero.Text       := EdtNumero.Text;
-  EdtComplemento.Text  := EdtComplemento.Text;
-  EdtCep.Text          := EdtCep.Text;
-  EdtCidade.Text       := EdtCidade.Text;
-  EdtBairro.Text       := EdtBairro.Text;
+  FCliente := TClientes.create;
+  try
+    FCliente.razaosocial := EdtRazao.Text;
+    FCliente.cnpj        := EdtCnpj.Text;
+    FCliente.Endereco    := EdtEndereco.Text;
+    FCliente.Numero      := StrToInt(EdtNumero.Text);
+    FCliente.Complemento := EdtComplemento.Text;
+    FCliente.Cep         := EdtCep.Text;
+    FCliente.Cidade      := EdtCidade.Text;
+    FCliente.Bairro      := EdtBairro.Text;
+    FCliente.UF          := CBUF.Items.Text;
+    FCliente.Ativo       := CBAtivo.Items.Text;
+  finally
+//    FCliente.Free; //colocar  no onclose do form
+  end;
+
 end;
 
 end.

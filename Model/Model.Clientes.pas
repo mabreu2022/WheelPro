@@ -25,6 +25,7 @@ type
 
     public
       class function TestaseTemEndereco(aCliente: TClientes): Boolean;
+      class function ClientejaExiste(aCNPJ: String): Boolean;
 
   end;
 
@@ -32,6 +33,18 @@ type
 implementation
 
 { TRegrasDeNegocio }
+
+class function TRegrasDeNegocio.ClientejaExiste(aCNPJ: String): Boolean;
+var
+  Cliente: TClientes;
+begin
+  Cliente:= TClientes.create;
+  try
+    Cliente.ClienteExiste(aCNPJ);
+  finally
+    Cliente.Free;
+  end;
+end;
 
 class function TRegrasDeNegocio.TestaseTemEndereco(aCliente: TClientes): Boolean;
 begin
@@ -78,6 +91,9 @@ begin
     Result:= False;
     exit;
   end;
+
+  //Testar se o cliente já existe no Cadastro e não deixar incluir se sim.
+
 
   Result:= True;
 end;
