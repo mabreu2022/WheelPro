@@ -42,6 +42,9 @@ uses
   Datasnap.DBClient;
 
 type
+  TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);
+  TBotaoSet = set of TBotaoIndex;
+
   TFrmCadastroClientes = class(TForm)
     Layout1: TLayout;
     Layout2: TLayout;
@@ -117,6 +120,14 @@ type
     procedure BtnAlterarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BtnGravarClick(Sender: TObject);
+    procedure CBAtivoExit(Sender: TObject);
+    procedure EdtNumeroKeyDown(Sender: TObject; var Key: Word;
+      var KeyChar: Char; Shift: TShiftState);
+    procedure EdtCnpjKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
+      Shift: TShiftState);
+    procedure EdtCepKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
+      Shift: TShiftState);
+    procedure BtnExcluirClick(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -124,8 +135,8 @@ type
     PodeGravar: Boolean;
     qry: TFDQuery;
     RegrasDeNegocios: TRegrasDeNegocio;
-    procedure DesabilitaBotoes;
-    procedure HabilitarBotoes;
+    procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
+
   public
     { Public declarations }
     DataSet: TClientDataSet;
@@ -150,16 +161,11 @@ var
   RegrasDeNeogicios: TRegrasDeNegocio;
   Cliente: TClientes;
 begin
-  PodeGravar :=  RegrasDeNeogicios.TestaseTemEndereco(Fcliente);
+  DesabilitaBotoes([BiGravar]);
 
-  if PodeGravar then
-    Cliente.SalvarCliente(FCliente) //e o idcliente?
-  else
-  begin
-    ShowMessage('Não foi possível alterar os dados do cliente');
-    if EdtRazao.CanFocus then
-      EdtRazao.SetFocus;
-  end;
+  if EdtCnpj.CanFocus then
+    EdtCnpj.SetFocus;
+
 end;
 
 procedure TFrmCadastroClientes.btnAnteriorClick(Sender: TObject);
@@ -168,12 +174,17 @@ begin
   OnDataSetChange;
 end;
 
+procedure TFrmCadastroClientes.BtnExcluirClick(Sender: TObject);
+begin
+  DesabilitaBotoes([BiGravar]);
+
+end;
+
 procedure TFrmCadastroClientes.BtnGravarClick(Sender: TObject);
 var
   Cliente: TClientes;
   Abortar: Boolean;
 begin
-  BtnGravar.Enabled:= False;
 
   Cliente:= TClientes.create;
   try
@@ -201,7 +212,7 @@ begin
          EdtRazao.SetFocus;
      end;
 
-     HabilitarBotoes;
+     DesabilitaBotoes([BiPrimeiro,BiAnterior,BiProximo,BiUltimo,BiNovo,BiAlterar,BiExcluir,BiGravar]);
   finally
     Cliente.Free;
     RegrasDeNegocios.Free;
@@ -211,8 +222,7 @@ end;
 
 procedure TFrmCadastroClientes.BtnNovoClick(Sender: TObject);
 begin
-  BtnGravar.Enabled:= True;
-  DesabilitaBotoes;
+  DesabilitaBotoes([BiGravar]);//Desabilita todos botões menos o botão gravar
 
   //Limpar todos os campos da tela
   EdtRazao.Text       := '';
@@ -248,6 +258,12 @@ procedure TFrmCadastroClientes.BtnUltimoClick(Sender: TObject);
 begin
   DataSet.Last;
   OnDataSetChange;
+end;
+
+procedure TFrmCadastroClientes.CBAtivoExit(Sender: TObject);
+begin
+  if BtnGravar.CanFocus then
+    BtnGravar.SetFocus;
 end;
 
 constructor TFrmCadastroClientes.create;
@@ -288,25 +304,102 @@ begin
   inherited;
 end;
 
-procedure TFrmCadastroClientes.HabilitarBotoes;
+procedure TFrmCadastroClientes.EdtCepKeyDown(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
 begin
-  //Habillitar Botoes
-  BtnAlterar.Enabled := True;
-  BtnExcluir.Enabled := True;
-  BtnPrimeiro.Enabled := True;
-  BtnAnterior.Enabled := True;
-  BtnProximo.Enabled := True;
-  BtnUltimo.Enabled := True;
+  // Verifica se a tecla pressionada não é um número
+  if not (KeyChar in ['0'..'9', #8, #127]) then
+  begin
+    // Ignora a tecla pressionada, impedindo que ela seja inserida no campo de edição
+    KeyChar := #0;
+
+    // Verifica se a mensagem já foi exibida
+    if EdtCep.Tag = 0 then
+    begin
+      // Exibe a mensagem de erro
+      ShowMessage('Só são aceitos números nesse campo');
+      EdtCep.Tag := 1;
+    end;
+  end
+  else
+  begin
+    // Permite a entrada de caracteres válidos
+    EdtCep.Tag := 0;
+  end;
 end;
 
-procedure TFrmCadastroClientes.DesabilitaBotoes;
+procedure TFrmCadastroClientes.EdtCnpjKeyDown(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
 begin
-  BtnAlterar.Enabled  := False;
-  BtnExcluir.Enabled  := False;
-  BtnPrimeiro.Enabled := False;
-  BtnAnterior.Enabled := False;
-  BtnProximo.Enabled  := False;
-  BtnUltimo.Enabled   := False;
+  // Verifica se a tecla pressionada não é um número
+  if not (KeyChar in ['0'..'9', #8, #127]) then
+  begin
+    // Ignora a tecla pressionada, impedindo que ela seja inserida no campo de edição
+    KeyChar := #0;
+
+    // Verifica se a mensagem já foi exibida
+    if EdtCnpj.Tag = 0 then
+    begin
+      // Exibe a mensagem de erro
+      ShowMessage('Só são aceitos números nesse campo');
+      EdtCnpj.Tag := 1;
+    end;
+  end
+  else
+  begin
+    // Permite a entrada de caracteres válidos
+    EdtCnpj.Tag := 0;
+  end;
+end;
+
+procedure TFrmCadastroClientes.EdtNumeroKeyDown(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
+begin
+  // Verifica se a tecla pressionada não é um número
+  if not (KeyChar in ['0'..'9', #8, #127]) then
+  begin
+    // Ignora a tecla pressionada, impedindo que ela seja inserida no campo de edição
+    KeyChar := #0;
+
+    // Verifica se a mensagem já foi exibida
+    if EdtNumero.Tag = 0 then
+    begin
+      // Exibe a mensagem de erro
+      ShowMessage('Só são aceitos números nesse campo');
+      EdtNumero.Tag := 1;
+    end;
+  end
+  else
+  begin
+    // Permite a entrada de caracteres válidos
+    EdtNumero.Tag := 0;
+  end;
+end;
+
+
+procedure TFrmCadastroClientes.DesabilitaBotoes(const BotaoSet:TBotaoSet);
+var
+  TodosOsBotoes: array[TBotaoIndex] of TButton;
+  Botao: TBotaoIndex;
+begin
+  // Mapeia os botões para seus índices correspondentes
+  TodosOsBotoes[biAlterar]  := BtnAlterar;
+  TodosOsBotoes[biExcluir]  := BtnExcluir;
+  TodosOsBotoes[biPrimeiro] := BtnPrimeiro;
+  TodosOsBotoes[biAnterior] := BtnAnterior;
+  TodosOsBotoes[biProximo]  := BtnProximo;
+  TodosOsBotoes[biUltimo]   := BtnUltimo;
+  TodosOsBotoes[biNovo]     := BtnNovo;
+  TodosOsBotoes[biGravar]   := BtnGravar;
+
+  // Desabilita todos os botões
+  for Botao := Low(TBotaoIndex) to High(TBotaoIndex) do
+    TodosOsBotoes[Botao].Enabled := False;
+
+  // Habilita apenas os botões do conjunto
+  for Botao in BotaoSet do
+    TodosOsBotoes[Botao].Enabled := True;
+
 end;
 
 procedure TFrmCadastroClientes.FormClose(Sender: TObject;

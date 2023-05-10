@@ -156,6 +156,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Position.Y = 14.000000000000000000
           TabOrder = 7
           Text = 'Excluir'
+          OnClick = BtnExcluirClick
           object ShadowEffect20: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -188,6 +189,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Size.Width = 433.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      CharCase = ecUpperCase
       object ShadowEffect8: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -204,6 +206,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Size.Width = 185.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      TextPrompt = 'Somente N'#250'meros'
+      CharCase = ecUpperCase
+      OnKeyDown = EdtCnpjKeyDown
       object ShadowEffect9: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -214,12 +219,13 @@ object FrmCadastroClientes: TFrmCadastroClientes
     end
     object EdtEndereco: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 4
+      TabOrder = 5
       Position.X = 32.000000000000000000
       Position.Y = 184.000000000000000000
       Size.Width = 433.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      CharCase = ecUpperCase
       object ShadowEffect10: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -230,12 +236,15 @@ object FrmCadastroClientes: TFrmCadastroClientes
     end
     object EdtNumero: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 5
+      TabOrder = 6
       Position.X = 480.000000000000000000
       Position.Y = 184.000000000000000000
       Size.Width = 129.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      TextPrompt = 'Somente N'#250'meros'
+      CharCase = ecUpperCase
+      OnKeyDown = EdtNumeroKeyDown
       object ShadowEffect11: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -246,12 +255,13 @@ object FrmCadastroClientes: TFrmCadastroClientes
     end
     object EdtComplemento: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 6
+      TabOrder = 7
       Position.X = 32.000000000000000000
       Position.Y = 232.000000000000000000
       Size.Width = 185.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      CharCase = ecUpperCase
       object ShadowEffect12: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -262,9 +272,15 @@ object FrmCadastroClientes: TFrmCadastroClientes
     end
     object EdtCep: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 7
+      TabOrder = 8
       Position.X = 225.000000000000000000
       Position.Y = 232.000000000000000000
+      Size.Width = 112.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TextPrompt = 'Somente N'#250'meros'
+      CharCase = ecUpperCase
+      OnKeyDown = EdtCepKeyDown
       object ShadowEffect13: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -274,10 +290,10 @@ object FrmCadastroClientes: TFrmCadastroClientes
       end
     end
     object Label2: TLabel
-      Position.X = 35.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 64.000000000000000000
       Text = 'Raz'#227'o Social / Nome'
-      TabOrder = 9
+      TabOrder = 10
       object ShadowEffect2: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -287,22 +303,10 @@ object FrmCadastroClientes: TFrmCadastroClientes
       end
     end
     object Label3: TLabel
-      Position.X = 36.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 115.000000000000000000
       Text = 'CNPJ / CPF'
-      TabOrder = 13
-      object Label4: TLabel
-        Position.Y = 48.000000000000000000
-        Text = 'Endere'#231'o'
-        TabOrder = 4
-        object ShadowEffect4: TShadowEffect
-          Distance = 3.000000000000000000
-          Direction = 45.000000000000000000
-          Softness = 0.300000011920929000
-          Opacity = 0.600000023841857900
-          ShadowColor = claBlack
-        end
-      end
+      TabOrder = 14
       object ShadowEffect3: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -315,7 +319,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Position.X = 480.000000000000000000
       Position.Y = 165.000000000000000000
       Text = 'N'#250'mero'
-      TabOrder = 14
+      TabOrder = 15
       object ShadowEffect5: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -325,10 +329,10 @@ object FrmCadastroClientes: TFrmCadastroClientes
       end
     end
     object Label6: TLabel
-      Position.X = 36.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 212.000000000000000000
       Text = 'Complemento'
-      TabOrder = 15
+      TabOrder = 16
       object ShadowEffect6: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -341,7 +345,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Position.X = 226.000000000000000000
       Position.Y = 214.000000000000000000
       Text = 'CEP'
-      TabOrder = 16
+      TabOrder = 17
       object ShadowEffect7: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -351,10 +355,10 @@ object FrmCadastroClientes: TFrmCadastroClientes
       end
     end
     object Label8: TLabel
-      Position.X = 36.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 371.000000000000000000
       Text = 'Ativo'
-      TabOrder = 17
+      TabOrder = 18
       object ShadowEffect21: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -368,12 +372,13 @@ object FrmCadastroClientes: TFrmCadastroClientes
         'S'
         'N')
       ItemIndex = 0
-      Position.X = 36.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 393.000000000000000000
       Size.Width = 53.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 12
+      TabOrder = 13
+      OnExit = CBAtivoExit
       object ShadowEffect22: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -383,10 +388,10 @@ object FrmCadastroClientes: TFrmCadastroClientes
       end
     end
     object Label9: TLabel
-      Position.X = 36.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 321.000000000000000000
       Text = 'UF'
-      TabOrder = 18
+      TabOrder = 19
       object ShadowEffect24: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -425,12 +430,12 @@ object FrmCadastroClientes: TFrmCadastroClientes
         'SE'
         'TO')
       ItemIndex = 0
-      Position.X = 36.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 342.000000000000000000
       Size.Width = 53.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 11
+      TabOrder = 12
       object ShadowEffect26: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -440,10 +445,10 @@ object FrmCadastroClientes: TFrmCadastroClientes
       end
     end
     object Label10: TLabel
-      Position.X = 36.000000000000000000
+      Position.X = 32.000000000000000000
       Position.Y = 267.000000000000000000
       Text = 'Cidade'
-      TabOrder = 19
+      TabOrder = 20
       object ShadowEffect25: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -454,12 +459,13 @@ object FrmCadastroClientes: TFrmCadastroClientes
     end
     object EdtCidade: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 8
-      Position.X = 36.000000000000000000
+      TabOrder = 9
+      Position.X = 32.000000000000000000
       Position.Y = 288.000000000000000000
       Size.Width = 181.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      CharCase = ecUpperCase
       object ShadowEffect27: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -472,7 +478,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Position.X = 226.000000000000000000
       Position.Y = 269.000000000000000000
       Text = 'Bairro'
-      TabOrder = 20
+      TabOrder = 21
       object ShadowEffect29: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -483,12 +489,13 @@ object FrmCadastroClientes: TFrmCadastroClientes
     end
     object EdtBairro: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 10
+      TabOrder = 11
       Position.X = 224.000000000000000000
-      Position.Y = 289.000000000000000000
+      Position.Y = 288.000000000000000000
       Size.Width = 241.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      CharCase = ecUpperCase
       object ShadowEffect28: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -497,6 +504,19 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
       object ShadowEffect30: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label4: TLabel
+      Position.X = 32.000000000000000000
+      Position.Y = 165.000000000000000000
+      Text = 'Endere'#231'o'
+      TabOrder = 4
+      object ShadowEffect4: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
         Softness = 0.300000011920929000
