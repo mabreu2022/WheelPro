@@ -56,6 +56,7 @@ type
     ShadowEffect4: TShadowEffect;
     ShadowEffect5: TShadowEffect;
     ShadowEffect6: TShadowEffect;
+    ShadowEffect7: TShadowEffect;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);

@@ -57,7 +57,11 @@ uses
   UCadastroFabricantes,
   UCadastroOrcamentos,
   URegistrar,
-  Dao.Conexao, System.Actions, FMX.ActnList;
+  Dao.Conexao,
+  System.Actions,
+  FMX.ActnList,
+  Vcl.Graphics,
+  Vcl.Imaging.pngimage;
 
 type
   TFrmPrincipal = class(TForm)
@@ -222,6 +226,7 @@ type
     procedure SairExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure LogOffExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
 
   private
@@ -242,13 +247,12 @@ type
     qry: TFDQuery;
     FConexao: TFDConnection;
 
-
-
     procedure Modo_Edicao(editar: Boolean);
     procedure Modo_Edicao2(editar: Boolean);
     procedure NewImagemMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; var Handled: Boolean);
     procedure SetidUsuario(const Value: Integer);
+    procedure SaveBitmapToFile(Bitmap: TBitmap; const FileName: string);
 
   public
     { Public declarations }
@@ -274,6 +278,21 @@ begin
   Close;
 end;
 
+procedure TFrmPrincipal.SaveBitmapToFile(Bitmap: TBitmap;
+  const FileName: string);
+var
+  Image: TPngImage;
+begin
+  Image := TPngImage.Create;
+  try
+    Image.Assign(Bitmap);
+    Image.SaveToFile(FileName);
+  finally
+    Image.Free;
+  end;
+
+end;
+
 procedure TFrmPrincipal.BtnCarregarFotoClick(Sender: TObject);
 var
   OpenDialog: TOpenDialog;
@@ -293,11 +312,33 @@ begin
 end;
 
 procedure TFrmPrincipal.BtnCopiarFotoClick(Sender: TObject);
+var
+  PrintScreen: TBitmap;
+  DC: HDC;
 begin
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), 0, 0); // Pressiona a tecla Alt
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), 0, 0); // Pressiona a tecla Print Screen
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Print Screen
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
+
+  PrintScreen := TBitmap.Create;
+  try
+    PrintScreen.Width  := Round(Screen.Width);  //1920-1536 = 384
+    PrintScreen.Width := PrintScreen.Width + 384;
+    PrintScreen.Height := Round(Screen.Height); //1080-864  = 216
+    PrintScreen.Height := PrintScreen.Height + 216;
+    DC := GetDC(0);
+    try
+      BitBlt(PrintScreen.Canvas.Handle, 0, 0, PrintScreen.Width, PrintScreen.Height,
+        DC, 0, 0, SRCCOPY);
+    finally
+      ReleaseDC(0, DC);
+    end;
+
+    SaveBitmapToFile(PrintScreen, 'printscreen.png'); // Salvar em arquivo
+  finally
+    PrintScreen.Free;
+  end;
 end;
 
 procedure TFrmPrincipal.BtnCopiarRodaClick(Sender: TObject);
@@ -643,6 +684,11 @@ begin
 //  FrmLogin.Destroy;
 end;
 
+procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FrmLogin.Close;
+end;
+
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
 var
   I: Integer;
@@ -948,7 +994,7 @@ end;
 
 procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);
 begin
-  if not Assigned(FrmRegistrar) then
+  if not Assigned(FrmCadastroClientes) then
   begin
     try
       Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
