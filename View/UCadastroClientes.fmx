@@ -4,7 +4,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
   BorderIcons = [biSystemMenu]
   BorderStyle = Single
   Caption = 'Cadastro de Clientes'
-  ClientHeight = 500
+  ClientHeight = 512
   ClientWidth = 720
   Position = ScreenCenter
   FormFactor.Width = 320
@@ -17,7 +17,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
   object Layout1: TLayout
     Align = Client
     Size.Width = 720.000000000000000000
-    Size.Height = 500.000000000000000000
+    Size.Height = 512.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Layout2: TLayout
@@ -55,7 +55,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
     end
     object Layout3: TLayout
       Align = Bottom
-      Position.Y = 450.000000000000000000
+      Position.Y = 462.000000000000000000
       Size.Width = 720.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
@@ -185,7 +185,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 2
       Position.X = 32.000000000000000000
-      Position.Y = 88.000000000000000000
+      Position.Y = 124.000000000000000000
       Size.Width = 433.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -202,7 +202,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 3
       Position.X = 32.000000000000000000
-      Position.Y = 136.000000000000000000
+      Position.Y = 172.000000000000000000
       Size.Width = 185.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -221,7 +221,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 5
       Position.X = 32.000000000000000000
-      Position.Y = 184.000000000000000000
+      Position.Y = 220.000000000000000000
       Size.Width = 433.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -238,7 +238,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 6
       Position.X = 480.000000000000000000
-      Position.Y = 184.000000000000000000
+      Position.Y = 220.000000000000000000
       Size.Width = 129.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -257,7 +257,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 7
       Position.X = 32.000000000000000000
-      Position.Y = 232.000000000000000000
+      Position.Y = 268.000000000000000000
       Size.Width = 185.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -274,7 +274,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 8
       Position.X = 225.000000000000000000
-      Position.Y = 232.000000000000000000
+      Position.Y = 268.000000000000000000
       Size.Width = 112.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -289,9 +289,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label2: TLabel
+    object LblRazaoSocial: TLabel
       Position.X = 32.000000000000000000
-      Position.Y = 64.000000000000000000
+      Position.Y = 100.000000000000000000
       Text = 'Raz'#227'o Social / Nome'
       TabOrder = 10
       object ShadowEffect2: TShadowEffect
@@ -302,9 +302,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label3: TLabel
+    object LblCnpj: TLabel
       Position.X = 32.000000000000000000
-      Position.Y = 115.000000000000000000
+      Position.Y = 151.000000000000000000
       Text = 'CNPJ / CPF'
       TabOrder = 14
       object ShadowEffect3: TShadowEffect
@@ -315,9 +315,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label5: TLabel
+    object LblNumero: TLabel
       Position.X = 480.000000000000000000
-      Position.Y = 165.000000000000000000
+      Position.Y = 201.000000000000000000
       Text = 'N'#250'mero'
       TabOrder = 15
       object ShadowEffect5: TShadowEffect
@@ -328,9 +328,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label6: TLabel
+    object LblComplemento: TLabel
       Position.X = 32.000000000000000000
-      Position.Y = 212.000000000000000000
+      Position.Y = 248.000000000000000000
       Text = 'Complemento'
       TabOrder = 16
       object ShadowEffect6: TShadowEffect
@@ -341,9 +341,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label7: TLabel
+    object LblCEP: TLabel
       Position.X = 226.000000000000000000
-      Position.Y = 214.000000000000000000
+      Position.Y = 250.000000000000000000
       Text = 'CEP'
       TabOrder = 17
       object ShadowEffect7: TShadowEffect
@@ -354,9 +354,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label8: TLabel
+    object LblAtivo: TLabel
       Position.X = 32.000000000000000000
-      Position.Y = 371.000000000000000000
+      Position.Y = 407.000000000000000000
       Text = 'Ativo'
       TabOrder = 18
       object ShadowEffect21: TShadowEffect
@@ -373,7 +373,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         'N')
       ItemIndex = 0
       Position.X = 32.000000000000000000
-      Position.Y = 393.000000000000000000
+      Position.Y = 429.000000000000000000
       Size.Width = 53.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -387,9 +387,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label9: TLabel
+    object LblUF: TLabel
       Position.X = 32.000000000000000000
-      Position.Y = 321.000000000000000000
+      Position.Y = 357.000000000000000000
       Text = 'UF'
       TabOrder = 19
       object ShadowEffect24: TShadowEffect
@@ -431,7 +431,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         'TO')
       ItemIndex = 0
       Position.X = 32.000000000000000000
-      Position.Y = 342.000000000000000000
+      Position.Y = 378.000000000000000000
       Size.Width = 53.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -444,9 +444,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label10: TLabel
+    object LblCidade: TLabel
       Position.X = 32.000000000000000000
-      Position.Y = 267.000000000000000000
+      Position.Y = 303.000000000000000000
       Text = 'Cidade'
       TabOrder = 20
       object ShadowEffect25: TShadowEffect
@@ -461,7 +461,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 9
       Position.X = 32.000000000000000000
-      Position.Y = 288.000000000000000000
+      Position.Y = 324.000000000000000000
       Size.Width = 181.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -474,9 +474,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label11: TLabel
+    object LblBairro: TLabel
       Position.X = 226.000000000000000000
-      Position.Y = 269.000000000000000000
+      Position.Y = 305.000000000000000000
       Text = 'Bairro'
       TabOrder = 21
       object ShadowEffect29: TShadowEffect
@@ -491,7 +491,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 11
       Position.X = 224.000000000000000000
-      Position.Y = 288.000000000000000000
+      Position.Y = 324.000000000000000000
       Size.Width = 241.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -511,12 +511,39 @@ object FrmCadastroClientes: TFrmCadastroClientes
         ShadowColor = claBlack
       end
     end
-    object Label4: TLabel
+    object LblEndereco: TLabel
       Position.X = 32.000000000000000000
-      Position.Y = 165.000000000000000000
+      Position.Y = 201.000000000000000000
       Text = 'Endere'#231'o'
       TabOrder = 4
       object ShadowEffect4: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object EdtCodCliente: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 22
+      ReadOnly = True
+      Position.X = 32.000000000000000000
+      Position.Y = 73.000000000000000000
+      object ShadowEffect31: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object LblCodCliente: TLabel
+      Position.X = 32.000000000000000000
+      Position.Y = 53.000000000000000000
+      Text = 'Cod. Cliente'
+      TabOrder = 23
+      object ShadowEffect32: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
         Softness = 0.300000011920929000

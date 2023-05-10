@@ -59,17 +59,17 @@ type
     EdtNumero: TEdit;
     EdtComplemento: TEdit;
     EdtCep: TEdit;
-    Label2: TLabel;
+    LblRazaoSocial: TLabel;
     ShadowEffect2: TShadowEffect;
-    Label3: TLabel;
-    Label4: TLabel;
+    LblCnpj: TLabel;
+    LblEndereco: TLabel;
     ShadowEffect3: TShadowEffect;
     ShadowEffect4: TShadowEffect;
-    Label5: TLabel;
-    Label6: TLabel;
+    LblNumero: TLabel;
+    LblComplemento: TLabel;
     ShadowEffect5: TShadowEffect;
     ShadowEffect6: TShadowEffect;
-    Label7: TLabel;
+    LblCEP: TLabel;
     ShadowEffect7: TShadowEffect;
     ShadowEffect8: TShadowEffect;
     ShadowEffect9: TShadowEffect;
@@ -91,25 +91,29 @@ type
     ShadowEffect18: TShadowEffect;
     ShadowEffect19: TShadowEffect;
     ShadowEffect20: TShadowEffect;
-    Label8: TLabel;
+    LblAtivo: TLabel;
     ShadowEffect21: TShadowEffect;
     CBAtivo: TComboBox;
     ShadowEffect22: TShadowEffect;
-    Label9: TLabel;
+    LblUF: TLabel;
     ShadowEffect24: TShadowEffect;
     CBUF: TComboBox;
-    Label10: TLabel;
+    LblCidade: TLabel;
     EdtCidade: TEdit;
     ShadowEffect25: TShadowEffect;
     ShadowEffect26: TShadowEffect;
     ShadowEffect27: TShadowEffect;
-    Label11: TLabel;
+    LblBairro: TLabel;
     EdtBairro: TEdit;
     ShadowEffect28: TShadowEffect;
     ShadowEffect29: TShadowEffect;
     ShadowEffect30: TShadowEffect;
     BtnGravar: TButton;
     ShadowEffect23: TShadowEffect;
+    EdtCodCliente: TEdit;
+    LblCodCliente: TLabel;
+    ShadowEffect31: TShadowEffect;
+    ShadowEffect32: TShadowEffect;
     procedure FormShow(Sender: TObject);
     procedure BtnNovoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -278,6 +282,7 @@ var
 begin
   CDS := TClientDataSet.Create(nil);
   try
+    CDS.FieldDefs.Add('IDCLIENTES', ftInteger);
     CDS.FieldDefs.Add('RAZAO', ftString, 100);
     CDS.FieldDefs.Add('CNPJ_CPF', ftString, 18);
     CDS.FieldDefs.Add('ENDERECO', ftString, 100);
@@ -396,7 +401,7 @@ begin
   for Botao := Low(TBotaoIndex) to High(TBotaoIndex) do
     TodosOsBotoes[Botao].Enabled := False;
 
-  // Habilita apenas os botões do conjunto
+  // Habilita apenas os botões do conjunto do parâmetro
   for Botao in BotaoSet do
     TodosOsBotoes[Botao].Enabled := True;
 
@@ -425,6 +430,7 @@ begin
      begin
 
        DataSet.Append;
+       DataSet.FieldByName('idclientes').AsInteger := Qry.FieldByName('idclientes').AsInteger;
        DataSet.FieldByName('razao').AsString       := Qry.FieldByName('razao').AsString;
        DataSet.FieldByName('cnpj_cpf').AsString    := Qry.FieldByName('cnpj_cpf').AsString;
        DataSet.FieldByName('endereco').AsString    := Qry.FieldByName('endereco').AsString;
@@ -462,6 +468,7 @@ var
   ativoCliente: string;
   Index: Integer;
 begin
+  EdtCodCliente.Text  := IntToStr(DataSet.FieldByName('idcllientes').AsInteger);
   EdtRazao.Text       := DataSet.FieldByName('razao').AsString;
   EdtCnpj.Text        := DataSet.FieldByName('cnpj_cpf').AsString;
   EdtEndereco.Text    := DataSet.FieldByName('endereco').AsString;
@@ -509,7 +516,7 @@ begin
     FCliente.UF          := CBUF.Items.Text;
     FCliente.Ativo       := CBAtivo.Items.Text;
   finally
-//    FCliente.Free; //colocar  no onclose do form
+//    FCliente.Free; //Está  no onclose do form
   end;
 
 end;
