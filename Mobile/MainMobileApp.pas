@@ -1,13 +1,3 @@
-//---------------------------------------------------------------------------
-
-// This software is Copyright (c) 2015 Embarcadero Technologies, Inc.
-// You may only use this software if you are an authorized licensee
-// of an Embarcadero developer tools product.
-// This software is considered a Redistributable as defined under
-// the software license agreement that comes with the Embarcadero Products
-// and is subject to that software license agreement.
-
-//---------------------------------------------------------------------------
 
 unit MainMobileApp;
 
@@ -39,6 +29,7 @@ type
     ShadowEffect2: TShadowEffect;
     Image1: TImage;
     ShadowEffect3: TShadowEffect;
+    TakePhotoFromLibraryAction1: TTakePhotoFromLibraryAction;
     procedure TakePhotoFromCameraAction1DidFinishTaking(Image: TBitmap);
     procedure TakePhotoManagerRequestManagerPassword(const Sender: TObject; const RemoteIdentifier: string; var Password: string);
     procedure FormShow(Sender: TObject);

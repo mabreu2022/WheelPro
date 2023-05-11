@@ -211,6 +211,7 @@ type
     procedure Circle1DblClick(Sender: TObject);
     procedure Image4DblClick(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
+    procedure NewImagemClick(Sender: TObject);
     procedure NewImagemDbClick(Sender: TObject);
     procedure NewImagemMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
@@ -369,10 +370,6 @@ begin
     PrintScreen.Free;
   end;
 
-   ActShare.Bitmap.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'PrintScreen.bmp');
-   ActShare.TextMessage:= 'Orçamento Wheell Pro - Conect solutions equipadora';
-   ActShare.Execute;
-
   // Gere o arquivo PrintScreen.png anteriormente
 //  NomeArquivo := ExtractFilePath(ParamStr(0))+ '\PrintScreen.png';
 //  EnviarAnexoWhatsApp(NomeArquivo);
@@ -382,6 +379,9 @@ end;
 
 procedure TFrmPrincipal.BtnCopiarRodaClick(Sender: TObject);
 begin
+  if MoveObjeto then
+    Modo_Edicao(False);
+
   if NOT Assigned(NewCircle) then
     begin
       // Create a new TCircle component
@@ -401,7 +401,7 @@ begin
       NewImagem.Align:=  TalignLayout.Client;
 
       // Eventos
-      //NewImagem.OnClick      :=  NewImagemClick;
+      NewImagem.OnClick      :=  NewImagemClick;
       NewImagem.OnDblClick   :=  NewImagemDbClick;
       NewImagem.OnGesture    :=  NewImagemGesture;
       NewImagem.OnMouseDown  :=  NewImagemMouseDown;
@@ -410,11 +410,11 @@ begin
 
       NewCircle.Parent := Self; //Cria no Formulário Principal
     end
-    else
-    begin //apagar o mesmo ou receber a copia da Matrix Atual
+    else //apagar o mesmo ou receber a copia da Matrix Atual
+    begin
       //Criar o TImage dentro do NewCircle
       NewImagem.BitMap.Clear($000000);
-      NewImagem:= TImage.Create(NewCircle);
+      NewImagem:= TImage.Create(nil); //NewCircle - original
       NewImagem.Parent:= NewCircle;
       NewImagem.Bitmap.Assign(TImage(Circle1.Children[0]).Bitmap);
       NewImagem.Align:=  TalignLayout.Client;
@@ -1143,6 +1143,12 @@ begin
     end;
   end;
 
+end;
+
+procedure TFrmPrincipal.NewImagemClick(Sender: TObject);
+begin
+  if MoveObjeto then
+    Modo_Edicao(False);
 end;
 
 procedure TFrmPrincipal.NewImagemDbClick(Sender: TObject);
