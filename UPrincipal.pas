@@ -426,6 +426,7 @@ begin
       NewImagem.OnMouseDown  :=  NewImagemMouseDown;
       NewImagem.OnMouseUp    :=  NewImagemMouseUp;
       NewImagem.OnMouseWheel :=  NewImagemMouseWheel;
+
       //Exit;
     end;
 end;
@@ -920,10 +921,13 @@ begin
   OffSet.X := X;
   OffSet.Y := Y;
 
-
   //Botão direito muda o modo de edição...
   if Button = TMouseButton.mbRight then
+  begin
     Modo_Edicao(NOT Circle1.Tag.ToBoolean);
+    if MoveObjeto then   //Desabilita a Edição da Roda 2 quando a Roda Matrix entra em edição
+    Modo_Edicao2(False);
+  end;
 
   if Button = TMouseButton.mbMiddle then
   begin
@@ -1147,8 +1151,8 @@ end;
 
 procedure TFrmPrincipal.NewImagemClick(Sender: TObject);
 begin
-  if MoveObjeto then
-    Modo_Edicao(False);
+//  if MoveObjeto then
+//    Modo_Edicao(False);
 end;
 
 procedure TFrmPrincipal.NewImagemDbClick(Sender: TObject);
@@ -1182,7 +1186,11 @@ begin
 
   //Windows: Botão direito muda o modoedição...
   if Button = TMouseButton.mbRight then
+  begin
     Modo_Edicao2(NOT NewCircle.Tag.ToBoolean);
+    if MoveObjeto then   //Desabilita a Edição da Matrix quando a Roda 2 entra em edição
+    Modo_Edicao(False);
+  end;
 
   if Button = TMouseButton.mbMiddle then
   begin
