@@ -35,7 +35,8 @@ type
   end;
 
   const
-     ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini';
+     ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini'; //Compilar para testes de programação
+     //ARQ_INI = 'C:\Program Files (x86)\WheelPro\Server.Ini'; //Compilar para Cliente final
 
 
 implementation

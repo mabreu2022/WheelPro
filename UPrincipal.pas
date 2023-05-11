@@ -371,9 +371,8 @@ begin
   end;
 
   // Gere o arquivo PrintScreen.png anteriormente
-//  NomeArquivo := ExtractFilePath(ParamStr(0))+ '\PrintScreen.png';
-//  EnviarAnexoWhatsApp(NomeArquivo);
-//  EnviarImagemWhatsApp(NomeArquivo);
+  NomeArquivo := ExtractFilePath(ParamStr(0))+ '\PrintScreen.png';
+  EnviarImagemWhatsApp(NomeArquivo);
 
 end;
 
@@ -736,8 +735,8 @@ var
   DestFileName: string;
 begin
   TempPath := TPath.GetTempPath;
-  TempFileName := ExtractFilePath(ParamStr(0)) + 'PrintScreen.png';
-  DestFileName := 'whatsapp://send?text=Mensagem%20opcional&attachment=' +
+  TempFileName := ExtractFilePath(ParamStr(0)) + 'printscreen.bmp';
+  DestFileName := 'whatsapp://send?text=Fulano%20Rodas%20Orçamento&attachment=' +     //Mudar aqui para vir os dados do banco de dados.
     TempFileName;
   //DestFileName := IncludeTrailingPathDelimiter(TempPath) + 'WhatsApp.png';
 
@@ -764,15 +763,10 @@ begin
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
-var
-  I: Integer;
-  Index: integer;
-  CaptionToFind: string;
-
-  MainMenu: TMainMenu;
 begin
   Modo_Edicao(false);
   Modo_Edicao2(False);
+  DM.FDConnection1.Connected:= True;
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);

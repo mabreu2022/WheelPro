@@ -24,7 +24,7 @@ DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=C:\Fontes\ProjetoRodas3\Instalador
-OutputBaseFilename=setup
+OutputBaseFilename=setup_WheelPro_Final
 SetupIconFile=C:\Fontes\ProjetoRodas3\Instalador\Icone.ico
 Password=123456
 Encryption=yes
@@ -43,6 +43,9 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "C:\Fontes\ProjetoRodas3\Win32\Debug\ProjetoRodasv3.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Fontes\ProjetoRodas3\Imagens\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "Server.ini"; DestDir: "{app}"
+Source: "midas.dll"; DestDir: "{sys}"; Flags: 32bit
+Source: "libmysql.dll"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -53,3 +56,7 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[UninstallDelete]
+Type: files; Name: "{app}\midas.dll"
+Type: files; Name: "{app}\libmysql.dll"

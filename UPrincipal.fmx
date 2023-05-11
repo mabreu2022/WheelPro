@@ -2094,13 +2094,14 @@ object FrmPrincipal: TFrmPrincipal
         Size.PlatformDefault = False
         Stroke.Kind = None
         object VertScrollBoxRodas: TVertScrollBox
-          Align = Client
+          Align = Bottom
+          Position.Y = 232.000000000000000000
           Size.Width = 160.000000000000000000
-          Size.Height = 648.000000000000000000
+          Size.Height = 416.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           Viewport.Width = 160.000000000000000000
-          Viewport.Height = 648.000000000000000000
+          Viewport.Height = 416.000000000000000000
         end
       end
     end
@@ -13026,7 +13027,7 @@ object FrmPrincipal: TFrmPrincipal
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       OnGesture = Circle1Gesture
       Fill.Color = claBlack
-      Position.X = 1400.000000000000000000
+      Position.X = 1250.000000000000000000
       Position.Y = 140.000000000000000000
       Size.Width = 105.000000000000000000
       Size.Height = 105.000000000000000000
