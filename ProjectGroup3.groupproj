@@ -6,6 +6,9 @@
         <Projects Include="ProjetoRodasv3.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Mobile\WheelPro.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="ProjetoRodasv3:Make">
         <MSBuild Projects="ProjetoRodasv3.dproj" Targets="Make"/>
     </Target>
+    <Target Name="WheelPro">
+        <MSBuild Projects="Mobile\WheelPro.dproj"/>
+    </Target>
+    <Target Name="WheelPro:Clean">
+        <MSBuild Projects="Mobile\WheelPro.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WheelPro:Make">
+        <MSBuild Projects="Mobile\WheelPro.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProjetoRodasv3"/>
+        <CallTarget Targets="ProjetoRodasv3;WheelPro"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProjetoRodasv3:Clean"/>
+        <CallTarget Targets="ProjetoRodasv3:Clean;WheelPro:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProjetoRodasv3:Make"/>
+        <CallTarget Targets="ProjetoRodasv3:Make;WheelPro:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

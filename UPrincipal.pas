@@ -61,7 +61,18 @@ uses
   System.Actions,
   FMX.ActnList,
   Vcl.Graphics,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage,
+  Winapi.ShellAPI,
+  FMX.StdActns,
+  FMX.MediaLibrary.Actions,
+  FMX.BitmapHelper,
+  IPPeerClient,
+  IPPeerServer,
+  System.Tether.Manager,
+  System.Tether.AppProfile,
+  System.Tether.NetworkAdapter;
+
+
 
 type
   TFrmPrincipal = class(TForm)
@@ -97,7 +108,6 @@ type
     ShadowEffect5: TShadowEffect;
     MenuItem13: TMenuItem;
     Panel5: TPanel;
-    Image1: TImage;
     Image5: TImage;
     ShadowEffect9: TShadowEffect;
     MenuItem14: TMenuItem;
@@ -174,7 +184,14 @@ type
     Sair: TAction;
     MenuItem16: TMenuItem;
     LogOff: TAction;
+    ActShare: TShowShareSheetAction;
+    MediaReceiverManager: TTetheringManager;
+    MediaReceiverProfile: TTetheringAppProfile;
+    CalloutPanel1: TCalloutPanel;
+    Image1: TImage;
     ShadowEffect31: TShadowEffect;
+    TetheringManager1: TTetheringManager;
+    TetheringAppProfile1: TTetheringAppProfile;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -227,6 +244,10 @@ type
     procedure FormActivate(Sender: TObject);
     procedure LogOffExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure MediaReceiverProfileResourceReceived(const Sender: TObject;
+      const AResource: TRemoteResource);
+    procedure MediaReceiverManagerRequestManagerPassword(const Sender: TObject;
+      const ARemoteIdentifier: string; var Password: string);
 
 
   private
@@ -253,7 +274,9 @@ type
       WheelDelta: Integer; var Handled: Boolean);
     procedure SetidUsuario(const Value: Integer);
     procedure SaveBitmapToFile(Bitmap: TBitmap; const FileName: string);
-
+    procedure EnviarImagemWhatsApp(const FileName: string);
+    procedure EnviarAnexoWhatsApp(const FileName: string);
+    
   public
     { Public declarations }
      FidUsuario: Integer;
@@ -281,14 +304,19 @@ end;
 procedure TFrmPrincipal.SaveBitmapToFile(Bitmap: TBitmap;
   const FileName: string);
 var
-  Image: TPngImage;
+  //Image: TPngImage;
+  Image2: TBitMap;
 begin
-  Image := TPngImage.Create;
+  //Image := TPngImage.Create;
+  Image2:= TBitMap.Create;
   try
-    Image.Assign(Bitmap);
-    Image.SaveToFile(FileName);
+    //Image.Assign(Bitmap);
+    Image2.Assign(BitMap);
+    //Image.SaveToFile(FileName);
+    Image2.SaveToFile(FileName);
   finally
-    Image.Free;
+    //Image.Free;
+    Image2.Free;
   end;
 
 end;
@@ -315,6 +343,7 @@ procedure TFrmPrincipal.BtnCopiarFotoClick(Sender: TObject);
 var
   PrintScreen: TBitmap;
   DC: HDC;
+  NomeArquivo: string;
 begin
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), 0, 0); // Pressiona a tecla Alt
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), 0, 0); // Pressiona a tecla Print Screen
@@ -335,10 +364,20 @@ begin
       ReleaseDC(0, DC);
     end;
 
-    SaveBitmapToFile(PrintScreen, 'printscreen.png'); // Salvar em arquivo
+    SaveBitmapToFile(PrintScreen, 'printscreen.bmp'); // Salvar em arquivo .png
   finally
     PrintScreen.Free;
   end;
+
+   ActShare.Bitmap.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'PrintScreen.bmp');
+   ActShare.TextMessage:= 'Orçamento Wheell Pro - Conect solutions equipadora';
+   ActShare.Execute;
+
+  // Gere o arquivo PrintScreen.png anteriormente
+//  NomeArquivo := ExtractFilePath(ParamStr(0))+ '\PrintScreen.png';
+//  EnviarAnexoWhatsApp(NomeArquivo);
+//  EnviarImagemWhatsApp(NomeArquivo);
+
 end;
 
 procedure TFrmPrincipal.BtnCopiarRodaClick(Sender: TObject);
@@ -677,6 +716,40 @@ begin
   inherited;
 end;
 
+procedure TFrmPrincipal.EnviarAnexoWhatsApp(const FileName: string);
+var
+  DestFileName: string;
+begin
+  DestFileName := IncludeTrailingPathDelimiter(TPath.GetTempPath) + 'WhatsAppAttachment';
+  TFile.Copy(FileName, DestFileName);
+
+  ShellExecute(0, 'open',PChar('whatsapp://send?text=Mensagem%20opcional&attachment=' +
+    DestFileName), nil, nil, SW_SHOW);
+
+end;
+
+procedure TFrmPrincipal.EnviarImagemWhatsApp(const FileName: string);
+var
+  TempPath: string;
+  TempFileName: string;
+  DestFileName: string;
+begin
+  TempPath := TPath.GetTempPath;
+  TempFileName := ExtractFilePath(ParamStr(0)) + 'PrintScreen.png';
+  DestFileName := 'whatsapp://send?text=Mensagem%20opcional&attachment=' +
+    TempFileName;
+  //DestFileName := IncludeTrailingPathDelimiter(TempPath) + 'WhatsApp.png';
+
+  // Copiar o arquivo para o diretório temporário com um nome único
+  //TFile.Copy(FileName, TempFileName);
+
+  // Renomear o arquivo temporário para 'WhatsApp.png'
+  //TFile.Move(TempFileName, DestFileName);
+
+  ShellExecute(0, 'open', PChar(DestFileName), nil, nil, SW_SHOW);
+
+end;
+
 procedure TFrmPrincipal.FormActivate(Sender: TObject);
 begin
 //  Application.CreateForm(TFrmLogin, FrmLogin);
@@ -941,6 +1014,18 @@ procedure TFrmPrincipal.LogOffExecute(Sender: TObject);
 begin
 //  FrmLogin.ShowModal;
 //  FrmLogin.Destroy;
+end;
+
+procedure TFrmPrincipal.MediaReceiverManagerRequestManagerPassword(
+  const Sender: TObject; const ARemoteIdentifier: string; var Password: string);
+begin
+  Password := '1234';
+end;
+
+procedure TFrmPrincipal.MediaReceiverProfileResourceReceived(
+  const Sender: TObject; const AResource: TRemoteResource);
+begin
+  Image1.Bitmap.LoadFromStream(AResource.Value.AsStream);
 end;
 
 procedure TFrmPrincipal.MenuItem10Click(Sender: TObject);

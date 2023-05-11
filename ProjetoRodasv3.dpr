@@ -13,10 +13,11 @@ uses
   UCadastroFabricantes in 'View\UCadastroFabricantes.pas' {FrmFabricantes},
   UCadastroOrcamentos in 'View\UCadastroOrcamentos.pas' {FrmOrcamentos},
   URegistrar in 'View\URegistrar.pas' {FrmRegistrar},
-  Dao.Conexao in 'DAO\Dao.Conexao.pas' {$R *.res},
+  Dao.Conexao in 'DAO\Dao.Conexao.pas',
   DAO.Clientes in 'DAO\DAO.Clientes.pas',
   Model.Clientes in 'Model\Model.Clientes.pas',
-  Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas';
+  Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas',
+  FMX.BitmapHelper in 'FMX.BitmapHelper.pas';
 
 {$R *.res}
 
