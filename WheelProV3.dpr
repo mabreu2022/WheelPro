@@ -1,4 +1,4 @@
-program ProjetoRodasv3;
+program WheelProV3;
 
 uses
   System.StartUpCopy,
@@ -14,9 +14,9 @@ uses
   UCadastroOrcamentos in 'View\UCadastroOrcamentos.pas' {FrmOrcamentos},
   URegistrar in 'View\URegistrar.pas' {FrmRegistrar},
   Dao.Conexao in 'DAO\Dao.Conexao.pas',
-  DAO.Clientes in 'DAO\DAO.Clientes.pas',
+  Entity.Clientes in 'Entity\Entity.Clientes.pas',
   Model.Clientes in 'Model\Model.Clientes.pas',
-  Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas',
+  Controller.Clientes in 'Controller\Controller.Clientes.pas',
   FMX.BitmapHelper in 'FMX.BitmapHelper.pas';
 
 {$R *.res}

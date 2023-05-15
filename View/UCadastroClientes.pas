@@ -20,8 +20,8 @@ uses
   FMX.Edit,
   FMX.ListBox,
   Dao.Conexao,
-  Dao.Clientes,
-  Interfaces.Clientes,
+  Entity.Clientes,
+  Controller.Clientes,
   Model.Clientes,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
@@ -39,7 +39,11 @@ uses
   FireDAC.Phys.PGDef,
   FireDAC.Phys.PG,
   FireDAC.Comp.UI,
-  Datasnap.DBClient, FMX.TabControl, System.Rtti, FMX.Grid.Style, FMX.Grid,
+  Datasnap.DBClient,
+  FMX.TabControl,
+  System.Rtti,
+  FMX.Grid.Style,
+  FMX.Grid,
   FMX.ScrollBox;
 
 type
@@ -118,11 +122,13 @@ type
     CBAtivo: TComboBox;
     ShadowEffect22: TShadowEffect;
     TabItem2: TTabItem;
-    Grid1: TGrid;
     Panel1: TPanel;
-    Column1: TColumn;
-    Column2: TColumn;
-    Column3: TColumn;
+    GridClientes: TStringGrid;
+    EditPesquisa: TEdit;
+    LblPesquisar: TLabel;
+    ShadowEffect33: TShadowEffect;
+    ShadowEffect34: TShadowEffect;
+    BtnPesquisar: TButton;
     procedure FormShow(Sender: TObject);
     procedure BtnNovoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -141,15 +147,20 @@ type
     procedure EdtCepKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure BtnExcluirClick(Sender: TObject);
+    procedure BtnPesquisarClick(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
     FCliente: TClientes;
     PodeGravar: Boolean;
+    FUFCliente: string;
+    FAtivoCliente: string;
     qry: TFDQuery;
-    RegrasDeNegocios: TRegrasDeNegocio;
+    RegrasDeNegocios: TModelCliente;
+    FTipo: String;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
-
+    Procedure PopularGridClientes;
+    procedure PreencheDadosEncontradosDoCliente;
   public
     { Public declarations }
     DataSet: TClientDataSet;
@@ -171,13 +182,15 @@ implementation
 
 procedure TFrmCadastroClientes.BtnAlterarClick(Sender: TObject);
 var
-  RegrasDeNeogicios: TRegrasDeNegocio;
+  RegrasDeNeogicios: TModelCliente;
   Cliente: TClientes;
 begin
+  FTipo:='A';
+
   DesabilitaBotoes([BiGravar]);
 
-  if EdtCnpj.CanFocus then
-    EdtCnpj.SetFocus;
+  if EdtRazao.CanFocus then
+    EdtRazao.SetFocus;
 
 end;
 
@@ -189,45 +202,47 @@ end;
 
 procedure TFrmCadastroClientes.BtnExcluirClick(Sender: TObject);
 begin
+  FTipo:='E';
   DesabilitaBotoes([BiGravar]);
-
 end;
 
 procedure TFrmCadastroClientes.BtnGravarClick(Sender: TObject);
 var
-  Cliente: TClientes;
   Abortar: Boolean;
 begin
-
-  Cliente:= TClientes.create;
   try
      //Testar se os campos foram todos preenchidos
-     RegrasDeNegocios:= TRegrasDeNegocio.Create;
-     PodeGravar :=  RegrasDeNegocios.TestaseTemEndereco(Fcliente);
+     RegrasDeNegocios:= TModelCliente.Create;
+     PodeGravar :=  RegrasDeNegocios.TestaSeCamposPreenchidos(Fcliente);
 
      if PodeGravar then //testar preenchimento dos campos
      begin
        PopularClientes;
-       Abortar:= Cliente.ClienteExiste(EdtCnpj.text);
-       if Abortar then
+       Abortar:= RegrasDeNegocios.ClienteExiste(EdtCnpj.text);
+       if Abortar then  //cliente Existe
        begin
          ShowMessage('Cliente já existe no Cadastro!');
-         Exit;
+         if FTipo='I' then //Inclusão cai fora
+           exit
+         else if FTipo='A' then //é update(alteração)
+            RegrasDeNegocios.AlterarCliente(FCliente)
+
        end
-       else
-         Cliente.SalvarCliente(FCliente);
+       else if FTipo='I' then//Cliente não existe
+       begin
+          RegrasDeNegocios.SalvarCliente(FCliente);
+       end;
      end
-     else
+     else //Não atendeu as regras de negócios
      begin
        ShowMessage('Não foi possível salvar os dados do cliente');
 
        if EdtRazao.CanFocus then
          EdtRazao.SetFocus;
      end;
-
      DesabilitaBotoes([BiPrimeiro,BiAnterior,BiProximo,BiUltimo,BiNovo,BiAlterar,BiExcluir,BiGravar]);
   finally
-    Cliente.Free;
+    FCliente.Free;
     RegrasDeNegocios.Free;
   end;
 
@@ -235,6 +250,8 @@ end;
 
 procedure TFrmCadastroClientes.BtnNovoClick(Sender: TObject);
 begin
+  FTipo:='N';
+
   DesabilitaBotoes([BiGravar]);//Desabilita todos botões menos o botão gravar
 
   //Limpar todos os campos da tela
@@ -246,12 +263,44 @@ begin
   EdtCep.Text         := '';
   EdtCidade.Text      := '';
   EdtBairro.Text      := '';
-  CBUF.Index          := 1;
+  CBUF.Index          := 24; //Ver qual o index de SP para trocar aqui
   CBAtivo.Index       := 1;
 
   //Foco no campo EdtRazao
   if EdtRazao.CanFocus then
     EdtRazao.SetFocus;
+
+end;
+
+procedure TFrmCadastroClientes.BtnPesquisarClick(Sender: TObject);
+var
+  I, J: Integer;
+  TermoPesquisa: string;
+begin
+  TermoPesquisa := EditPesquisa.Text;
+
+  // Percorra as células do grid para encontrar correspondências com o termo de pesquisa
+  for I := 0 to GridClientes.RowCount - 1 do
+  begin
+    for J := 0 to GridClientes.ColumnCount - 1 do
+    begin
+      if Pos(UpperCase(TermoPesquisa), UpperCase(GridClientes.Cells[J, I])) > 0 then
+      begin
+        // Destaque a célula encontrada
+        GridClientes.SelectCell(J, I);
+
+        // Faça algo com a célula encontrada, como exibir uma mensagem
+        ShowMessage('Encontrado em ' + GridClientes.Cells[J, 0] + ': ' + GridClientes.Cells[J, I]);
+
+        //Preencher os Edits da Aba Cadastro
+        PreencheDadosEncontradosDoCliente;
+
+        // Você pode retornar aqui se desejar encontrar apenas a primeira correspondência
+        // Exit;
+      end;
+
+    end;
+  end;
 
 end;
 
@@ -419,22 +468,23 @@ end;
 procedure TFrmCadastroClientes.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  FCliente.Free;
+  //FCliente.Free;
 end;
 
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
 var
-  Cliente: TClientes;
+  Model: TModelCliente;
 
 begin
-  Cliente:= TClientes.create;
+  Model:= TModelCliente.create;
   DataSet:= TClientDataset.Create(nil);
 
   try
 
-     qry:=Cliente.CarregarTodosClientes(DataSet);
+     qry:=Model.CarregarTodosClientes(DataSet);
      DataSet:=CriarDataSet(DataSet);
      DataSet.Open;
+     qry.First;
      while Not qry.eof do
      begin
 
@@ -459,7 +509,7 @@ begin
      OnDataSetChange;
 
   finally
-
+    //Cliente.Free;
   end;
 end;
 
@@ -489,7 +539,7 @@ begin
 
   // Definir o valor do campo UF no combobox CBUF
   // Obter o valor dos campos UF e Ativo do DataSet
-  ufCliente := DataSet.FieldByName('uf').AsString;
+  ufCliente    := DataSet.FieldByName('uf').AsString;
   ativoCliente := DataSet.FieldByName('Ativo').AsString;
 
   // Definir o valor do campo UF no combobox CBUF
@@ -506,26 +556,85 @@ begin
   else
     CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
 
-  PopularClientes;
+  PopularClientes;  //Popula a variável FClientes
+  //PopularGridClientes; //Fica pulando cliente
 end;
 
 procedure TFrmCadastroClientes.PopularClientes;
 begin
-  //popular a classe clientes;
-  FCliente := TClientes.create;
+  FCliente := TClientes.Create;
   try
-    FCliente.razaosocial := EdtRazao.Text;
-    FCliente.cnpj        := EdtCnpj.Text;
-    FCliente.Endereco    := EdtEndereco.Text;
-    FCliente.Numero      := StrToInt(EdtNumero.Text);
-    FCliente.Complemento := EdtComplemento.Text;
-    FCliente.Cep         := EdtCep.Text;
-    FCliente.Cidade      := EdtCidade.Text;
-    FCliente.Bairro      := EdtBairro.Text;
-    FCliente.UF          := CBUF.Items.Text;
-    FCliente.Ativo       := CBAtivo.Items.Text;
+     FCliente.razaosocial := EdtRazao.Text;
+     FCliente.cnpj        := EdtCnpj.Text;
+     FCliente.Endereco    := EdtEndereco.Text;
+     FCliente.Numero      := StrToInt(EdtNumero.Text);
+     FCliente.Complemento := EdtComplemento.Text;
+     FCliente.Cep         := EdtCep.Text;
+     FCliente.Cidade      := EdtCidade.Text;
+     FCliente.Bairro      := EdtBairro.Text;
+     FCliente.UF          := CBUF.Items.Text;
+     FCliente.Ativo       := CBAtivo.Items.Text;
   finally
-//    FCliente.Free; //Está  no onclose do form
+    FCliente.Free;
+  end;
+
+end;
+
+procedure TFrmCadastroClientes.PopularGridClientes;
+var
+  I, J: Integer;
+
+begin
+  //Está pulando um registro ao dar o Proximo na View.
+
+  // Limpar as colunas existentes
+  while GridClientes.ColumnCount > 0 do
+    GridClientes.RemoveObject(GridClientes.Columns[0]);
+
+
+  // Configurar as colunas do grid
+  GridClientes.RowCount := DataSet.RecordCount + 1;
+
+  for I := 0 to DataSet.FieldCount - 1 do
+  begin
+    GridClientes.AddObject(TStringColumn.Create(GridClientes));
+    GridClientes.Columns[I].Header := DataSet.Fields[I].FieldName;
+  end;
+
+  // Populando as células do grid com os dados do dataset
+  DataSet.First;
+  I := 0;
+
+  while not DataSet.Eof do
+  begin
+    Inc(I);
+    for J := 0 to DataSet.FieldCount - 1 do
+      GridClientes.Cells[J, I] := DataSet.Fields[J].AsString;
+
+    DataSet.Next;
+
+  end;
+
+end;
+
+procedure TFrmCadastroClientes.PreencheDadosEncontradosDoCliente;
+var
+  SelectedRow: Integer;
+begin
+  if GridClientes.Selected >= 0 then
+  begin
+    SelectedRow := GridClientes.Selected;
+    EdtCodCliente.Text  := GridClientes.Cells[0, SelectedRow];
+    EdtRazao.Text       := GridClientes.Cells[1, SelectedRow];
+    EdtCnpj.Text        := GridClientes.Cells[2, SelectedRow];
+    EdtEndereco.Text    := GridClientes.Cells[3, SelectedRow];
+    EdtNumero.Text      := GridClientes.Cells[4, SelectedRow];
+    EdtComplemento.Text := GridClientes.Cells[5, SelectedRow];
+    EdtCep.Text         := GridClientes.Cells[6, SelectedRow];
+    EdtCidade.Text      := GridClientes.Cells[7, SelectedRow];
+    EdtBairro.Text      := GridClientes.Cells[8, SelectedRow];
+    CBUF.ItemIndex      := CBUF.Items.IndexOf(GridClientes.Cells[9, SelectedRow]);
+    CBAtivo.ItemIndex   := CBAtivo.Items.IndexOf(GridClientes.Cells[10, SelectedRow]);
   end;
 
 end;

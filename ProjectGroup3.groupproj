@@ -3,7 +3,7 @@
         <ProjectGuid>{7F5B220A-B589-4725-88F6-09C91AB91E89}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="ProjetoRodasv3.dproj">
+        <Projects Include="WheelProV3.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="Mobile\WheelPro.dproj">
@@ -17,14 +17,14 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="ProjetoRodasv3">
-        <MSBuild Projects="ProjetoRodasv3.dproj"/>
+    <Target Name="WheelProV3">
+        <MSBuild Projects="WheelProV3.dproj"/>
     </Target>
-    <Target Name="ProjetoRodasv3:Clean">
-        <MSBuild Projects="ProjetoRodasv3.dproj" Targets="Clean"/>
+    <Target Name="WheelProV3:Clean">
+        <MSBuild Projects="WheelProV3.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ProjetoRodasv3:Make">
-        <MSBuild Projects="ProjetoRodasv3.dproj" Targets="Make"/>
+    <Target Name="WheelProV3:Make">
+        <MSBuild Projects="WheelProV3.dproj" Targets="Make"/>
     </Target>
     <Target Name="WheelPro">
         <MSBuild Projects="Mobile\WheelPro.dproj"/>
@@ -36,13 +36,13 @@
         <MSBuild Projects="Mobile\WheelPro.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProjetoRodasv3;WheelPro"/>
+        <CallTarget Targets="WheelProV3;WheelPro"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProjetoRodasv3:Clean;WheelPro:Clean"/>
+        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProjetoRodasv3:Make;WheelPro:Make"/>
+        <CallTarget Targets="WheelProV3:Make;WheelPro:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -205,6 +205,8 @@ object FrmCadastroClientes: TFrmCadastroClientes
         StyleLookup = ''
         TabOrder = 0
         Text = 'Cadastro'
+        ExplicitSize.cx = 67.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object LblCodCliente: TLabel
           Position.X = 8.000000000000000000
           Position.Y = 5.000000000000000000
@@ -588,30 +590,65 @@ object FrmCadastroClientes: TFrmCadastroClientes
         StyleLookup = ''
         TabOrder = 0
         Text = 'Pesquisa'
-        object Grid1: TGrid
-          Align = Client
-          CanFocus = True
-          ClipChildren = True
-          Size.Width = 720.000000000000000000
-          Size.Height = 368.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
-          Viewport.Width = 700.000000000000000000
-          Viewport.Height = 343.000000000000000000
-          object Column1: TColumn
-          end
-          object Column2: TColumn
-          end
-          object Column3: TColumn
-          end
-        end
+        ExplicitSize.cx = 66.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object Panel1: TPanel
           Align = Bottom
           Position.Y = 368.000000000000000000
           Size.Width = 720.000000000000000000
           Size.Height = 50.000000000000000000
           Size.PlatformDefault = False
+          TabOrder = 0
+          object EditPesquisa: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 0
+            Position.X = 80.000000000000000000
+            Position.Y = 8.000000000000000000
+            Size.Width = 177.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            object ShadowEffect33: TShadowEffect
+              Distance = 3.000000000000000000
+              Direction = 45.000000000000000000
+              Softness = 0.300000011920929000
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+          end
+          object LblPesquisar: TLabel
+            Position.X = 16.000000000000000000
+            Position.Y = 8.000000000000000000
+            Size.Width = 57.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Pesquisar'
+            TabOrder = 1
+            object ShadowEffect34: TShadowEffect
+              Distance = 3.000000000000000000
+              Direction = 45.000000000000000000
+              Softness = 0.300000011920929000
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+          end
+          object BtnPesquisar: TButton
+            Position.X = 280.000000000000000000
+            Position.Y = 10.000000000000000000
+            TabOrder = 2
+            Text = 'Ok'
+            OnClick = BtnPesquisarClick
+          end
+        end
+        object GridClientes: TStringGrid
+          Align = Client
+          CanFocus = True
+          ClipChildren = True
+          Size.Width = 720.000000000000000000
+          Size.Height = 368.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 1
+          Viewport.Width = 716.000000000000000000
+          Viewport.Height = 343.000000000000000000
         end
       end
     end

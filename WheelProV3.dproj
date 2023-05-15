@@ -8,7 +8,7 @@
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>693267</TargetedPlatforms>
         <AppType>Application</AppType>
-        <MainSource>ProjetoRodasv3.dpr</MainSource>
+        <MainSource>WheelProV3.dpr</MainSource>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -106,7 +106,7 @@
         <AUP_READ_PHONE_STATE>true</AUP_READ_PHONE_STATE>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
-        <SanitizedProjectName>ProjetoRodasv3</SanitizedProjectName>
+        <SanitizedProjectName>WheelProV3</SanitizedProjectName>
         <EL_SecureFileSharing>true</EL_SecureFileSharing>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
@@ -309,9 +309,9 @@
         <DCCReference Include="DAO\Dao.Conexao.pas">
             <Form>$R *.res</Form>
         </DCCReference>
-        <DCCReference Include="DAO\DAO.Clientes.pas"/>
+        <DCCReference Include="Entity\Entity.Clientes.pas"/>
         <DCCReference Include="Model\Model.Clientes.pas"/>
-        <DCCReference Include="Interfaces\Interfaces.Clientes.pas"/>
+        <DCCReference Include="Controller\Controller.Clientes.pas"/>
         <DCCReference Include="FMX.BitmapHelper.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -331,7 +331,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">ProjetoRodasv3.dpr</Source>
+                    <Source Name="MainSource">WheelProV3.dpr</Source>
                 </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k280.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
@@ -480,9 +480,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Android64\Debug\libProjetoRodasv3.so" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Android64\Debug\libWheelProV3.so" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Android64">
-                        <RemoteName>libProjetoRodasv3.so</RemoteName>
+                        <RemoteName>libWheelProV3.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -507,15 +507,15 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win32\Debug\ProjetoRodasv3.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win32\Debug\WheelProV3.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>ProjetoRodasv3.exe</RemoteName>
+                        <RemoteName>WheelProV3.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win64\Debug\ProjetoRodasv3.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win64\Debug\WheelProV3.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
-                        <RemoteName>ProjetoRodasv3.exe</RemoteName>
+                        <RemoteName>WheelProV3.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

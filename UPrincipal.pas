@@ -465,7 +465,7 @@ begin
      qry.ParamByName('IDCATEGORIA').DataType   := ftSmallint;
      qry.ParamByName('IDCATEGORIA').AsSmallint := FIdCategoria;
      qry.Open;
-     Showmessage('No Onchange de CBCAtegorias a qtde. de Registros é de: ' +IntToStr(qry.RecordCount));
+     //Showmessage('No Onchange de CBCAtegorias a qtde. de Registros é de: ' +IntToStr(qry.RecordCount));
 
      //Limpar o CBLinhas
      CBLinhas.Clear;
@@ -542,7 +542,7 @@ begin
      qry.ParamByName('IDLINHA').DataType   := ftSmallint;
      qry.ParamByName('IDLINHA').AsSmallint := FidLinha;
      qry.Open;
-     Showmessage('No CBLinhas Change a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
+     //Showmessage('No CBLinhas Change a qtde. de Registros é de: ' + IntToStr(qry.RecordCount));
 
      //Limpar  o CBProdutos
      CBProdutos.Clear;
