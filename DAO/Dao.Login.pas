@@ -24,7 +24,8 @@ uses
   FireDAC.DApt,
   Dao.Conexao,
   FireDAC.Phys.MySQLDef,
-  FireDAC.Phys.MySQL;
+  FireDAC.Phys.MySQL,
+  FMX.Forms;
 
 type
   TLogin = class
@@ -72,6 +73,7 @@ begin
 
     //Define o IDUsuario para os direitos de usuário
     FrmPrincipal.FidUsuario := FDQuery1.FieldByName('idlogin').AsInteger;
+
 
     if FDQuery1.RecordCount > 0 then
       Result:= True

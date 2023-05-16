@@ -13,7 +13,7 @@ uses
   UCadastroFabricantes in 'View\UCadastroFabricantes.pas' {FrmFabricantes},
   UCadastroOrcamentos in 'View\UCadastroOrcamentos.pas' {FrmOrcamentos},
   URegistrar in 'View\URegistrar.pas' {FrmRegistrar},
-  Dao.Conexao in 'DAO\Dao.Conexao.pas',
+  Dao.Conexao in 'DAO\Dao.Conexao.pas' {$R *.res},
   Entity.Clientes in 'Entity\Entity.Clientes.pas',
   Model.Clientes in 'Model\Model.Clientes.pas',
   Controller.Clientes in 'Controller\Controller.Clientes.pas',

@@ -85,8 +85,8 @@ begin
   try
     if Login.Login(EdtUsuario.Text, EdtSenha.Text) then
     begin
+      FrmLogin.CloseModal;
       FrmPrincipal.ShowModal;
-      FrmLogin.Destroy;
     end
     else
     begin

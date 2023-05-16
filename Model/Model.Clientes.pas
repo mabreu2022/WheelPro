@@ -42,7 +42,6 @@ type
       class function AlterarCliente(aCliente: TClientes): Boolean;
 
       //Delete
-      function Deletar(const ACnpj: string): Boolean;
       function RemoverCliente(aId: Integer): Boolean;
 
       //Regras
@@ -66,7 +65,7 @@ var
 begin
   Result:=False;
 
-  qry:=qry.Create(nil);
+  qry:=TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
   try
     qry.Close;
@@ -88,6 +87,7 @@ begin
                   'CNPJ_CPF = :CNP_CPF          ';
 
     qry.ParamByName('idclientes').DataType    := ftInteger;
+    qry.ParamByName('idclientes').AsInteger   := aCliente.idcliente;
     qry.ParamByName('razao').DataType         := ftString;
     qry.ParamByName('razao').AsString         := aCliente.razaosocial;
     qry.ParamByName('cnpj_cpf').DataType      := ftString;
@@ -106,6 +106,7 @@ begin
     qry.ParamByName('bairro').AsString        := aCliente.Bairro;
 
     qry.ParamByName('uf').DataType            := ftString;
+
     if Length(aCliente.UF) > 0 then
       UF := Copy(aCliente.UF, 1, 2)
     else
@@ -179,7 +180,8 @@ begin
   qry.Connection:= TConnection.CreateConnection;
   try
     qry.SQL.Clear;
-    qry.SQL.Add('SELECT * FROM CLIENTES');
+    qry.SQL.Add('SELECT * FROM CLIENTES ');
+    qry.SQL.Add('WHERE ATIVO=''S''      ');
     qry.SQL.Add('ORDER BY IDCLIENTES ASC');
     qry.Open;
 
@@ -221,11 +223,6 @@ begin
   FCliente          := TClientes.Create;
 end;
 
-function TModelCliente.Deletar(const ACnpj: string): Boolean;
-begin
-  //
-end;
-
 function TModelCliente.ObterClientePorId(aId: Integer): TFDQuery;
 begin
   qry:= TFDQuery.Create(nil);
@@ -247,6 +244,27 @@ end;
 
 function TModelCliente.RemoverCliente(aId: Integer): Boolean;
 begin
+  Result:= False;
+
+  qry:= TFDQuery.Create(nil);
+  qry.Connection:= TConnection.CreateConnection;
+  try
+
+    qry.Close;
+    qry.SQL.Text := 'UPDATE fulanorodas.clientes  ' +
+                  'SET                           ' +
+                  'ativo       = ''S'',          ' +
+                  'uf          = :uf             ' +
+                  'WHERE IDCLIENTES=:IDCLIENTES';
+    qry.ParamByName('IDCLIENTES').DataType:= ftInteger;
+    qry.ParamByName('IDCLIENTES').AsInteger:= aId;
+
+    qry.ExecSQL;
+
+    Result := True;
+  finally
+    qry.Free;
+  end;
 
 end;
 

@@ -213,6 +213,7 @@ end;
 procedure TFrmCadastroClientes.BtnGravarClick(Sender: TObject);
 var
   Abortar: Boolean;
+  Confirmacao: Integer;
 begin
   PopularClientes;
   try
@@ -230,7 +231,10 @@ begin
          RegrasDeNegocios.AlterarCliente(FCliente);
        end
        else if FTipo='N' then //Inclusão cai fora
-              RegrasDeNegocios.SalvarCliente(FCliente);
+              RegrasDeNegocios.SalvarCliente(FCliente)
+       else if FTipo='E' then
+              RegrasDeNegocios.RemoverCliente(FCliente.idcliente);
+
      end
      else //Não atendeu as regras de negócios
      begin
@@ -325,8 +329,20 @@ end;
 
 procedure TFrmCadastroClientes.CBAtivoExit(Sender: TObject);
 begin
-  if BtnGravar.CanFocus then
-    BtnGravar.SetFocus;
+  if FTipo<>'E' then
+  begin
+    if BtnGravar.CanFocus then
+      BtnGravar.SetFocus;
+  end
+  else
+  begin
+    CBAtivo.OnExit := nil; // Desativa o evento OnExit temporariamente
+    try
+      CBAtivo.ItemIndex := 2; // Define o índice do TComboBox como 2
+    finally
+      CBAtivo.OnExit := CBAtivoExit; // Reativa o evento OnExit
+    end;
+  end;
 end;
 
 constructor TFrmCadastroClientes.create;
@@ -506,7 +522,6 @@ procedure TFrmCadastroClientes.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   FCliente.Free;
-  CDS.Free;
 end;
 
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
@@ -565,6 +580,7 @@ procedure TFrmCadastroClientes.PopularClientes;
 begin
   FCliente := TClientes.Create;
   try
+     FCliente.idcliente   := StrTOInt(EdtCodCliente.Text);
      FCliente.razaosocial := EdtRazao.Text;
      FCliente.cnpj        := EdtCnpj.Text;
      FCliente.Endereco    := EdtEndereco.Text;
@@ -573,8 +589,8 @@ begin
      FCliente.Cep         := EdtCep.Text;
      FCliente.Cidade      := EdtCidade.Text;
      FCliente.Bairro      := EdtBairro.Text;
-     FCliente.UF          := CBUF.Items.Text; //AC toda vez.
-     FCliente.Ativo       := CBAtivo.Items.Text;
+     FCliente.UF          := CBUF.Items[CBUF.ItemIndex];
+     FCliente.Ativo       := CBAtivo.Items[CBAtivo.ItemIndex];
   finally
     //FCliente.Free;
   end;

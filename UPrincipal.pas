@@ -752,6 +752,7 @@ end;
 
 procedure TFrmPrincipal.FormActivate(Sender: TObject);
 begin
+//  Formulário de LLogin aparecendo na frente do FormPrincipal já criado
 //  Application.CreateForm(TFrmLogin, FrmLogin);
 //  FrmLogin.ShowModal;
 //  FrmLogin.Destroy;
@@ -760,6 +761,7 @@ end;
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FrmLogin.Close;
+  Application.Terminate;
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
@@ -882,7 +884,7 @@ begin
 
    finally
      qry.Free;
-   end;
+   end; //Fim das permissões dos Menus
 
 end;
 
