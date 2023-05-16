@@ -17,7 +17,8 @@ uses
   Entity.Clientes in 'Entity\Entity.Clientes.pas',
   Model.Clientes in 'Model\Model.Clientes.pas',
   Controller.Clientes in 'Controller\Controller.Clientes.pas',
-  FMX.BitmapHelper in 'FMX.BitmapHelper.pas';
+  FMX.BitmapHelper in 'FMX.BitmapHelper.pas',
+  uConfig in 'View\uConfig.pas' {FrmConfig};
 
 {$R *.res}
 

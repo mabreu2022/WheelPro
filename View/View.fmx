@@ -1,0 +1,174 @@
+object FrmConfig: TFrmConfig
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = Single
+  Caption = 'Configura'#231#245'es do sistema'
+  ClientHeight = 480
+  ClientWidth = 640
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Layout1: TLayout
+    Align = Client
+    Size.Width = 640.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Layout2: TLayout
+      Align = Top
+      Size.Width = 640.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object Rectangle1: TRectangle
+        Align = Client
+        Fill.Color = claDarkseagreen
+        Size.Width = 640.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        object Label1: TLabel
+          Align = Contents
+          StyledSettings = [Family, FontColor]
+          Size.Width = 640.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 20.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.HorzAlign = Center
+          Text = 'Configura'#231#245'es do Sistema'
+          TabOrder = 0
+          object ShadowEffect1: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+      end
+    end
+    object Layout3: TLayout
+      Align = Bottom
+      Position.Y = 430.000000000000000000
+      Size.Width = 640.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object Rectangle2: TRectangle
+        Align = Client
+        Fill.Color = claDarkseagreen
+        Size.Width = 640.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        object BtnGravar: TButton
+          Position.X = 548.000000000000000000
+          Position.Y = 15.000000000000000000
+          TabOrder = 0
+          Text = 'Gravar'
+          object ShadowEffect3: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+      end
+    end
+    object TabControl1: TTabControl
+      Align = Client
+      Size.Width = 640.000000000000000000
+      Size.Height = 380.000000000000000000
+      Size.PlatformDefault = False
+      TabIndex = 0
+      TabOrder = 2
+      TabPosition = PlatformDefault
+      Sizes = (
+        640s
+        354s
+        640s
+        354s)
+      object TabItem1: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = True
+        Size.Width = 62.000000000000000000
+        Size.Height = 26.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Sistema'
+        object CheckBox_CarregarTambemClientesAtivoIgualN: TCheckBox
+          Position.X = 16.000000000000000000
+          Position.Y = 30.000000000000000000
+          Size.Width = 225.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Carregar tamb'#233'm clientes Ativo = N'
+          object ShadowEffect6: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object CCBCoresDoSistema: TColorComboBox
+          DropDownKind = Custom
+          Color = claNull
+          DisableFocusEffect = False
+          Position.X = 16.000000000000000000
+          Position.Y = 78.000000000000000000
+          Size.Width = 225.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          object ShadowEffect5: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblCoresdoSistema: TLabel
+          Position.X = 16.000000000000000000
+          Position.Y = 54.000000000000000000
+          Text = 'Cores do Sistema'
+          TabOrder = 2
+          object ShadowEffect4: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+      end
+      object TabItem2: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = False
+        Size.Width = 106.000000000000000000
+        Size.Height = 26.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Banco de Dados'
+      end
+      object ShadowEffect2: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+  end
+end

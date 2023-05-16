@@ -228,15 +228,35 @@ begin
        if Abortar then  //cliente Existe
        begin
          ShowMessage('Cliente já existe no Cadastro!');
-         RegrasDeNegocios.AlterarCliente(FCliente);
-       end
-       else if FTipo='N' then //Inclusão cai fora
-              RegrasDeNegocios.SalvarCliente(FCliente)
-       else if FTipo='E' then
-              RegrasDeNegocios.RemoverCliente(FCliente.idcliente);
+
+         if FTipo='A' then //Alterar
+         begin
+           RegrasDeNegocios.AlterarCliente(FCliente);
+           PopularDataSet;
+           OnDataSetChange;
+           Exit;
+         end;
+
+         if FTipo='N' then //Novo Registro
+         begin
+           RegrasDeNegocios.SalvarCliente(FCliente);
+           PopularDataSet;
+           OnDataSetChange;
+           Exit;
+         end;
+
+         if FTipo='E' then //Excluir
+         begin
+           RegrasDeNegocios.RemoverCliente(FCliente);
+           PopularDataSet;
+           OnDataSetChange;
+           Exit;
+         end;
+
+       end;
 
      end
-     else //Não atendeu as regras de negócios
+     else //Não atendeu as regras de negócios e não grava
      begin
        ShowMessage('Não foi possível salvar os dados do cliente');
 
@@ -521,7 +541,7 @@ end;
 procedure TFrmCadastroClientes.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  FCliente.Free;
+  //FCliente.Free;
 end;
 
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
@@ -590,7 +610,7 @@ begin
      FCliente.Cidade      := EdtCidade.Text;
      FCliente.Bairro      := EdtBairro.Text;
      FCliente.UF          := CBUF.Items[CBUF.ItemIndex];
-     FCliente.Ativo       := CBAtivo.Items[CBAtivo.ItemIndex];
+     FCliente.Ativo     := CBAtivo.Items[CBAtivo.ItemIndex];
   finally
     //FCliente.Free;
   end;

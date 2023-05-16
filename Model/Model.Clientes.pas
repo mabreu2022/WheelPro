@@ -42,7 +42,7 @@ type
       class function AlterarCliente(aCliente: TClientes): Boolean;
 
       //Delete
-      function RemoverCliente(aId: Integer): Boolean;
+      function RemoverCliente(aCliente: TClientes): Boolean;
 
       //Regras
       class function TestaSeCamposPreenchidos(aCliente: TClientes): Boolean;
@@ -242,7 +242,9 @@ begin
   end;
 end;
 
-function TModelCliente.RemoverCliente(aId: Integer): Boolean;
+function TModelCliente.RemoverCliente(aCliente: TClientes): Boolean;
+var
+  Ativo: string;
 begin
   Result:= False;
 
@@ -251,13 +253,12 @@ begin
   try
 
     qry.Close;
-    qry.SQL.Text := 'UPDATE fulanorodas.clientes  ' +
+    qry.SQL.Text := 'UPDATE fulanorodas.clientes ' +
                   'SET                           ' +
-                  'ativo       = ''S'',          ' +
-                  'uf          = :uf             ' +
+                  'ativo       = ''N''           ' +
                   'WHERE IDCLIENTES=:IDCLIENTES';
     qry.ParamByName('IDCLIENTES').DataType:= ftInteger;
-    qry.ParamByName('IDCLIENTES').AsInteger:= aId;
+    qry.ParamByName('IDCLIENTES').AsInteger:= aCliente.idcliente;
 
     qry.ExecSQL;
 

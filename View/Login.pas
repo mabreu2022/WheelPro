@@ -35,7 +35,10 @@ uses
   System.IniFiles,
   FireDAC.Phys.PGDef,
   FireDAC.Phys.PG,
-  FireDAC.Comp.UI, FMX.Layouts, FMX.Effects;
+  FireDAC.Comp.UI,
+  FMX.Layouts,
+  FMX.Effects,
+  System.UIConsts;
 
 type
   TFrmLogin = class(TForm)
@@ -60,11 +63,13 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
   public
     { Public declarations }
+    procedure CarregarCores;
     constructor create;
     destructor destroy; override;
   end;
@@ -104,6 +109,26 @@ begin
   FrmPrincipal.Close;
 end;
 
+procedure TFrmLogin.CarregarCores;
+var
+  IniFile: TIniFile;
+  Cor: TAlphaColor;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+  finally
+    IniFile.Free;
+  end;
+
+  for var I := 0 to FrmPrincipal.ComponentCount - 1 do
+  begin
+    if FrmPrincipal.Components[I] is TRectangle then
+      TRectangle(FrmPrincipal.Components[I]).Fill.Color := Cor;
+  end;
+
+end;
+
 constructor TFrmLogin.create;
 begin
   FConexao := TConnection.CreateConnection;
@@ -113,6 +138,11 @@ destructor TFrmLogin.destroy;
 begin
 
   inherited;
+end;
+
+procedure TFrmLogin.FormCreate(Sender: TObject);
+begin
+  CarregarCores;
 end;
 
 procedure TFrmLogin.FormShow(Sender: TObject);

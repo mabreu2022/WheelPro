@@ -70,9 +70,9 @@ uses
   IPPeerServer,
   System.Tether.Manager,
   System.Tether.AppProfile,
-  System.Tether.NetworkAdapter;
-
-
+  System.Tether.NetworkAdapter,
+  uConfig,
+  IniFiles;
 
 type
   TFrmPrincipal = class(TForm)
@@ -249,6 +249,7 @@ type
       const AResource: TRemoteResource);
     procedure MediaReceiverManagerRequestManagerPassword(const Sender: TObject;
       const ARemoteIdentifier: string; var Password: string);
+    procedure MenuItem12Click(Sender: TObject);
 
 
   private
@@ -282,6 +283,7 @@ type
     { Public declarations }
      FidUsuario: Integer;
      property idUsuario: Integer read FidUsuario write SetidUsuario;
+     procedure CarregarCores;
      constructor create;
      destructor destroy;override;
 
@@ -443,6 +445,25 @@ begin
     end;
   finally
     OpenDialog.Free;
+  end;
+end;
+
+procedure TFrmPrincipal.CarregarCores;
+var
+  IniFile: TIniFile;
+  Cor: TAlphaColor;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+  finally
+    IniFile.Free;
+  end;
+
+  for var I := 0 to FrmPrincipal.ComponentCount - 1 do
+  begin
+    if FrmPrincipal.Components[I] is TRectangle then
+      TRectangle(FrmPrincipal.Components[I]).Fill.Color := Cor;
   end;
 end;
 
@@ -769,6 +790,7 @@ begin
   Modo_Edicao(false);
   Modo_Edicao2(False);
   DM.FDConnection1.Connected:= True;
+  CarregarCores;
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
@@ -887,6 +909,8 @@ begin
    end; //Fim das permissões dos Menus
 
 end;
+
+
 
 procedure TFrmPrincipal.Image4DblClick(Sender: TObject);
 begin
@@ -1046,9 +1070,22 @@ begin
   end;
 end;
 
-procedure TFrmPrincipal.MenuItem14Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItem12Click(Sender: TObject);
 begin
-  //Chamar algum componente de cores.
+//  if not Assigned(FrmProdutos) then
+//  begin
+//    Application.CreateForm(TFrmProdutos, FrmProdutos);
+//    FrmProdutos.ShowModal;
+//  end;
+end;
+
+procedure TFrmPrincipal.MenuItem14Click(Sender: TObject);
+begin //O nome do arquivo será: Config.ini dentro do diretório do sistema
+  if not Assigned(FrmConfig) then
+  begin
+    Application.CreateForm(TFrmConfig, FrmConfig);
+    FrmConfig.ShowModal;
+  end;
 end;
 
 procedure TFrmPrincipal.MenuItem15Click(Sender: TObject);

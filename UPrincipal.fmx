@@ -2126,13 +2126,13 @@ object FrmPrincipal: TFrmPrincipal
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           Text = 'Produto :'
-          TabOrder = 37
+          TabOrder = 38
         end
         object Lbl_Descricao_Produto: TLabel
           Position.X = 90.000000000000000000
           Position.Y = 24.000000000000000000
           Text = 'Lbl_Descricao_Produto'
-          TabOrder = 38
+          TabOrder = 39
         end
         object ShadowEffect20: TShadowEffect
           Distance = 3.000000000000000000
@@ -2148,17 +2148,17 @@ object FrmPrincipal: TFrmPrincipal
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           Text = 'Pre'#231'o......:'
-          TabOrder = 39
+          TabOrder = 40
         end
         object Lbl_Preco: TLabel
           Position.X = 90.000000000000000000
           Position.Y = 48.000000000000000000
           Text = 'Lbl_Preco'
-          TabOrder = 40
+          TabOrder = 41
           object Label11: TLabel
             Position.X = 80.000000000000000000
             Text = ' X 4 = '
-            TabOrder = 3
+            TabOrder = 4
           end
         end
         object LblFabricante: TLabel
@@ -2168,13 +2168,13 @@ object FrmPrincipal: TFrmPrincipal
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           Text = 'Fabricante:'
-          TabOrder = 41
+          TabOrder = 42
         end
         object Lbl_Fabricante: TLabel
           Position.X = 90.000000000000000000
           Position.Y = 72.000000000000000000
           Text = 'Lbl_Fabricante'
-          TabOrder = 42
+          TabOrder = 43
         end
         object Lbl_ValorTotal: TLabel
           StyledSettings = [Family, FontColor]
@@ -2186,7 +2186,7 @@ object FrmPrincipal: TFrmPrincipal
           TextSettings.Font.Size = 18.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'Valor Total'
-          TabOrder = 43
+          TabOrder = 44
         end
         object Lbl_VAlor_Total_Cliente: TLabel
           StyledSettings = [Family, FontColor]
@@ -2195,7 +2195,7 @@ object FrmPrincipal: TFrmPrincipal
           TextSettings.Font.Size = 20.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'R$ 0,00'
-          TabOrder = 45
+          TabOrder = 46
         end
       end
       object Panel6: TPanel
@@ -31324,6 +31324,7 @@ object FrmPrincipal: TFrmPrincipal
           object MenuItem12: TMenuItem
             Locked = True
             Text = 'Produtos'
+            OnClick = MenuItem12Click
           end
           object MenuItem18: TMenuItem
             Locked = True
@@ -31341,7 +31342,7 @@ object FrmPrincipal: TFrmPrincipal
       Text = 'Configura'#231#245'es'
       object MenuItem14: TMenuItem
         Locked = True
-        Text = 'Cores do Sistema'
+        Text = 'Sistema'
         OnClick = MenuItem14Click
       end
       object MenuItem2: TMenuItem
