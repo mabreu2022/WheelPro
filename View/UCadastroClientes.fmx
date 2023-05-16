@@ -590,6 +590,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         StyleLookup = ''
         TabOrder = 0
         Text = 'Pesquisa'
+        OnClick = TabItem2Click
         ExplicitSize.cx = 66.000000000000000000
         ExplicitSize.cy = 26.000000000000000000
         object Panel1: TPanel

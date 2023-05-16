@@ -39,7 +39,7 @@ type
       function ObterClientePorId(aId: Integer): TFDQuery;
 
       //Update
-      class function AlterarCliente(Cliente: TClientes): Boolean;
+      class function AlterarCliente(aCliente: TClientes): Boolean;
 
       //Delete
       function Deletar(const ACnpj: string): Boolean;
@@ -58,9 +58,11 @@ implementation
 
 { TModelCliente }
 
-class function TModelCliente.AlterarCliente(Cliente: TClientes): Boolean;
+class function TModelCliente.AlterarCliente(aCliente: TClientes): Boolean;
 var
    qry: TFDQuery;
+   UF: String;
+   Ativo: String;
 begin
   Result:=False;
 
@@ -84,13 +86,47 @@ begin
                   'uf          = :uf            ' +
                   'WHERE                        ' +
                   'CNPJ_CPF = :CNP_CPF          ';
+
+    qry.ParamByName('idclientes').DataType    := ftInteger;
+    qry.ParamByName('razao').DataType         := ftString;
+    qry.ParamByName('razao').AsString         := aCliente.razaosocial;
+    qry.ParamByName('cnpj_cpf').DataType      := ftString;
+    qry.ParamByName('cnpj_cpf').AsString      := aCliente.cnpj ;
+    qry.ParamByName('endereco').DataType      := ftString;
+    qry.ParamByName('endereco').AsString      := aCliente.endereco;
+    qry.ParamByName('numero').DataType        := ftInteger;
+    qry.ParamByName('numero').AsInteger       := aCliente.numero;
+    qry.ParamByName('complemento').DataType   := ftString;
+    qry.ParamByName('complemento').AsString   := aCliente.complemento;
+    qry.ParamByName('cep').DataType           := ftString;
+    qry.ParamByName('cep').AsString           := aCliente.CEP;
+    qry.ParamByName('cidade').DataType        := ftString;
+    qry.ParamByName('cidade').AsString        := aCliente.Cidade;
+    qry.ParamByName('bairro').DataType        := ftString;
+    qry.ParamByName('bairro').AsString        := aCliente.Bairro;
+
+    qry.ParamByName('uf').DataType            := ftString;
+    if Length(aCliente.UF) > 0 then
+      UF := Copy(aCliente.UF, 1, 2)
+    else
+      UF := '';
+
+    qry.ParamByName('uf').AsString            := UF;
+
+    qry.ParamByName('ativo').DataType         := ftString;
+    if Length(aCliente.ativo) > 0 then
+      Ativo := Copy(aCliente.ativo, 1, 1)
+    else
+      Ativo := '';
+
+    qry.ParamByName('ativo').AsString         := Ativo;
+
     qry.ParamByName('CNP_CPF').DataType    := ftString;
-    qry.ParamByName('CNP_CPF').AsString    := Cliente.cnpj;
+    qry.ParamByName('CNP_CPF').AsString    := aCliente.cnpj;
 
     qry.ExecSQL;
 
-    if qry.RecordCount > 0 then
-      Result:=True;
+    Result:=True;
 
   finally
     qry.Free;
@@ -272,23 +308,21 @@ begin
      qry.ParamByName('bairro').DataType        := ftString;
      qry.ParamByName('bairro').AsString        := aCliente.Bairro;
 
-     qry.ParamByName('uf').DataType            := ftString; //ver como vai ser pois é CB
-
+     qry.ParamByName('uf').DataType            := ftString;
      if Length(aCliente.UF) > 0 then
        UF := Copy(aCliente.UF, 1, 2)
      else
        UF := '';
 
-     qry.ParamByName('uf').AsString            := aCliente.UF; //ver como vai ser pois é CB
+     qry.ParamByName('uf').AsString            := UF;
 
-     qry.ParamByName('ativo').DataType         := ftString; //ver como vai ser pois é CB
-
+     qry.ParamByName('ativo').DataType         := ftString;
      if Length(aCliente.ativo) > 0 then
        Ativo := Copy(aCliente.ativo, 1, 1)
      else
        Ativo := '';
 
-     qry.ParamByName('ativo').AsString         := aCliente.Ativo; //ver como vai ser pois é CB
+     qry.ParamByName('ativo').AsString         := Ativo;
 
      qry.ExecSQL;
 
@@ -347,10 +381,8 @@ begin
     exit;
   end;
 
-  //Testar se o cliente já existe no Cadastro e não deixar incluir se sim.
-
-
   Result:= True;
+
 end;
 
 end.

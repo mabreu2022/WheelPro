@@ -31,20 +31,18 @@ uses
 type
   TClientes = class
     private
-    Fcnpj: string;
-    Fativo: string;
-    FCEP: string;
-    Fnumero: integer;
-    Frazaosocial: string;
-    Fcomplemento: string;
-    Fendereco: string;
-    FUF: string;
-    FCidade: string;
-    FBairro: string;
-    FCliente : TClientes;
-    FConn: TFDConnection;
-    qry: TFDQuery;
-    Fidcliente: Integer;
+      Fidcliente: Integer;
+      Fcnpj: string;
+      Fativo: string;
+      FCEP: string;
+      Fnumero: integer;
+      Frazaosocial: string;
+      Fcomplemento: string;
+      Fendereco: string;
+      FUF: string;
+      FCidade: string;
+      FBairro: string;
+      FConn: TFDConnection;
 
 
     procedure Setativo(const Value: string);
@@ -83,12 +81,12 @@ implementation
 
 constructor TClientes.create;
 begin
-  Self.create;
+  FConn:= TConnection.CreateConnection;
 end;
 
 destructor TClientes.destroy;
 begin
-
+  FConn.Free;
   inherited;
 end;
 

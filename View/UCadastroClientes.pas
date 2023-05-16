@@ -148,6 +148,7 @@ type
       Shift: TShiftState);
     procedure BtnExcluirClick(Sender: TObject);
     procedure BtnPesquisarClick(Sender: TObject);
+    procedure TabItem2Click(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -158,9 +159,12 @@ type
     qry: TFDQuery;
     RegrasDeNegocios: TModelCliente;
     FTipo: String;
+    FController: TControllerCliente;
+    CDS: TClientDataSet;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     Procedure PopularGridClientes;
     procedure PreencheDadosEncontradosDoCliente;
+    procedure PopularDataSet;
   public
     { Public declarations }
     DataSet: TClientDataSet;
@@ -210,6 +214,7 @@ procedure TFrmCadastroClientes.BtnGravarClick(Sender: TObject);
 var
   Abortar: Boolean;
 begin
+  PopularClientes;
   try
      //Testar se os campos foram todos preenchidos
      RegrasDeNegocios:= TModelCliente.Create;
@@ -217,21 +222,15 @@ begin
 
      if PodeGravar then //testar preenchimento dos campos
      begin
-       PopularClientes;
-       Abortar:= RegrasDeNegocios.ClienteExiste(EdtCnpj.text);
+
+       Abortar:= RegrasDeNegocios.ClienteExiste(FCliente.cnpj);
        if Abortar then  //cliente Existe
        begin
          ShowMessage('Cliente já existe no Cadastro!');
-         if FTipo='I' then //Inclusão cai fora
-           exit
-         else if FTipo='A' then //é update(alteração)
-            RegrasDeNegocios.AlterarCliente(FCliente)
-
+         RegrasDeNegocios.AlterarCliente(FCliente);
        end
-       else if FTipo='I' then//Cliente não existe
-       begin
-          RegrasDeNegocios.SalvarCliente(FCliente);
-       end;
+       else if FTipo='N' then //Inclusão cai fora
+              RegrasDeNegocios.SalvarCliente(FCliente);
      end
      else //Não atendeu as regras de negócios
      begin
@@ -277,6 +276,8 @@ var
   I, J: Integer;
   TermoPesquisa: string;
 begin
+  PopularDataSet;
+  //Revisar o uso na aba da tela de clientes onde tem o GRIDClientes.
   TermoPesquisa := EditPesquisa.Text;
 
   // Percorra as células do grid para encontrar correspondências com o termo de pesquisa
@@ -332,11 +333,10 @@ constructor TFrmCadastroClientes.create;
 begin
   FConexao := TConnection.CreateConnection;
   FCliente := TClientes.create;
+  FController:= TControllerCliente.Create;
 end;
 
 Function TFrmCadastroClientes.CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
-var
-  CDS: TClientDataSet;
 begin
   CDS := TClientDataSet.Create(nil);
   try
@@ -364,7 +364,44 @@ end;
 destructor TFrmCadastroClientes.destroy;
 begin
    FConexao.Free;
+   FController.Free;
+   FConexao.Free;
   inherited;
+end;
+
+procedure TFrmCadastroClientes.PopularDataSet;
+var
+  Model: TModelCliente;
+begin
+  Model := TModelCliente.create;
+  DataSet := TClientDataset.Create(nil);
+  try
+    qry := Model.CarregarTodosClientes(DataSet);
+    DataSet := CriarDataSet(DataSet);
+    DataSet.Open;
+    qry.First;
+    while not qry.eof do
+    begin
+      DataSet.Append;
+      DataSet.FieldByName('idclientes').AsInteger := Qry.FieldByName('idclientes').AsInteger;
+      DataSet.FieldByName('razao').AsString := Qry.FieldByName('razao').AsString;
+      DataSet.FieldByName('cnpj_cpf').AsString := Qry.FieldByName('cnpj_cpf').AsString;
+      DataSet.FieldByName('endereco').AsString := Qry.FieldByName('endereco').AsString;
+      DataSet.FieldByName('numero').AsInteger := Qry.FieldByName('numero').AsInteger;
+      DataSet.FieldByName('complemento').AsString := Qry.FieldByName('complemento').AsString;
+      DataSet.FieldByName('CEP').AsString := Qry.FieldByName('CEP').AsString;
+      DataSet.FieldByName('Cidade').AsString := Qry.FieldByName('Cidade').AsString;
+      DataSet.FieldByName('Bairro').AsString := Qry.FieldByName('Bairro').AsString;
+      DataSet.FieldByName('UF').AsString := Qry.FieldByName('UF').AsString;
+      DataSet.FieldByName('ATIVO').AsString := Qry.FieldByName('ATIVO').AsString;
+      DataSet.Post;
+      qry.Next;
+    end;
+    DataSet.First;
+    OnDataSetChange;
+  finally
+  end;
+  //Cliente.Free;
 end;
 
 procedure TFrmCadastroClientes.EdtCepKeyDown(Sender: TObject; var Key: Word;
@@ -468,49 +505,13 @@ end;
 procedure TFrmCadastroClientes.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  //FCliente.Free;
+  FCliente.Free;
+  CDS.Free;
 end;
 
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
-var
-  Model: TModelCliente;
-
 begin
-  Model:= TModelCliente.create;
-  DataSet:= TClientDataset.Create(nil);
-
-  try
-
-     qry:=Model.CarregarTodosClientes(DataSet);
-     DataSet:=CriarDataSet(DataSet);
-     DataSet.Open;
-     qry.First;
-     while Not qry.eof do
-     begin
-
-       DataSet.Append;
-       DataSet.FieldByName('idclientes').AsInteger := Qry.FieldByName('idclientes').AsInteger;
-       DataSet.FieldByName('razao').AsString       := Qry.FieldByName('razao').AsString;
-       DataSet.FieldByName('cnpj_cpf').AsString    := Qry.FieldByName('cnpj_cpf').AsString;
-       DataSet.FieldByName('endereco').AsString    := Qry.FieldByName('endereco').AsString;
-       DataSet.FieldByName('numero').AsInteger     := Qry.FieldByName('numero').AsInteger;
-       DataSet.FieldByName('complemento').AsString := Qry.FieldByName('complemento').AsString;
-       DataSet.FieldByName('CEP').AsString         := Qry.FieldByName('CEP').AsString;
-       DataSet.FieldByName('Cidade').AsString      := Qry.FieldByName('Cidade').AsString;
-       DataSet.FieldByName('Bairro').AsString      := Qry.FieldByName('Bairro').AsString;
-       DataSet.FieldByName('UF').AsString          := Qry.FieldByName('UF').AsString; //e se gravar o index dom CBUF? 1,2,3,4...
-       DataSet.FieldByName('ATIVO').AsString       := Qry.FieldByName('ATIVO').AsString; //e se gravar o index dom CBUF? 1,2,3,4...
-
-       DataSet.Post;
-
-       qry.Next;
-     end;
-     DataSet.First;
-     OnDataSetChange;
-
-  finally
-    //Cliente.Free;
-  end;
+  PopularDataSet;
 end;
 
 procedure TFrmCadastroClientes.FormShow(Sender: TObject);
@@ -572,10 +573,10 @@ begin
      FCliente.Cep         := EdtCep.Text;
      FCliente.Cidade      := EdtCidade.Text;
      FCliente.Bairro      := EdtBairro.Text;
-     FCliente.UF          := CBUF.Items.Text;
+     FCliente.UF          := CBUF.Items.Text; //AC toda vez.
      FCliente.Ativo       := CBAtivo.Items.Text;
   finally
-    FCliente.Free;
+    //FCliente.Free;
   end;
 
 end;
@@ -637,6 +638,11 @@ begin
     CBAtivo.ItemIndex   := CBAtivo.Items.IndexOf(GridClientes.Cells[10, SelectedRow]);
   end;
 
+end;
+
+procedure TFrmCadastroClientes.TabItem2Click(Sender: TObject);
+begin
+  PopularGridClientes;
 end;
 
 end.
