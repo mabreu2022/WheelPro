@@ -49,6 +49,7 @@ type
       class function ClienteExiste(aCNPJ: string):Boolean;
 
       constructor Create;
+      destructor destroy;override;
 
   end;
 
@@ -221,6 +222,12 @@ end;
 constructor TModelCliente.Create;
 begin
   FCliente          := TClientes.Create;
+end;
+
+destructor TModelCliente.destroy;
+begin
+  FCliente.Free;
+  inherited;
 end;
 
 function TModelCliente.ObterClientePorId(aId: Integer): TFDQuery;

@@ -121,10 +121,10 @@ begin
     IniFile.Free;
   end;
 
-  for var I := 0 to FrmPrincipal.ComponentCount - 1 do
+  for var I := 0 to FrmLogin.ComponentCount - 1 do
   begin
-    if FrmPrincipal.Components[I] is TRectangle then
-      TRectangle(FrmPrincipal.Components[I]).Fill.Color := Cor;
+    if FrmLogin.Components[I] is TRectangle then
+      TRectangle(FrmLogin.Components[I]).Fill.Color := Cor;
   end;
 
 end;

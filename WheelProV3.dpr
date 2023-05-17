@@ -18,7 +18,10 @@ uses
   Model.Clientes in 'Model\Model.Clientes.pas',
   Controller.Clientes in 'Controller\Controller.Clientes.pas',
   FMX.BitmapHelper in 'FMX.BitmapHelper.pas',
-  uConfig in 'View\uConfig.pas' {FrmConfig};
+  uConfig in 'View\uConfig.pas' {FrmConfig},
+  Entity.Fabricantes in 'Entity\Entity.Fabricantes.pas',
+  Controller.Fabricantes in 'Controller\Controller.Fabricantes.pas',
+  Model.Fabricantes in 'Model\Model.Fabricantes.pas';
 
 {$R *.res}
 

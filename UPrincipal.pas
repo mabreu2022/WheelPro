@@ -250,6 +250,7 @@ type
     procedure MediaReceiverManagerRequestManagerPassword(const Sender: TObject;
       const ARemoteIdentifier: string; var Password: string);
     procedure MenuItem12Click(Sender: TObject);
+    procedure MenuItem18Click(Sender: TObject);
 
 
   private
@@ -1103,6 +1104,19 @@ begin
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), 0, 0); // Pressiona a tecla Print Screen
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Print Screen
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
+end;
+
+procedure TFrmPrincipal.MenuItem18Click(Sender: TObject);
+begin
+  if not Assigned(FrmCadastroVeiculos) then
+  begin
+    try
+      Application.CreateForm(TFrmCadastroVeiculos, FrmCadastroVeiculos);
+      FrmCadastroVeiculos.ShowModal;
+    finally
+      FreeAndNil(FrmCadastroVeiculos);
+    end;
+  end;
 end;
 
 procedure TFrmPrincipal.MenuItem1Click(Sender: TObject);

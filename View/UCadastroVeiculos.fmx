@@ -4,34 +4,35 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
   BorderIcons = [biSystemMenu]
   Caption = 'Cadastro de Ve'#237'culos'
   ClientHeight = 544
-  ClientWidth = 624
+  ClientWidth = 716
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Client
-    Size.Width = 624.000000000000000000
+    Size.Width = 716.000000000000000000
     Size.Height = 544.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Layout2: TLayout
       Align = Top
-      Size.Width = 624.000000000000000000
+      Size.Width = 716.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       object Rectangle1: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
-        Size.Width = 624.000000000000000000
+        Size.Width = 716.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         object Label1: TLabel
           Align = Contents
           StyledSettings = [Family, FontColor]
-          Size.Width = 624.000000000000000000
+          Size.Width = 716.000000000000000000
           Size.Height = 50.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 20.000000000000000000
@@ -52,14 +53,14 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
     object Layout3: TLayout
       Align = Bottom
       Position.Y = 494.000000000000000000
-      Size.Width = 624.000000000000000000
+      Size.Width = 716.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       object Rectangle2: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
-        Size.Width = 624.000000000000000000
+        Size.Width = 716.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         object Button1: TButton
@@ -153,26 +154,26 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
             ShadowColor = claBlack
           end
         end
-      end
-    end
-    object Edit1: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 2
-      Position.X = 24.000000000000000000
-      Position.Y = 72.000000000000000000
-      object ShadowEffect11: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
+        object BtnGravar: TButton
+          Position.X = 624.000000000000000000
+          Position.Y = 14.000000000000000000
+          TabOrder = 7
+          Text = 'Gravar'
+          object ShadowEffect27: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
       end
     end
     object Edit2: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 3
+      TabOrder = 2
       Position.X = 136.000000000000000000
-      Position.Y = 72.000000000000000000
+      Position.Y = 74.000000000000000000
       Size.Width = 481.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -191,7 +192,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'ID. Cliente'
-      TabOrder = 4
+      TabOrder = 3
       object ShadowEffect9: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -204,7 +205,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Position.X = 136.000000000000000000
       Position.Y = 54.000000000000000000
       Text = 'Cliente'
-      TabOrder = 5
+      TabOrder = 4
       object ShadowEffect10: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -215,7 +216,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
     end
     object Edit3: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 6
+      TabOrder = 5
       Position.X = 24.000000000000000000
       Position.Y = 125.000000000000000000
       object ShadowEffect15: TShadowEffect
@@ -228,7 +229,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
     end
     object Edit4: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 7
+      TabOrder = 6
       Position.X = 136.000000000000000000
       Position.Y = 125.000000000000000000
       Size.Width = 481.000000000000000000
@@ -249,7 +250,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'ID. Marca'
-      TabOrder = 8
+      TabOrder = 7
       object ShadowEffect13: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -262,7 +263,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Position.X = 136.000000000000000000
       Position.Y = 104.000000000000000000
       Text = 'Marca'
-      TabOrder = 9
+      TabOrder = 8
       object ShadowEffect14: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -278,7 +279,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'ID. Modelo'
-      TabOrder = 10
+      TabOrder = 9
       object ShadowEffect17: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -291,7 +292,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Position.X = 136.000000000000000000
       Position.Y = 160.000000000000000000
       Text = 'Modelo'
-      TabOrder = 11
+      TabOrder = 10
       object ShadowEffect18: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -302,7 +303,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
     end
     object Edit5: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 12
+      TabOrder = 11
       Position.X = 24.000000000000000000
       Position.Y = 180.000000000000000000
       object ShadowEffect19: TShadowEffect
@@ -315,7 +316,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
     end
     object Edit6: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 13
+      TabOrder = 12
       Position.X = 136.000000000000000000
       Position.Y = 180.000000000000000000
       Size.Width = 481.000000000000000000
@@ -336,7 +337,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Ano'
-      TabOrder = 14
+      TabOrder = 13
       object ShadowEffect21: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -420,7 +421,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
         '2030')
       Position.X = 24.000000000000000000
       Position.Y = 229.000000000000000000
-      TabOrder = 15
+      TabOrder = 14
       object ShadowEffect22: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -436,7 +437,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 206.000000000000000000
       Size.PlatformDefault = False
       Text = 'Foto'
-      TabOrder = 16
+      TabOrder = 15
       object ShadowEffect23: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -452,7 +453,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Ativo'
-      TabOrder = 17
+      TabOrder = 16
       object ShadowEffect24: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -471,7 +472,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Width = 57.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 18
+      TabOrder = 17
       object ShadowEffect25: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -486,9 +487,21 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Width = 97.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 19
+      TabOrder = 18
       Text = 'Inserir Foto'
       object ShadowEffect26: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object ComboBox3: TComboBox
+      Position.X = 24.000000000000000000
+      Position.Y = 74.000000000000000000
+      TabOrder = 19
+      object ShadowEffect11: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
         Softness = 0.300000011920929000

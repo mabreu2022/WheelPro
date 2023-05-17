@@ -3,10 +3,28 @@ unit URegistrar;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
-  FMX.Layouts, FMX.Effects, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Edit,
-  System.Rtti, FMX.Grid.Style, FMX.Grid, FMX.ScrollBox;
+  System.SysUtils,
+  System.Types,
+  System.UITypes,
+  System.Classes,
+  System.Variants,
+  FMX.Types,
+  FMX.Controls,
+  FMX.Forms,
+  FMX.Graphics,
+  FMX.Dialogs,
+  FMX.Objects,
+  FMX.Layouts,
+  FMX.Effects,
+  FMX.Controls.Presentation,
+  FMX.StdCtrls,
+  FMX.Edit,
+  System.Rtti,
+  FMX.Grid.Style,
+  FMX.Grid,
+  FMX.ScrollBox,
+  IniFiles,
+  System.UIConsts;
 
 type
   TFrmRegistrar = class(TForm)
@@ -61,8 +79,10 @@ type
     Edit9: TEdit;
     ShadowEffect20: TShadowEffect;
     ShadowEffect21: TShadowEffect;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    procedure CarregarCores;
   public
     { Public declarations }
   end;
@@ -73,5 +93,32 @@ var
 implementation
 
 {$R *.fmx}
+
+{ TFrmRegistrar }
+
+procedure TFrmRegistrar.CarregarCores;
+var
+  IniFile: TIniFile;
+  Cor: TAlphaColor;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+  finally
+    IniFile.UpdateFile;
+    IniFile.Free;
+  end;
+
+  for var I := 0 to FrmRegistrar.ComponentCount - 1 do
+  begin
+    if FrmRegistrar.Components[I] is TRectangle then
+      TRectangle(FrmRegistrar.Components[I]).Fill.Color := Cor;
+  end;
+end;
+
+procedure TFrmRegistrar.FormCreate(Sender: TObject);
+begin
+  CarregarCores;
+end;
 
 end.

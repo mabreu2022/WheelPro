@@ -315,8 +315,10 @@
         <DCCReference Include="FMX.BitmapHelper.pas"/>
         <DCCReference Include="View\uConfig.pas">
             <Form>FrmConfig</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Entity\Entity.Fabricantes.pas"/>
+        <DCCReference Include="Controller\Controller.Fabricantes.pas"/>
+        <DCCReference Include="Model\Model.Fabricantes.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

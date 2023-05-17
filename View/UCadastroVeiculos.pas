@@ -3,10 +3,25 @@ unit UCadastroVeiculos;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
-  FMX.Layouts, FMX.StdCtrls, FMX.Effects, FMX.Controls.Presentation, FMX.Edit,
-  FMX.ListBox;
+  System.SysUtils,
+  System.Types,
+  System.UITypes,
+  System.Classes,
+  System.Variants,
+  FMX.Types,
+  FMX.Controls,
+  FMX.Forms,
+  FMX.Graphics,
+  FMX.Dialogs,
+  FMX.Objects,
+  FMX.Layouts,
+  FMX.StdCtrls,
+  FMX.Effects,
+  FMX.Controls.Presentation,
+  FMX.Edit,
+  FMX.ListBox,
+  IniFiles,
+  System.UIConsts;
 
 type
   TFrmCadastroVeiculos = class(TForm)
@@ -31,13 +46,11 @@ type
     ShadowEffect8: TShadowEffect;
     Label1: TLabel;
     ShadowEffect1: TShadowEffect;
-    Edit1: TEdit;
     Edit2: TEdit;
     Label2: TLabel;
     Label3: TLabel;
     ShadowEffect9: TShadowEffect;
     ShadowEffect10: TShadowEffect;
-    ShadowEffect11: TShadowEffect;
     ShadowEffect12: TShadowEffect;
     Edit3: TEdit;
     Edit4: TEdit;
@@ -67,8 +80,14 @@ type
     ShadowEffect25: TShadowEffect;
     Button8: TButton;
     ShadowEffect26: TShadowEffect;
+    BtnGravar: TButton;
+    ShadowEffect27: TShadowEffect;
+    ComboBox3: TComboBox;
+    ShadowEffect11: TShadowEffect;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    procedure CarregarCores;
   public
     { Public declarations }
   end;
@@ -79,5 +98,33 @@ var
 implementation
 
 {$R *.fmx}
+
+{ TFrmCadastroVeiculos }
+
+procedure TFrmCadastroVeiculos.CarregarCores;
+var
+  IniFile: TIniFile;
+  Cor: TAlphaColor;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+  finally
+    IniFile.UpdateFile;
+    IniFile.Free;
+  end;
+
+  for var I := 0 to FrmCadastroVeiculos.ComponentCount - 1 do
+  begin
+    if FrmCadastroVeiculos.Components[I] is TRectangle then
+      TRectangle(FrmCadastroVeiculos.Components[I]).Fill.Color := Cor;
+  end;
+
+end;
+
+procedure TFrmCadastroVeiculos.FormCreate(Sender: TObject);
+begin
+  CarregarCores;
+end;
 
 end.

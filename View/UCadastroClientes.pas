@@ -6,7 +6,8 @@ uses
   System.SysUtils,
   System.Types,
   System.UITypes,
-  System.Classes, System.Variants,
+  System.Classes,
+  System.Variants,
   FMX.Types,
   FMX.Controls,
   FMX.Forms,
@@ -23,6 +24,7 @@ uses
   Entity.Clientes,
   Controller.Clientes,
   Model.Clientes,
+  Data.DB,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
   FireDAC.Stan.Error,
@@ -33,18 +35,18 @@ uses
   FireDAC.Stan.Async,
   FireDAC.Phys,
   FireDAC.VCLUI.Wait,
-  Data.DB,
   FireDAC.Comp.Client,
-  System.IniFiles,
   FireDAC.Phys.PGDef,
   FireDAC.Phys.PG,
   FireDAC.Comp.UI,
+  System.IniFiles,
   Datasnap.DBClient,
   FMX.TabControl,
   System.Rtti,
   FMX.Grid.Style,
   FMX.Grid,
-  FMX.ScrollBox;
+  FMX.ScrollBox,
+  System.UIConsts;
 
 type
   TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);
@@ -56,7 +58,7 @@ type
     Layout3: TLayout;
     Rectangle1: TRectangle;
     Rectangle2: TRectangle;
-    Label1: TLabel;
+    lblTitulo: TLabel;
     ShadowEffect1: TShadowEffect;
     BtnPrimeiro: TButton;
     btnAnterior: TButton;
@@ -75,7 +77,7 @@ type
     BtnGravar: TButton;
     ShadowEffect23: TShadowEffect;
     TabControl1: TTabControl;
-    TabItem1: TTabItem;
+    TabItemCadastro: TTabItem;
     LblCodCliente: TLabel;
     ShadowEffect32: TShadowEffect;
     EdtCodCliente: TEdit;
@@ -121,7 +123,7 @@ type
     ShadowEffect21: TShadowEffect;
     CBAtivo: TComboBox;
     ShadowEffect22: TShadowEffect;
-    TabItem2: TTabItem;
+    TabItemPesquisa: TTabItem;
     Panel1: TPanel;
     GridClientes: TStringGrid;
     EditPesquisa: TEdit;
@@ -129,6 +131,31 @@ type
     ShadowEffect33: TShadowEffect;
     ShadowEffect34: TShadowEffect;
     BtnPesquisar: TButton;
+    TabItemContato: TTabItem;
+    ShadowEffect35: TShadowEffect;
+    lblCondContato: TLabel;
+    Edit1: TEdit;
+    ShadowEffect36: TShadowEffect;
+    LblNomeContato: TLabel;
+    Edit2: TEdit;
+    lblTelefoneContato: TLabel;
+    Edit3: TEdit;
+    lblEmailContato: TLabel;
+    Edit4: TEdit;
+    Label2: TLabel;
+    ShadowEffect37: TShadowEffect;
+    CBAtivoContato: TComboBox;
+    ShadowEffect38: TShadowEffect;
+    ShadowEffect39: TShadowEffect;
+    ShadowEffect40: TShadowEffect;
+    ShadowEffect41: TShadowEffect;
+    ShadowEffect42: TShadowEffect;
+    ShadowEffect43: TShadowEffect;
+    ShadowEffect44: TShadowEffect;
+    ShadowEffect45: TShadowEffect;
+    ShadowEffect46: TShadowEffect;
+    ShadowEffect47: TShadowEffect;
+    ShadowEffect48: TShadowEffect;
     procedure FormShow(Sender: TObject);
     procedure BtnNovoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -148,7 +175,7 @@ type
       Shift: TShiftState);
     procedure BtnExcluirClick(Sender: TObject);
     procedure BtnPesquisarClick(Sender: TObject);
-    procedure TabItem2Click(Sender: TObject);
+    procedure TabItemPesquisaClick(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -171,6 +198,7 @@ type
     Function CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
     procedure OnDataSetChange;
     procedure PopularClientes;
+    procedure CarregarCores;
     constructor create;
     destructor destroy; override;
   end;
@@ -185,9 +213,6 @@ implementation
 { TFrmCadastroClientes }
 
 procedure TFrmCadastroClientes.BtnAlterarClick(Sender: TObject);
-var
-  RegrasDeNeogicios: TModelCliente;
-  Cliente: TClientes;
 begin
   FTipo:='A';
 
@@ -345,6 +370,27 @@ procedure TFrmCadastroClientes.BtnUltimoClick(Sender: TObject);
 begin
   DataSet.Last;
   OnDataSetChange;
+end;
+
+procedure TFrmCadastroClientes.CarregarCores;
+var
+  IniFile: TIniFile;
+  Cor: TAlphaColor;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+  finally
+    IniFile.UpdateFile;
+    IniFile.Free;
+  end;
+
+  for var I := 0 to FrmCadastroClientes.ComponentCount - 1 do
+  begin
+    if FrmCadastroClientes.Components[I] is TRectangle then
+      TRectangle(FrmCadastroClientes.Components[I]).Fill.Color := Cor;
+  end;
+
 end;
 
 procedure TFrmCadastroClientes.CBAtivoExit(Sender: TObject);
@@ -547,6 +593,7 @@ end;
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
 begin
   PopularDataSet;
+  CarregarCores;
 end;
 
 procedure TFrmCadastroClientes.FormShow(Sender: TObject);
@@ -555,6 +602,8 @@ begin
     EdtRazao.SetFocus;
 
   BtnGravar.Enabled:= False;
+
+  TabControl1.ActiveTab:=TabItemCadastro;
 end;
 
 procedure TFrmCadastroClientes.OnDataSetChange;
@@ -676,7 +725,7 @@ begin
 
 end;
 
-procedure TFrmCadastroClientes.TabItem2Click(Sender: TObject);
+procedure TFrmCadastroClientes.TabItemPesquisaClick(Sender: TObject);
 begin
   PopularGridClientes;
 end;

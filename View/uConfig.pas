@@ -21,7 +21,8 @@ uses
   FMX.Effects,
   FMX.ListBox,
   FMX.Colors,
-  IniFiles;
+  IniFiles,
+  System.UIConsts;
 
 type
   TFrmConfig = class(TForm)
@@ -46,11 +47,13 @@ type
     ShadowEffect6: TShadowEffect;
     procedure BtnGravarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     procedure SalvarCores;
+    procedure CarregarCores;
     function ColorToHexString(Color: TAlphaColor): string;
   end;
 
@@ -67,6 +70,27 @@ begin
   SalvarCores;
 end;
 
+procedure TFrmConfig.CarregarCores;
+var
+  IniFile: TIniFile;
+  Cor: TAlphaColor;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+  finally
+    IniFile.UpdateFile;
+    IniFile.Free;
+  end;
+
+  for var I := 0 to FrmConfig.ComponentCount - 1 do
+  begin
+    if FrmConfig.Components[I] is TRectangle then
+      TRectangle(FrmConfig.Components[I]).Fill.Color := Cor;
+  end;
+
+end;
+
 procedure TFrmConfig.CCBCoresDoSistemaChange(Sender: TObject);
 var
   SelectedColor: TColor;
@@ -81,6 +105,11 @@ end;
 function TFrmConfig.ColorToHexString(Color: TAlphaColor): string;
 begin
   Result := '$' + IntToHex(Color, 8);
+end;
+
+procedure TFrmConfig.FormCreate(Sender: TObject);
+begin
+  CarregarCores;
 end;
 
 procedure TFrmConfig.SalvarCores;
