@@ -89,7 +89,7 @@ begin
   //Chamar a procedure de gravação
   SalvarCores;
 
-   // Salve o caminho completo do aplicativo atual
+  // Salve o caminho completo do aplicativo atual
   AppPath := ParamStr(0);
 
   // Exiba uma caixa de diálogo de confirmação

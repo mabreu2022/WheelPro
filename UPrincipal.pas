@@ -72,7 +72,8 @@ uses
   System.Tether.AppProfile,
   System.Tether.NetworkAdapter,
   uConfig,
-  IniFiles;
+  IniFiles,
+  Vcl.Dialogs;
 
 type
   TFrmPrincipal = class(TForm)
@@ -1035,9 +1036,26 @@ begin
 end;
 
 procedure TFrmPrincipal.LogOffExecute(Sender: TObject);
+var
+  AppPath: string;
+  Confirmation: Integer;
 begin
-//  FrmLogin.ShowModal;
-//  FrmLogin.Destroy;
+  // Salve o caminho completo do aplicativo atual
+  AppPath := ParamStr(0);
+
+  // Exiba uma caixa de diálogo de confirmação
+  Confirmation := MessageDlg('Deseja reiniciar a aplicação?', mtConfirmation, [mbYes, mbNo], 0);
+
+  // Verifique a resposta do usuário
+  if Confirmation = mrYes then
+  begin
+    // Encerre a aplicação atual
+    Application.Terminate;
+
+    // Execute o aplicativo novamente
+    ShellExecute(0, 'open', PChar(AppPath), nil, nil, SW_SHOW);
+  end;
+
 end;
 
 procedure TFrmPrincipal.MediaReceiverManagerRequestManagerPassword(
