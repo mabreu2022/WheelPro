@@ -107,63 +107,14 @@ object FrmConfig: TFrmConfig
         Text = 'Sistema'
         ExplicitSize.cx = 62.000000000000000000
         ExplicitSize.cy = 26.000000000000000000
-        object CheckBox_CarregarTambemClientesAtivoIgualN: TCheckBox
-          Position.X = 16.000000000000000000
-          Position.Y = 30.000000000000000000
-          Size.Width = 225.000000000000000000
-          Size.Height = 19.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
-          Text = 'Carregar tamb'#233'm clientes Ativo = N'
-          object ShadowEffect6: TShadowEffect
-            Distance = 3.000000000000000000
-            Direction = 45.000000000000000000
-            Softness = 0.300000011920929000
-            Opacity = 0.600000023841857900
-            ShadowColor = claBlack
-          end
-        end
-        object CCBCoresDoSistema: TColorComboBox
-          DropDownKind = Custom
-          Color = claNull
-          DisableFocusEffect = False
-          ItemIndex = 147
-          Position.X = 16.000000000000000000
-          Position.Y = 78.000000000000000000
-          Size.Width = 225.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 1
-          OnChange = CCBCoresDoSistemaChange
-          object ShadowEffect5: TShadowEffect
-            Distance = 3.000000000000000000
-            Direction = 45.000000000000000000
-            Softness = 0.300000011920929000
-            Opacity = 0.600000023841857900
-            ShadowColor = claBlack
-          end
-        end
-        object LblCoresdoSistema: TLabel
-          Position.X = 16.000000000000000000
-          Position.Y = 54.000000000000000000
-          Text = 'Cores do Sistema'
-          TabOrder = 2
-          object ShadowEffect4: TShadowEffect
-            Distance = 3.000000000000000000
-            Direction = 45.000000000000000000
-            Softness = 0.300000011920929000
-            Opacity = 0.600000023841857900
-            ShadowColor = claBlack
-          end
-        end
         object GroupBox1: TGroupBox
           Position.X = 272.000000000000000000
           Position.Y = 22.000000000000000000
           Size.Width = 345.000000000000000000
           Size.Height = 59.000000000000000000
           Size.PlatformDefault = False
-          Text = 'WhatsApp'
-          TabOrder = 3
+          Text = 'Tela Principal WhatsApp'
+          TabOrder = 0
           object CBWhatsApp: TCheckBox
             Position.X = 8.000000000000000000
             Position.Y = 24.000000000000000000
@@ -171,7 +122,61 @@ object FrmConfig: TFrmConfig
             Size.Height = 19.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 38
-            Text = 'Enviar para v'#225'rios contatos'
+            Text = 'Enviar '#250'nicos contato'
+          end
+        end
+        object GroupBox2: TGroupBox
+          Position.X = 272.000000000000000000
+          Position.Y = 86.000000000000000000
+          Size.Width = 345.000000000000000000
+          Size.Height = 67.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Cores'
+          TabOrder = 1
+          object CCBCoresDoSistema: TColorComboBox
+            DropDownKind = Custom
+            Color = claNull
+            DisableFocusEffect = False
+            ItemIndex = 147
+            Position.X = 16.000000000000000000
+            Position.Y = 26.000000000000000000
+            Size.Width = 313.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            OnChange = CCBCoresDoSistemaChange
+            object ShadowEffect5: TShadowEffect
+              Distance = 3.000000000000000000
+              Direction = 45.000000000000000000
+              Softness = 0.300000011920929000
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+          end
+        end
+        object GroupBox3: TGroupBox
+          Position.X = 8.000000000000000000
+          Position.Y = 22.000000000000000000
+          Size.Width = 257.000000000000000000
+          Size.Height = 57.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Cadastro de Clientes'
+          TabOrder = 2
+          object CheckBox_CarregarTambemClientesAtivoIgualN: TCheckBox
+            Position.X = 16.000000000000000000
+            Position.Y = 20.000000000000000000
+            Size.Width = 225.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Carregar tamb'#233'm clientes Ativo = N'
+            object ShadowEffect6: TShadowEffect
+              Distance = 3.000000000000000000
+              Direction = 45.000000000000000000
+              Softness = 0.300000011920929000
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
           end
         end
       end

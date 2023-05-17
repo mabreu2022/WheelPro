@@ -319,6 +319,9 @@
         <DCCReference Include="Entity\Entity.Fabricantes.pas"/>
         <DCCReference Include="Controller\Controller.Fabricantes.pas"/>
         <DCCReference Include="Model\Model.Fabricantes.pas"/>
+        <DCCReference Include="Entity\Entity.Contatos.pas"/>
+        <DCCReference Include="Controller\Controller.Contatos.pas"/>
+        <DCCReference Include="Model\Model.Contatos.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

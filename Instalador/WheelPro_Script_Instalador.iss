@@ -5,7 +5,7 @@
 #define MyAppVersion "1.5"
 #define MyAppPublisher "Conect Solutionns"
 #define MyAppURL "https://conectsolutionsti.com.br"
-#define MyAppExeName "ProjetoRodasv3.exe"
+#define MyAppExeName "WheelProV3.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -30,6 +30,7 @@ Password=123456
 Encryption=yes
 Compression=lzma
 SolidCompression=yes
+PrivilegesRequired=admin
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -40,12 +41,13 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "C:\Fontes\ProjetoRodas3\Win32\Debug\ProjetoRodasv3.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Win32\Debug\WheelProV3.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Fontes\ProjetoRodas3\Imagens\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: "Server.ini"; DestDir: "{app}"
 Source: "midas.dll"; DestDir: "{sys}"; Flags: 32bit
 Source: "libmysql.dll"; DestDir: "{app}"
+Source: "Config.ini"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

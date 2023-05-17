@@ -254,6 +254,7 @@ type
       const ARemoteIdentifier: string; var Password: string);
     procedure MenuItem12Click(Sender: TObject);
     procedure MenuItem18Click(Sender: TObject);
+    procedure Image5Click(Sender: TObject);
 
 
   private
@@ -1025,6 +1026,17 @@ begin
 
 end;
 
+procedure TFrmPrincipal.Image5Click(Sender: TObject);
+var
+  Url: string;
+begin
+  Url := 'https://conectsolutionsti.com.br';
+
+  if ShellExecute(0, 'open', PChar(Url), nil, nil, SW_SHOWNORMAL) <= 32 then
+    ShowMessage('Não foi possível abrir o navegador padrão.');
+
+end;
+
 function TFrmPrincipal.ImageToBase64(const FileName: string): string;
 var
   ImageStream: TFileStream;
@@ -1199,11 +1211,11 @@ end;
 
 procedure TFrmPrincipal.MenuItem1Click(Sender: TObject);
 begin
-  if not Assigned(FrmRegistrar) then
-  begin
+//  if not Assigned(FrmCategorias) then
+//  begin
     Application.CreateForm(TFrmCategorias, FrmCategorias);
     FrmCategorias.ShowModal;
-  end;
+//  end;
 end;
 
 procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);

@@ -3,10 +3,25 @@ unit UCadastroCategorias;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Effects,
-  FMX.Controls.Presentation, FMX.StdCtrls, FMX.Objects, FMX.Layouts,
-  FMX.ListBox, FMX.Edit;
+  System.SysUtils,
+  System.Types,
+  System.UITypes,
+  System.Classes,
+  System.Variants,
+  FMX.Types,
+  FMX.Controls,
+  FMX.Forms,
+  FMX.Graphics,
+  FMX.Dialogs,
+  FMX.Effects,
+  FMX.Controls.Presentation,
+  FMX.StdCtrls,
+  FMX.Objects,
+  FMX.Layouts,
+  FMX.ListBox,
+  FMX.Edit,
+  System.UIConsts,
+  IniFiles;
 
 type
   TFrmCategorias = class(TForm)
@@ -46,8 +61,10 @@ type
     ShadowEffect13: TShadowEffect;
     ShadowEffect14: TShadowEffect;
     ShadowEffect15: TShadowEffect;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    procedure CarregarCores;
   public
     { Public declarations }
   end;
@@ -58,5 +75,34 @@ var
 implementation
 
 {$R *.fmx}
+
+{ TFrmCategorias }
+
+procedure TFrmCategorias.CarregarCores;
+var
+  IniFile: TIniFile;
+  Cor: TAlphaColor;
+
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+  finally
+    IniFile.UpdateFile;
+    IniFile.Free;
+  end;
+
+  for var I := 0 to FrmCategorias.ComponentCount - 1 do
+  begin
+    if FrmCategorias.Components[I] is TRectangle then
+      TRectangle(FrmCategorias.Components[I]).Fill.Color := Cor;
+  end;
+
+end;
+
+procedure TFrmCategorias.FormCreate(Sender: TObject);
+begin
+  CarregarCores;
+end;
 
 end.

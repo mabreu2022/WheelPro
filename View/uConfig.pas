@@ -40,15 +40,9 @@ type
     Label1: TLabel;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
-    CheckBox_CarregarTambemClientesAtivoIgualN: TCheckBox;
     BtnGravar: TButton;
     ShadowEffect3: TShadowEffect;
     TabItemBancoDeDados: TTabItem;
-    CCBCoresDoSistema: TColorComboBox;
-    LblCoresdoSistema: TLabel;
-    ShadowEffect4: TShadowEffect;
-    ShadowEffect5: TShadowEffect;
-    ShadowEffect6: TShadowEffect;
     lblIPdoBanco: TLabel;
     Edit1: TEdit;
     lblLogin: TLabel;
@@ -63,6 +57,12 @@ type
     ShadowEffect12: TShadowEffect;
     GroupBox1: TGroupBox;
     CBWhatsApp: TCheckBox;
+    GroupBox2: TGroupBox;
+    CCBCoresDoSistema: TColorComboBox;
+    ShadowEffect5: TShadowEffect;
+    GroupBox3: TGroupBox;
+    CheckBox_CarregarTambemClientesAtivoIgualN: TCheckBox;
+    ShadowEffect6: TShadowEffect;
     procedure BtnGravarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
