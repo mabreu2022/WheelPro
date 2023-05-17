@@ -73,7 +73,9 @@ uses
   System.Tether.NetworkAdapter,
   uConfig,
   IniFiles,
-  Vcl.Dialogs;
+  Vcl.Dialogs,
+  IdCoderMIME,
+  IdGlobal;
 
 type
   TFrmPrincipal = class(TForm)
@@ -192,6 +194,7 @@ type
     ShadowEffect31: TShadowEffect;
     TetheringManager1: TTetheringManager;
     TetheringAppProfile1: TTetheringAppProfile;
+    EdtWhatsApp: TEdit;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -279,6 +282,8 @@ type
     procedure SaveBitmapToFile(Bitmap: TBitmap; const FileName: string);
     procedure EnviarImagemWhatsApp(const FileName: string);
     procedure EnviarAnexoWhatsApp(const FileName: string);
+    function ImageToBase64(const FileName: string): string;
+    function DesabilitaEdtWhatsApp:Boolean;
     
   public
     { Public declarations }
@@ -732,6 +737,25 @@ begin
   FConexao := TConnection.CreateConnection;
 end;
 
+function TFrmPrincipal.DesabilitaEdtWhatsApp: Boolean;
+var
+  Config: TIniFile;
+  WhatsApp: string;
+begin
+ Result:= False;
+ Config := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+ try
+    WhatsApp := Config.ReadString('WhatsApp', 'EnviaParaContatoEspecifico', '');
+    if WhatsApp='S' then
+      EdtWhatsApp.Enabled:=True
+    else
+      EdtWhatsApp.Enabled:=False;
+  finally
+    Config.Free;
+  end;
+
+end;
+
 destructor TFrmPrincipal.destroy;
 begin
   FConexao.Free;
@@ -755,20 +779,33 @@ var
   TempPath: string;
   TempFileName: string;
   DestFileName: string;
+
+  ImagePath: string;
+  Base64String: string;
+  Config: TIniFile;
+  WhatsApp: String;
 begin
-  TempPath := TPath.GetTempPath;
-  TempFileName := ExtractFilePath(ParamStr(0)) + 'printscreen.bmp';
-  DestFileName := 'whatsapp://send?text=Fulano%20Rodas%20Orçamento&attachment=' +     //Mudar aqui para vir os dados do banco de dados.
-    TempFileName;
-  //DestFileName := IncludeTrailingPathDelimiter(TempPath) + 'WhatsApp.png';
+  Config := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    WhatsApp := Config.ReadString('WhatsApp', 'EnviaParaContatoEspecifico', '');
+  finally
+    Config.Free;
+  end;
 
-  // Copiar o arquivo para o diretório temporário com um nome único
-  //TFile.Copy(FileName, TempFileName);
-
-  // Renomear o arquivo temporário para 'WhatsApp.png'
-  //TFile.Move(TempFileName, DestFileName);
-
-  ShellExecute(0, 'open', PChar(DestFileName), nil, nil, SW_SHOW);
+  if WhatsApp ='S' then //Enviar para um contato especifico
+  begin
+    ImagePath := ExtractFilePath(ParamStr(0)) + 'printscreen.bmp';
+    Base64String := ImageToBase64(ImagePath);
+    DestFileName:= 'whatsapp://send?phone=+55'+EdtWhatsApp.text+'&text=Olá segue orçamento das Jantes/Calotas -Loja Fulano Rodas!&textmode=auto';
+    ShellExecute(0, 'open', PChar(DestFileName), nil, nil, SW_SHOW);
+  end
+  else if WhatsApp = 'N' then //Enviar para vários contatos
+  begin
+    TempPath := TPath.GetTempPath;
+    TempFileName := ExtractFilePath(ParamStr(0)) + 'printscreen.bmp';
+    DestFileName := 'whatsapp://send?text=Fulano%20Rodas%20Orçamento&action=pic' + TempFileName;
+    ShellExecute(0, 'open', PChar(DestFileName), nil, nil, SW_SHOW);
+  end;
 
 end;
 
@@ -803,6 +840,9 @@ var
   MainMenu: TMainMenu;
 
 begin
+   //Testa se é para desabilitar o campo de inserir telefone do Whatsapp
+   DesabilitaEdtWhatsApp;
+
    //Carregar todos os fabricantes no Combobox1
    DM.FDQMarcas.Open;
    DM.FDQMarcas.First;
@@ -982,6 +1022,27 @@ begin
   end
   else //Se não estiver em modo de edição cai fora
     Exit;
+
+end;
+
+function TFrmPrincipal.ImageToBase64(const FileName: string): string;
+var
+  ImageStream: TFileStream;
+  Encoder: TIdEncoderMIME;
+  Base64Stream: TStringStream;
+begin
+  ImageStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyWrite);
+  Encoder := TIdEncoderMIME.Create(nil);
+  Base64Stream := TStringStream.Create('');
+
+  try
+    Encoder.Encode(ImageStream, Base64Stream);
+    Result := Base64Stream.DataString;
+  finally
+    ImageStream.Free;
+    Encoder.Free;
+    Base64Stream.Free;
+  end;
 
 end;
 

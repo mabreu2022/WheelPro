@@ -61,12 +61,15 @@ type
     ShadowEffect10: TShadowEffect;
     ShadowEffect11: TShadowEffect;
     ShadowEffect12: TShadowEffect;
+    GroupBox1: TGroupBox;
+    CBWhatsApp: TCheckBox;
     procedure BtnGravarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    FCorMudou: Boolean;
   public
     { Public declarations }
     procedure SalvarCores;
@@ -110,11 +113,13 @@ procedure TFrmConfig.CarregarCores;
 var
   IniFile: TIniFile;
   Cor: TAlphaColor;
+
 begin
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
     CCBCoresDoSistema.Color:=cor;
+//    CBWhatsApp.
   finally
     IniFile.UpdateFile;
     IniFile.Free;
@@ -129,14 +134,8 @@ begin
 end;
 
 procedure TFrmConfig.CCBCoresDoSistemaChange(Sender: TObject);
-var
-  SelectedColor: TColor;
 begin
-//  SelectedColor := CCBCoresDoSistema.Selected;
-//  // Atualize a cor do TRectangle selecionado
-//  if SelectedColor <> clNone then
-//    (SelectedRectangle as TRectangle).Fill.Color := SelectedColor;
-
+  FCorMudou:= True;
 end;
 
 function TFrmConfig.ColorToHexString(Color: TAlphaColor): string;
@@ -162,9 +161,23 @@ var
 begin
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
-    CorEscolhida := CCBCoresDoSistema.Color;
-    ColorString  := ColorToHexString(CorEscolhida);
-    IniFile.WriteString('Cores', 'Cor', ColorString);
+    if FCorMudou then
+    begin
+      CorEscolhida := CCBCoresDoSistema.Color;
+      ColorString  := ColorToHexString(CorEscolhida);
+      IniFile.WriteString('Cores', 'Cor', ColorString);
+    end;
+
+    if CBWhatsApp.IsChecked  then
+      IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'N')
+    else
+      IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'S');
+
+    if CheckBox_CarregarTambemClientesAtivoIgualN.IsChecked then
+      IniFile.WriteString('Sistema', 'carregaclientesativosn', 'S')
+    else
+      IniFile.WriteString('Sistema', 'carregaclientesativosn', 'N');
+
   finally
     IniFile.Free;
   end;

@@ -880,7 +880,7 @@ object FrmPrincipal: TFrmPrincipal
           ShadowColor = claBlack
         end
         object BtnCopiarFoto: TButton
-          Position.X = 624.000000000000000000
+          Position.X = 766.000000000000000000
           Position.Y = 14.000000000000000000
           Size.Width = 105.000000000000000000
           Size.Height = 22.000000000000000000
@@ -911,7 +911,7 @@ object FrmPrincipal: TFrmPrincipal
           end
         end
         object Button5: TButton
-          Position.X = 738.000000000000000000
+          Position.X = 626.000000000000000000
           Position.Y = 14.000000000000000000
           Size.Width = 129.000000000000000000
           Size.Height = 22.000000000000000000
@@ -926,6 +926,16 @@ object FrmPrincipal: TFrmPrincipal
             Opacity = 0.600000023841857900
             ShadowColor = claBlack
           end
+        end
+        object EdtWhatsApp: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 9
+          Text = '11973874194'
+          Position.X = 881.000000000000000000
+          Position.Y = 14.000000000000000000
+          Size.Width = 133.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
         end
       end
     end
