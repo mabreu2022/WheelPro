@@ -164,7 +164,6 @@ type
     procedure BtnProximoClick(Sender: TObject);
     procedure BtnUltimoClick(Sender: TObject);
     procedure BtnAlterarClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BtnGravarClick(Sender: TObject);
     procedure CBAtivoExit(Sender: TObject);
     procedure EdtNumeroKeyDown(Sender: TObject; var Key: Word;
@@ -582,12 +581,6 @@ begin
   for Botao in BotaoSet do
     TodosOsBotoes[Botao].Enabled := True;
 
-end;
-
-procedure TFrmCadastroClientes.FormClose(Sender: TObject;
-  var Action: TCloseAction);
-begin
-  //FCliente.Free;
 end;
 
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);

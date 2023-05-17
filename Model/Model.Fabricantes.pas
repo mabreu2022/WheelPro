@@ -78,7 +78,7 @@ begin
                   'SET                             ' +
                   'idfabricantes = :idfabricantes, ' +
                   'razao         = :razao,         ' +
-                  'cnpj_cpf      = :cnpj_cpf,      ' +
+                  'cnpj          = :cnpj,          ' +
                   'endereco      = :endereco,      ' +
                   'numero        = :numero,        ' +
                   'complemento   = :complemento,   ' +
@@ -86,48 +86,53 @@ begin
                   'cidade        = :cidade,        ' +
                   'bairro        = :bairro,        ' +
                   'ativo         = :ativo,         ' +
-                  'uf            = :uf             ' +
+                  'uf            = :uf,            ' +
+                  //'datacadastro  = now,            ' +
+                  'datalateracao = now,            ' +
                   'WHERE                           ' +
                   'CNPJ          = :CNPJ           ';
 
-    qry.ParamByName('idfabricantes').DataType  := ftInteger;
-    qry.ParamByName('idfabricantes').AsInteger := aFabricante.idFabricantes;
-    qry.ParamByName('razao').DataType          := ftString;
-    qry.ParamByName('razao').AsString          := aFabricante.razaosocial;
-    qry.ParamByName('cnpj').DataType           := ftString;
-    qry.ParamByName('cnpj').AsString           := aFabricante.cnpj ;
-    qry.ParamByName('endereco').DataType       := ftString;
-    qry.ParamByName('endereco').AsString       := aFabricante.endereco;
-    qry.ParamByName('numero').DataType         := ftInteger;
-    qry.ParamByName('numero').AsInteger        := aFabricante.numero;
-    qry.ParamByName('complemento').DataType    := ftString;
-    qry.ParamByName('complemento').AsString    := aFabricante.complemento;
-    qry.ParamByName('cep').DataType            := ftString;
-    qry.ParamByName('cep').AsString            := aFabricante.CEP;
-    qry.ParamByName('cidade').DataType         := ftString;
-    qry.ParamByName('cidade').AsString         := aFabricante.Cidade;
-    qry.ParamByName('bairro').DataType         := ftString;
-    qry.ParamByName('bairro').AsString         := aFabricante.Bairro;
+    qry.ParamByName('idfabricantes').DataType   := ftInteger;
+    qry.ParamByName('idfabricantes').AsInteger  := aFabricante.idFabricantes;
+    qry.ParamByName('razao').DataType           := ftString;
+    qry.ParamByName('razao').AsString           := aFabricante.razaosocial;
+    qry.ParamByName('cnpj').DataType            := ftString;
+    qry.ParamByName('cnpj').AsString            := aFabricante.cnpj ;
+    qry.ParamByName('endereco').DataType        := ftString;
+    qry.ParamByName('endereco').AsString        := aFabricante.endereco;
+    qry.ParamByName('numero').DataType          := ftInteger;
+    qry.ParamByName('numero').AsInteger         := aFabricante.numero;
+    qry.ParamByName('complemento').DataType     := ftString;
+    qry.ParamByName('complemento').AsString     := aFabricante.complemento;
+    qry.ParamByName('cep').DataType             := ftString;
+    qry.ParamByName('cep').AsString             := aFabricante.CEP;
+    qry.ParamByName('cidade').DataType          := ftString;
+    qry.ParamByName('cidade').AsString          := aFabricante.Cidade;
+    qry.ParamByName('bairro').DataType          := ftString;
+    qry.ParamByName('bairro').AsString          := aFabricante.Bairro;
 
-    qry.ParamByName('uf').DataType             := ftString;
+    qry.ParamByName('uf').DataType              := ftString;
 
     if Length(aFabricante.UF) > 0 then
       UF := Copy(aFabricante.UF, 1, 2)
     else
       UF := '';
 
-    qry.ParamByName('uf').AsString             := UF;
+    qry.ParamByName('uf').AsString              := UF;
 
-    qry.ParamByName('ativo').DataType          := ftString;
+    qry.ParamByName('ativo').DataType           := ftString;
     if Length(aFabricante.ativo) > 0 then
       Ativo := Copy(aFabricante.ativo, 1, 1)
     else
       Ativo := '';
 
-    qry.ParamByName('ativo').AsString          := Ativo;
+    qry.ParamByName('ativo').AsString           := Ativo;
 
-    qry.ParamByName('CNPJ').DataType           := ftString;
-    qry.ParamByName('CNPJ').AsString           := aFabricante.cnpj;
+    qry.ParamByName('dataalteracao').DataType   := ftDatetime;
+    qry.ParamByName('dataalteracao').AsDateTime := aFabricante.DataAlteracao;
+
+    qry.ParamByName('CNPJ').DataType            := ftString;
+    qry.ParamByName('CNPJ').AsString            := aFabricante.cnpj;
 
     qry.ExecSQL;
 

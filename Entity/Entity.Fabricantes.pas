@@ -43,6 +43,9 @@ type
       FCidade: string;
       Fidfabricantes: Integer;
       Fendereco: string;
+    FDataExclusao: TDateTime;
+    FDataAlteracao: TDateTime;
+    FDataCadastro: TDateTime;
       procedure Setativo(const Value: string);
       procedure SetBairro(const Value: string);
       procedure SetCEP(const Value: string);
@@ -54,6 +57,9 @@ type
       procedure Setnumero(const Value: integer);
       procedure Setrazaosocial(const Value: string);
       procedure SetUF(const Value: string);
+    procedure SetDataAlteracao(const Value: TDateTime);
+    procedure SetDataCadastro(const Value: TDateTime);
+    procedure SetDataExclusao(const Value: TDateTime);
     public
       property idfabricantes: Integer read Fidfabricantes write Setidfabricantes;
       property razaosocial: string read Frazaosocial write Setrazaosocial;
@@ -66,6 +72,10 @@ type
       property Bairro: string read FBairro write SetBairro;
       property UF: string read FUF write SetUF;
       property ativo: string read Fativo write Setativo;
+      property DataCadastro: TDateTime read FDataCadastro write SetDataCadastro;
+      property DataAlteracao: TDateTime read FDataAlteracao write SetDataAlteracao;
+      property DataExclusao: TDateTime read FDataExclusao write SetDataExclusao;
+
 
       constructor create;
       destructor destroy;override;
@@ -115,6 +125,21 @@ end;
 procedure TFabricante.Setcomplemento(const Value: string);
 begin
   Fcomplemento := Value;
+end;
+
+procedure TFabricante.SetDataAlteracao(const Value: TDateTime);
+begin
+  FDataAlteracao := Value;
+end;
+
+procedure TFabricante.SetDataCadastro(const Value: TDateTime);
+begin
+  FDataCadastro := Value;
+end;
+
+procedure TFabricante.SetDataExclusao(const Value: TDateTime);
+begin
+  FDataExclusao := Value;
 end;
 
 procedure TFabricante.Setendereco(const Value: string);

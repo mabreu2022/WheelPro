@@ -22,7 +22,11 @@ uses
   FMX.ListBox,
   FMX.Colors,
   IniFiles,
-  System.UIConsts;
+  System.UIConsts,
+  FMX.Edit,
+  ShellAPI,
+  Winapi.Windows,
+  Vcl.Dialogs;
 
 type
   TFrmConfig = class(TForm)
@@ -32,22 +36,35 @@ type
     Rectangle1: TRectangle;
     Rectangle2: TRectangle;
     TabControl1: TTabControl;
-    TabItem1: TTabItem;
+    TabItemSistema: TTabItem;
     Label1: TLabel;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
     CheckBox_CarregarTambemClientesAtivoIgualN: TCheckBox;
     BtnGravar: TButton;
     ShadowEffect3: TShadowEffect;
-    TabItem2: TTabItem;
+    TabItemBancoDeDados: TTabItem;
     CCBCoresDoSistema: TColorComboBox;
     LblCoresdoSistema: TLabel;
     ShadowEffect4: TShadowEffect;
     ShadowEffect5: TShadowEffect;
     ShadowEffect6: TShadowEffect;
+    lblIPdoBanco: TLabel;
+    Edit1: TEdit;
+    lblLogin: TLabel;
+    Edit2: TEdit;
+    lblSenha: TLabel;
+    Edit3: TEdit;
+    ShadowEffect7: TShadowEffect;
+    ShadowEffect8: TShadowEffect;
+    ShadowEffect9: TShadowEffect;
+    ShadowEffect10: TShadowEffect;
+    ShadowEffect11: TShadowEffect;
+    ShadowEffect12: TShadowEffect;
     procedure BtnGravarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -65,9 +82,28 @@ implementation
 {$R *.fmx}
 
 procedure TFrmConfig.BtnGravarClick(Sender: TObject);
+var
+  AppPath: string;
+  Confirmation: Integer;
 begin
   //Chamar a procedure de gravação
   SalvarCores;
+
+   // Salve o caminho completo do aplicativo atual
+  AppPath := ParamStr(0);
+
+  // Exiba uma caixa de diálogo de confirmação
+  Confirmation := MessageDlg('Deseja reiniciar a aplicação para modificar a cor?', mtConfirmation, [mbYes, mbNo], 0);
+
+  // Verifique a resposta do usuário
+  if Confirmation = mrYes then
+  begin
+    // Encerre a aplicação atual
+    Application.Terminate;
+
+    // Execute o aplicativo novamente
+    ShellExecute(0, 'open', PChar(AppPath), nil, nil, SW_SHOW);
+  end;
 end;
 
 procedure TFrmConfig.CarregarCores;
@@ -78,6 +114,7 @@ begin
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+    CCBCoresDoSistema.Color:=cor;
   finally
     IniFile.UpdateFile;
     IniFile.Free;
@@ -110,6 +147,11 @@ end;
 procedure TFrmConfig.FormCreate(Sender: TObject);
 begin
   CarregarCores;
+end;
+
+procedure TFrmConfig.FormShow(Sender: TObject);
+begin
+  TabControl1.TabIndex:=0;
 end;
 
 procedure TFrmConfig.SalvarCores;

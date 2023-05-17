@@ -185,7 +185,7 @@ object FrmFabricantes: TFrmFabricantes
       Size.Width = 712.000000000000000000
       Size.Height = 348.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 0
+      TabIndex = 1
       TabOrder = 5
       TabPosition = PlatformDefault
       Sizes = (
@@ -199,13 +199,15 @@ object FrmFabricantes: TFrmFabricantes
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = ''
         TabOrder = 0
         Text = 'Cadastro'
+        ExplicitSize.cx = 67.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object LblCodCliente: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 13.000000000000000000
@@ -565,13 +567,16 @@ object FrmFabricantes: TFrmFabricantes
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = ''
         TabOrder = 0
         Text = 'Pesquisa'
+        OnClick = TabItemPesquisaClick
+        ExplicitSize.cx = 66.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object GridFabricante: TStringGrid
           Align = Client
           CanFocus = True
@@ -627,6 +632,7 @@ object FrmFabricantes: TFrmFabricantes
             Position.Y = 9.000000000000000000
             TabOrder = 2
             Text = 'Ok'
+            OnClick = BtnPesquisarClick
             object ShadowEffect30: TShadowEffect
               Distance = 3.000000000000000000
               Direction = 45.000000000000000000
@@ -648,6 +654,8 @@ object FrmFabricantes: TFrmFabricantes
         StyleLookup = ''
         TabOrder = 0
         Text = 'Contato'
+        ExplicitSize.cx = 63.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
       end
     end
   end

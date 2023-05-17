@@ -176,7 +176,6 @@ type
     Lbl_ValorTotal: TLabel;
     Lbl_VAlor_Total_Cliente: TLabel;
     MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
     Button5: TButton;
     ShadowEffect30: TShadowEffect;
     MenuItem3: TMenuItem;
@@ -1055,20 +1054,20 @@ end;
 
 procedure TFrmPrincipal.MenuItem10Click(Sender: TObject);
 begin
- if not Assigned(FrmRegistrar) then
-  begin
+// if not Assigned(FrmRegistrar) then
+//  begin
     Application.CreateForm(TFrmOrcamentos, FrmOrcamentos);
     FrmOrcamentos.ShowModal;
-  end;
+//  end;
 end;
 
 procedure TFrmPrincipal.MenuItem11Click(Sender: TObject);
 begin
-  if not Assigned(FrmFabricantes) then
-  begin
+//  if not Assigned(FrmFabricantes) then
+//  begin
     Application.CreateForm(TFrmFabricantes, FrmFabricantes);
     FrmFabricantes.ShowModal;
-  end;
+//  end;
 end;
 
 procedure TFrmPrincipal.MenuItem12Click(Sender: TObject);
@@ -1082,20 +1081,20 @@ end;
 
 procedure TFrmPrincipal.MenuItem14Click(Sender: TObject);
 begin //O nome do arquivo será: Config.ini dentro do diretório do sistema
-  if not Assigned(FrmConfig) then
-  begin
+//  if not Assigned(FrmConfig) then
+//  begin
     Application.CreateForm(TFrmConfig, FrmConfig);
     FrmConfig.ShowModal;
-  end;
+//  end;
 end;
 
 procedure TFrmPrincipal.MenuItem15Click(Sender: TObject);
 begin
-  if not Assigned(FrmRegistrar) then
-  begin
+//  if not Assigned(FrmRegistrar) then
+//  begin
     Application.CreateForm(TFrmRegistrar, FrmRegistrar);
     FrmRegistrar.ShowModal;
-  end;
+//  end;
 end;
 
 procedure TFrmPrincipal.MenuItem16Click(Sender: TObject);
@@ -1130,15 +1129,15 @@ end;
 
 procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);
 begin
-  if not Assigned(FrmCadastroClientes) then
-  begin
-    try
+//  if not Assigned(FrmCadastroClientes) then
+//  begin
+//    try
       Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
       FrmCadastroClientes.ShowModal;
-    finally
-      FreeAndNil(FrmCadastroClientes);
-    end;
-  end;
+//    finally
+//      FreeAndNil(FrmCadastroClientes);
+//    end;
+//  end;
 end;
 
 procedure TFrmPrincipal.MenuItem9Click(Sender: TObject);

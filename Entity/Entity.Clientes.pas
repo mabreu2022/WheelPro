@@ -43,6 +43,9 @@ type
       FCidade: string;
       FBairro: string;
       FConn: TFDConnection;
+    FdataExclusao: TDateTime;
+    FdataAlteracao: TDateTime;
+    FdataCadastro: TDatetime;
 
 
     procedure Setativo(const Value: string);
@@ -56,6 +59,9 @@ type
     procedure SetCidade(const Value: string);
     procedure SetBairro(const Value: string);
     procedure Setidcliente(const Value: Integer);
+    procedure SetdataAlteracao(const Value: TDateTime);
+    procedure SetdataCadastro(const Value: TDatetime);
+    procedure SetdataExclusao(const Value: TDateTime);
 
     public
       property idcliente: Integer read Fidcliente write Setidcliente;
@@ -69,6 +75,9 @@ type
       property Bairro: string read FBairro write SetBairro;
       property UF: string read FUF write SetUF;
       property ativo: string read Fativo write Setativo;
+      property dataCadastro: TDatetime read FdataCadastro write SetdataCadastro;
+      property dataAlteracao: TDateTime read FdataAlteracao write SetdataAlteracao;
+      property dataExclusao: TDateTime read FdataExclusao write SetdataExclusao;
 
       constructor create;
       destructor destroy;override;
@@ -118,6 +127,21 @@ end;
 procedure TClientes.Setcomplemento(const Value: string);
 begin
   Fcomplemento := Value;
+end;
+
+procedure TClientes.SetdataAlteracao(const Value: TDateTime);
+begin
+  FdataAlteracao := Value;
+end;
+
+procedure TClientes.SetdataCadastro(const Value: TDatetime);
+begin
+  FdataCadastro := Value;
+end;
+
+procedure TClientes.SetdataExclusao(const Value: TDateTime);
+begin
+  FdataExclusao := Value;
 end;
 
 procedure TClientes.Setendereco(const Value: string);

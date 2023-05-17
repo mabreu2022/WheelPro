@@ -11,7 +11,6 @@ object FrmCadastroClientes: TFrmCadastroClientes
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  OnClose = FormClose
   OnShow = FormShow
   DesignerMasterStyle = 0
   object Layout1: TLayout
@@ -186,7 +185,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Size.Width = 712.000000000000000000
       Size.Height = 340.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 0
+      TabIndex = 1
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -200,7 +199,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -591,7 +590,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -663,8 +662,8 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Size.Height = 275.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 1
-          Viewport.Width = 708.000000000000000000
-          Viewport.Height = 250.000000000000000000
+          Viewport.Width = 712.000000000000000000
+          Viewport.Height = 275.000000000000000000
         end
       end
       object TabItemContato: TTabItem
@@ -678,6 +677,8 @@ object FrmCadastroClientes: TFrmCadastroClientes
         StyleLookup = ''
         TabOrder = 0
         Text = 'Contato'
+        ExplicitSize.cx = 63.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object lblCondContato: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 14.000000000000000000

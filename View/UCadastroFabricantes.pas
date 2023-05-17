@@ -143,6 +143,8 @@ type
     procedure BtnGravarClick(Sender: TObject);
     procedure PopularDataSet;
     procedure FormCreate(Sender: TObject);
+    procedure TabItemPesquisaClick(Sender: TObject);
+    procedure BtnPesquisarClick(Sender: TObject);
   private
     { Private declarations }
     qry: TFDQuery;
@@ -155,6 +157,8 @@ type
     FController: TControllerFabricante;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     procedure CarregarCores;
+    Procedure PopularGridFabricante;
+    procedure PreencheDadosEncontradosDoFabricante;
   public
     { Public declarations }
     DataSet: TClientDataSet;
@@ -193,6 +197,40 @@ begin
   //Foco no campo EdtRazao
   if EdtRazao.CanFocus then
     EdtRazao.SetFocus;
+end;
+
+procedure TFrmFabricantes.BtnPesquisarClick(Sender: TObject);
+var
+  I, J: Integer;
+  TermoPesquisa: string;
+begin
+  PopularDataSet;
+  //Revisar o uso na aba da tela de clientes onde tem o GridFabricante.
+  TermoPesquisa := EditPesquisa.Text;
+
+  // Percorra as células do grid para encontrar correspondências com o termo de pesquisa
+  for I := 0 to GridFabricante.RowCount - 1 do
+  begin
+    for J := 0 to GridFabricante.ColumnCount - 1 do
+    begin
+      if Pos(UpperCase(TermoPesquisa), UpperCase(GridFabricante.Cells[J, I])) > 0 then
+      begin
+        // Destaque a célula encontrada
+        GridFabricante.SelectCell(J, I);
+
+        // Faça algo com a célula encontrada, como exibir uma mensagem
+        ShowMessage('Encontrado em ' + GridFabricante.Cells[J, 0] + ': ' + GridFabricante.Cells[J, I]);
+
+        //Preencher os Edits da Aba Cadastro
+        PreencheDadosEncontradosDoFabricante;
+
+        // Você pode retornar aqui se desejar encontrar apenas a primeira correspondência
+        // Exit;
+      end;
+
+    end;
+  end;
+
 end;
 
 procedure TFrmFabricantes.BtnPrimeiroClick(Sender: TObject);
@@ -277,6 +315,7 @@ begin
        if EdtRazao.CanFocus then
          EdtRazao.SetFocus;
      end;
+
      DesabilitaBotoes([BiPrimeiro,BiAnterior,BiProximo,BiUltimo,BiNovo,BiAlterar,BiExcluir,BiGravar]);
   finally
     FFabricante.Free;
@@ -332,7 +371,7 @@ begin
   try
     CDS.FieldDefs.Add('IDFABRICANTES', ftInteger);
     CDS.FieldDefs.Add('RAZAO', ftString, 100);
-    CDS.FieldDefs.Add('CNPJ_CPF', ftString, 18);
+    CDS.FieldDefs.Add('CNPJ', ftString, 18);
     CDS.FieldDefs.Add('ENDERECO', ftString, 100);
     CDS.FieldDefs.Add('NUMERO', ftInteger);
     CDS.FieldDefs.Add('COMPLEMENTO', ftString, 100);
@@ -381,6 +420,7 @@ begin
   FConexao.Free;
   FFabricante.Free;
   Fcontroller.Free;
+  //FFabricante.Free;
   inherited
 end;
 
@@ -493,6 +533,71 @@ begin
   finally
     //FFabricante.Free;
   end;
+end;
+
+procedure TFrmFabricantes.PopularGridFabricante;
+var
+  I, J: Integer;
+
+begin
+  //Está pulando um registro ao dar o Proximo na View.
+
+  // Limpar as colunas existentes
+  while GridFabricante.ColumnCount > 0 do
+    GridFabricante.RemoveObject(GridFabricante.Columns[0]);
+
+
+  // Configurar as colunas do grid
+  GridFabricante.RowCount := DataSet.RecordCount + 1;
+
+  for I := 0 to DataSet.FieldCount - 1 do
+  begin
+    GridFabricante.AddObject(TStringColumn.Create(GridFabricante));
+    GridFabricante.Columns[I].Header := DataSet.Fields[I].FieldName;
+  end;
+
+  // Populando as células do grid com os dados do dataset
+  DataSet.First;
+  I := 0;
+
+  while not DataSet.Eof do
+  begin
+    Inc(I);
+    for J := 0 to DataSet.FieldCount - 1 do
+      GridFabricante.Cells[J, I] := DataSet.Fields[J].AsString;
+
+    DataSet.Next;
+
+  end;
+
+
+end;
+
+procedure TFrmFabricantes.PreencheDadosEncontradosDoFabricante;
+var
+  SelectedRow: Integer;
+begin
+  if GridFabricante.Selected >= 0 then
+  begin
+    SelectedRow := GridFabricante.Selected;
+    EdtCodFabricante.Text  := GridFabricante.Cells[0, SelectedRow];
+    EdtRazao.Text       := GridFabricante.Cells[1, SelectedRow];
+    EdtCnpj.Text        := GridFabricante.Cells[2, SelectedRow];
+    EdtEndereco.Text    := GridFabricante.Cells[3, SelectedRow];
+    EdtNumero.Text      := GridFabricante.Cells[4, SelectedRow];
+    EdtComplemento.Text := GridFabricante.Cells[5, SelectedRow];
+    EdtCep.Text         := GridFabricante.Cells[6, SelectedRow];
+    EdtCidade.Text      := GridFabricante.Cells[7, SelectedRow];
+    EdtBairro.Text      := GridFabricante.Cells[8, SelectedRow];
+    CBUF.ItemIndex      := CBUF.Items.IndexOf(GridFabricante.Cells[9, SelectedRow]);
+    CBAtivo.ItemIndex   := CBAtivo.Items.IndexOf(GridFabricante.Cells[10, SelectedRow]);
+  end;
+
+end;
+
+procedure TFrmFabricantes.TabItemPesquisaClick(Sender: TObject);
+begin
+  PopularGridFabricante;
 end;
 
 end.

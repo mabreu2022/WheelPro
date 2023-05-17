@@ -83,9 +83,10 @@ begin
                   'cidade      = :cidade,       ' +
                   'bairro      = :bairro,       ' +
                   'ativo       = :ativo,        ' +
-                  'uf          = :uf            ' +
+                  'uf          = :uf,           ' +
+                  'datacadastro= :datacadastro  ' +
                   'WHERE                        ' +
-                  'CNPJ_CPF = :CNP_CPF          ';
+                  'CNPJ_CPF = :CNPJ_CPF         ';
 
     qry.ParamByName('idclientes').DataType    := ftInteger;
     qry.ParamByName('idclientes').AsInteger   := aCliente.idcliente;
@@ -123,8 +124,11 @@ begin
 
     qry.ParamByName('ativo').AsString         := Ativo;
 
-    qry.ParamByName('CNP_CPF').DataType    := ftString;
-    qry.ParamByName('CNP_CPF').AsString    := aCliente.cnpj;
+    qry.ParamByName('datacadastro').DataType  := ftDateTime;
+    qry.ParamByName('datacadastro').AsDateTime:= aCliente.datacadastro;
+
+    qry.ParamByName('CNPJ_CPF').DataType       := ftString;
+    qry.ParamByName('CNPJ_CPF').AsString       := aCliente.cnpj;
 
     qry.ExecSQL;
 

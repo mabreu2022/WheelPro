@@ -11,6 +11,7 @@ object FrmConfig: TFrmConfig
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnShow = FormShow
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Client
@@ -93,7 +94,7 @@ object FrmConfig: TFrmConfig
         354s
         640s
         354s)
-      object TabItem1: TTabItem
+      object TabItemSistema: TTabItem
         CustomIcon = <
           item
           end>
@@ -156,7 +157,7 @@ object FrmConfig: TFrmConfig
           end
         end
       end
-      object TabItem2: TTabItem
+      object TabItemBancoDeDados: TTabItem
         CustomIcon = <
           item
           end>
@@ -169,6 +170,93 @@ object FrmConfig: TFrmConfig
         Text = 'Banco de Dados'
         ExplicitSize.cx = 106.000000000000000000
         ExplicitSize.cy = 26.000000000000000000
+        object lblIPdoBanco: TLabel
+          Position.X = 16.000000000000000000
+          Position.Y = 22.000000000000000000
+          Text = 'Server IP'
+          TabOrder = 0
+          object ShadowEffect11: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Edit1: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 1
+          Position.X = 16.000000000000000000
+          Position.Y = 46.000000000000000000
+          Size.Width = 161.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect12: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblLogin: TLabel
+          Position.X = 16.000000000000000000
+          Position.Y = 73.000000000000000000
+          Text = 'Login'
+          TabOrder = 2
+          object ShadowEffect9: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Edit2: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 3
+          Position.X = 16.000000000000000000
+          Position.Y = 97.000000000000000000
+          Size.Width = 161.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect8: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblSenha: TLabel
+          Position.X = 184.000000000000000000
+          Position.Y = 73.000000000000000000
+          Text = 'Senha'
+          TabOrder = 4
+          object ShadowEffect10: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Edit3: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 5
+          Position.X = 184.000000000000000000
+          Position.Y = 97.000000000000000000
+          Size.Width = 161.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect7: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
       end
       object ShadowEffect2: TShadowEffect
         Distance = 3.000000000000000000
