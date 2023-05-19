@@ -81,6 +81,7 @@ begin
      Result:= False;
   finally
     FDQuery1.Free;
+    FConexao.Free;
   end;
 
 

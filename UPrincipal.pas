@@ -812,7 +812,7 @@ end;
 
 procedure TFrmPrincipal.FormActivate(Sender: TObject);
 begin
-//  Formulário de LLogin aparecendo na frente do FormPrincipal já criado
+//  Formulário de Login aparecendo na frente do FormPrincipal já criado
 //  Application.CreateForm(TFrmLogin, FrmLogin);
 //  FrmLogin.ShowModal;
 //  FrmLogin.Destroy;

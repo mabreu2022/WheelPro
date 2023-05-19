@@ -95,7 +95,7 @@ begin
    finally
      //if Assigned(ini) then
            ini.DisposeOf;
-
+     FDPhysDriverLink.Free;
    end;
 end;
 

@@ -15,9 +15,9 @@ uses
   FireDAC.Stan.Async,
   FireDAC.Phys,
   FireDAC.VCLUI.Wait,
+  FireDAC.Comp.Client,
   Data.DB,
   Entity.Clientes,
-  FireDAC.Comp.Client,
   System.Generics.Collections,
   Dao.Conexao,
   Datasnap.DBClient;
@@ -227,7 +227,7 @@ end;
 
 constructor TModelCliente.Create;
 begin
-  FCliente          := TClientes.Create;
+  FCliente := TClientes.Create;
 end;
 
 destructor TModelCliente.destroy;

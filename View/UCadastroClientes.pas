@@ -46,7 +46,9 @@ uses
   FMX.Grid.Style,
   FMX.Grid,
   FMX.ScrollBox,
-  System.UIConsts;
+  System.UIConsts,
+  Winapi.Windows;
+
 
 type
   TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);
@@ -175,6 +177,7 @@ type
     procedure BtnExcluirClick(Sender: TObject);
     procedure BtnPesquisarClick(Sender: TObject);
     procedure TabItemPesquisaClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -191,6 +194,7 @@ type
     Procedure PopularGridClientes;
     procedure PreencheDadosEncontradosDoCliente;
     procedure PopularDataSet;
+
   public
     { Public declarations }
     DataSet: TClientDataSet;
@@ -294,7 +298,9 @@ begin
        if EdtRazao.CanFocus then
          EdtRazao.SetFocus;
      end;
+
      DesabilitaBotoes([BiPrimeiro,BiAnterior,BiProximo,BiUltimo,BiNovo,BiAlterar,BiExcluir,BiGravar]);
+
   finally
     FCliente.Free;
     RegrasDeNegocios.Free;
@@ -474,8 +480,7 @@ end;
 destructor TFrmCadastroClientes.destroy;
 begin
    FConexao.Free;
-   FController.Free;
-   FConexao.Free;
+   //FController.Free;
   inherited;
 end;
 
@@ -510,6 +515,7 @@ begin
     DataSet.First;
     OnDataSetChange;
   finally
+    Model.Free;
   end;
   //Cliente.Free;
 end;
@@ -616,7 +622,15 @@ procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
 begin
   PopularDataSet;
   CarregarCores;
+  FController:= TControllerCliente.create;
 end;
+
+procedure TFrmCadastroClientes.FormDestroy(Sender: TObject);
+begin
+  FController.Free;
+  //FCliente.Free;
+end;
+
 
 procedure TFrmCadastroClientes.FormShow(Sender: TObject);
 begin
@@ -664,7 +678,7 @@ begin
     CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
 
   PopularClientes;  //Popula a variável FClientes
-  //PopularGridClientes; //Fica pulando cliente
+
 end;
 
 procedure TFrmCadastroClientes.PopularClientes;
@@ -685,7 +699,7 @@ begin
      FCliente.UF          := CBUF.Items[CBUF.ItemIndex];
      FCliente.Ativo     := CBAtivo.Items[CBAtivo.ItemIndex];
   finally
-    //FCliente.Free;
+    //FCliente.Free; //no onclose do form
   end;
 
 end;
