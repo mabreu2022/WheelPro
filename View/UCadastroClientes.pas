@@ -177,7 +177,6 @@ type
     procedure BtnExcluirClick(Sender: TObject);
     procedure BtnPesquisarClick(Sender: TObject);
     procedure TabItemPesquisaClick(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -516,6 +515,7 @@ begin
     OnDataSetChange;
   finally
     Model.Free;
+//    DataSet.Free;//Ao fechar o Formulário
   end;
   //Cliente.Free;
 end;
@@ -624,13 +624,6 @@ begin
   CarregarCores;
   FController:= TControllerCliente.create;
 end;
-
-procedure TFrmCadastroClientes.FormDestroy(Sender: TObject);
-begin
-  FController.Free;
-  //FCliente.Free;
-end;
-
 
 procedure TFrmCadastroClientes.FormShow(Sender: TObject);
 begin

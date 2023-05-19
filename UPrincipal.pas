@@ -111,13 +111,11 @@ type
     ShadowEffect5: TShadowEffect;
     MenuItem13: TMenuItem;
     Panel5: TPanel;
-    Image5: TImage;
     ShadowEffect9: TShadowEffect;
     MenuItem14: TMenuItem;
     MenuItem15: TMenuItem;
     Panel6: TPanel;
     RectangleTop: TRectangle;
-    RectanguleLaretalDireito: TRectangle;
     BtnCopiarFoto: TButton;
     ShadowEffect10: TShadowEffect;
     Rectangle1: TRectangle;
@@ -137,10 +135,8 @@ type
     lblMarcas: TLabel;
     Label1: TLabel;
     ShadowEffect7: TShadowEffect;
-    Image2: TImage;
     MenuItem18: TMenuItem;
     ShadowEffect14: TShadowEffect;
-    VertScrollBoxRodas: TVertScrollBox;
     Label2: TLabel;
     TrackBar1: TTrackBar;
     ShadowEffect13: TShadowEffect;
@@ -195,6 +191,9 @@ type
     TetheringManager1: TTetheringManager;
     TetheringAppProfile1: TTetheringAppProfile;
     EdtWhatsApp: TEdit;
+    Image3: TImage;
+    RectanguleLaretalDireito: TRectangle;
+    VertScrollBoxRodas: TVertScrollBox;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -255,6 +254,7 @@ type
     procedure MenuItem12Click(Sender: TObject);
     procedure MenuItem18Click(Sender: TObject);
     procedure Image5Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
 
 
   private
@@ -954,6 +954,17 @@ begin
 end;
 
 
+
+procedure TFrmPrincipal.Image3Click(Sender: TObject);
+var
+  Url: string;
+begin
+  Url := 'https://conectsolutionsti.com.br';
+
+  if ShellExecute(0, 'open', PChar(Url), nil, nil, SW_SHOWNORMAL) <= 32 then
+    ShowMessage('Não foi possível abrir o navegador padrão.');
+
+end;
 
 procedure TFrmPrincipal.Image4DblClick(Sender: TObject);
 begin

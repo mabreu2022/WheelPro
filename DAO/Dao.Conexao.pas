@@ -35,9 +35,9 @@ type
 
   end;
 
-  const
-    //ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini'; //Compilar para testes de programação
-    ARQ_INI = 'C:\Program Files (x86)\WheelPro\Server.Ini'; //Compilar para Cliente final/Maquina da mesma rede
+//  const
+//    ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini'; //Compilar para testes de programação
+    //ARQ_INI = 'C:\Program Files (x86)\WheelPro\Server.Ini'; //Compilar para Cliente final/Maquina da mesma rede
 
 
 implementation
@@ -57,9 +57,10 @@ class procedure TConnection.CarregarConfig(Connection: TFDconnection);
 var
   ini: TIniFile;
   FDPhysDriverLink: TFDPhysDriverLink;
+
 begin
    try
-     ini := TIniFile.Create(ARQ_INI);
+     ini := TIniFile.Create(ExtractFileDir(ParamStr(0)) + '\Server.ini');//TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'Server.ini');//TIniFile.Create(ARQ_INI);
      Connection.DriverName := ini.ReadString('Banco de Dados', 'DriverID', '');
 
      with Connection.Params do

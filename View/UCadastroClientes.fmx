@@ -11,7 +11,6 @@ object FrmCadastroClientes: TFrmCadastroClientes
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnShow = FormShow
   DesignerMasterStyle = 0
   object Layout1: TLayout
@@ -663,8 +662,8 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Size.Height = 275.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 1
-          Viewport.Width = 712.000000000000000000
-          Viewport.Height = 275.000000000000000000
+          Viewport.Width = 708.000000000000000000
+          Viewport.Height = 250.000000000000000000
         end
       end
       object TabItemContato: TTabItem
