@@ -1,4 +1,5 @@
 object DM: TDM
+  OnCreate = DataModuleCreate
   Height = 750
   Width = 1000
   PixelsPerInch = 120
@@ -9,12 +10,12 @@ object DM: TDM
       'Password=19741974'
       'Server=127.0.0.1'
       'DriverID=MySQL')
-    Connected = True
     LoginPrompt = False
     Left = 72
     Top = 56
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    DriverID = 'MySQL'
     VendorLib = 'libmysql.dll'
     Left = 240
     Top = 56

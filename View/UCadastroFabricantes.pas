@@ -177,26 +177,49 @@ implementation
 {$R *.fmx}
 
 procedure TFrmFabricantes.BtnNovoClick(Sender: TObject);
+var
+  qry: TFDQuery;
+  NextID: Integer;
 begin
   FTipo:='N';
 
   DesabilitaBotoes([BiGravar]);//Desabilita todos botões menos o botão gravar
 
+  qry := TFDQuery.Create(nil); // Crie o objeto TFDQuery
+
+  try
+    qry.Connection := TConnection.CreateConnection;
+
+    qry.SQL.Text := 'SELECT MAX(idfabricantes) + 1 AS NextID FROM FAbricantes';
+    qry.Open;
+
+    NextID := qry.FieldByName('NextID').AsInteger;
+
+    // Verifique se o valor retornado é NULL (sem registros na tabela)
+    if qry.FieldByName('NextID').IsNull then
+      NextID := 1;
+
+  finally
+    qry.Free;
+  end;
+
   //Limpar todos os campos da tela
-  EdtRazao.Text       := '';
-  EdtCnpj.Text        := '';
-  EdtEndereco.Text    := '';
-  EdtNumero.Text      := '';
-  EdtComplemento.Text := '';
-  EdtCep.Text         := '';
-  EdtCidade.Text      := '';
-  EdtBairro.Text      := '';
-  CBUF.Index          := 24;
-  CBAtivo.Index       := 1;
+  EdtCodFabricante.Text := IntToStr(NextID);
+  EdtRazao.Text         := '';
+  EdtCnpj.Text          := '';
+  EdtEndereco.Text      := '';
+  EdtNumero.Text        := '';
+  EdtComplemento.Text   := '';
+  EdtCep.Text           := '';
+  EdtCidade.Text        := '';
+  EdtBairro.Text        := '';
+  CBUF.Index            := 24;
+  CBAtivo.Index         := 1;
 
   //Foco no campo EdtRazao
   if EdtRazao.CanFocus then
     EdtRazao.SetFocus;
+
 end;
 
 procedure TFrmFabricantes.BtnPesquisarClick(Sender: TObject);

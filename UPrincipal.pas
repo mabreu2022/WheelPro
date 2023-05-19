@@ -759,7 +759,7 @@ end;
 
 destructor TFrmPrincipal.destroy;
 begin
-  FConexao.Free;
+  //FConexao.Free;
   inherited;
 end;
 
@@ -821,7 +821,7 @@ end;
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FrmLogin.Close;
-  Application.Terminate;
+  //Application.Terminate;
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
@@ -948,6 +948,7 @@ begin
 
    finally
      qry.Free;
+     FConexao.Free;
    end; //Fim das permissões dos Menus
 
 end;
@@ -1211,24 +1212,14 @@ end;
 
 procedure TFrmPrincipal.MenuItem1Click(Sender: TObject);
 begin
-//  if not Assigned(FrmCategorias) then
-//  begin
-    Application.CreateForm(TFrmCategorias, FrmCategorias);
-    FrmCategorias.ShowModal;
-//  end;
+  Application.CreateForm(TFrmCategorias, FrmCategorias);
+  FrmCategorias.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);
 begin
-//  if not Assigned(FrmCadastroClientes) then
-//  begin
-//    try
-      Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
-      FrmCadastroClientes.ShowModal;
-//    finally
-//      FreeAndNil(FrmCadastroClientes);
-//    end;
-//  end;
+  Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
+  FrmCadastroClientes.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItem9Click(Sender: TObject);

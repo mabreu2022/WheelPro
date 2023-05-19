@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{FCEBD878-3D8A-49D6-9F66-B00A01BC081E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="GerarSerial.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\Gerar Contra Senha\GerarContraSenha.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="H:\Backup Mauricio 31012023\Fontes\restaurante\SCI.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="GerarSerial">
+        <MSBuild Projects="GerarSerial.dproj"/>
+    </Target>
+    <Target Name="GerarSerial:Clean">
+        <MSBuild Projects="GerarSerial.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GerarSerial:Make">
+        <MSBuild Projects="GerarSerial.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GerarContraSenha">
+        <MSBuild Projects="..\Gerar Contra Senha\GerarContraSenha.dproj"/>
+    </Target>
+    <Target Name="GerarContraSenha:Clean">
+        <MSBuild Projects="..\Gerar Contra Senha\GerarContraSenha.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GerarContraSenha:Make">
+        <MSBuild Projects="..\Gerar Contra Senha\GerarContraSenha.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SCI">
+        <MSBuild Projects="H:\Backup Mauricio 31012023\Fontes\restaurante\SCI.dproj"/>
+    </Target>
+    <Target Name="SCI:Clean">
+        <MSBuild Projects="H:\Backup Mauricio 31012023\Fontes\restaurante\SCI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SCI:Make">
+        <MSBuild Projects="H:\Backup Mauricio 31012023\Fontes\restaurante\SCI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="GerarSerial;GerarContraSenha;SCI"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="GerarSerial:Clean;GerarContraSenha:Clean;SCI:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="GerarSerial:Make;GerarContraSenha:Make;SCI:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

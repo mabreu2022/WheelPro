@@ -136,7 +136,7 @@ end;
 
 destructor TFrmLogin.destroy;
 begin
-
+  FConexao.Free;
   inherited;
 end;
 

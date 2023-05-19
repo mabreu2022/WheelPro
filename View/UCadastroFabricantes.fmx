@@ -185,7 +185,7 @@ object FrmFabricantes: TFrmFabricantes
       Size.Width = 712.000000000000000000
       Size.Height = 348.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 5
       TabPosition = PlatformDefault
       Sizes = (
@@ -199,7 +199,7 @@ object FrmFabricantes: TFrmFabricantes
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -567,7 +567,7 @@ object FrmFabricantes: TFrmFabricantes
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False

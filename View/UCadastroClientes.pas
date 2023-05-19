@@ -277,6 +277,13 @@ begin
            Exit;
          end;
 
+       end
+       else //Cadastra o Cliente novo
+       begin
+         RegrasDeNegocios.SalvarCliente(FCliente);
+         PopularDataSet;
+         OnDataSetChange;
+         Exit;
        end;
 
      end
@@ -296,24 +303,46 @@ begin
 end;
 
 procedure TFrmCadastroClientes.BtnNovoClick(Sender: TObject);
+var
+  qry: TFDQuery;
+  NextID: Integer;
 begin
-  FTipo:='N';
+  FTipo := 'N';
 
-  DesabilitaBotoes([BiGravar]);//Desabilita todos botões menos o botão gravar
+  DesabilitaBotoes([BiGravar]); // Desabilita todos os botões, exceto o botão Gravar
 
-  //Limpar todos os campos da tela
-  EdtRazao.Text       := '';
-  EdtCnpj.Text        := '';
-  EdtEndereco.Text    := '';
-  EdtNumero.Text      := '';
+  qry := TFDQuery.Create(nil); // Crie o objeto TFDQuery
+
+  try
+    qry.Connection := TConnection.CreateConnection; // Substitua "SuaConexao" pela sua conexão de banco de dados
+
+    qry.SQL.Text := 'SELECT MAX(idclientes) + 1 AS NextID FROM Clientes';
+    qry.Open;
+
+    NextID := qry.FieldByName('NextID').AsInteger;
+
+    // Verifique se o valor retornado é NULL (sem registros na tabela)
+    if qry.FieldByName('NextID').IsNull then
+      NextID := 1;
+
+  finally
+    qry.Free;
+  end;
+
+  // Limpar todos os campos da tela
+  EdtCodCliente.Text := IntToStr(NextID);
+  EdtRazao.Text := '';
+  EdtCnpj.Text := '';
+  EdtEndereco.Text := '';
+  EdtNumero.Text := '';
   EdtComplemento.Text := '';
-  EdtCep.Text         := '';
-  EdtCidade.Text      := '';
-  EdtBairro.Text      := '';
-  CBUF.Index          := 24; //Ver qual o index de SP para trocar aqui
-  CBAtivo.Index       := 1;
+  EdtCep.Text := '';
+  EdtCidade.Text := '';
+  EdtBairro.Text := '';
+  CBUF.ItemIndex := 24;
+  CBAtivo.ItemIndex := 1;
 
-  //Foco no campo EdtRazao
+  // Foco no campo EdtRazao
   if EdtRazao.CanFocus then
     EdtRazao.SetFocus;
 
@@ -642,7 +671,9 @@ procedure TFrmCadastroClientes.PopularClientes;
 begin
   FCliente := TClientes.Create;
   try
-     FCliente.idcliente   := StrTOInt(EdtCodCliente.Text);
+     if FTIpo<>'N' then
+       FCliente.idcliente   := StrTOInt(EdtCodCliente.Text);
+
      FCliente.razaosocial := EdtRazao.Text;
      FCliente.cnpj        := EdtCnpj.Text;
      FCliente.Endereco    := EdtEndereco.Text;

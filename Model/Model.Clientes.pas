@@ -131,6 +131,7 @@ begin
     qry.ParamByName('CNPJ_CPF').AsString       := aCliente.cnpj;
 
     qry.ExecSQL;
+    qry.Connection.Commit;
 
     Result:=True;
 
@@ -192,10 +193,11 @@ begin
 
     qry.First;
 
-    Result := Qry;
+    Result := qry;
   except
     Result := nil;
   end;
+
 end;
 
 class function TModelCliente.ClienteExiste(aCNPJ: string): Boolean;
@@ -272,6 +274,7 @@ begin
     qry.ParamByName('IDCLIENTES').AsInteger:= aCliente.idcliente;
 
     qry.ExecSQL;
+    qry.Connection.Commit;
 
     Result := True;
   finally
@@ -295,7 +298,7 @@ begin
     qry.Close;
     qry.SQL.Clear;
     qry.SQL.Add('INSERT INTO '  +
-                ' Clientes '    +
+                ' fulanorodas.Clientes '    +
                 '(idclientes, ' +
                 'razao, '       +
                 'cnpj_cpf, '    +
@@ -355,6 +358,7 @@ begin
      qry.ParamByName('ativo').AsString         := Ativo;
 
      qry.ExecSQL;
+     qry.Connection.Commit;
 
      Result:=True;
 

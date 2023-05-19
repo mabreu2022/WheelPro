@@ -32,11 +32,12 @@ type
 
     class procedure CarregarConfig(Connection: TFDconnection);
     class function  CreateConnection: TFDConnection;
+
   end;
 
   const
-     ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini'; //Compilar para testes de programação
-     //ARQ_INI = 'C:\Program Files (x86)\WheelPro\Server.Ini'; //Compilar para Cliente final
+    //ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini'; //Compilar para testes de programação
+    ARQ_INI = 'C:\Program Files (x86)\WheelPro\Server.Ini'; //Compilar para Cliente final/Maquina da mesma rede
 
 
 implementation
@@ -49,7 +50,7 @@ var
 begin
   FConn := TFDConnection.Create(nil);
   CarregarConfig(FConn);
-  Result:= FConn;
+  Result := FConn;
 end;
 
 class procedure TConnection.CarregarConfig(Connection: TFDconnection);
@@ -64,10 +65,10 @@ begin
      with Connection.Params do
      begin
        Clear;
-       Add('DriverID=' + ini.ReadString('Banco de Dados', 'DriverID' , ''));
-       Add('DataBase=' + ini.ReadString('Banco de Dados', 'DataBase', ''));
-       Add('User_Name=' + ini.ReadString('Banco de Dados','User_Name', ''));
-       Add('PassWord=' + ini.ReadString('Banco de Dados', 'Password', ''));
+       Add('DriverID='  + ini.ReadString('Banco de Dados', 'DriverID' , ''));
+       Add('DataBase='  + ini.ReadString('Banco de Dados', 'DataBase', ''));
+       Add('User_Name=' + ini.ReadString('Banco de Dados', 'User_Name', ''));
+       Add('PassWord='  + ini.ReadString('Banco de Dados', 'Password', ''));
        //Add('Initial Catalog' + ini.ReadString('Banco de Dados', 'Initial Catalog',''));
        //Add('Extended Properties="' + ini.ReadString('Banco de Dados', 'Extended Properties', '') + '"');
        Add('Protocol=TCPIP');
