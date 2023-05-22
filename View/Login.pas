@@ -43,15 +43,15 @@ uses
 type
   TFrmLogin = class(TForm)
     Panel1: TPanel;
-    Button1: TButton;
-    Button2: TButton;
+    BtnOK: TButton;
+    BtnCancelar: TButton;
     Rectangle1: TRectangle;
     Image1: TImage;
     Layout1: TLayout;
     Rectangle2: TRectangle;
-    Label1: TLabel;
+    lblUsuario: TLabel;
     EdtUsuario: TEdit;
-    Label2: TLabel;
+    LblSenha: TLabel;
     EdtSenha: TEdit;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
@@ -60,13 +60,15 @@ type
     ShadowEffect5: TShadowEffect;
     ShadowEffect6: TShadowEffect;
     ShadowEffect7: TShadowEffect;
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure BtnOKClick(Sender: TObject);
+    procedure BtnCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
+    FLinguagem: string;
+    procedure CarregarLinguagem;
   public
     { Public declarations }
     procedure CarregarCores;
@@ -81,7 +83,7 @@ implementation
 
 {$R *.fmx}
 
-procedure TFrmLogin.Button1Click(Sender: TObject);
+procedure TFrmLogin.BtnOKClick(Sender: TObject);
 Var
   Login: TLogin;
 begin
@@ -104,7 +106,7 @@ begin
 
 end;
 
-procedure TFrmLogin.Button2Click(Sender: TObject);
+procedure TFrmLogin.BtnCancelarClick(Sender: TObject);
 begin
   FrmPrincipal.Close;
 end;
@@ -129,6 +131,42 @@ begin
 
 end;
 
+procedure TFrmLogin.CarregarLinguagem;
+var
+  IniFile: TIniFile;
+  I: Integer;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+
+   if FLinguagem = 'Portuguese' then
+   begin
+     lblUsuario.Text  := 'Usuário';
+     lblSenha.Text         := 'Senha';
+     BtnCancelar.Text      := 'Cancelar';
+     BtnOK.Text            := 'Enviar';
+     FrmLogin.Caption      := 'Conecte-se';
+     EdtUsuario.TextPrompt := 'Seu usuário';
+     Edtsenha.TextPrompt   := 'Sua senha';
+   end
+   else if FLinguagem = 'Ingles' then
+   begin
+     lblUsuario.Text       := 'User';
+     lblSenha.Text         := 'Password';
+     BtnCancelar.Text      := 'Cancel';
+     BtnOK.Text            := 'Send';
+     FrmLogin.Caption      := 'Login';
+     EdtUsuario.TextPrompt := 'Your user';
+     Edtsenha.TextPrompt   := 'Your password';
+   end;
+
+  finally
+    IniFile.Free;
+  end;
+
+end;
+
 constructor TFrmLogin.create;
 begin
   FConexao := TConnection.CreateConnection;
@@ -143,6 +181,7 @@ end;
 procedure TFrmLogin.FormCreate(Sender: TObject);
 begin
   CarregarCores;
+  CarregarLinguagem;
 end;
 
 procedure TFrmLogin.FormShow(Sender: TObject);

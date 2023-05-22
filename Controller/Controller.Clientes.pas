@@ -32,7 +32,7 @@ type
 
     //Read
     function CarregarClientes(const ACNPJ: String): TClientes;
-    function CarregarTodosClientes(aDataSet: TClientDataSet): TFDquery; //ok
+    function CarregarTodosClientes(aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
     function ObterClientePorId(aId: Integer): TFDQuery;
 
     //Update
@@ -64,10 +64,9 @@ begin
   Result := FModel.CarregarClientes(aCNPJ);
 end;
 
-function TControllerCliente.CarregarTodosClientes(
-  aDataSet: TClientDataSet): TFDquery;
+function TControllerCliente.CarregarTodosClientes(aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery;
 begin
-  Result := FModel.CarregarTodosClientes(aDataSet);
+  Result := FModel.CarregarTodosClientes(aDataSet, aSomenteAtivos);
 end;
 
 function TControllerCliente.ClienteExiste(aCNPJ: string): Boolean;

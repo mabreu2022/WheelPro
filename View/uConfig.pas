@@ -37,7 +37,7 @@ type
     Rectangle2: TRectangle;
     TabControl1: TTabControl;
     TabItemSistema: TTabItem;
-    Label1: TLabel;
+    LblTitulo: TLabel;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
     BtnGravar: TButton;
@@ -55,14 +55,21 @@ type
     ShadowEffect10: TShadowEffect;
     ShadowEffect11: TShadowEffect;
     ShadowEffect12: TShadowEffect;
-    GroupBox1: TGroupBox;
+    GroupBoxTelaPRincipalWhatsApp: TGroupBox;
     CBWhatsApp: TCheckBox;
-    GroupBox2: TGroupBox;
+    GroupBoxCores: TGroupBox;
     CCBCoresDoSistema: TColorComboBox;
     ShadowEffect5: TShadowEffect;
-    GroupBox3: TGroupBox;
+    GroupBoxCadastroClientes: TGroupBox;
     CheckBox_CarregarTambemClientesAtivoIgualN: TCheckBox;
     ShadowEffect6: TShadowEffect;
+    GroupBoxLinguagem: TGroupBox;
+    CBLinguagem: TComboBox;
+    ShadowEffect4: TShadowEffect;
+    ShadowEffect13: TShadowEffect;
+    ShadowEffect14: TShadowEffect;
+    ShadowEffect15: TShadowEffect;
+    ShadowEffect16: TShadowEffect;
     procedure BtnGravarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -70,10 +77,17 @@ type
   private
     { Private declarations }
     FCorMudou: Boolean;
+    FLinguagem: string;
+    procedure SetLinguagem(const Value: string);
   public
     { Public declarations }
+    property Linguagem: string read FLinguagem write SetLinguagem;
+    procedure SalvarLinguagem;
+    procedure CarregarLinguagem;
     procedure SalvarCores;
     procedure CarregarCores;
+    procedure SalvarConfiguracao;
+    procedure CarregarConfiguracao;
     function ColorToHexString(Color: TAlphaColor): string;
   end;
 
@@ -89,24 +103,51 @@ var
   AppPath: string;
   Confirmation: Integer;
 begin
-  //Chamar a procedure de gravação
-  SalvarCores;
 
   // Salve o caminho completo do aplicativo atual
   AppPath := ParamStr(0);
 
   // Exiba uma caixa de diálogo de confirmação
-  Confirmation := MessageDlg('Deseja reiniciar a aplicação para modificar a cor?', mtConfirmation, [mbYes, mbNo], 0);
+  Confirmation := MessageDlg('Deseja aplicar as novs configurações (O aplicativo será finalizado e reiniciado)?', mtConfirmation, [mbYes, mbNo], 0);
 
   // Verifique a resposta do usuário
   if Confirmation = mrYes then
   begin
+    //SalvarConfiguracao
+    SalvarConfiguracao;
+
+    //Salvar a Linguagem
+    SalvarLinguagem;
+
+    //Chamar a procedure de gravação
+    SalvarCores;
+
     // Encerre a aplicação atual
     Application.Terminate;
 
     // Execute o aplicativo novamente
     ShellExecute(0, 'open', PChar(AppPath), nil, nil, SW_SHOW);
   end;
+end;
+
+procedure TFrmConfig.CarregarConfiguracao;
+var
+  IniFile: TIniFile;
+  Valor, Valor2: string;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Valor := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+    Valor2:= IniFile.ReadString('WhatsApp', 'EnviaParaContatoEspecifico', '');
+
+    // Carregar valor do Config.ini para o CheckBox
+    CheckBox_CarregarTambemClientesAtivoIgualN.IsChecked := (Valor = 'S');
+    CBWhatsApp.IsChecked:= (Valor2 = 'S');
+    // Use a instância FModel de TModelCliente conforme necessário...
+  finally
+    IniFile.Free;
+  end;
+
 end;
 
 procedure TFrmConfig.CarregarCores;
@@ -133,6 +174,61 @@ begin
 
 end;
 
+procedure TFrmConfig.CarregarLinguagem;
+var
+  IniFile: TIniFile;
+  I: Integer;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+
+     // Percorre os itens do combobox e define o índice correspondente
+    for I := 0 to CBLinguagem.Items.Count - 1 do
+    begin
+      if CBLinguagem.Items[I] = FLinguagem then
+      begin
+        CBLinguagem.ItemIndex := I;
+        Break;
+      end;
+    end;
+
+   if FLinguagem = 'Portuguese' then
+   begin
+     GroupBoxCadastroClientes.Text                   := 'Cadastro de Clientes';
+     CheckBox_CarregarTambemClientesAtivoIgualN.Text := 'Carregar também Clientes Aitvos = N';
+     GroupBoxTelaPRincipalWhatsApp.Text              := 'Tela  Principal WhatsApp';
+     CBWhatsApp.Text                                 := 'Enviar para contato único';
+     GroupBoxLinguagem.Text                          := 'Linguagem';
+     GroupBoxCores.Text                              := 'Cores';
+     BtnGravar.Text                                  := 'Gravar';
+     TabItemSistema.Text                             := 'Sistema';
+     TabItemBancoDeDados.Text                        := 'Banco de Dados';
+     LblTitulo.Text                                  := 'Configurações do Sistema';
+     FrmConfig.Caption                               := 'Configurações do Sistema';
+   end
+   else if FLinguagem = 'Ingles' then
+   begin
+     GroupBoxCadastroClientes.Text                   := 'Customer Registration';
+     CheckBox_CarregarTambemClientesAtivoIgualN.Text := 'Also Load Active Clients = N';
+     GroupBoxTelaPRincipalWhatsApp.Text              := 'WhatsApp Main Screen';
+     CBWhatsApp.Text                                 := 'Send to single contact';
+     GroupBoxLinguagem.Text                          := 'Language';
+     GroupBoxCores.Text                              := 'Colors';
+     BtnGravar.Text                                  := 'Save';
+     TabItemSistema.Text                             := 'System';
+     TabItemBancoDeDados.Text                        := 'DataBase';
+     LblTitulo.Text                                  := 'System Settings';
+     FrmConfig.Caption                               := 'System Settings';
+   end;
+
+
+  finally
+    IniFile.Free;
+  end;
+
+end;
+
 procedure TFrmConfig.CCBCoresDoSistemaChange(Sender: TObject);
 begin
   FCorMudou:= True;
@@ -146,11 +242,28 @@ end;
 procedure TFrmConfig.FormCreate(Sender: TObject);
 begin
   CarregarCores;
+  CarregarLinguagem;
+  CarregarConfiguracao;
 end;
 
 procedure TFrmConfig.FormShow(Sender: TObject);
 begin
   TabControl1.TabIndex:=0;
+end;
+
+procedure TFrmConfig.SalvarConfiguracao;
+var
+  IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+     if CBWhatsApp.IsChecked  then
+       IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'S')
+     else
+       IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'N');
+  finally
+    IniFile.Free;
+  end;
 end;
 
 procedure TFrmConfig.SalvarCores;
@@ -169,9 +282,9 @@ begin
     end;
 
     if CBWhatsApp.IsChecked  then
-      IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'N')
+      IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'S')
     else
-      IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'S');
+      IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'N');
 
     if CheckBox_CarregarTambemClientesAtivoIgualN.IsChecked then
       IniFile.WriteString('Sistema', 'carregaclientesativosn', 'S')
@@ -182,6 +295,26 @@ begin
     IniFile.Free;
   end;
 
+end;
+
+procedure TFrmConfig.SalvarLinguagem;
+var
+  IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+  if CBLinguagem.ItemIndex <> -1 then
+     Linguagem := CBLinguagem.Items[CBLinguagem.ItemIndex];
+
+    IniFile.WriteString('Traducao', 'Linguagem', Linguagem);
+  finally
+    IniFile.Free;
+  end;
+end;
+
+procedure TFrmConfig.SetLinguagem(const Value: string);
+begin
+  FLinguagem := Value;
 end;
 
 end.

@@ -46,6 +46,8 @@ type
     FdataExclusao: TDateTime;
     FdataAlteracao: TDateTime;
     FdataCadastro: TDatetime;
+    Fidmodelocarro: integer;
+
 
 
     procedure Setativo(const Value: string);
@@ -62,6 +64,8 @@ type
     procedure SetdataAlteracao(const Value: TDateTime);
     procedure SetdataCadastro(const Value: TDatetime);
     procedure SetdataExclusao(const Value: TDateTime);
+    procedure Setidmodelocarro(const Value: integer);
+
 
     public
       property idcliente: Integer read Fidcliente write Setidcliente;
@@ -78,6 +82,7 @@ type
       property dataCadastro: TDatetime read FdataCadastro write SetdataCadastro;
       property dataAlteracao: TDateTime read FdataAlteracao write SetdataAlteracao;
       property dataExclusao: TDateTime read FdataExclusao write SetdataExclusao;
+      property idmodelocarro: integer read Fidmodelocarro write Setidmodelocarro;
 
       constructor create;
       destructor destroy;override;
@@ -152,6 +157,11 @@ end;
 procedure TClientes.Setidcliente(const Value: Integer);
 begin
   Fidcliente := Value;
+end;
+
+procedure TClientes.Setidmodelocarro(const Value: integer);
+begin
+  Fidmodelocarro := Value;
 end;
 
 procedure TClientes.Setnumero(const Value: integer);

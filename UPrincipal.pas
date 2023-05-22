@@ -85,17 +85,17 @@ type
     Layout1: TLayout;
     Panel1: TPanel;
     MainMenu1: TMainMenu;
-    MenuItem4: TMenuItem;
+    MenuItemArquivo: TMenuItem;
     Panel2: TPanel;
     Panel3: TPanel;
-    MenuItem5: TMenuItem;
-    MenuItem6: TMenuItem;
-    MenuItem7: TMenuItem;
-    MenuItem8: TMenuItem;
-    MenuItem9: TMenuItem;
-    MenuItem10: TMenuItem;
-    MenuItem11: TMenuItem;
-    MenuItem12: TMenuItem;
+    MenuItemCadastros: TMenuItem;
+    MennuItemClientes: TMenuItem;
+    MenuItemFabricantes: TMenuItem;
+    MenuItemClientesDados: TMenuItem;
+    MenuItemClientesVeiculos: TMenuItem;
+    MenuItemClientesOrcamentos: TMenuItem;
+    MenuItemFabricantesDados: TMenuItem;
+    MenuItemFabricanteProdutos: TMenuItem;
     RectangleBottom: TRectangle;
     Button1: TButton;
     Button2: TButton;
@@ -109,11 +109,11 @@ type
     ShadowEffect3: TShadowEffect;
     ShadowEffect4: TShadowEffect;
     ShadowEffect5: TShadowEffect;
-    MenuItem13: TMenuItem;
+    MenuItemConfiguracoes: TMenuItem;
     Panel5: TPanel;
     ShadowEffect9: TShadowEffect;
-    MenuItem14: TMenuItem;
-    MenuItem15: TMenuItem;
+    MenuItemConfiguracoesSistema: TMenuItem;
+    MenuItemRegistrar: TMenuItem;
     Panel6: TPanel;
     RectangleTop: TRectangle;
     BtnCopiarFoto: TButton;
@@ -133,11 +133,11 @@ type
     ShadowEffect8: TShadowEffect;
     ShadowEffect12: TShadowEffect;
     lblMarcas: TLabel;
-    Label1: TLabel;
+    lblFiltros: TLabel;
     ShadowEffect7: TShadowEffect;
-    MenuItem18: TMenuItem;
+    MenuItemFabricantesDeVeiculos: TMenuItem;
     ShadowEffect14: TShadowEffect;
-    Label2: TLabel;
+    lblOpacidadeRodas: TLabel;
     TrackBar1: TTrackBar;
     ShadowEffect13: TShadowEffect;
     CBLinhas: TComboBox;
@@ -169,18 +169,18 @@ type
     ShadowEffect20: TShadowEffect;
     LblPreco: TLabel;
     Lbl_Preco: TLabel;
-    Label11: TLabel;
+    lblx4: TLabel;
     LblFabricante: TLabel;
     Lbl_Fabricante: TLabel;
     Lbl_ValorTotal: TLabel;
-    Lbl_VAlor_Total_Cliente: TLabel;
-    MenuItem1: TMenuItem;
-    Button5: TButton;
+    Lbl_Valor_Total_Cliente: TLabel;
+    MenuItemFabricantesCategorias: TMenuItem;
+    BtnCarregarRodaCalota: TButton;
     ShadowEffect30: TShadowEffect;
-    MenuItem3: TMenuItem;
+    MenuItemDeslogar: TMenuItem;
     ActionList1: TActionList;
     Sair: TAction;
-    MenuItem16: TMenuItem;
+    MenuItemSair: TMenuItem;
     LogOff: TAction;
     ActShare: TShowShareSheetAction;
     MediaReceiverManager: TTetheringManager;
@@ -212,7 +212,7 @@ type
       Shift: TShiftState; X, Y: Single);
     procedure Circle1DblClick(Sender: TObject);
     procedure Image4DblClick(Sender: TObject);
-    procedure MenuItem1Click(Sender: TObject);
+    procedure MenuItemFabricantesCategoriasClick(Sender: TObject);
     procedure NewImagemClick(Sender: TObject);
     procedure NewImagemDbClick(Sender: TObject);
     procedure NewImagemMouseDown(Sender: TObject; Button: TMouseButton;
@@ -224,7 +224,7 @@ type
       Shift: TShiftState; X, Y: Single);
     procedure FormShow(Sender: TObject);
     procedure BtnCarregarFotoClick(Sender: TObject);
-    procedure MenuItem14Click(Sender: TObject);
+    procedure MenuItemConfiguracoesSistemaClick(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
     procedure BtnCopiarFotoClick(Sender: TObject);
     procedure Image4MouseWheel(Sender: TObject; Shift: TShiftState;
@@ -237,22 +237,21 @@ type
     procedure CBLinhasChange(Sender: TObject);
     procedure CBProdutosChange(Sender: TObject);
     procedure BtnCopiarRodaClick(Sender: TObject);
-    procedure MenuItem8Click(Sender: TObject);
-    procedure MenuItem9Click(Sender: TObject);
-    procedure MenuItem11Click(Sender: TObject);
-    procedure MenuItem10Click(Sender: TObject);
-    procedure MenuItem15Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
+    procedure MenuItemClientesDadosClick(Sender: TObject);
+    procedure MenuItemClientesVeiculosClick(Sender: TObject);
+    procedure MenuItemFabricantesDadosClick(Sender: TObject);
+    procedure MenuItemClientesOrcamentosClick(Sender: TObject);
+    procedure MenuItemRegistrarClick(Sender: TObject);
+    procedure BtnCarregarRodaCalotaClick(Sender: TObject);
     procedure SairExecute(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure LogOffExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure MediaReceiverProfileResourceReceived(const Sender: TObject;
       const AResource: TRemoteResource);
     procedure MediaReceiverManagerRequestManagerPassword(const Sender: TObject;
       const ARemoteIdentifier: string; var Password: string);
-    procedure MenuItem12Click(Sender: TObject);
-    procedure MenuItem18Click(Sender: TObject);
+    procedure MenuItemFabricanteProdutosClick(Sender: TObject);
+    procedure MenuItemFabricantesDeVeiculosClick(Sender: TObject);
     procedure Image5Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
 
@@ -289,8 +288,10 @@ type
   public
     { Public declarations }
      FidUsuario: Integer;
+     FLinguagem: string;
      property idUsuario: Integer read FidUsuario write SetidUsuario;
      procedure CarregarCores;
+     procedure CarregarLinguagem;
      constructor create;
      destructor destroy;override;
 
@@ -439,7 +440,7 @@ begin
     end;
 end;
 
-procedure TFrmPrincipal.Button5Click(Sender: TObject);
+procedure TFrmPrincipal.BtnCarregarRodaCalotaClick(Sender: TObject);
 var
   OpenDialog: TOpenDialog;
 begin
@@ -472,6 +473,106 @@ begin
     if FrmPrincipal.Components[I] is TRectangle then
       TRectangle(FrmPrincipal.Components[I]).Fill.Color := Cor;
   end;
+end;
+
+procedure TFrmPrincipal.CarregarLinguagem;
+var
+   IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+  finally
+    IniFile.Free;
+  end;
+
+  if FLinguagem = 'Portuguese' then
+  begin
+    lblFiltros.Text                       := 'Filtros';
+    lblMarcas.Text                        := 'Marcas de Veículos';
+    LblModelos.Text                       := 'Modelos';
+    LblFabricanteRodas.Text               := 'Fabricante das Rodas';
+    LblCategorias.Text                    := 'Categorias';
+    LblLinhas.Text                        := 'Linhas';
+    LblProdutos.Text                      := 'Produtos';
+    LblAcabamento.Text                    := 'Acabmento';
+    lblOpacidadeRodas.Text                := 'Opacidade das Rodas';
+    GroupBox_CaracTeristicas_Produto.Text := 'Características Técnicas do Produto Escolhido';
+    LblProcurar.Text                      := 'Procurar';
+    LblPreco.Text                         := 'Preço......:';
+    LblFabricante.Text                    := 'Fabricante:';
+    lblx4.Text                            := 'X 4 = ';
+    Lbl_ValorTotal.Text                   := 'Valor Total';
+    Lbl_Valor_Total_Cliente.Text          := 'R$ 0,00';
+
+    BtnCarregarFoto.Text                  := 'Carregar Foto';
+    BtnCopiarRoda.Text                    := 'Copiar Roda';
+    BtnCarregarRodaCalota.Text            := 'Carregar Roda/Calota';
+    BtnCopiarFoto.Text                    := 'Enviar WhatsApp';
+    EdtWhatsApp.TextPrompt                := 'DDD+Numero do Celular';
+
+
+    MenuItemArquivo.Text               := 'Arquivo';
+    MenuItemCadastros.Text             := 'Cadastros';
+    MennuItemClientes.Text             := 'Clientes';
+    MenuItemClientesDados.Text         := 'Dados';
+    MenuItemClientesVeiculos.Text      := 'Veículos';
+    MenuItemClientesOrcamentos.Text    := 'Orçamentos';
+    MenuItemFabricantes.Text           := 'Fabricantes';
+    MenuItemFabricantesDados.Text      := 'Dados';
+    MenuItemFabricanteProdutos.Text    := 'Produtos';
+    MenuItemFabricantesDeVeiculos.Text := 'Modelos de Veículos';
+    MenuItemFabricantesCategorias.Text := 'Categorias';
+    MenuItemConfiguracoes.Text         := 'Configurações';
+    MenuItemConfiguracoesSistema.Text  := 'Sistema';
+    MenuItemRegistrar.Text             := 'Registrar';
+    MenuItemDeslogar.Text              := 'Deslogar';
+    MenuItemSair.Text                  := 'Sair';
+  end
+  else if FLinguagem = 'Ingles' then
+  begin
+    lblFiltros.Text                       := 'Filters';
+    lblMarcas.Text                        := 'Vehicle Brands';
+    LblModelos.Text                       := 'Models';
+    LblFabricanteRodas.Text               := 'Wheel Manufacturer';
+    LblCategorias.Text                    := 'Categories';
+    LblLinhas.Text                        := 'Lines';
+    LblProdutos.Text                      := 'Products';
+    LblAcabamento.Text                    := 'Finishing';
+    lblOpacidadeRodas.Text                := 'Wheel Opacity';
+    GroupBox_CaracTeristicas_Produto.Text := 'Technical Characteristics of the Chosen Product';
+    LblProduto.Text                       := 'Product:';
+    LblProcurar.Text                      := 'To search for';
+    LblPreco.Text                         := 'Price.......:';
+    LblFabricante.Text                    := 'Manufacturer:';
+    lblx4.Text                            := 'X 4 = ';
+    Lbl_ValorTotal.Text                   := 'Amount';
+    Lbl_Valor_Total_Cliente.Text          := 'US$ 0.00';
+
+    BtnCarregarFoto.Text                  := 'Upload photo';
+    BtnCopiarRoda.Text                    := 'Copy Wheel';
+    BtnCarregarRodaCalota.Text            := 'Load Wheel/Cap';
+    BtnCopiarFoto.Text                    := 'Send WhatsApp';
+    EdtWhatsApp.TextPrompt                := 'DDD+Mobile Number';
+
+    MenuItemArquivo.Text               := 'File';
+    MenuItemCadastros.Text             := 'Registrations';
+    MennuItemClientes.Text             := 'Costumers';
+    MenuItemClientesDados.Text         := 'Data';
+    MenuItemClientesVeiculos.Text      := 'Vehicles';
+    MenuItemClientesOrcamentos.Text    := 'Budgets';
+    MenuItemFabricantes.Text           := 'Manufacturers';
+    MenuItemFabricantesDados.Text      := 'Data';
+    MenuItemFabricanteProdutos.Text    := 'Products';
+    MenuItemFabricantesDeVeiculos.Text := 'Vehicle Models';
+    MenuItemFabricantesCategorias.Text := 'Categories';
+    MenuItemConfiguracoes.Text         := 'Settings';
+    MenuItemConfiguracoesSistema.Text  := 'System';
+    MenuItemRegistrar.Text             := 'Register';
+    MenuItemDeslogar.Text              := 'Log  Out';
+    MenuItemSair.Text                  := 'To go out';
+  end;
+
 end;
 
 procedure TFrmPrincipal.CBCategoriasChange(Sender: TObject);
@@ -810,14 +911,6 @@ begin
 
 end;
 
-procedure TFrmPrincipal.FormActivate(Sender: TObject);
-begin
-//  Formulário de Login aparecendo na frente do FormPrincipal já criado
-//  Application.CreateForm(TFrmLogin, FrmLogin);
-//  FrmLogin.ShowModal;
-//  FrmLogin.Destroy;
-end;
-
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FrmLogin.Close;
@@ -830,6 +923,7 @@ begin
   Modo_Edicao2(False);
   DM.FDConnection1.Connected:= True;
   CarregarCores;
+  CarregarLinguagem;
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
@@ -1155,7 +1249,7 @@ begin
   Image1.Bitmap.LoadFromStream(AResource.Value.AsStream);
 end;
 
-procedure TFrmPrincipal.MenuItem10Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemClientesOrcamentosClick(Sender: TObject);
 begin
 // if not Assigned(FrmRegistrar) then
 //  begin
@@ -1164,7 +1258,7 @@ begin
 //  end;
 end;
 
-procedure TFrmPrincipal.MenuItem11Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemFabricantesDadosClick(Sender: TObject);
 begin
 //  if not Assigned(FrmFabricantes) then
 //  begin
@@ -1173,7 +1267,7 @@ begin
 //  end;
 end;
 
-procedure TFrmPrincipal.MenuItem12Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemFabricanteProdutosClick(Sender: TObject);
 begin
 //  if not Assigned(FrmProdutos) then
 //  begin
@@ -1182,7 +1276,7 @@ begin
 //  end;
 end;
 
-procedure TFrmPrincipal.MenuItem14Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemConfiguracoesSistemaClick(Sender: TObject);
 begin //O nome do arquivo será: Config.ini dentro do diretório do sistema
 //  if not Assigned(FrmConfig) then
 //  begin
@@ -1191,7 +1285,7 @@ begin //O nome do arquivo será: Config.ini dentro do diretório do sistema
 //  end;
 end;
 
-procedure TFrmPrincipal.MenuItem15Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemRegistrarClick(Sender: TObject);
 begin
 //  if not Assigned(FrmRegistrar) then
 //  begin
@@ -1208,7 +1302,7 @@ begin
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
 end;
 
-procedure TFrmPrincipal.MenuItem18Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemFabricantesDeVeiculosClick(Sender: TObject);
 begin
   if not Assigned(FrmCadastroVeiculos) then
   begin
@@ -1221,19 +1315,19 @@ begin
   end;
 end;
 
-procedure TFrmPrincipal.MenuItem1Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemFabricantesCategoriasClick(Sender: TObject);
 begin
   Application.CreateForm(TFrmCategorias, FrmCategorias);
   FrmCategorias.ShowModal;
 end;
 
-procedure TFrmPrincipal.MenuItem8Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemClientesDadosClick(Sender: TObject);
 begin
   Application.CreateForm(TFrmCadastroClientes, FrmCadastroClientes);
   FrmCadastroClientes.ShowModal;
 end;
 
-procedure TFrmPrincipal.MenuItem9Click(Sender: TObject);
+procedure TFrmPrincipal.MenuItemClientesVeiculosClick(Sender: TObject);
 begin
    if not Assigned(FrmRegistrar) then
   begin

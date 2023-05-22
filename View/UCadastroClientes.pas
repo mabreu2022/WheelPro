@@ -144,7 +144,7 @@ type
     Edit3: TEdit;
     lblEmailContato: TLabel;
     Edit4: TEdit;
-    Label2: TLabel;
+    LblAtivoContato: TLabel;
     ShadowEffect37: TShadowEffect;
     CBAtivoContato: TComboBox;
     ShadowEffect38: TShadowEffect;
@@ -158,6 +158,19 @@ type
     ShadowEffect46: TShadowEffect;
     ShadowEffect47: TShadowEffect;
     ShadowEffect48: TShadowEffect;
+    TabItemModeloCarro: TTabItem;
+    lblidmodelocarro: TLabel;
+    ComboBox1: TComboBox;
+    Edit5: TEdit;
+    lblModelo: TLabel;
+    ShadowEffect49: TShadowEffect;
+    ShadowEffect50: TShadowEffect;
+    ShadowEffect51: TShadowEffect;
+    ShadowEffect52: TShadowEffect;
+    GroupBoxFoto: TGroupBox;
+    CalloutPanel1: TCalloutPanel;
+    Image1: TImage;
+    ShadowEffect53: TShadowEffect;
     procedure FormShow(Sender: TObject);
     procedure BtnNovoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -189,18 +202,21 @@ type
     FTipo: String;
     FController: TControllerCliente;
     CDS: TClientDataSet;
+    FLinguagem: string;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     Procedure PopularGridClientes;
     procedure PreencheDadosEncontradosDoCliente;
     procedure PopularDataSet;
-
+    procedure CarregarConfiguracao;
   public
     { Public declarations }
     DataSet: TClientDataSet;
+    FSomenteAtivos: string;
     Function CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
     procedure OnDataSetChange;
     procedure PopularClientes;
     procedure CarregarCores;
+    procedure CarregarLinguagem;
     constructor create;
     destructor destroy; override;
   end;
@@ -405,6 +421,20 @@ begin
   OnDataSetChange;
 end;
 
+procedure TFrmCadastroClientes.CarregarConfiguracao;
+var
+   IniFile: TIniFile;
+
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FSomenteAtivos :=IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+  finally
+    IniFile.Free;
+    //FModel.Free;  //Finalizar no onclose do form
+  end;
+end;
+
 procedure TFrmCadastroClientes.CarregarCores;
 var
   IniFile: TIniFile;
@@ -422,6 +452,90 @@ begin
   begin
     if FrmCadastroClientes.Components[I] is TRectangle then
       TRectangle(FrmCadastroClientes.Components[I]).Fill.Color := Cor;
+  end;
+
+end;
+
+procedure TFrmCadastroClientes.CarregarLinguagem;
+var
+  IniFile: TIniFile;
+  I: Integer;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+
+   if FLinguagem = 'Portuguese' then
+   begin
+     TabItemCadastro.Text         := 'Cadastro';
+     LblCodCliente.Text           := 'Cod.Cliente';
+     LblRazaoSocial.Text          := 'Razão Social / Nome';
+     LblCnpj.Text                 := 'CNPJ / CPF';
+     LblEndereco.Text             := 'Endereço';
+     LblNumero.Text               := 'Número';
+     LblComplemento.Text          := 'Complemento';
+     LblCEP.Text                  := 'CEP';
+     LblCidade.Text               := 'Cidade';
+     LblBairro.Text               := 'Bairro';
+     LblUF.Text                   := 'UF';
+     LblAtivo.Text                := 'Ativo';
+     TabItemPesquisa.Text         := 'Pesquisa';
+     LblPesquisar.Text            := 'Pesquisar';
+     BtnPesquisar.Text            := '&Confirmar';
+     BtnNovo.Text                 := '&Novo';
+     BtnAlterar.Text              := '&Alterar';
+     BtnExcluir.Text              := '&Excluir';
+     BtnGravar.Text               := '&Gravar';
+     TabItemContato.Text          := 'Contato';
+     lblCondContato.Text          := 'Cod. Contato';
+     LblNomeContato.Text          := 'Nome';
+     lblTelefoneContato.Text      := 'Telefone';
+     lblEmailContato.Text         := 'E-mail';
+     LblAtivoContato.Text         := 'Ativo';
+     TabItemModeloCarro.Text      := 'Modelo Carro';
+     lblidmodelocarro.Text        := 'Cod. Modelo';
+     lblModelo.Text               := 'Modelo';
+     GroupBoxFoto.Text            := 'Foto';
+     FrmCadastroClientes.Caption  := 'Cadastro de Clientes';
+     lblTitulo.Text               := 'Cadastro de Clientes';
+   end
+   else if FLinguagem = 'Ingles' then
+   begin
+     TabItemCadastro.Text         := 'Register';
+     LblCodCliente.Text           := 'Customer Code';
+     LblRazaoSocial.Text          := 'Corporate Name / Name';
+     LblCnpj.Text                 := 'Tax Identification Number - TIN';
+     LblEndereco.Text             := 'Address';
+     LblNumero.Text               := 'Number';
+     LblComplemento.Text          := 'Complement';
+     LblCEP.Text                  := 'Zip code';
+     LblCidade.Text               := 'City';
+     LblBairro.Text               := 'Neighborhood';
+     LblUF.Text                   := 'State';
+     LblAtivo.Text                := 'Active';
+     TabItemPesquisa.Text         := 'Search';
+     LblPesquisar.Text            := 'To look for';
+     BtnPesquisar.Text            := '&Confirm';
+     BtnNovo.Text                 := '&New';
+     BtnAlterar.Text              := '&To alter';
+     BtnExcluir.Text              := '&Delete';
+     BtnGravar.Text               := '&Save';
+     TabItemContato.Text          := 'Contact';
+     lblCondContato.Text          := 'Cod. Contact';
+     LblNomeContato.Text          := 'Name';
+     lblTelefoneContato.Text      := 'Telephone';
+     lblEmailContato.Text         := 'E-mail';
+     LblAtivoContato.Text         := 'Active';
+     TabItemModeloCarro.Text      := 'Model Car';
+     lblidmodelocarro.Text        := 'Model Id';
+     lblModelo.Text               := 'Model';
+     GroupBoxFoto.Text            := 'Photo';
+     FrmCadastroClientes.Caption  := 'Customer Registration';
+     lblTitulo.Text               := 'Customer Registration';
+   end;
+
+  finally
+    IniFile.Free;
   end;
 
 end;
@@ -490,7 +604,7 @@ begin
   Model := TModelCliente.create;
   DataSet := TClientDataset.Create(nil);
   try
-    qry := Model.CarregarTodosClientes(DataSet);
+    qry := Model.CarregarTodosClientes(DataSet, FSomenteAtivos);
     DataSet := CriarDataSet(DataSet);
     DataSet.Open;
     qry.First;
@@ -620,8 +734,10 @@ end;
 
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
 begin
+  CarregarConfiguracao;
   PopularDataSet;
   CarregarCores;
+  CarregarLinguagem;
   FController:= TControllerCliente.create;
 end;
 
@@ -690,7 +806,7 @@ begin
      FCliente.Cidade      := EdtCidade.Text;
      FCliente.Bairro      := EdtBairro.Text;
      FCliente.UF          := CBUF.Items[CBUF.ItemIndex];
-     FCliente.Ativo     := CBAtivo.Items[CBAtivo.ItemIndex];
+     FCliente.Ativo       := CBAtivo.Items[CBAtivo.ItemIndex];
   finally
     //FCliente.Free; //no onclose do form
   end;
@@ -715,7 +831,47 @@ begin
   for I := 0 to DataSet.FieldCount - 1 do
   begin
     GridClientes.AddObject(TStringColumn.Create(GridClientes));
-    GridClientes.Columns[I].Header := DataSet.Fields[I].FieldName;
+    if FLinguagem='Portugues' then
+      GridClientes.Columns[I].Header := DataSet.Fields[I].FieldName
+    else
+    if FLinguagem='Ingles' then
+    begin
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'IDCLIENTES' then
+        GridClientes.Columns[I].Header := 'COSTUMER ID'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'RAZAO' then
+        GridClientes.Columns[I].Header := 'BUSINESS NAME'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'CNPJ_CPF' then
+        GridClientes.Columns[I].Header := 'TIN' //Ver como seria em ingles
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'ENDERECO' then
+        GridClientes.Columns[I].Header := 'ADRESS'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'NUMERO' then
+        GridClientes.Columns[I].Header := 'NUMBER'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'COMPLEMENTO' then
+        GridClientes.Columns[I].Header := 'COMPLEMENT'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'CEP' then
+        GridClientes.Columns[I].Header := 'ZIP CODE'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'CIDADE' then
+        GridClientes.Columns[I].Header := 'CITY'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'BAIRRO' then
+        GridClientes.Columns[I].Header := 'NEIGHBORHOOD'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'ATIVO' then
+        GridClientes.Columns[I].Header := 'ACTIVE'
+      else
+      if UPPERCASE(DataSet.Fields[I].FieldName) = 'UF' then
+        GridClientes.Columns[I].Header := 'STATE'
+      {
+      ver aqui se serão necessários os campos de datas e idmodelocarro
+      }
+    end;
   end;
 
   // Populando as células do grid com os dados do dataset
@@ -726,7 +882,22 @@ begin
   begin
     Inc(I);
     for J := 0 to DataSet.FieldCount - 1 do
+    begin
+      if FLinguagem = 'Ingles' then
+      begin
+        if DataSet.Fields[J].FieldName = 'ATIVO' then
+      begin
+        if DataSet.Fields[J].AsString = 'S' then
+          GridClientes.Cells[J, I] := 'Y'
+        else
+          GridClientes.Cells[J, I] := DataSet.Fields[J].AsString;
+      end
+      else
+        GridClientes.Cells[J, I] := DataSet.Fields[J].AsString;
+    end
+    else
       GridClientes.Cells[J, I] := DataSet.Fields[J].AsString;
+    end;
 
     DataSet.Next;
 
@@ -758,6 +929,7 @@ end;
 
 procedure TFrmCadastroClientes.TabItemPesquisaClick(Sender: TObject);
 begin
+  PopularDataSet;
   PopularGridClientes;
 end;
 

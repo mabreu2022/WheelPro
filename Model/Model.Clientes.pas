@@ -27,15 +27,20 @@ type
     private
       Fconn: TFDConnection;
       qry: TFDQuery;
+      FSomenteAtivos: string;
+    procedure SetSomenteAtivos(const Value: string);
     public
       FCliente: TClientes;
+      property SomenteAtivos: string read FSomenteAtivos write SetSomenteAtivos;
+
 
       //create
       Class function SalvarCliente(aCliente: TClientes): Boolean;
 
       //Read
       function CarregarClientes(const ACNPJ: String): TClientes;
-      function CarregarTodosClientes(aDataSet: TClientDataSet): TFDquery; //ok
+      function CarregarTodosClientes(
+  aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
       function ObterClientePorId(aId: Integer): TFDQuery;
 
       //Update
@@ -159,17 +164,18 @@ begin
 
     if qry.RecordCount > 0 then
     begin
-      FCliente.idcliente   := qry.FieldByName('idclientes').AsInteger;
-      FCliente.razaosocial := qry.FieldByName('razao').AsString;
-      FCliente.cnpj        := qry.FieldByName('cnpj_cpf').AsString;
-      FCliente.endereco    := qry.FieldByName('endereco').AsString;
-      FCliente.complemento := qry.FieldByName('complemento').AsString;
-      FCliente.numero      := qry.FieldByName('numero').AsInteger;
-      FCliente.cep         := qry.FieldByName('cep').AsString;
-      FCliente.cidade      := qry.FieldByName('cidade').AsString;
-      FCliente.bairro      := qry.FieldByName('bairro').AsString;
-      FCliente.uf          := qry.FieldByName('uf').AsString;
-      FCliente.ativo       := qry.FieldByName('ativo').AsString;
+      FCliente.idcliente     := qry.FieldByName('idclientes').AsInteger;
+      FCliente.razaosocial   := qry.FieldByName('razao').AsString;
+      FCliente.cnpj          := qry.FieldByName('cnpj_cpf').AsString;
+      FCliente.endereco      := qry.FieldByName('endereco').AsString;
+      FCliente.complemento   := qry.FieldByName('complemento').AsString;
+      FCliente.numero        := qry.FieldByName('numero').AsInteger;
+      FCliente.cep           := qry.FieldByName('cep').AsString;
+      FCliente.cidade        := qry.FieldByName('cidade').AsString;
+      FCliente.bairro        := qry.FieldByName('bairro').AsString;
+      FCliente.uf            := qry.FieldByName('uf').AsString;
+      FCliente.idModeloCarro := qry.FieldByName('idmodelocarrocliente').AsInteger;
+      FCliente.ativo         := qry.FieldByName('ativo').AsString;
       Result:= FCliente;
     end;
 
@@ -180,14 +186,17 @@ begin
 end;
 
 function TModelCliente.CarregarTodosClientes(
-  aDataSet: TClientDataSet): TFDquery;
+  aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery;
 begin
   qry:= TFDquery.Create(nil);
   qry.Connection:= TConnection.CreateConnection;
   try
     qry.SQL.Clear;
     qry.SQL.Add('SELECT * FROM CLIENTES ');
-    qry.SQL.Add('WHERE ATIVO=''S''      ');
+
+    if aSomenteAtivos = 'S' then
+     qry.SQL.Add('WHERE ATIVO=''S''      ');
+
     qry.SQL.Add('ORDER BY IDCLIENTES ASC');
     qry.Open;
 
@@ -321,6 +330,7 @@ begin
                 ':cidade, '     +
                 ':bairro, '     +
                 ':ativo, '      +
+                ':idmodelocarro'+
                 ':uf)');
 
      qry.ParamByName('idclientes').DataType    := ftInteger;
@@ -340,6 +350,7 @@ begin
      qry.ParamByName('cidade').AsString        := aCliente.Cidade;
      qry.ParamByName('bairro').DataType        := ftString;
      qry.ParamByName('bairro').AsString        := aCliente.Bairro;
+     qry.ParamByName('idmodelocarro').AsInteger:= aCliente.Idmodelocarro;
 
      qry.ParamByName('uf').DataType            := ftString;
      if Length(aCliente.UF) > 0 then
@@ -367,6 +378,11 @@ begin
     qry.Free;
   end;
 
+end;
+
+procedure TModelCliente.SetSomenteAtivos(const Value: string);
+begin
+  FSomenteAtivos := Value;
 end;
 
 class function TModelCliente.TestaSeCamposPreenchidos(aCliente: TClientes): Boolean;
