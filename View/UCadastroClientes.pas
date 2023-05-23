@@ -22,8 +22,11 @@ uses
   FMX.ListBox,
   Dao.Conexao,
   Entity.Clientes,
+  Entity.Contatos,
+  Controller.Contatos,
   Controller.Clientes,
   Model.Clientes,
+  Model.Contatos,
   Data.DB,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
@@ -194,11 +197,13 @@ type
     { Private declarations }
     FConexao: TFDConnection;
     FCliente: TClientes;
+    FContato: TContato;
     PodeGravar: Boolean;
     FUFCliente: string;
     FAtivoCliente: string;
     qry: TFDQuery;
     RegrasDeNegocios: TModelCliente;
+    FModelContato: TModelContato;
     FTipo: String;
     FController: TControllerCliente;
     CDS: TClientDataSet;
@@ -262,6 +267,7 @@ begin
   try
      //Testar se os campos foram todos preenchidos
      RegrasDeNegocios:= TModelCliente.Create;
+     FModelContato := TModelContato.Create;
      PodeGravar :=  RegrasDeNegocios.TestaSeCamposPreenchidos(Fcliente);
 
      if PodeGravar then //testar preenchimento dos campos
@@ -283,6 +289,7 @@ begin
          if FTipo='N' then //Novo Registro
          begin
            RegrasDeNegocios.SalvarCliente(FCliente);
+           FModelContato.SalvarContato(FContato); //ver onde preenche o FContato
            PopularDataSet;
            OnDataSetChange;
            Exit;
@@ -319,6 +326,7 @@ begin
   finally
     FCliente.Free;
     RegrasDeNegocios.Free;
+    FModelContato.Free;
   end;
 
 end;

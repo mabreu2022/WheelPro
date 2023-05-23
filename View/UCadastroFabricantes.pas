@@ -405,10 +405,14 @@ begin
      LblCEP.Text             := 'CEP';
      LblUF.Text              := 'UF';
      LblAtivo.Text           := 'Ativo';
+     LblPesquisar.Text       := 'Pesquisar';
      BtnNovo.Text            := '&Novo';
      BtnAlterar.Text         := '&Alterar';
      BtnExcluir.Text         := '&Excluir';
      BtnSalvar.Text          := '&Salvar';
+     TabItemCadastro.Text    := 'Cadastro';
+     TabItemPesquisa.Text    := 'Pesquisa';
+     TabItemContato.Text     := 'Contato';
      lblTitulo.Text          := 'Cadastro do Fabricantes';
      FrmFabricantes.Caption  := 'Cadastro do Fabricantes';
 
@@ -425,10 +429,14 @@ begin
      LblCEP.Text             := 'Zip Code';
      LblUF.Text              := 'State';
      LblAtivo.Text           := 'Active';
+     LblPesquisar.Text       := 'Search';
      BtnNovo.Text            := '&New';
      BtnAlterar.Text         := '&Alter';
      BtnExcluir.Text         := '&Delete';
      BtnSalvar.Text          := '&Save';
+     TabItemCadastro.Text    := 'Register';
+     TabItemPesquisa.Text    := 'Search';
+     TabItemContato.Text     := 'Contact';
      lblTitulo.Text          := 'Manufacturer Registration';
      FrmFabricantes.Caption  := 'Manufacturer Registration';
    end;

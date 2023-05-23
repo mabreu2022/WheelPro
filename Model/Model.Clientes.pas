@@ -33,7 +33,6 @@ type
       FCliente: TClientes;
       property SomenteAtivos: string read FSomenteAtivos write SetSomenteAtivos;
 
-
       //create
       Class function SalvarCliente(aCliente: TClientes): Boolean;
 
