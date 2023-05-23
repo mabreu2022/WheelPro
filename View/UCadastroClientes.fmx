@@ -126,7 +126,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Position.X = 362.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 4
-          Text = 'Novo'
+          Text = '&Novo'
           OnClick = BtnNovoClick
           object ShadowEffect18: TShadowEffect
             Distance = 3.000000000000000000
@@ -140,7 +140,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Position.X = 448.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 5
-          Text = 'Alterar'
+          Text = '&Alterar'
           OnClick = BtnAlterarClick
           object ShadowEffect19: TShadowEffect
             Distance = 3.000000000000000000
@@ -154,7 +154,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Position.X = 535.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 7
-          Text = 'Excluir'
+          Text = '&Excluir'
           OnClick = BtnExcluirClick
           object ShadowEffect20: TShadowEffect
             Distance = 3.000000000000000000
@@ -168,7 +168,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Position.X = 624.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 6
-          Text = 'Gravar'
+          Text = '&Salvar'
           OnClick = BtnGravarClick
           object ShadowEffect23: TShadowEffect
             Distance = 3.000000000000000000
@@ -185,7 +185,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Size.Width = 712.000000000000000000
       Size.Height = 340.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 1
+      TabIndex = 2
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -598,7 +598,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -670,15 +670,15 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Size.Height = 275.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 1
-          Viewport.Width = 708.000000000000000000
-          Viewport.Height = 250.000000000000000000
+          Viewport.Width = 712.000000000000000000
+          Viewport.Height = 275.000000000000000000
         end
       end
       object TabItemContato: TTabItem
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 63.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -703,7 +703,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object Edit1: TEdit
+        object EdtContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           TabOrder = 22
           ReadOnly = True
@@ -731,7 +731,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object Edit2: TEdit
+        object EdtNome: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           TabOrder = 24
           Position.X = 16.000000000000000000
@@ -760,7 +760,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object Edit3: TEdit
+        object EdtTelefone: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           TabOrder = 26
           Position.X = 516.000000000000000000
@@ -789,7 +789,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object Edit4: TEdit
+        object EdtEmail: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           TabOrder = 28
           Position.X = 16.000000000000000000
@@ -944,7 +944,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
             Size.Width = 712.000000000000000000
             Size.Height = 226.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 38
+            TabOrder = 37
             CalloutWidth = 23.000000000000000000
             CalloutLength = 11.000000000000000000
             object Image1: TImage

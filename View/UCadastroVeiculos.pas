@@ -38,11 +38,11 @@ type
     ShadowEffect4: TShadowEffect;
     Button4: TButton;
     ShadowEffect5: TShadowEffect;
-    Button5: TButton;
+    BtnNovo: TButton;
     ShadowEffect6: TShadowEffect;
-    Button6: TButton;
+    BtnAlterar: TButton;
     ShadowEffect7: TShadowEffect;
-    Button7: TButton;
+    BtnExcluir: TButton;
     ShadowEffect8: TShadowEffect;
     Label1: TLabel;
     ShadowEffect1: TShadowEffect;
@@ -80,7 +80,7 @@ type
     ShadowEffect25: TShadowEffect;
     Button8: TButton;
     ShadowEffect26: TShadowEffect;
-    BtnGravar: TButton;
+    BtnSalvar: TButton;
     ShadowEffect27: TShadowEffect;
     ComboBox3: TComboBox;
     ShadowEffect11: TShadowEffect;

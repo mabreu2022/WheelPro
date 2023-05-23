@@ -40,7 +40,7 @@ type
     LblTitulo: TLabel;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
-    BtnGravar: TButton;
+    BtnSalvar: TButton;
     ShadowEffect3: TShadowEffect;
     TabItemBancoDeDados: TTabItem;
     lblIPdoBanco: TLabel;
@@ -70,7 +70,7 @@ type
     ShadowEffect14: TShadowEffect;
     ShadowEffect15: TShadowEffect;
     ShadowEffect16: TShadowEffect;
-    procedure BtnGravarClick(Sender: TObject);
+    procedure BtnSalvarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -98,7 +98,7 @@ implementation
 
 {$R *.fmx}
 
-procedure TFrmConfig.BtnGravarClick(Sender: TObject);
+procedure TFrmConfig.BtnSalvarClick(Sender: TObject);
 var
   AppPath: string;
   Confirmation: Integer;
@@ -160,7 +160,6 @@ begin
   try
     Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
     CCBCoresDoSistema.Color:=cor;
-//    CBWhatsApp.
   finally
     IniFile.UpdateFile;
     IniFile.Free;
@@ -201,7 +200,7 @@ begin
      CBWhatsApp.Text                                 := 'Enviar para contato único';
      GroupBoxLinguagem.Text                          := 'Linguagem';
      GroupBoxCores.Text                              := 'Cores';
-     BtnGravar.Text                                  := 'Gravar';
+     BtnSalvar.Text                                  := '&Salvar';
      TabItemSistema.Text                             := 'Sistema';
      TabItemBancoDeDados.Text                        := 'Banco de Dados';
      LblTitulo.Text                                  := 'Configurações do Sistema';
@@ -215,7 +214,7 @@ begin
      CBWhatsApp.Text                                 := 'Send to single contact';
      GroupBoxLinguagem.Text                          := 'Language';
      GroupBoxCores.Text                              := 'Colors';
-     BtnGravar.Text                                  := 'Save';
+     BtnSalvar.Text                                  := '&Save';
      TabItemSistema.Text                             := 'System';
      TabItemBancoDeDados.Text                        := 'DataBase';
      LblTitulo.Text                                  := 'System Settings';

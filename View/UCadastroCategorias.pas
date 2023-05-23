@@ -29,16 +29,16 @@ type
     Layout2: TLayout;
     Layout3: TLayout;
     Rectangle1: TRectangle;
-    Label1: TLabel;
+    LblTitulo: TLabel;
     ShadowEffect1: TShadowEffect;
     Rectangle2: TRectangle;
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
-    Button5: TButton;
-    Button6: TButton;
-    Button7: TButton;
+    BtnNovo: TButton;
+    BtnAlterar: TButton;
+    BtnExcluir: TButton;
     ShadowEffect2: TShadowEffect;
     ShadowEffect3: TShadowEffect;
     ShadowEffect4: TShadowEffect;
@@ -48,11 +48,11 @@ type
     ShadowEffect8: TShadowEffect;
     Edit1: TEdit;
     Edit2: TEdit;
-    Label2: TLabel;
-    Label3: TLabel;
+    lblcodCategoria: TLabel;
+    LblCodFabricante: TLabel;
     Edit3: TEdit;
-    Label4: TLabel;
-    Label5: TLabel;
+    lblFabricante: TLabel;
+    LblAtivo: TLabel;
     ComboBox1: TComboBox;
     ShadowEffect9: TShadowEffect;
     ShadowEffect10: TShadowEffect;
@@ -61,10 +61,19 @@ type
     ShadowEffect13: TShadowEffect;
     ShadowEffect14: TShadowEffect;
     ShadowEffect15: TShadowEffect;
+    Edit4: TEdit;
+    ShadowEffect16: TShadowEffect;
+    LblCategoria: TLabel;
+    ShadowEffect17: TShadowEffect;
+    BtnSalvar: TButton;
+    ShadowEffect18: TShadowEffect;
+    ShadowEffect19: TShadowEffect;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    FLinguagem: string;
     procedure CarregarCores;
+    procedure CarregarLinguagem;
   public
     { Public declarations }
   end;
@@ -100,9 +109,54 @@ begin
 
 end;
 
+procedure TFrmCategorias.CarregarLinguagem;
+var
+  IniFile: TIniFile;
+  I: Integer;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+     FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+
+     if FLinguagem = 'Portuguese' then
+     begin
+       lblcodCategoria.Text  := 'Cod. Categoria';
+       LblCategoria.Text     := 'Categoria';
+       LblCodFabricante.Text := 'Cod. Fabricante';
+       lblFabricante.Text    := 'Fabricante';
+       LblAtivo.Text         := 'Ativo';
+       BtnNovo.Text          := '&Novo';
+       BtnAlterar.Text       := '&Alterar';
+       BtnExcluir.Text       := '&Excluir';
+       BtnSalvar.Text        := '&Gravar';
+       LblTitulo.Text        := 'Cadastro de Categorias';
+       FrmCategorias.Caption := 'Cadastro de Categorias';
+     end
+     else if FLinguagem = 'Ingles' then
+     begin
+       lblcodCategoria.Text  := 'Category Id';
+       LblCategoria.Text     := 'Category';
+       LblCodFabricante.Text := 'Manufacturer Id';
+       lblFabricante.Text    := 'Manufacturer';
+       LblAtivo.Text         := 'Active';
+       BtnNovo.Text          := '&New';
+       BtnAlterar.Text       := '&Alter';
+       BtnExcluir.Text       := '&Delete';
+       BtnSalvar.Text        := '&Save';
+       LblTitulo.Text        := 'Category Registration';
+       FrmCategorias.Caption := 'Category Registration';
+     end;
+
+  finally
+    IniFile.Free;
+  end;
+
+end;
+
 procedure TFrmCategorias.FormCreate(Sender: TObject);
 begin
   CarregarCores;
+  CarregarLinguagem;
 end;
 
 end.

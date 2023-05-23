@@ -136,14 +136,14 @@ type
     TabItemContato: TTabItem;
     ShadowEffect35: TShadowEffect;
     lblCondContato: TLabel;
-    Edit1: TEdit;
+    EdtContato: TEdit;
     ShadowEffect36: TShadowEffect;
     LblNomeContato: TLabel;
-    Edit2: TEdit;
+    EdtNome: TEdit;
     lblTelefoneContato: TLabel;
-    Edit3: TEdit;
+    EdtTelefone: TEdit;
     lblEmailContato: TLabel;
-    Edit4: TEdit;
+    EdtEmail: TEdit;
     LblAtivoContato: TLabel;
     ShadowEffect37: TShadowEffect;
     CBAtivoContato: TComboBox;
@@ -485,7 +485,7 @@ begin
      BtnNovo.Text                 := '&Novo';
      BtnAlterar.Text              := '&Alterar';
      BtnExcluir.Text              := '&Excluir';
-     BtnGravar.Text               := '&Gravar';
+     BtnGravar.Text               := '&Salvar';
      TabItemContato.Text          := 'Contato';
      lblCondContato.Text          := 'Cod. Contato';
      LblNomeContato.Text          := 'Nome';
@@ -517,7 +517,7 @@ begin
      LblPesquisar.Text            := 'To look for';
      BtnPesquisar.Text            := '&Confirm';
      BtnNovo.Text                 := '&New';
-     BtnAlterar.Text              := '&To alter';
+     BtnAlterar.Text              := '&Alter';
      BtnExcluir.Text              := '&Delete';
      BtnGravar.Text               := '&Save';
      TabItemContato.Text          := 'Contact';

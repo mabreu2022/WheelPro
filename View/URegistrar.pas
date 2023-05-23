@@ -33,56 +33,62 @@ type
     Layout3: TLayout;
     Rectangle1: TRectangle;
     Rectangle2: TRectangle;
-    Label1: TLabel;
+    LblTitulo: TLabel;
     ShadowEffect1: TShadowEffect;
-    Label2: TLabel;
+    lblRazao: TLabel;
     ShadowEffect2: TShadowEffect;
-    Edit1: TEdit;
+    EdtRazao: TEdit;
     ShadowEffect8: TShadowEffect;
-    Label3: TLabel;
-    Label4: TLabel;
+    lblCnpj_cpf: TLabel;
+    lblEndereco: TLabel;
     ShadowEffect4: TShadowEffect;
     ShadowEffect3: TShadowEffect;
-    Edit2: TEdit;
+    EdtCnpj: TEdit;
     ShadowEffect9: TShadowEffect;
-    Edit3: TEdit;
+    EdtEndereco: TEdit;
     ShadowEffect10: TShadowEffect;
-    Label5: TLabel;
+    lblNumero: TLabel;
     ShadowEffect5: TShadowEffect;
-    Label6: TLabel;
+    LblComplemento: TLabel;
     ShadowEffect6: TShadowEffect;
-    Edit4: TEdit;
+    EdtNumero: TEdit;
     ShadowEffect11: TShadowEffect;
-    Edit5: TEdit;
+    EdtComplemento: TEdit;
     ShadowEffect12: TShadowEffect;
-    Label7: TLabel;
+    LblBairro: TLabel;
     ShadowEffect7: TShadowEffect;
-    Edit6: TEdit;
+    EdtBairro: TEdit;
     ShadowEffect13: TShadowEffect;
-    Button1: TButton;
+    BtnRegistrar: TButton;
     ShadowEffect14: TShadowEffect;
     GroupBox1: TGroupBox;
     Grid1: TGrid;
     Column1: TColumn;
     Column2: TColumn;
     Column3: TColumn;
-    Label8: TLabel;
-    Edit7: TEdit;
+    LblResponnsavel: TLabel;
+    EdtResponsavel: TEdit;
     ShadowEffect15: TShadowEffect;
     ShadowEffect16: TShadowEffect;
     ShadowEffect17: TShadowEffect;
-    Label9: TLabel;
-    Edit8: TEdit;
+    LblTelefone: TLabel;
+    EdtTelefone: TEdit;
     ShadowEffect18: TShadowEffect;
     ShadowEffect19: TShadowEffect;
-    Label10: TLabel;
-    Edit9: TEdit;
+    LblEmail: TLabel;
+    EdtEmail: TEdit;
     ShadowEffect20: TShadowEffect;
     ShadowEffect21: TShadowEffect;
+    LblCidade: TLabel;
+    EdtCidade: TEdit;
+    ShadowEffect22: TShadowEffect;
+    ShadowEffect23: TShadowEffect;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    FLinguagem: string;
     procedure CarregarCores;
+    procedure CarregarLinguagem;
   public
     { Public declarations }
   end;
@@ -116,9 +122,58 @@ begin
   end;
 end;
 
+procedure TFrmRegistrar.CarregarLinguagem;
+var
+  IniFile: TIniFile;
+  I: Integer;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+
+   if FLinguagem = 'Portuguese' then
+   begin
+     lblRazao.Text        := 'Razão Social / Nome';
+     lblCnpj_cpf.Text     := 'CNPJ / CPF';
+     lblEndereco.Text     := 'Endereço';
+     lblNumero.Text       := 'Número';
+     LblComplemento.Text  := 'Complemento';
+     LblBairro.Text       := 'Bairro';
+     LblCidade.Text       := 'Cidade';
+     LblResponnsavel.Text := 'Nome do responsável pelo registro';
+     LblTelefone.Text     := 'Telefone/WhatsApp';
+     LblEmail.Text        := 'E-mail';
+     BtnRegistrar.Text    := '&Registrar';
+     LblTitulo.Text       := 'Registro do Wheel Pro';
+     FrmRegistrar.Caption := 'Registro do Wheel Pro';
+   end
+   else if FLinguagem = 'Ingles' then
+   begin
+     lblRazao.Text        := 'Corporate Name / Name';
+     lblCnpj_cpf.Text     := 'Tax Identification Number - TIN';
+     lblEndereco.Text     := 'Address';
+     lblNumero.Text       := 'Number';
+     LblComplemento.Text  := 'Complement';
+     LblBairro.Text       := 'Neighborhood';
+     LblCidade.Text       := 'City';
+     LblResponnsavel.Text := 'Name of person responsible for registration';
+     LblTelefone.Text     := 'Phone/WhatsApp';
+     LblEmail.Text        := 'E-mail';
+     BtnRegistrar.Text    := '&Register';
+     LblTitulo.Text       := 'Wheel Pro registration';
+     FrmRegistrar.Caption := 'Wheel Pro registration';
+   end;
+
+  finally
+    IniFile.Free;
+  end;
+
+end;
+
 procedure TFrmRegistrar.FormCreate(Sender: TObject);
 begin
   CarregarCores;
+  CarregarLinguagem;
 end;
 
 end.

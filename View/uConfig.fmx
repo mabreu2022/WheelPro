@@ -65,12 +65,12 @@ object FrmConfig: TFrmConfig
         Size.Width = 640.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
-        object BtnGravar: TButton
+        object BtnSalvar: TButton
           Position.X = 548.000000000000000000
           Position.Y = 15.000000000000000000
           TabOrder = 0
-          Text = 'Gravar'
-          OnClick = BtnGravarClick
+          Text = '&Gravar'
+          OnClick = BtnSalvarClick
           object ShadowEffect3: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -121,7 +121,7 @@ object FrmConfig: TFrmConfig
             Size.Width = 305.000000000000000000
             Size.Height = 19.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 38
+            TabOrder = 37
             Text = 'Enviar para contato '#250'nico'
           end
           object ShadowEffect14: TShadowEffect
@@ -218,7 +218,7 @@ object FrmConfig: TFrmConfig
             Size.Width = 225.000000000000000000
             Size.Height = 22.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 38
+            TabOrder = 37
             object ShadowEffect4: TShadowEffect
               Distance = 3.000000000000000000
               Direction = 45.000000000000000000

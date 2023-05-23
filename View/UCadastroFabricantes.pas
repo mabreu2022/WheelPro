@@ -74,7 +74,7 @@ type
     ShadowEffect8: TShadowEffect;
     lblTitulo: TLabel;
     ShadowEffect1: TShadowEffect;
-    BtnGravar: TButton;
+    BtnSalvar: TButton;
     ShadowEffect21: TShadowEffect;
     TabControl1: TTabControl;
     TabItemCadastro: TTabItem;
@@ -84,27 +84,27 @@ type
     ShadowEffect32: TShadowEffect;
     EdtCodFabricante: TEdit;
     ShadowEffect22: TShadowEffect;
-    Label2: TLabel;
+    LblRazao: TLabel;
     ShadowEffect9: TShadowEffect;
     EdtRazao: TEdit;
     ShadowEffect10: TShadowEffect;
-    Label3: TLabel;
-    Label4: TLabel;
+    LblCnpj: TLabel;
+    LblEndereco: TLabel;
     ShadowEffect11: TShadowEffect;
     ShadowEffect12: TShadowEffect;
     EdtCnpj: TEdit;
     ShadowEffect13: TShadowEffect;
     EdtEndereco: TEdit;
     ShadowEffect14: TShadowEffect;
-    Label5: TLabel;
+    LblNumero: TLabel;
     ShadowEffect15: TShadowEffect;
     EdtNumero: TEdit;
     ShadowEffect16: TShadowEffect;
-    Label6: TLabel;
+    LblComplemento: TLabel;
     ShadowEffect17: TShadowEffect;
     EdtComplemento: TEdit;
     ShadowEffect18: TShadowEffect;
-    Label7: TLabel;
+    LblCEP: TLabel;
     ShadowEffect19: TShadowEffect;
     EdtCep: TEdit;
     ShadowEffect20: TShadowEffect;
@@ -140,7 +140,7 @@ type
     procedure BtnNovoClick(Sender: TObject);
     procedure BtnAlterarClick(Sender: TObject);
     procedure BtnExcluirClick(Sender: TObject);
-    procedure BtnGravarClick(Sender: TObject);
+    procedure BtnSalvarClick(Sender: TObject);
     procedure PopularDataSet;
     procedure FormCreate(Sender: TObject);
     procedure TabItemPesquisaClick(Sender: TObject);
@@ -155,8 +155,10 @@ type
     CDS: TClientDataSet;
     FConexao: TFDConnection;
     FController: TControllerFabricante;
+    FLinguagem: string;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     procedure CarregarCores;
+    procedure CarregarLinguagem;
     Procedure PopularGridFabricante;
     procedure PreencheDadosEncontradosDoFabricante;
   public
@@ -285,7 +287,7 @@ begin
   DesabilitaBotoes([BiGravar]);
 end;
 
-procedure TFrmFabricantes.BtnGravarClick(Sender: TObject);
+procedure TFrmFabricantes.BtnSalvarClick(Sender: TObject);
 var
   Abortar: Boolean;
   Confirmacao: Integer;
@@ -381,6 +383,62 @@ begin
 
 end;
 
+procedure TFrmFabricantes.CarregarLinguagem;
+var
+  IniFile: TIniFile;
+  I: Integer;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+
+   if FLinguagem = 'Portuguese' then
+   begin
+     LblCodCliente.Text      := 'Cod. Fabricante';
+     LblRazao.Text           := 'Razão Social / Nome';
+     LblCnpj.Text            := 'CNPJ / CPF';
+     LblEndereco.Text        := 'Endereço';
+     LblNumero.Text          := 'Número';
+     LblComplemento.Text     := 'Complemento';
+     LblCEP.Text             := 'CEP';
+     LblCidade.Text          := 'Cidade';
+     LblCEP.Text             := 'CEP';
+     LblUF.Text              := 'UF';
+     LblAtivo.Text           := 'Ativo';
+     BtnNovo.Text            := '&Novo';
+     BtnAlterar.Text         := '&Alterar';
+     BtnExcluir.Text         := '&Excluir';
+     BtnSalvar.Text          := '&Salvar';
+     lblTitulo.Text          := 'Cadastro do Fabricantes';
+     FrmFabricantes.Caption  := 'Cadastro do Fabricantes';
+
+   end
+   else if FLinguagem = 'Ingles' then
+   begin
+     LblCodCliente.Text      := 'Id. Manufacturer';
+     LblRazao.Text           := 'Corporate Name / Name';
+     LblCnpj.Text            := 'Tax Identification Number - TIN';
+     LblEndereco.Text        := 'Address';
+     LblNumero.Text          := 'Number';
+     LblComplemento.Text     := 'Complement';
+     LblCidade.Text          := 'City';
+     LblCEP.Text             := 'Zip Code';
+     LblUF.Text              := 'State';
+     LblAtivo.Text           := 'Active';
+     BtnNovo.Text            := '&New';
+     BtnAlterar.Text         := '&Alter';
+     BtnExcluir.Text         := '&Delete';
+     BtnSalvar.Text          := '&Save';
+     lblTitulo.Text          := 'Manufacturer Registration';
+     FrmFabricantes.Caption  := 'Manufacturer Registration';
+   end;
+
+  finally
+    IniFile.Free;
+  end;
+
+end;
+
 constructor TFrmFabricantes.create;
 begin
   FConexao    := TConnection.CreateConnection;
@@ -426,7 +484,7 @@ begin
   TodosOsBotoes[biProximo]  := BtnProximo;
   TodosOsBotoes[biUltimo]   := BtnUltimo;
   TodosOsBotoes[biNovo]     := BtnNovo;
-  TodosOsBotoes[biGravar]   := BtnGravar;
+  TodosOsBotoes[biGravar]   := BtnSalvar;
 
   // Desabilita todos os botões
   for Botao := Low(TBotaoIndex) to High(TBotaoIndex) do
@@ -451,6 +509,7 @@ procedure TFrmFabricantes.FormCreate(Sender: TObject);
 begin
   PopularDataSet;
   CarregarCores;
+  CarregarLinguagem;
 end;
 
 procedure TFrmFabricantes.FormShow(Sender: TObject);
@@ -458,7 +517,7 @@ begin
   if EdtRazao.CanFocus then
     EdtRazao.SetFocus;
 
-  BtnGravar.Enabled:= False;
+  BtnSalvar.Enabled:= False;
 
   TabControl1.ActiveTab:=TabItemCadastro;
 end;

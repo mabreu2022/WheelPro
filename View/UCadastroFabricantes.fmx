@@ -41,7 +41,7 @@ object FrmFabricantes: TFrmFabricantes
           TextSettings.Font.Size = 20.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
           TextSettings.HorzAlign = Center
-          Text = 'Cadastro de Fabricantes'
+          Text = 'Cadastro do Fabricantes'
           TabOrder = 0
           object ShadowEffect1: TShadowEffect
             Distance = 3.000000000000000000
@@ -126,7 +126,7 @@ object FrmFabricantes: TFrmFabricantes
           Position.X = 362.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 4
-          Text = 'Novo'
+          Text = '&Novo'
           OnClick = BtnNovoClick
           object ShadowEffect6: TShadowEffect
             Distance = 3.000000000000000000
@@ -140,7 +140,7 @@ object FrmFabricantes: TFrmFabricantes
           Position.X = 448.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 5
-          Text = 'Alterar'
+          Text = '&Alterar'
           OnClick = BtnAlterarClick
           object ShadowEffect7: TShadowEffect
             Distance = 3.000000000000000000
@@ -154,7 +154,7 @@ object FrmFabricantes: TFrmFabricantes
           Position.X = 535.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 7
-          Text = 'Excluir'
+          Text = '&Excluir'
           OnClick = BtnExcluirClick
           object ShadowEffect8: TShadowEffect
             Distance = 3.000000000000000000
@@ -164,12 +164,12 @@ object FrmFabricantes: TFrmFabricantes
             ShadowColor = claBlack
           end
         end
-        object BtnGravar: TButton
+        object BtnSalvar: TButton
           Position.X = 624.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 6
-          Text = 'Gravar'
-          OnClick = BtnGravarClick
+          Text = '&Salvar'
+          OnClick = BtnSalvarClick
           object ShadowEffect21: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -211,7 +211,7 @@ object FrmFabricantes: TFrmFabricantes
         object LblCodCliente: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 13.000000000000000000
-          Text = 'Cod. Fornecedor'
+          Text = 'Cod. Fabricante'
           TabOrder = 25
           object ShadowEffect32: TShadowEffect
             Distance = 3.000000000000000000
@@ -236,11 +236,11 @@ object FrmFabricantes: TFrmFabricantes
             ShadowColor = claBlack
           end
         end
-        object Label2: TLabel
+        object LblRazao: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 64.000000000000000000
           Text = 'Raz'#227'o Social / Nome'
-          TabOrder = 9
+          TabOrder = 13
           object ShadowEffect9: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -265,11 +265,11 @@ object FrmFabricantes: TFrmFabricantes
             ShadowColor = claBlack
           end
         end
-        object Label3: TLabel
+        object LblCnpj: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 115.000000000000000000
           Text = 'CNPJ / CPF'
-          TabOrder = 11
+          TabOrder = 14
           object ShadowEffect12: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -310,7 +310,7 @@ object FrmFabricantes: TFrmFabricantes
             ShadowColor = claBlack
           end
         end
-        object Label5: TLabel
+        object LblNumero: TLabel
           Position.X = 456.000000000000000000
           Position.Y = 165.000000000000000000
           Text = 'N'#250'mero'
@@ -339,7 +339,7 @@ object FrmFabricantes: TFrmFabricantes
             ShadowColor = claBlack
           end
         end
-        object Label6: TLabel
+        object LblComplemento: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 212.000000000000000000
           Text = 'Complemento'
@@ -368,9 +368,9 @@ object FrmFabricantes: TFrmFabricantes
             ShadowColor = claBlack
           end
         end
-        object Label7: TLabel
+        object LblCEP: TLabel
           Position.X = 209.000000000000000000
-          Position.Y = 214.000000000000000000
+          Position.Y = 262.000000000000000000
           Text = 'CEP'
           TabOrder = 17
           object ShadowEffect19: TShadowEffect
@@ -383,9 +383,9 @@ object FrmFabricantes: TFrmFabricantes
         end
         object EdtCep: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 8
+          TabOrder = 10
           Position.X = 208.000000000000000000
-          Position.Y = 232.000000000000000000
+          Position.Y = 281.000000000000000000
           object ShadowEffect20: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -409,7 +409,7 @@ object FrmFabricantes: TFrmFabricantes
         end
         object EdtCidade: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 10
+          TabOrder = 9
           Position.X = 16.000000000000000000
           Position.Y = 281.000000000000000000
           Size.Width = 185.000000000000000000
@@ -426,7 +426,7 @@ object FrmFabricantes: TFrmFabricantes
         end
         object LblBairro: TLabel
           Position.X = 209.000000000000000000
-          Position.Y = 262.000000000000000000
+          Position.Y = 214.000000000000000000
           Text = 'Bairro'
           TabOrder = 24
           object ShadowEffect29: TShadowEffect
@@ -439,9 +439,9 @@ object FrmFabricantes: TFrmFabricantes
         end
         object EdtBairro: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 12
+          TabOrder = 8
           Position.X = 207.000000000000000000
-          Position.Y = 281.000000000000000000
+          Position.Y = 233.000000000000000000
           Size.Width = 241.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
@@ -455,7 +455,7 @@ object FrmFabricantes: TFrmFabricantes
           end
         end
         object LblUF: TLabel
-          Position.X = 457.000000000000000000
+          Position.X = 315.000000000000000000
           Position.Y = 259.000000000000000000
           Size.Width = 46.000000000000000000
           Size.Height = 17.000000000000000000
@@ -500,12 +500,12 @@ object FrmFabricantes: TFrmFabricantes
             'SE'
             'TO')
           ItemIndex = 0
-          Position.X = 457.000000000000000000
+          Position.X = 315.000000000000000000
           Position.Y = 281.000000000000000000
           Size.Width = 53.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
-          TabOrder = 13
+          TabOrder = 11
           object ShadowEffect26: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -515,7 +515,7 @@ object FrmFabricantes: TFrmFabricantes
           end
         end
         object LblAtivo: TLabel
-          Position.X = 518.000000000000000000
+          Position.X = 376.000000000000000000
           Position.Y = 259.000000000000000000
           Size.Width = 65.000000000000000000
           Size.Height = 17.000000000000000000
@@ -535,12 +535,12 @@ object FrmFabricantes: TFrmFabricantes
             'S'
             'N')
           ItemIndex = 0
-          Position.X = 518.000000000000000000
+          Position.X = 376.000000000000000000
           Position.Y = 281.000000000000000000
           Size.Width = 53.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
-          TabOrder = 14
+          TabOrder = 12
           object ShadowEffect31: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -549,7 +549,7 @@ object FrmFabricantes: TFrmFabricantes
             ShadowColor = claBlack
           end
         end
-        object Label4: TLabel
+        object LblEndereco: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 162.000000000000000000
           Text = 'Endere'#231'o'

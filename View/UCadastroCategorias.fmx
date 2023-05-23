@@ -5,7 +5,7 @@ object FrmCategorias: TFrmCategorias
   BorderStyle = Single
   Caption = 'Cadastro de Categorias'
   ClientHeight = 256
-  ClientWidth = 624
+  ClientWidth = 720
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -14,32 +14,32 @@ object FrmCategorias: TFrmCategorias
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Client
-    Size.Width = 624.000000000000000000
+    Size.Width = 720.000000000000000000
     Size.Height = 256.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Layout2: TLayout
       Align = Top
-      Size.Width = 624.000000000000000000
+      Size.Width = 720.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 0
+      TabOrder = 5
       object Rectangle1: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
-        Size.Width = 624.000000000000000000
+        Size.Width = 720.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
-        object Label1: TLabel
+        object LblTitulo: TLabel
           Align = Contents
           StyledSettings = [Family, FontColor]
-          Size.Width = 624.000000000000000000
+          Size.Width = 720.000000000000000000
           Size.Height = 50.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 20.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
           TextSettings.HorzAlign = Center
-          Text = 'Cadastrode Categorias'
+          Text = 'Cadastro de Categorias'
           TabOrder = 0
           object ShadowEffect1: TShadowEffect
             Distance = 3.000000000000000000
@@ -54,14 +54,14 @@ object FrmCategorias: TFrmCategorias
     object Layout3: TLayout
       Align = Bottom
       Position.Y = 206.000000000000000000
-      Size.Width = 624.000000000000000000
+      Size.Width = 720.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 1
+      TabOrder = 6
       object Rectangle2: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
-        Size.Width = 624.000000000000000000
+        Size.Width = 720.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         object Button1: TButton
@@ -116,11 +116,11 @@ object FrmCategorias: TFrmCategorias
             ShadowColor = claBlack
           end
         end
-        object Button5: TButton
+        object BtnNovo: TButton
           Position.X = 362.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 4
-          Text = 'Incluir'
+          Text = '&Novo'
           object ShadowEffect6: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -129,11 +129,11 @@ object FrmCategorias: TFrmCategorias
             ShadowColor = claBlack
           end
         end
-        object Button6: TButton
+        object BtnAlterar: TButton
           Position.X = 448.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 5
-          Text = 'Alterar'
+          Text = '&Alterar'
           object ShadowEffect7: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -142,11 +142,11 @@ object FrmCategorias: TFrmCategorias
             ShadowColor = claBlack
           end
         end
-        object Button7: TButton
+        object BtnExcluir: TButton
           Position.X = 535.000000000000000000
           Position.Y = 14.000000000000000000
           TabOrder = 6
-          Text = 'Excluir'
+          Text = '&Excluir'
           object ShadowEffect8: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -155,11 +155,37 @@ object FrmCategorias: TFrmCategorias
             ShadowColor = claBlack
           end
         end
+        object BtnSalvar: TButton
+          Position.X = 626.000000000000000000
+          Position.Y = 14.000000000000000000
+          TabOrder = 7
+          Text = '&Salvar'
+          object ShadowEffect18: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+      end
+      object LblCategoria: TLabel
+        Position.X = 132.000000000000000000
+        Position.Y = -148.000000000000000000
+        Text = 'Categoria'
+        TabOrder = 0
+        object ShadowEffect17: TShadowEffect
+          Distance = 3.000000000000000000
+          Direction = 45.000000000000000000
+          Softness = 0.300000011920929000
+          Opacity = 0.600000023841857900
+          ShadowColor = claBlack
+        end
       end
     end
     object Edit1: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 2
+      TabOrder = 0
       Position.X = 24.000000000000000000
       Position.Y = 78.000000000000000000
       object ShadowEffect14: TShadowEffect
@@ -172,7 +198,7 @@ object FrmCategorias: TFrmCategorias
     end
     object Edit2: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 3
+      TabOrder = 2
       Position.X = 24.000000000000000000
       Position.Y = 124.000000000000000000
       object ShadowEffect12: TShadowEffect
@@ -183,11 +209,14 @@ object FrmCategorias: TFrmCategorias
         ShadowColor = claBlack
       end
     end
-    object Label2: TLabel
+    object lblcodCategoria: TLabel
       Position.X = 24.000000000000000000
       Position.Y = 56.000000000000000000
-      Text = 'Categoria'
-      TabOrder = 4
+      Size.Width = 97.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Cod. Categoria'
+      TabOrder = 7
       object ShadowEffect15: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -196,11 +225,14 @@ object FrmCategorias: TFrmCategorias
         ShadowColor = claBlack
       end
     end
-    object Label3: TLabel
+    object LblCodFabricante: TLabel
       Position.X = 24.000000000000000000
       Position.Y = 104.000000000000000000
-      Text = 'ID. Fabricante'
-      TabOrder = 5
+      Size.Width = 97.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Cod. Fabricante'
+      TabOrder = 8
       object ShadowEffect13: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -211,10 +243,10 @@ object FrmCategorias: TFrmCategorias
     end
     object Edit3: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 6
+      TabOrder = 3
       Position.X = 131.000000000000000000
       Position.Y = 124.000000000000000000
-      Size.Width = 486.000000000000000000
+      Size.Width = 481.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       object ShadowEffect11: TShadowEffect
@@ -225,17 +257,24 @@ object FrmCategorias: TFrmCategorias
         ShadowColor = claBlack
       end
     end
-    object Label4: TLabel
+    object lblFabricante: TLabel
       Position.X = 132.000000000000000000
       Position.Y = 104.000000000000000000
       Text = 'Fabricante'
-      TabOrder = 7
+      TabOrder = 9
+      object ShadowEffect19: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
     end
-    object Label5: TLabel
+    object LblAtivo: TLabel
       Position.X = 23.000000000000000000
       Position.Y = 150.000000000000000000
       Text = 'Ativo'
-      TabOrder = 8
+      TabOrder = 10
       object ShadowEffect9: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -254,8 +293,24 @@ object FrmCategorias: TFrmCategorias
       Size.Width = 41.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 9
+      TabOrder = 4
       object ShadowEffect10: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Edit4: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 1
+      Position.X = 131.000000000000000000
+      Position.Y = 78.000000000000000000
+      Size.Width = 481.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object ShadowEffect16: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
         Softness = 0.300000011920929000
