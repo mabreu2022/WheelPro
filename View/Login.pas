@@ -65,7 +65,6 @@ type
     procedure BtnCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -221,11 +220,6 @@ begin
   LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
   LogManager.Free;
   inherited;
-end;
-
-procedure TFrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
 end;
 
 procedure TFrmLogin.FormCreate(Sender: TObject);

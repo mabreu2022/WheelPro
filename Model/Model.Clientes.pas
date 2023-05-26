@@ -21,7 +21,8 @@ uses
   System.Generics.Collections,
   Dao.Conexao,
   Datasnap.DBClient,
-  LogManager;
+  LogManager,
+  FMX.Dialogs;
 
 type
   TModelCliente = class
@@ -79,7 +80,7 @@ begin
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager := TLogManager.Create;
-     LogManager.AddLog('Classe Model.Clientes - Linha : 78 - Entrou no Alterar Cliente.' + DateTimeStr);
+    LogManager.AddLog('Classe Model.Clientes - Linha : 78 - Entrou no Alterar Cliente.' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
   finally
     LogManager.Free;
@@ -152,7 +153,7 @@ begin
     qry.ParamByName('CNPJ_CPF').AsString       := aCliente.cnpj;
 
     qry.ExecSQL;
-    qry.Connection.Commit;
+    qry.Connection.Commit;  //Gravar no banco
 
     Result:=True;
 
@@ -221,7 +222,7 @@ function TModelCliente.CarregarTodosClientes(
 begin
   CurrentDateTime := Now;
   DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Classe Model.Clientes: Linha 206: Carregar Clientes. '+ DateTimeStr);
+  LogManager.AddLog('Classe Model.Clientes: Linha : 206 - Carregar Clientes e criou qry às '+ DateTimeStr);
   LogManager.SaveLogToFile('Log_Model_Clientes.txt');
 
   //rever campos ao abrir o formulário de clientes
@@ -238,9 +239,17 @@ begin
     qry.SQL.Add('ORDER BY CL.IDCLIENTES ASC');
     qry.Open;
 
+    ShowMessage('A qtde. de todos os clientes é de: ' + IntToStr(qry.recordcount));
+
     qry.First;
 
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Classe Model.Clientes: Linha : 245 - Carregar Clientes Resultou a qry mas NÂO deu FREE às '+ DateTimeStr);
+    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+
     Result := qry;
+
   except
     Result := nil;
   end;
@@ -258,9 +267,14 @@ begin
      CurrentDateTime := Now;
      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
      LogManager := TLogManager.Create;
-     LogManager.AddLog('Classe na Model.Clientes - Linha 236 - Entrou na Cliente Existe. ' + DateTimeStr);
+     LogManager.AddLog('Classe na Model.Clientes - Linha 267 - Entrou na Cliente Existe e Criou LogManager às ' + DateTimeStr);
      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
   finally
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager := TLogManager.Create;
+     LogManager.AddLog('Classe na Model.Clientes - Linha 273 - Entrou na Cliente Existe e deu FREE na LogManager às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
      LogManager.Free;
   end;
 
@@ -292,7 +306,7 @@ begin
   CurrentDateTime := Now;
   DateTimeStr := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
   FCliente := TClientes.Create;
-  LogManager.AddLog('Entrou na Model.Clientes - Create: Linha 248: E Criou a FCliente.: ' + DateTimeStr);
+  LogManager.AddLog('Entrou na Model.Clientes - Create: Linha : 306 - E Criou a FCliente às ' + DateTimeStr);
 end;
 
 destructor TModelCliente.destroy;
@@ -300,7 +314,7 @@ begin
   CurrentDateTime := Now;
   DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
   FCliente.Free;
-  LogManager.AddLog('Entrou na Model.Clientes - Destroy: Linha 254: e Deu Free na Fcliente. ' + DateTimeStr);
+  LogManager.AddLog('Entrou na Model.Clientes - Destroy: Linha : 314 - e Deu Free na Fcliente às ' + DateTimeStr);
   LogManager.SaveLogToFile('Log_Model_Clientes.txt');
   LogManager.Free;
   inherited;

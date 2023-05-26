@@ -51,7 +51,8 @@ type
 //      function RemoverCliente(aCliente: TClientes): Boolean;
 //
 //      //Regras
-//      class function TestaSeCamposPreenchidos(aCliente: TClientes): Boolean;
+      class function TestaSeCamposPreenchidos(
+  aContato: TContato): Boolean;
 //      class function ClienteExiste(aCNPJ: string):Boolean;
 //
       constructor Create;
@@ -67,8 +68,22 @@ var
    qry: TFDQuery;
    UF: String;
    Ativo: String;
+
+   LogManager: TLogManager;
+   CurrentDateTime: TDateTime;
+   DateTimeStr: string;
 begin
   Result:=False;
+
+  try
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager := TLogManager.Create;
+    LogManager.AddLog('Classe Model.Contatos - Linha : 82 - Entrou no Alterar Contato e criou a qry às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+  finally
+    LogManager.Free;
+  end;
 
   qry:=TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
@@ -92,10 +107,10 @@ begin
     qry.ParamByName('idclientes').AsInteger   := aContato.idcliente;
     qry.ParamByName('telefone').DataType      := ftString;
     qry.ParamByName('telefone').AsString      := aContato.telefone;
-    qry.ParamByName('celular').DataType      := ftString;
-    qry.ParamByName('celular').AsString      := aContato.celular;
-    qry.ParamByName('email').DataType        := ftString;
-    qry.ParamByName('email').AsString        := aContato.email;
+    qry.ParamByName('celular').DataType       := ftString;
+    qry.ParamByName('celular').AsString       := aContato.celular;
+    qry.ParamByName('email').DataType         := ftString;
+    qry.ParamByName('email').AsString         := aContato.email;
     qry.ParamByName('cnpjrevenda').DataType   := ftString;
     qry.ParamByName('cnpjrevenda').AsString   := aContato.cnpjrevenda;
 
@@ -117,7 +132,14 @@ begin
     Result:=True;
 
   finally
-    qry.Free;
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager := TLogManager.Create;
+     LogManager.AddLog('Classe Model.Contatos - Linha : 139 - Finalizou o Alterar Contato e deu FREE na qry às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+     LogManager.Free;
+
+     qry.Free;
   end;
 
 end;
@@ -247,6 +269,50 @@ end;
 procedure TModelContato.SetSomenteAtivos(const Value: string);
 begin
   FSomenteAtivos := Value;
+end;
+
+class function TModelContato.TestaSeCamposPreenchidos(
+  aContato: TContato): Boolean;
+begin
+  Result:=False;
+
+  if aContato.idcliente <= 0   then
+  begin
+    raise Exception.Create('O Cod. do Cliente deve ser preenchido.');
+    Result:= False;
+    exit;
+  end;
+
+  if Trim(aContato.Nome) = '' then
+  begin
+    raise Exception.Create('O nome do contato não pode ser vazio.');
+    Result:= False;
+    exit;
+  end;
+
+  if Trim(aContato.telefone) = '' then
+  begin
+    raise Exception.Create('É necessário prencher o Telefone.');
+    Result:= False;
+    exit;
+  end;
+
+  if Trim(aContato.Celular) = '' then
+  begin
+    raise Exception.Create('É necessário preencher o Celular.');
+    Result:= False;
+    exit;
+  end;
+
+  if Trim(aContato.email) = '' then
+  begin
+    raise Exception.Create('É necessário preencher o e-mail.');
+    Result:= False;
+    exit;
+  end;
+
+  Result:= True;
+
 end;
 
 end.

@@ -10,14 +10,12 @@ type
   TLogManager = class
   private
     FLogList: TStringList;
-    //class var FInstance: TLogManager;
-    //class function GetInstance: TLogManager;
   public
     constructor Create;
     destructor Destroy; override;
     procedure AddLog(const Message: string);
     procedure SaveLogToFile(const FileName: string);
-//    class function Instance: TLogManager;
+    function GravarLogsnoBanco(aIdRevenda: Integer): Boolean;
 
   end;
 
@@ -41,19 +39,10 @@ begin
   inherited;
 end;
 
-//class function TLogManager.GetInstance: TLogManager;
-//begin
-//  if FInstance = nil then
-//    FInstance := TLogManager.Create;
-//  Result := FInstance;
-//end;
-
-//class function TLogManager.Instance: TLogManager;
-//begin
-//  if FInstance = nil then
-//    FInstance := TLogManager.Create;
-//  Result := FInstance;
-//end;
+function TLogManager.GravarLogsnoBanco(aIdRevenda: Integer): Boolean;
+begin
+  //Gravar na tabelaa Logs o arquivo txt via streamig no campo arquivo Blob
+end;
 
 procedure TLogManager.SaveLogToFile(const FileName: string);
 begin

@@ -274,6 +274,9 @@ type
     ProdutoDS: TDataSet;
     qry: TFDQuery;
     FConexao: TFDConnection;
+    LogManager: TLogManager;    //Para uso com o Log
+    CurrentDateTime: TDateTime; //Para uso com o Log
+    DateTimeStr: string;        //Para uso com o Log
 
     procedure Modo_Edicao(editar: Boolean);
     procedure Modo_Edicao2(editar: Boolean);
@@ -915,8 +918,12 @@ end;
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FrmLogin.Close;
-
   //Application.Terminate;
+  CurrentDateTime := Now;
+  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  LogManager.AddLog('Tela Login - Entrou no FormClose : Linha 231 - e deu Free no LogManager às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  LogManager.Free;
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
@@ -926,6 +933,7 @@ begin
   DM.FDConnection1.Connected:= True;
   CarregarCores;
   CarregarLinguagem;
+  LogManager := TLogManager.Create;
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
