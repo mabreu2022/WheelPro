@@ -71,6 +71,10 @@ type
     ShadowEffect14: TShadowEffect;
     ShadowEffect15: TShadowEffect;
     ShadowEffect16: TShadowEffect;
+    GroupBox1: TGroupBox;
+    CBHabilitarLogs: TCheckBox;
+    ShadowEffect17: TShadowEffect;
+    ShadowEffect18: TShadowEffect;
     procedure BtnSalvarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -89,6 +93,7 @@ type
     procedure CarregarCores;
     procedure SalvarConfiguracao;
     procedure CarregarConfiguracao;
+    procedure HabilitarLogs;
     function ColorToHexString(Color: TAlphaColor): string;
   end;
 
@@ -123,6 +128,9 @@ begin
     //Chamar a procedure de gravação
     SalvarCores;
 
+    //Habilitar Logs
+    HabilitarLogs;
+
     // Encerre a aplicação atual
     Application.Terminate;
 
@@ -134,16 +142,18 @@ end;
 procedure TFrmConfig.CarregarConfiguracao;
 var
   IniFile: TIniFile;
-  Valor, Valor2: string;
+  Valor, Valor2,Valor3: string;
 begin
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     Valor := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
     Valor2:= IniFile.ReadString('WhatsApp', 'EnviaParaContatoEspecifico', '');
+    Valor3:= IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
 
     // Carregar valor do Config.ini para o CheckBox
     CheckBox_CarregarTambemClientesAtivoIgualN.IsChecked := (Valor = 'S');
-    CBWhatsApp.IsChecked:= (Valor2 = 'S');
+    CBWhatsApp.IsChecked      := (Valor2 = 'S');
+    CBHabilitarLogs.IsChecked := (Valor3 = 'S');
     // Use a instância FModel de TModelCliente conforme necessário...
   finally
     IniFile.Free;
@@ -249,6 +259,22 @@ end;
 procedure TFrmConfig.FormShow(Sender: TObject);
 begin
   TabControl1.TabIndex:=0;
+end;
+
+procedure TFrmConfig.HabilitarLogs;
+var
+  IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+     if CBHabilitarLogs.IsChecked  then
+       IniFile.WriteString('HabilitarLogs', 'HabilitarLogsSistema', 'S')
+     else
+       IniFile.WriteString('HabilitarLogs', 'HabilitarLogsSistema', 'N');
+  finally
+     IniFile.Free;
+  end;
+
 end;
 
 procedure TFrmConfig.SalvarConfiguracao;

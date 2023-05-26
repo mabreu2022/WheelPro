@@ -921,8 +921,8 @@ begin
   //Application.Terminate;
   CurrentDateTime := Now;
   DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela Login - Entrou no FormClose : Linha 231 - e deu Free no LogManager às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  LogManager.AddLog('Tela - Cadastro de Clientes - Entrou no FormClose : Linha 231 - e deu Free no LogManager às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
   LogManager.Free;
 end;
 

@@ -72,9 +72,13 @@ type
     LogManager: TLogManager;    //Para uso com o Log
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
+    FHabilitarLog: String;
     procedure CarregarLinguagem;
+    procedure CarregarConfiguracao;
+    procedure SetHabilitarLog(const Value: String);
   public
     { Public declarations }
+    property HabilitarLog: String read FHabilitarLog write SetHabilitarLog;
     procedure CarregarCores;
     constructor create;
     destructor destroy; override;
@@ -96,19 +100,27 @@ begin
   try
     if Login.Login(EdtUsuario.Text, EdtSenha.Text) then
     begin
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela Login - Linha : 102 - Usuário: ' + EdtUsuario.Text + ' fez login às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      if FHabilitarLog='S' then
+      begin
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela Login - Linha : 102 - Usuário: ' + EdtUsuario.Text + ' fez login às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      end;
+
       FrmLogin.CloseModal;
       FrmPrincipal.ShowModal;
     end
     else
     begin
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela Login - Linha : 111 - Usuário não encontrado às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      if FHabilitarLog='S' then
+      begin
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela Login - Linha : 111 - Usuário não encontrado às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      end;
+
       ShowMessage('usuario ou senha não encontrado');
       EdtUsuario.SetFocus;
     end;
@@ -123,24 +135,43 @@ begin
   FrmPrincipal.Close;
 end;
 
+procedure TFrmLogin.CarregarConfiguracao;
+var
+  IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+     FHabilitarLog := IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
+  finally
+    IniFile.Free;
+  end;
+end;
+
 procedure TFrmLogin.CarregarCores;
 var
   IniFile: TIniFile;
   Cor: TAlphaColor;
 begin
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela Login - Entrou no CarregarCores - Linha: 134 - e criou o IniFile às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  if FHabilitarLog='S' then
+  begin
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Entrou no CarregarCores - Linha: 134 - e criou o IniFile às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  end;
 
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
   finally
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Login - Finalizou a CarregarCores - Linha : 143 - e deu Free no IniFile às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+    if FHabilitarLog='S' then
+    begin
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Login - Finalizou a CarregarCores - Linha : 143 - e deu Free no IniFile às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+    end;
+
     IniFile.Free;
   end;
 
@@ -157,10 +188,13 @@ var
   IniFile: TIniFile;
   I: Integer;
 begin
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela Login - Entrou na  CarregarLinguagem: Linha : 163 - Criou o IniFile às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  if FHabilitarLog='S' then
+  begin
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Entrou na  CarregarLinguagem: Linha : 163 - Criou o IniFile às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  end;
 
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
@@ -188,10 +222,14 @@ begin
    end;
 
   finally
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Login - Finalizou o CarregarLinguagem: Linha 194 - e deu Free no IniFile às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+    if FHabilitarLog='S' then
+    begin
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Login - Finalizou o CarregarLinguagem: Linha 194 - e deu Free no IniFile às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+    end;
+
     IniFile.Free;
   end;
 
@@ -199,45 +237,65 @@ end;
 
 constructor TFrmLogin.create;
 begin
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela Login - Entrou no Create : Linha : 205 - e criou a FConexao às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  if FHabilitarLog='S' then
+  begin
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Entrou no Create : Linha : 205 - e criou a FConexao às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  end;
+
   FConexao := TConnection.CreateConnection;
 end;
 
 destructor TFrmLogin.destroy;
 begin
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na FConexao às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  if FHabilitarLog='S' then
+  begin
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na FConexao às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  end;
+
   FConexao.Free;
 
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na LogManager às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  if FHabilitarLog='S' then
+  begin
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na LogManager às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  end;
+
   LogManager.Free;
   inherited;
 end;
 
 procedure TFrmLogin.FormCreate(Sender: TObject);
 begin
-  LogManager := TLogManager.Create;
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela Login - Entrou no FormCreate : Linha 228 - e criou LogManager às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
-
+  if FHabilitarLog='S' then
+  begin
+    LogManager := TLogManager.Create;
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Entrou no FormCreate : Linha 228 - e criou LogManager às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  end;
   CarregarCores;
   CarregarLinguagem;
+  CarregarConfiguracao;
 end;
 
 procedure TFrmLogin.FormShow(Sender: TObject);
 begin
   if EdtUsuario.CanFocus then
     EdtUsuario.SetFocus;
+end;
+
+procedure TFrmLogin.SetHabilitarLog(const Value: String);
+begin
+  FHabilitarLog := Value;
 end;
 
 end.
