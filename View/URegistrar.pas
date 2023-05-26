@@ -24,7 +24,8 @@ uses
   FMX.Grid,
   FMX.ScrollBox,
   IniFiles,
-  System.UIConsts;
+  System.UIConsts,
+  LogManager;
 
 type
   TFrmRegistrar = class(TForm)

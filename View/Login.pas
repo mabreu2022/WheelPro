@@ -38,7 +38,8 @@ uses
   FireDAC.Comp.UI,
   FMX.Layouts,
   FMX.Effects,
-  System.UIConsts;
+  System.UIConsts,
+  LogManager;
 
 type
   TFrmLogin = class(TForm)
@@ -64,10 +65,14 @@ type
     procedure BtnCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FConexao: TFDConnection;
     FLinguagem: string;
+    LogManager: TLogManager;    //Para uso com o Log
+    CurrentDateTime: TDateTime; //Para uso com o Log
+    DateTimeStr: string;        //Para uso com o Log
     procedure CarregarLinguagem;
   public
     { Public declarations }
@@ -92,11 +97,19 @@ begin
   try
     if Login.Login(EdtUsuario.Text, EdtSenha.Text) then
     begin
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Login - Linha : 102 - Usuário: ' + EdtUsuario.Text + ' fez login às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
       FrmLogin.CloseModal;
       FrmPrincipal.ShowModal;
     end
     else
     begin
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Login - Linha : 111 - Usuário não encontrado às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
       ShowMessage('usuario ou senha não encontrado');
       EdtUsuario.SetFocus;
     end;
@@ -116,10 +129,19 @@ var
   IniFile: TIniFile;
   Cor: TAlphaColor;
 begin
+  CurrentDateTime := Now;
+  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  LogManager.AddLog('Tela Login - Entrou no CarregarCores - Linha: 134 - e criou o IniFile às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
   finally
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Finalizou a CarregarCores - Linha : 143 - e deu Free no IniFile às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
     IniFile.Free;
   end;
 
@@ -136,6 +158,11 @@ var
   IniFile: TIniFile;
   I: Integer;
 begin
+  CurrentDateTime := Now;
+  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  LogManager.AddLog('Tela Login - Entrou na  CarregarLinguagem: Linha : 163 - Criou o IniFile às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
@@ -162,6 +189,10 @@ begin
    end;
 
   finally
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela Login - Finalizou o CarregarLinguagem: Linha 194 - e deu Free no IniFile às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
     IniFile.Free;
   end;
 
@@ -169,17 +200,42 @@ end;
 
 constructor TFrmLogin.create;
 begin
+  CurrentDateTime := Now;
+  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  LogManager.AddLog('Tela Login - Entrou no Create : Linha : 205 - e criou a FConexao às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
   FConexao := TConnection.CreateConnection;
 end;
 
 destructor TFrmLogin.destroy;
 begin
+  CurrentDateTime := Now;
+  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na FConexao às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
   FConexao.Free;
+
+  CurrentDateTime := Now;
+  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na LogManager às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+  LogManager.Free;
   inherited;
+end;
+
+procedure TFrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
 end;
 
 procedure TFrmLogin.FormCreate(Sender: TObject);
 begin
+  LogManager := TLogManager.Create;
+  CurrentDateTime := Now;
+  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  LogManager.AddLog('Tela Login - Entrou no FormCreate : Linha 228 - e criou LogManager às ' + DateTimeStr);
+  LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+
   CarregarCores;
   CarregarLinguagem;
 end;

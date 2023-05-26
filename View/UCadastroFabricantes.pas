@@ -46,7 +46,8 @@ uses
   Controller.Fabricantes,
   Dao.Conexao,
   IniFiles,
-  System.UIConsts;
+  System.UIConsts,
+  LogManager;
 
 type
   TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);

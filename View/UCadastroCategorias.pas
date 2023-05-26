@@ -21,7 +21,8 @@ uses
   FMX.ListBox,
   FMX.Edit,
   System.UIConsts,
-  IniFiles;
+  IniFiles,
+  LogManager;
 
 type
   TFrmCategorias = class(TForm)

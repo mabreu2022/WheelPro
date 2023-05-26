@@ -43,12 +43,10 @@ type
       FCidade: string;
       FBairro: string;
       FConn: TFDConnection;
-    FdataExclusao: TDateTime;
-    FdataAlteracao: TDateTime;
-    FdataCadastro: TDatetime;
-    Fidmodelocarro: integer;
-
-
+      FdataExclusao: TDateTime;
+      FdataAlteracao: TDateTime;
+      FdataCadastro: TDatetime;
+      Fidmodelocarro: integer;
 
     procedure Setativo(const Value: string);
     procedure SetCEP(const Value: string);
@@ -65,7 +63,6 @@ type
     procedure SetdataCadastro(const Value: TDatetime);
     procedure SetdataExclusao(const Value: TDateTime);
     procedure Setidmodelocarro(const Value: integer);
-
 
     public
       property idcliente: Integer read Fidcliente write Setidcliente;

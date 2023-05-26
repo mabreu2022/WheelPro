@@ -75,7 +75,8 @@ uses
   IniFiles,
   Vcl.Dialogs,
   IdCoderMIME,
-  IdGlobal;
+  IdGlobal,
+  LogManager;
 
 type
   TFrmPrincipal = class(TForm)
@@ -914,6 +915,7 @@ end;
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FrmLogin.Close;
+
   //Application.Terminate;
 end;
 

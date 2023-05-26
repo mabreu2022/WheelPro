@@ -26,7 +26,8 @@ uses
   FMX.Edit,
   ShellAPI,
   Winapi.Windows,
-  Vcl.Dialogs;
+  Vcl.Dialogs,
+  LogManager;
 
 type
   TFrmConfig = class(TForm)

@@ -26,7 +26,8 @@ uses
   FireDAC.Phys.MySQLDef,
   FireDAC.Phys.MySQL,
   FMX.Dialogs,
-  Datasnap.DBClient;
+  Datasnap.DBClient,
+  LogManager;
 
 type
   TContato = class
@@ -42,6 +43,8 @@ type
     Fidcliente: integer;
     Fcelular: string;
     Fcnpjrevenda: string;
+    FConn: TFDConnection;
+    LogManager : TLogManager;
     procedure Setativo(const Value: string);
     procedure SetdataAlteracao(const Value: TDateTime);
     procedure SetdataCadastro(const Value: TDatetime);
@@ -66,11 +69,30 @@ type
       property dataCadastro: TDatetime read FdataCadastro write SetdataCadastro;
       property dataAlteracao: TDateTime read FdataAlteracao write SetdataAlteracao;
       property dataExclusao: TDateTime read FdataExclusao write SetdataExclusao;
+
+      constructor create;
+      destructor destroy;override;
   end;
 
 implementation
 
 { TContato }
+
+constructor TContato.create;
+begin
+  LogManager := TLogManager.Create;
+  LogManager.SaveLogToFile('Log_Entity_Contatos.txt');
+  LogManager.AddLog('Entrou na Entity_Contatos - Create: Linha 83: e Criou FConn.');
+  LogManager.SaveLogToFile('Log_Entity_Contatos.txt');
+  FConn := TConnection.CreateConnection;
+end;
+
+destructor TContato.destroy;
+begin
+  FConn.Free;
+  LogManager.Free;
+  inherited;
+end;
 
 procedure TContato.Setativo(const Value: string);
 begin

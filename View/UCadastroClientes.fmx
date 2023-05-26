@@ -11,6 +11,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
+  OnClose = FormClose
   OnShow = FormShow
   DesignerMasterStyle = 0
   object Layout1: TLayout
@@ -185,7 +186,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Size.Width = 712.000000000000000000
       Size.Height = 340.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 2
+      TabIndex = 0
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -201,7 +202,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -678,7 +679,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 63.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -694,7 +695,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           Text = 'Cod. Contato'
-          TabOrder = 0
+          TabOrder = 6
           object ShadowEffect39: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -703,9 +704,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object EdtContato: TEdit
+        object EdtCodContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 22
+          TabOrder = 0
           ReadOnly = True
           Position.X = 16.000000000000000000
           Position.Y = 33.000000000000000000
@@ -722,7 +723,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Position.X = 16.000000000000000000
           Position.Y = 62.000000000000000000
           Text = 'Nome'
-          TabOrder = 23
+          TabOrder = 27
           object ShadowEffect40: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -731,12 +732,12 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object EdtNome: TEdit
+        object EdtNomeContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 24
+          TabOrder = 1
           Position.X = 16.000000000000000000
           Position.Y = 84.000000000000000000
-          Size.Width = 489.000000000000000000
+          Size.Width = 305.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
           object ShadowEffect41: TShadowEffect
@@ -748,10 +749,10 @@ object FrmCadastroClientes: TFrmCadastroClientes
           end
         end
         object lblTelefoneContato: TLabel
-          Position.X = 516.000000000000000000
-          Position.Y = 62.000000000000000000
+          Position.X = 328.000000000000000000
+          Position.Y = 64.000000000000000000
           Text = 'Telefone'
-          TabOrder = 25
+          TabOrder = 28
           object ShadowEffect43: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -760,11 +761,11 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object EdtTelefone: TEdit
+        object EdtTelefoneContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 26
-          Position.X = 516.000000000000000000
-          Position.Y = 83.000000000000000000
+          TabOrder = 2
+          Position.X = 328.000000000000000000
+          Position.Y = 85.000000000000000000
           Size.Width = 173.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
@@ -780,7 +781,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Position.X = 16.000000000000000000
           Position.Y = 113.000000000000000000
           Text = 'E-mail'
-          TabOrder = 27
+          TabOrder = 29
           object ShadowEffect44: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -789,9 +790,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
             ShadowColor = claBlack
           end
         end
-        object EdtEmail: TEdit
+        object EdtEmailContato: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 28
+          TabOrder = 4
           Position.X = 16.000000000000000000
           Position.Y = 134.000000000000000000
           Size.Width = 489.000000000000000000
@@ -812,7 +813,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
           Text = 'Ativo'
-          TabOrder = 18
+          TabOrder = 23
           object ShadowEffect37: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -845,9 +846,38 @@ object FrmCadastroClientes: TFrmCadastroClientes
           Size.Width = 53.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
-          TabOrder = 13
+          TabOrder = 5
           OnExit = CBAtivoExit
           object ShadowEffect38: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblCelularContato: TLabel
+          Position.X = 510.000000000000000000
+          Position.Y = 62.000000000000000000
+          Text = 'Celular Contato'
+          TabOrder = 30
+          object ShadowEffect54: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtCelularContato: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 3
+          Position.X = 510.000000000000000000
+          Position.Y = 85.000000000000000000
+          Size.Width = 169.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect55: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
             Softness = 0.300000011920929000

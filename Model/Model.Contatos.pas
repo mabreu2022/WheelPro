@@ -21,7 +21,8 @@ uses
   System.Generics.Collections,
   Dao.Conexao,
   Datasnap.DBClient,
-  Entity.Contatos;
+  Entity.Contatos,
+  LogManager;
 
 type
   TModelContato = class
@@ -29,6 +30,7 @@ type
       Fconn: TFDConnection;
       qry: TFDQuery;
       FSomenteAtivos: string;
+      LogManager: TLogManager;
     procedure SetSomenteAtivos(const Value: string);
     public
       FContatos: TContato;
@@ -37,14 +39,14 @@ type
       Class function SalvarContato(aContato: TContato): Boolean;
 
       //Read
-//      function CarregarClientes(const ACNPJ: String): TClientes;
-//      function CarregarTodosClientes(
-//  aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
+      function CarregarContatos(const aId: Integer): TContato;
+      function CarregarTodosContatos(
+               aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
 //      function ObterClientePorId(aId: Integer): TFDQuery;
 //
 //      //Update
-//      class function AlterarCliente(aCliente: TClientes): Boolean;
-//
+      class function AlterarContato(aContato: TContato): Boolean;
+
 //      //Delete
 //      function RemoverCliente(aCliente: TClientes): Boolean;
 //
@@ -52,13 +54,131 @@ type
 //      class function TestaSeCamposPreenchidos(aCliente: TClientes): Boolean;
 //      class function ClienteExiste(aCNPJ: string):Boolean;
 //
-//      constructor Create;
-//      destructor destroy;override;
+      constructor Create;
+      destructor destroy;override;
   end;
 
 implementation
 
 { TModelContato }
+
+class function TModelContato.AlterarContato(aContato: TContato): Boolean;
+var
+   qry: TFDQuery;
+   UF: String;
+   Ativo: String;
+begin
+  Result:=False;
+
+  qry:=TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Text:='UPDATE fulanorodas.contatos  ' +
+                  'SET                          ' +
+//                  'idcontatos  = :idcontatos    ' +
+                  'idclientes  = :idclientes,   ' +
+                  'telefone    = :telefone,     ' +
+                  'celular     = :celular,      ' +
+                  'email       = :email,        ' +
+                  'cnpjrevenda = :cnpjrevenda,  ' +
+                  'ativo       = :ativo,        ' +
+                  'datacadastro= :datacadastro  ' +
+                  'WHERE                        ' +
+                  'idclientes = :idclientes     ';
+
+    qry.ParamByName('idclientes').DataType    := ftInteger;
+    qry.ParamByName('idclientes').AsInteger   := aContato.idcliente;
+    qry.ParamByName('telefone').DataType      := ftString;
+    qry.ParamByName('telefone').AsString      := aContato.telefone;
+    qry.ParamByName('celular').DataType      := ftString;
+    qry.ParamByName('celular').AsString      := aContato.celular;
+    qry.ParamByName('email').DataType        := ftString;
+    qry.ParamByName('email').AsString        := aContato.email;
+    qry.ParamByName('cnpjrevenda').DataType   := ftString;
+    qry.ParamByName('cnpjrevenda').AsString   := aContato.cnpjrevenda;
+
+
+    qry.ParamByName('ativo').DataType         := ftString;
+    if Length(aContato.ativo) > 0 then
+      Ativo := Copy(aContato.ativo, 1, 1)
+    else
+      Ativo := '';
+
+    qry.ParamByName('ativo').AsString         := Ativo;
+
+    qry.ParamByName('datacadastro').DataType  := ftDateTime;
+    qry.ParamByName('datacadastro').AsDateTime:= aContato.datacadastro;
+
+    qry.ExecSQL;
+    qry.Connection.Commit;
+
+    Result:=True;
+
+  finally
+    qry.Free;
+  end;
+
+end;
+
+function TModelContato.CarregarContatos(const aId: Integer): TContato;
+var
+   qry: TFDQuery;
+begin
+
+  Result:= nil;
+
+  qry:=TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Text:='SELECT * FROM fulanorodas.contatos  ' +
+                   'WHERE IDCLIENTES=:IDCLIENTES';
+    qry.ParamByName('idclientes').DataType    := ftInteger;
+    qry.ParamByName('idclientes').AsInteger   := aId;
+    qry.Open;
+
+    if qry.RecordCount > 0 then
+    begin
+      FContatos.idcontato   := qry.FieldByName('IDCONTATOS').AsInteger;
+      FContatos.idcliente   := qry.FieldByName('idclientes').AsInteger;
+      FContatos.Nome        := qry.FieldByName('nomecontato').AsString;
+      FContatos.telefone    := qry.FieldByName('telefone').AsString;
+      Fcontatos.celular     := qry.FieldByName('celular').AsString;
+      FContatos.email       := qry.FieldByName('email').AsString;
+      FContatos.cnpjrevenda := qry.FieldByName('cnpjrevenda').AsString;
+      FContatos.ativo       := qry.FieldByName('ativo').AsString;
+    end;
+
+    Result:=FContatos;
+
+  finally
+    qry.Free;
+  end;
+end;
+
+function TModelContato.CarregarTodosContatos(aDataSet: TClientDataSet;
+  aSomenteAtivos: string): TFDquery;
+begin
+//
+end;
+
+constructor TModelContato.Create;
+begin
+  LogManager := TLogManager.Create;
+  LogManager.SaveLogToFile('Log_Model_Contatos.txt');
+  LogManager.AddLog('Entrou na Model.Contatos - Create: Linha 170: e Criou FContatos.');
+  FContatos := TContato.Create;
+end;
+
+destructor TModelContato.destroy;
+begin
+  FContatos.Free;
+  LogManager.Free;
+  inherited;
+end;
 
 class function TModelContato.SalvarContato(aContato: TContato): Boolean;
 var
@@ -121,7 +241,6 @@ begin
     qry.Close;
     qry.Free;
   end;
-
 
 end;
 

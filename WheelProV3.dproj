@@ -322,6 +322,7 @@
         <DCCReference Include="Entity\Entity.Contatos.pas"/>
         <DCCReference Include="Controller\Controller.Contatos.pas"/>
         <DCCReference Include="Model\Model.Contatos.pas"/>
+        <DCCReference Include="Funcoes\LogManager.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
