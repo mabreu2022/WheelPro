@@ -5,6 +5,8 @@ interface
 uses
   System.SysUtils,
   System.Classes,
+  FireDAC.Stan.Util,
+  FireDAC.Stan.Param,
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option,
   FireDAC.Stan.Error,
@@ -33,6 +35,7 @@ type
       CurrentDateTime: TDateTime;
       DateTimeStr: string;
       LogManager: TLogManager;
+      FGravarLogs: Boolean;
     procedure SetSomenteAtivos(const Value: string);
     public
       FCliente: TClientes;
@@ -40,11 +43,15 @@ type
 
       //create
       Class function SalvarCliente(aCliente: TClientes): Boolean;
+      function GravarLogNoBancoDeDados(
+                                        const caminhoArquivoLog: string;
+                                        anomearquivo: string) : Boolean;
 
       //Read
       function CarregarClientes(const ACNPJ: String): TClientes;
-      function CarregarTodosClientes(
-  aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
+      function CarregarTodosClientes(aDataSet: TClientDataSet;
+                                     aSomenteAtivos: string;
+                                     aSemContatos: string): TFDquery;
       function ObterClientePorId(aId: Integer): TFDQuery;
 
       //Update
@@ -76,11 +83,12 @@ var
    CurrentDateTime: TDateTime;
    DateTimeStr: string;
 begin
+  LogManager:= TLogManager.Create;
   try
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager := TLogManager.Create;
-    LogManager.AddLog('Classe Model.Clientes - Linha : 78 - Entrou no Alterar Cliente.' + DateTimeStr);
+    LogManager.AddLog('Classe Model.Clientes - Linha : 88 - Entrou no Alterar Cliente às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
   finally
     LogManager.Free;
@@ -157,16 +165,16 @@ begin
 
     Result:=True;
 
+  finally
+    LogManager:= TLogManager.Create;
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Classe Model.Clientes - Linha : 144 - Finalizou o Alterar Cliente.'+ DateTimeStr);
+      LogManager.AddLog('Classe Model.Clientes - Linha : 170 - Finalizou o Alterar Cliente finalizou qry às '+ DateTimeStr);
       LogManager.SaveLogToFile('Log_Model_Clientes.txt');
     finally
       LogManager.Free;
     end;
-
-  finally
     qry.Free;
   end;
 
@@ -176,10 +184,15 @@ function TModelCliente.CarregarClientes(const ACNPJ: String): TClientes;
 var
  qry: TFDQuery;
 begin
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Classe Model.Clientes: Linha 155: Carregar Clientes. '+ DateTimeStr);
-  LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+  LogManager:= TLogManager.Create;
+  try
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Classe Model.Clientes: Linha 188: Entrou na Function Carregar Clientes e criou qry às '+ DateTimeStr);
+    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+  finally
+    LogManager.Free;
+  end;
 
   Result:= Nil;
 
@@ -212,26 +225,48 @@ begin
     end;
 
   finally
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Classe Model.Clientes: Linha 229: Entrou na Function Carregar Clientes e criou qry às '+ DateTimeStr);
+      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
     qry.Free;
   end;
 
 end;
 
 function TModelCliente.CarregarTodosClientes(
-  aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery;
+  aDataSet: TClientDataSet; aSomenteAtivos: string; aSemContatos: string): TFDquery;
 begin
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Classe Model.Clientes: Linha : 206 - Carregar Clientes e criou qry às '+ DateTimeStr);
-  LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+  LogManager:= TLogManager.Create;
+  try
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Classe Model.Clientes: Linha : 246 - Carregar Todos Clientes e criou qry às '+ DateTimeStr);
+    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+  finally
+    LogManager.Free;
+  end;
 
   //rever campos ao abrir o formulário de clientes
   qry:= TFDquery.Create(nil);
   qry.Connection:= TConnection.CreateConnection;
   try
     qry.SQL.Clear;
-    qry.SQL.Add('SELECT CL.*, CO.* FROM CLIENTES CL ');
-    qry.SQL.Add('JOIN CONTATOS CO ON(CO.IDCLIENTES=CL.IDCLIENTES)');
+    if aSemContatos='S' then
+    begin
+      qry.SQL.Add('SELECT CL.*, CO.* FROM CLIENTES CL');
+      qry.SQL.Add('JOIN CONTATOS CO');
+    end
+    Else
+      qry.SQL.Add('SELECT CL.*, CO.* FROM CLIENTES CL ');
+
+    if aSemContatos = 'N' then
+      qry.SQL.Add('JOIN CONTATOS CO ON(CO.IDCLIENTES=CL.IDCLIENTES)');
 
     if aSomenteAtivos = 'S' then
       qry.SQL.Add('WHERE CL.ATIVO=''S''      ');
@@ -243,12 +278,16 @@ begin
 
     qry.First;
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Classe Model.Clientes: Linha : 245 - Carregar Clientes Resultou a qry mas NÂO deu FREE às '+ DateTimeStr);
-    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-
-    Result := qry;
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Classe Model.Clientes: Linha : 245 - Carregar Clientes Resultou a qry mas NÂO deu FREE às '+ DateTimeStr);
+      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+      Result := qry;
+    finally
+      LogManager.Free;
+    end;
 
   except
     Result := nil;
@@ -263,61 +302,108 @@ var
   CurrentDateTime: TDateTime;
   DateTimeStr: string;
 begin
+  Result:= False;
+
+  LogManager:= TLogManager.Create;
   try
      CurrentDateTime := Now;
      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
      LogManager := TLogManager.Create;
-     LogManager.AddLog('Classe na Model.Clientes - Linha 267 - Entrou na Cliente Existe e Criou LogManager às ' + DateTimeStr);
+     LogManager.AddLog('Classe na Model.Clientes - Linha 267 - Entrou na Cliente Existe e Criou qry às ' + DateTimeStr);
      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+
+     qry:= TFDquery.Create(nil);
+     qry.Connection:= TConnection.CreateConnection;
+     try
+       qry.Close;
+       qry.SQL.Clear;
+       qry.SQL.Add('SELECT * FROM CLIENTES');
+       qry.SQL.Add('WHERE CNPJ_CPF=:CNPJ_CPF');
+       qry.ParamByName('cnpj_cpf').DataType := ftString;
+       qry.ParamByName('cnpj_cpf').AsString := acNPJ;
+       qry.Open;
+
+       if qry.RecordCount > 0 then
+         Result:= True;
+
+     finally
+       qry.Free;
+     end;
+
   finally
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager := TLogManager.Create;
-     LogManager.AddLog('Classe na Model.Clientes - Linha 273 - Entrou na Cliente Existe e deu FREE na LogManager às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
      LogManager.Free;
   end;
 
-  Result:= False;
-
-  qry:= TFDquery.Create(nil);
-  qry.Connection:= TConnection.CreateConnection;
-  try
-    qry.Close;
-    qry.SQL.Clear;
-    qry.SQL.Add('SELECT * FROM CLIENTES');
-    qry.SQL.Add('WHERE CNPJ_CPF=:CNPJ_CPF');
-    qry.ParamByName('cnpj_cpf').DataType := ftString;
-    qry.ParamByName('cnpj_cpf').AsString := acNPJ;
-    qry.Open;
-
-    if qry.RecordCount > 0 then
-      Result:= True;
-
-  finally
-    qry.Free;
-  end;
 end;
 
 constructor TModelCliente.Create;
 begin
   LogManager := TLogManager.Create;
-  LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-  CurrentDateTime := Now;
-  DateTimeStr := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+  try
+    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+    CurrentDateTime := Now;
+    DateTimeStr := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Entrou na Model.Clientes - Create: Linha : 323 - E Criou a FCliente às ' + DateTimeStr);
+    FCliente := TClientes.Create;
+  finally
+    LogManager.Free;
+  end;
+
   FCliente := TClientes.Create;
-  LogManager.AddLog('Entrou na Model.Clientes - Create: Linha : 306 - E Criou a FCliente às ' + DateTimeStr);
+
 end;
 
 destructor TModelCliente.destroy;
 begin
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  FCliente.Free;
-  LogManager.AddLog('Entrou na Model.Clientes - Destroy: Linha : 314 - e Deu Free na Fcliente às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-  LogManager.Free;
+  LogManager:= TLogManager.Create;
+  try
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager.AddLog('Entrou na Model.Clientes - Destroy: Linha : 337 - e Deu Free na Fcliente às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+     FCliente.Free;
+  finally
+     LogManager.Free;
+  end;
   inherited;
+end;
+
+function TModelCliente.GravarLogNoBancoDeDados(
+  const caminhoArquivoLog: string; anomearquivo: string) : Boolean;
+var
+  qry: TFDQuery;
+  arquivoStream: TMemoryStream;
+   blobStream: TStream;
+begin
+  Result := False;
+
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := TConnection.CreateConnection;
+
+    arquivoStream := TMemoryStream.Create;
+    try
+      arquivoStream.LoadFromFile(caminhoArquivoLog);
+
+      qry.SQL.Text := 'INSERT INTO logs (arquivo, datainclusao, nomearquivo) VALUES (:arquivo, :datainclusao, :nomearquivo)';
+
+      qry.ParamByName('arquivo').DataType := ftBlob;
+      qry.ParamByName('arquivo').LoadFromFile(caminhoArquivoLog, ftBlob);
+
+      qry.ParamByName('datainclusao').AsDateTime := Now;
+      qry.ParamByName('nomearquivo').AsString    := anomearquivo;
+      qry.ExecSQL;
+
+      Result := True;
+    finally
+      arquivoStream.Free;
+    end;
+  except
+    ShowMessage('Erro ao gravar log no Banco de Dados');
+  end;
+
+  qry.Free;
+
 end;
 
 function TModelCliente.ObterClientePorId(aId: Integer): TFDQuery;
@@ -447,6 +533,8 @@ begin
      qry.Connection.Commit;
 
      Result:=True;
+
+     //Chamar o Salvar Contato?
 
   finally
     qry.Close;

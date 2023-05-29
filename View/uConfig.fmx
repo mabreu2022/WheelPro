@@ -235,11 +235,11 @@ object FrmConfig: TFrmConfig
             ShadowColor = claBlack
           end
         end
-        object GroupBox1: TGroupBox
+        object GBHaBilitarLogs: TGroupBox
           Position.X = 8.000000000000000000
           Position.Y = 166.000000000000000000
           Size.Width = 257.000000000000000000
-          Size.Height = 59.000000000000000000
+          Size.Height = 171.000000000000000000
           Size.PlatformDefault = False
           Text = 'Habilitar Logs'
           TabOrder = 4
@@ -250,7 +250,7 @@ object FrmConfig: TFrmConfig
             Size.Height = 19.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 38
-            Text = 'Sim'
+            Text = 'Sim (Salvar no HD)'
             object ShadowEffect17: TShadowEffect
               Distance = 3.000000000000000000
               Direction = 45.000000000000000000
@@ -260,6 +260,61 @@ object FrmConfig: TFrmConfig
             end
           end
           object ShadowEffect18: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+          object CBGravarLogsBanco: TCheckBox
+            Position.X = 16.000000000000000000
+            Position.Y = 56.000000000000000000
+            Size.Width = 233.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 39
+            Text = 'Gravar logs no banco de dados'
+            object ShadowEffect22: TShadowEffect
+              Distance = 3.000000000000000000
+              Direction = 45.000000000000000000
+              Softness = 0.300000011920929000
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+          end
+        end
+        object GBCarregarClientesSemContato: TGroupBox
+          Position.X = 280.000000000000000000
+          Position.Y = 166.000000000000000000
+          Size.Width = 337.000000000000000000
+          Size.Height = 59.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Carregar Clientes sem contato'
+          TabOrder = 5
+          object CBCarregarClientesSemContato: TCheckBox
+            Position.X = 16.000000000000000000
+            Position.Y = 24.000000000000000000
+            Size.Width = 313.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 38
+            Text = 'Sim'
+            object ShadowEffect19: TShadowEffect
+              Distance = 3.000000000000000000
+              Direction = 45.000000000000000000
+              Softness = 0.300000011920929000
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+            object ShadowEffect20: TShadowEffect
+              Distance = 3.000000000000000000
+              Direction = 45.000000000000000000
+              Softness = 0.300000011920929000
+              Opacity = 0.600000023841857900
+              ShadowColor = claBlack
+            end
+          end
+          object ShadowEffect21: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
             Softness = 0.300000011920929000

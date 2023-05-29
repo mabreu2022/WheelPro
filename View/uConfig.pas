@@ -71,10 +71,17 @@ type
     ShadowEffect14: TShadowEffect;
     ShadowEffect15: TShadowEffect;
     ShadowEffect16: TShadowEffect;
-    GroupBox1: TGroupBox;
+    GBHaBilitarLogs: TGroupBox;
     CBHabilitarLogs: TCheckBox;
     ShadowEffect17: TShadowEffect;
     ShadowEffect18: TShadowEffect;
+    GBCarregarClientesSemContato: TGroupBox;
+    CBCarregarClientesSemContato: TCheckBox;
+    ShadowEffect19: TShadowEffect;
+    ShadowEffect20: TShadowEffect;
+    ShadowEffect21: TShadowEffect;
+    CBGravarLogsBanco: TCheckBox;
+    ShadowEffect22: TShadowEffect;
     procedure BtnSalvarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -142,18 +149,21 @@ end;
 procedure TFrmConfig.CarregarConfiguracao;
 var
   IniFile: TIniFile;
-  Valor, Valor2,Valor3: string;
+  Valor, Valor2, Valor3, Valor4, Valor5: string;
 begin
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
-    Valor := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
-    Valor2:= IniFile.ReadString('WhatsApp', 'EnviaParaContatoEspecifico', '');
-    Valor3:= IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
-
+    Valor  := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+    Valor2 := IniFile.ReadString('WhatsApp', 'EnviaParaContatoEspecifico', '');
+    Valor3 := IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
+    Valor4 := IniFile.ReadString('Sistema', 'CarregarClientesSemContato', '');
+    Valor5 := IniFile.ReadString('Sistema', 'SalvarLogsBancoDeDados', '');
     // Carregar valor do Config.ini para o CheckBox
     CheckBox_CarregarTambemClientesAtivoIgualN.IsChecked := (Valor = 'S');
-    CBWhatsApp.IsChecked      := (Valor2 = 'S');
-    CBHabilitarLogs.IsChecked := (Valor3 = 'S');
+    CBWhatsApp.IsChecked         := (Valor2 = 'S');
+    CBHabilitarLogs.IsChecked    := (Valor3 = 'S');
+    CBCarregarClientesSemContato.IsChecked := (Valor4 = 'S');
+    CBGravarLogsBanco.IsChecked  := (Valor5 = 'S');
     // Use a instância FModel de TModelCliente conforme necessário...
   finally
     IniFile.Free;
@@ -216,6 +226,9 @@ begin
      TabItemBancoDeDados.Text                        := 'Banco de Dados';
      LblTitulo.Text                                  := 'Configurações do Sistema';
      FrmConfig.Caption                               := 'Configurações do Sistema';
+     GBHaBilitarLogs.Text                            := 'Habilitar Logs';
+     CBGravarLogsBanco.Text                          := 'Gravar logs no banco de dados';
+     CBHabilitarLogs.Text                            := 'Sim (Salvar no HD)';
    end
    else if FLinguagem = 'Ingles' then
    begin
@@ -230,8 +243,10 @@ begin
      TabItemBancoDeDados.Text                        := 'DataBase';
      LblTitulo.Text                                  := 'System Settings';
      FrmConfig.Caption                               := 'System Settings';
+     GBHaBilitarLogs.Text                            := 'Enable Logss';
+     CBGravarLogsBanco.Text                          := 'Write logs to the database';
+     CBHabilitarLogs.Text                            := 'Yes (Save to HD)';
    end;
-
 
   finally
     IniFile.Free;
@@ -287,6 +302,18 @@ begin
        IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'S')
      else
        IniFile.WriteString('WhatsApp', 'EnviaParaContatoEspecifico', 'N');
+
+     if CBCarregarClientesSemContato.IsChecked then
+       IniFile.WriteString('Sistema','CarregarClientesSemContato' , 'S')
+     else
+       IniFile.WriteString('Sistema','CarregarClientesSemContato' , 'N');
+
+     if CBGravarLogsBanco.IsChecked then
+       IniFile.WriteString('Sistema','SalvarLogsBancoDeDados' , 'S')
+     else
+       IniFile.WriteString('Sistema','SalvarLogsBancoDeDados' , 'N');
+
+
   finally
     IniFile.Free;
   end;

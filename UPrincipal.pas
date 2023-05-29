@@ -384,7 +384,7 @@ begin
     PrintScreen.Free;
   end;
 
-  // Gere o arquivo PrintScreen.png anteriormente
+  // Gera o arquivo PrintScreen.png anteriormente
   NomeArquivo := ExtractFilePath(ParamStr(0))+ '\PrintScreen.png';
   EnviarImagemWhatsApp(NomeArquivo);
 
@@ -918,12 +918,16 @@ end;
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FrmLogin.Close;
-  //Application.Terminate;
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela - Cadastro de Clientes - Entrou no FormClose : Linha 231 - e deu Free no LogManager às ' + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-  LogManager.Free;
+
+  LogManager:= TLogManager.Create;
+  try
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela - Cadastro de Clientes - Entrou no FormClose : Linha 231 - e deu Free no LogManager às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+  finally
+    LogManager.Free;
+  end;
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
@@ -933,7 +937,7 @@ begin
   DM.FDConnection1.Connected:= True;
   CarregarCores;
   CarregarLinguagem;
-  LogManager := TLogManager.Create;
+
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
@@ -1261,20 +1265,14 @@ end;
 
 procedure TFrmPrincipal.MenuItemClientesOrcamentosClick(Sender: TObject);
 begin
-// if not Assigned(FrmRegistrar) then
-//  begin
-    Application.CreateForm(TFrmOrcamentos, FrmOrcamentos);
-    FrmOrcamentos.ShowModal;
-//  end;
+  Application.CreateForm(TFrmOrcamentos, FrmOrcamentos);
+  FrmOrcamentos.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItemFabricantesDadosClick(Sender: TObject);
 begin
-//  if not Assigned(FrmFabricantes) then
-//  begin
-    Application.CreateForm(TFrmFabricantes, FrmFabricantes);
-    FrmFabricantes.ShowModal;
-//  end;
+  Application.CreateForm(TFrmFabricantes, FrmFabricantes);
+  FrmFabricantes.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItemFabricanteProdutosClick(Sender: TObject);
@@ -1288,20 +1286,14 @@ end;
 
 procedure TFrmPrincipal.MenuItemConfiguracoesSistemaClick(Sender: TObject);
 begin //O nome do arquivo será: Config.ini dentro do diretório do sistema
-//  if not Assigned(FrmConfig) then
-//  begin
-    Application.CreateForm(TFrmConfig, FrmConfig);
-    FrmConfig.ShowModal;
-//  end;
+  Application.CreateForm(TFrmConfig, FrmConfig);
+  FrmConfig.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItemRegistrarClick(Sender: TObject);
 begin
-//  if not Assigned(FrmRegistrar) then
-//  begin
-    Application.CreateForm(TFrmRegistrar, FrmRegistrar);
-    FrmRegistrar.ShowModal;
-//  end;
+  Application.CreateForm(TFrmRegistrar, FrmRegistrar);
+  FrmRegistrar.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItem16Click(Sender: TObject);

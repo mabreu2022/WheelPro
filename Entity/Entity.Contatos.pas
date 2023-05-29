@@ -81,16 +81,19 @@ implementation
 constructor TContato.create;
 begin
   LogManager := TLogManager.Create;
-  LogManager.SaveLogToFile('Log_Entity_Contatos.txt');
-  LogManager.AddLog('Entrou na Entity_Contatos - Create: Linha 83: e Criou FConn.');
-  LogManager.SaveLogToFile('Log_Entity_Contatos.txt');
-  FConn := TConnection.CreateConnection;
+  try
+    LogManager.SaveLogToFile('Log_Entity_Contatos.txt');
+    LogManager.AddLog('Entrou na Entity_Contatos - Create: Linha 85: e Criou FConn.');
+    LogManager.SaveLogToFile('Log_Entity_Contatos.txt');
+    FConn := TConnection.CreateConnection;
+  finally
+    LogManager.Free;
+  end;
 end;
 
 destructor TContato.destroy;
 begin
   FConn.Free;
-  LogManager.Free;
   inherited;
 end;
 

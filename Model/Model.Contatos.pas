@@ -48,7 +48,7 @@ type
       class function AlterarContato(aContato: TContato): Boolean;
 
 //      //Delete
-//      function RemoverCliente(aCliente: TClientes): Boolean;
+      function RemoverContato(aContato: TContato): Boolean;
 //
 //      //Regras
       class function TestaSeCamposPreenchidos(
@@ -190,16 +190,24 @@ end;
 constructor TModelContato.Create;
 begin
   LogManager := TLogManager.Create;
-  LogManager.SaveLogToFile('Log_Model_Contatos.txt');
-  LogManager.AddLog('Entrou na Model.Contatos - Create: Linha 170: e Criou FContatos.');
-  FContatos := TContato.Create;
+  try
+    LogManager.SaveLogToFile('Log_Model_Contatos.txt');
+    LogManager.AddLog('Entrou na Model.Contatos - Create: Linha 170: e Criou FContatos.');
+    FContatos := TContato.Create;
+  finally
+    LogManager.Free;
+  end;
 end;
 
 destructor TModelContato.destroy;
 begin
   FContatos.Free;
-  LogManager.Free;
   inherited;
+end;
+
+function TModelContato.RemoverContato(aContato: TContato): Boolean;
+begin
+//
 end;
 
 class function TModelContato.SalvarContato(aContato: TContato): Boolean;

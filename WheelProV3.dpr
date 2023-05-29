@@ -30,7 +30,7 @@ uses
 {$R *.res}
 
 begin
-  ReportMemoryLeaksOnShutdown := True;
+  ReportMemoryLeaksOnShutdown := (System.DebugHook <> 0);// True;
   Application.Initialize;
   Application.CreateForm(TDM, DM);
   Application.CreateForm(TFrmLogin, FrmLogin);
