@@ -214,10 +214,10 @@ type
     FController: TControllerCliente;
     CDS: TClientDataSet;
     FLinguagem: string;
-    LogManager: TLogManager;    //Para uso com o Log
+    //LogManager: TLogManager;    //Para uso com o Log
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
-    FGravarLog: Boolean;
+    FGravarLog: Boolean;        //Para uso com o Log
     FHabilitarLogsSistema: string;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     Procedure PopularGridClientes;
@@ -277,6 +277,7 @@ procedure TFrmCadastroClientes.BtnGravarClick(Sender: TObject);
 var
   Abortar: Boolean;
   Confirmacao: Integer;
+   LogManager: TLogManager;
 begin
   PopularClientes;
   PopularContatos;
@@ -289,8 +290,8 @@ begin
      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
      RegrasDeNegocios:= TModelCliente.Create;
 
-
      FModelContato   := TModelContato.Create;
+
      CurrentDateTime := Now;
      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 297 - BtnnGravar - Criou a FModelContato às ' +  DateTimeStr);
@@ -389,54 +390,60 @@ procedure TFrmCadastroClientes.BtnNovoClick(Sender: TObject);
 var
   qry: TFDQuery;
   NextID: Integer;
+  LogManager: TLogManager;
 begin
-  FTipo := 'N';
-
-  DesabilitaBotoes([BiGravar]); // Desabilita todos os botões, exceto o botão Gravar
-
-  CurrentDateTime := Now;
-  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-  LogManager.AddLog('Tela - Cadastro de Clientes: Linha 399 - BtnNovoClick - Criou a qry às '  + DateTimeStr);
-  LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-  qry := TFDQuery.Create(nil); // Crie o objeto TFDQuery
+  LogManager:= TLogManager.Create;
   try
-    qry.Connection := TConnection.CreateConnection; // Substitua "SuaConexao" pela sua conexão de banco de dados
+    FTipo := 'N';
 
-    qry.SQL.Text := 'SELECT MAX(idclientes) + 1 AS NextID FROM Clientes';
-    qry.Open;
+    DesabilitaBotoes([BiGravar]); // Desabilita todos os botões, exceto o botão Gravar
 
-    NextID := qry.FieldByName('NextID').AsInteger;
-
-    // Verifique se o valor retornado é NULL (sem registros na tabela)
-    if qry.FieldByName('NextID').IsNull then
-      NextID := 1;
-
-  finally
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha 418: BtnNovoClick - Free qry às ' + DateTimeStr);
+    LogManager.AddLog('Tela - Cadastro de Clientes: Linha 399 - BtnNovoClick - Criou a qry às '  + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    qry.Free;
+
+    qry := TFDQuery.Create(nil); // Crie o objeto TFDQuery
+    try
+      qry.Connection := TConnection.CreateConnection; // Substitua "SuaConexao" pela sua conexão de banco de dados
+
+      qry.SQL.Text := 'SELECT MAX(idclientes) + 1 AS NextID FROM Clientes';
+      qry.Open;
+
+      NextID := qry.FieldByName('NextID').AsInteger;
+
+      // Verifique se o valor retornado é NULL (sem registros na tabela)
+      if qry.FieldByName('NextID').IsNull then
+        NextID := 1;
+
+    finally
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha 418: BtnNovoClick - Free qry às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      qry.Free;
+    end;
+
+    // Limpar todos os campos da tela
+    EdtCodCliente.Text := IntToStr(NextID);
+    EdtRazao.Text := '';
+    EdtCnpj.Text := '';
+    EdtEndereco.Text := '';
+    EdtNumero.Text := '';
+    EdtComplemento.Text := '';
+    EdtCep.Text := '';
+    EdtCidade.Text := '';
+    EdtBairro.Text := '';
+    CBUF.ItemIndex := 24;
+    CBAtivo.ItemIndex := 1;
+
+    // Foco no campo EdtRazao
+    if EdtRazao.CanFocus then
+      EdtRazao.SetFocus;
+
+  finally
+    LogManager.Free;
   end;
-
-  // Limpar todos os campos da tela
-  EdtCodCliente.Text := IntToStr(NextID);
-  EdtRazao.Text := '';
-  EdtCnpj.Text := '';
-  EdtEndereco.Text := '';
-  EdtNumero.Text := '';
-  EdtComplemento.Text := '';
-  EdtCep.Text := '';
-  EdtCidade.Text := '';
-  EdtBairro.Text := '';
-  CBUF.ItemIndex := 24;
-  CBAtivo.ItemIndex := 1;
-
-  // Foco no campo EdtRazao
-  if EdtRazao.CanFocus then
-    EdtRazao.SetFocus;
-
 end;
 
 procedure TFrmCadastroClientes.BtnPesquisarClick(Sender: TObject);
@@ -494,7 +501,9 @@ end;
 procedure TFrmCadastroClientes.CarregarConfiguracao;
 var
    IniFile: TIniFile;
+   LogManager: TLogManager;
 begin
+  LogManager:= TLogManager.Create;
   try
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
@@ -557,6 +566,7 @@ procedure TFrmCadastroClientes.CarregarLinguagem;
 var
   IniFile: TIniFile;
   I: Integer;
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -671,6 +681,8 @@ begin
 end;
 
 constructor TFrmCadastroClientes.create;
+var
+   LogManager: TLogManager;
 begin
   ShowMessage('ENTREI NO CREATE DO CADASTRO DE CLIENTES');
   LogManager := TLogManager.Create;
@@ -709,6 +721,8 @@ begin
 end;
 
 Function TFrmCadastroClientes.CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
+var
+  LogManager: TLogManager;
 begin
   LogManager:=TLogManager.Create;
   try
@@ -759,6 +773,8 @@ begin
 end;
 
 destructor TFrmCadastroClientes.destroy;
+var
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -971,6 +987,8 @@ end;
 
 procedure TFrmCadastroClientes.FormClose(Sender: TObject;
   var Action: TCloseAction);
+var
+   LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -1010,6 +1028,8 @@ begin
 end;
 
 procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
+var
+  LogManager: TLogManager;
 begin
   LogManager := TLogManager.Create;
   try
@@ -1078,6 +1098,7 @@ var
   ufCliente: string;
   ativoCliente: string;
   Index: Integer;
+  LogManager: TLogManager;
 begin
   LogManager:=TLogManager.Create;
   try
@@ -1132,6 +1153,8 @@ begin
 end;
 
 procedure TFrmCadastroClientes.PopularContatos;
+var
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -1164,6 +1187,8 @@ begin
 end;
 
 procedure TFrmCadastroClientes.PopularClientes;
+var
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -1202,6 +1227,7 @@ end;
 procedure TFrmCadastroClientes.PopularGridClientes;
 var
   I, J: Integer;
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -1300,6 +1326,7 @@ end;
 procedure TFrmCadastroClientes.PreencheDadosEncontradosDoCliente;
 var
   SelectedRow: Integer;
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try

@@ -70,7 +70,7 @@ type
     { Private declarations }
     FConexao: TFDConnection;
     FLinguagem: string;
-    LogManager: TLogManager;    //Para uso com o Log
+    //LogManager: TLogManager;    //Para uso com o Log
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
     FHabilitarLog: String;
@@ -95,6 +95,7 @@ implementation
 procedure TFrmLogin.BtnOKClick(Sender: TObject);
 Var
   Login: TLogin;
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   Login := TLogin.Create;
@@ -154,6 +155,7 @@ procedure TFrmLogin.CarregarCores;
 var
   IniFile: TIniFile;
   Cor: TAlphaColor;
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
 
@@ -193,6 +195,7 @@ procedure TFrmLogin.CarregarLinguagem;
 var
   IniFile: TIniFile;
   I: Integer;
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   if FHabilitarLog='S' then
@@ -245,6 +248,8 @@ begin
 end;
 
 constructor TFrmLogin.create;
+var
+  LogManager: TLogManager;
 begin
   if FHabilitarLog='S' then
   begin
@@ -258,6 +263,8 @@ begin
 end;
 
 procedure TFrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+  LogManager: TLogManager;
 begin
   if FHabilitarLog='S' then
   begin
@@ -280,7 +287,7 @@ begin
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager:= TlogManager.Create;
     try
-      LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na LogManager às ' + DateTimeStr);
+      LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na LogManager e FConexao às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
     finally
       LogManager.Free;
@@ -290,6 +297,8 @@ begin
 end;
 
 procedure TFrmLogin.FormCreate(Sender: TObject);
+var
+  LogManager: TLogManager;
 begin
   if FHabilitarLog='S' then
   begin

@@ -34,7 +34,7 @@ type
       FSomenteAtivos: string;
       CurrentDateTime: TDateTime;
       DateTimeStr: string;
-      LogManager: TLogManager;
+      //LogManager: TLogManager;
       FGravarLogs: Boolean;
     procedure SetSomenteAtivos(const Value: string);
     public
@@ -183,6 +183,7 @@ end;
 function TModelCliente.CarregarClientes(const ACNPJ: String): TClientes;
 var
  qry: TFDQuery;
+ LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -241,6 +242,8 @@ end;
 
 function TModelCliente.CarregarTodosClientes(
   aDataSet: TClientDataSet; aSomenteAtivos: string; aSemContatos: string): TFDquery;
+var
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -337,6 +340,8 @@ begin
 end;
 
 constructor TModelCliente.Create;
+var
+  LogManager: TLogManager;
 begin
   LogManager := TLogManager.Create;
   try
@@ -348,12 +353,11 @@ begin
   finally
     LogManager.Free;
   end;
-
-  FCliente := TClientes.Create;
-
 end;
 
 destructor TModelCliente.destroy;
+var
+  LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
@@ -365,6 +369,7 @@ begin
   finally
      LogManager.Free;
   end;
+
   inherited;
 end;
 

@@ -30,7 +30,7 @@ type
       Fconn: TFDConnection;
       qry: TFDQuery;
       FSomenteAtivos: string;
-      LogManager: TLogManager;
+      //LogManager: TLogManager;
     procedure SetSomenteAtivos(const Value: string);
     public
       FContatos: TContato;
@@ -42,7 +42,7 @@ type
       function CarregarContatos(const aId: Integer): TContato;
       function CarregarTodosContatos(
                aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
-//      function ObterClientePorId(aId: Integer): TFDQuery;
+//      function ObterContatoPorId(aId: Integer): TFDQuery;
 //
 //      //Update
       class function AlterarContato(aContato: TContato): Boolean;
@@ -53,7 +53,7 @@ type
 //      //Regras
       class function TestaSeCamposPreenchidos(
   aContato: TContato): Boolean;
-//      class function ClienteExiste(aCNPJ: string):Boolean;
+//      class function ContatoExiste(aCNPJ: string):Boolean;
 //
       constructor Create;
       destructor destroy;override;
@@ -75,10 +75,10 @@ var
 begin
   Result:=False;
 
+  LogManager := TLogManager.Create;
   try
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager := TLogManager.Create;
     LogManager.AddLog('Classe Model.Contatos - Linha : 82 - Entrou no Alterar Contato e criou a qry às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
   finally
@@ -132,13 +132,15 @@ begin
     Result:=True;
 
   finally
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager := TLogManager.Create;
-     LogManager.AddLog('Classe Model.Contatos - Linha : 139 - Finalizou o Alterar Contato e deu FREE na qry às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-     LogManager.Free;
-
+    LogManager := TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Classe Model.Contatos - Linha : 139 - Finalizou o Alterar Contato e deu FREE na qry às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
      qry.Free;
   end;
 
@@ -188,6 +190,8 @@ begin
 end;
 
 constructor TModelContato.Create;
+var
+  LogManager: TLogManager;
 begin
   LogManager := TLogManager.Create;
   try

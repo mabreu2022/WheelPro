@@ -274,7 +274,7 @@ type
     ProdutoDS: TDataSet;
     qry: TFDQuery;
     FConexao: TFDConnection;
-    LogManager: TLogManager;    //Para uso com o Log
+    //LogManager: TLogManager;    //Para uso com o Log
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
 
@@ -916,6 +916,8 @@ begin
 end;
 
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+  LogManager: TLogManager;
 begin
   FrmLogin.Close;
 
@@ -928,6 +930,7 @@ begin
   finally
     LogManager.Free;
   end;
+
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
@@ -937,7 +940,6 @@ begin
   DM.FDConnection1.Connected:= True;
   CarregarCores;
   CarregarLinguagem;
-
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
