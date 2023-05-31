@@ -323,6 +323,7 @@
         <DCCReference Include="Controller\Controller.Contatos.pas"/>
         <DCCReference Include="Model\Model.Contatos.pas"/>
         <DCCReference Include="Funcoes\LogManager.pas"/>
+        <DCCReference Include="Interfaces\Interfaces.Clientes.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

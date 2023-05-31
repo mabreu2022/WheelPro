@@ -25,7 +25,8 @@ uses
   Entity.Contatos in 'Entity\Entity.Contatos.pas',
   Controller.Contatos in 'Controller\Controller.Contatos.pas',
   Model.Contatos in 'Model\Model.Contatos.pas',
-  LogManager in 'Funcoes\LogManager.pas';
+  LogManager in 'Funcoes\LogManager.pas',
+  Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas';
 
 {$R *.res}
 

@@ -26,6 +26,7 @@ uses
   LogManager,
   FMX.Dialogs;
 
+
 type
   TModelCliente = class
     private
@@ -38,6 +39,7 @@ type
     procedure SetSomenteAtivos(const Value: string);
     public
       FCliente: TClientes;
+
       property SomenteAtivos: string read FSomenteAtivos write SetSomenteAtivos;
 
       //create
