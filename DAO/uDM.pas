@@ -55,7 +55,6 @@ type
     CDS_Permissoescaptionmenu: TStringField;
     CDS_Permissoestipo: TStringField;
     DS_Permissoes: TDataSource;
-    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -71,12 +70,5 @@ implementation
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
 {$R *.dfm}
-
-procedure TDM.DataModuleCreate(Sender: TObject);
-begin
-//  showmessage('Estou no DM on create');
-//  FDConnection1.DriverName:='MySQL';
-//  ShowMessage('Driver do FDConnection:' + FDConnection1.DriverName);
-end;
 
 end.

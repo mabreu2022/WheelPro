@@ -51,7 +51,8 @@ uses
   FMX.ScrollBox,
   System.UIConsts,
   Winapi.Windows,
-  LogManager;
+  LogManager,
+  FireDAC.FMXUI.Wait;
 
 
 type
@@ -179,6 +180,7 @@ type
     EdtCelularContato: TEdit;
     ShadowEffect54: TShadowEffect;
     ShadowEffect55: TShadowEffect;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     procedure FormShow(Sender: TObject);
     procedure BtnNovoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -214,7 +216,6 @@ type
     FController: TControllerCliente;
     CDS: TClientDataSet;
     FLinguagem: string;
-    //LogManager: TLogManager;    //Para uso com o Log
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
     FGravarLog: Boolean;        //Para uso com o Log
@@ -237,8 +238,8 @@ type
     procedure PopularClientes;
     procedure CarregarCores;
     procedure CarregarLinguagem;
-    constructor create;
-    destructor destroy; override;
+
+
   end;
 
 var
@@ -405,7 +406,7 @@ begin
 
     qry := TFDQuery.Create(nil); // Crie o objeto TFDQuery
     try
-      qry.Connection := TConnection.CreateConnection; // Substitua "SuaConexao" pela sua conexão de banco de dados
+      qry.Connection := TConnection.CreateConnection;
 
       qry.SQL.Text := 'SELECT MAX(idclientes) + 1 AS NextID FROM Clientes';
       qry.Open;
@@ -680,46 +681,6 @@ begin
   end;
 end;
 
-constructor TFrmCadastroClientes.create;
-var
-   LogManager: TLogManager;
-begin
-  ShowMessage('ENTREI NO CREATE DO CADASTRO DE CLIENTES');
-  LogManager := TLogManager.Create;
-  try
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 680 - Create - Criou o LogManager às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 685 - Create - Criou o FConexao às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FConexao := TConnection.CreateConnection;
-
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela -  Cadastro de Clientes: Linha : 691 - Create - Criou o FCliente às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FCliente := TClientes.create;
-
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 697 - Create - Criou o FContato às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FContato := TContato.Create;
-
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 679 - Create - Criou o FController às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FController:= TControllerCliente.Create;
-  finally
-    LogManager.Free;
-  end;
-end;
-
 Function TFrmCadastroClientes.CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
 var
   LogManager: TLogManager;
@@ -770,36 +731,6 @@ begin
     LogManager.Free;
   end;
 
-end;
-
-destructor TFrmCadastroClientes.destroy;
-var
-  LogManager: TLogManager;
-begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - na Cadastro de Clientes: Linha : 767 - FrmCadastroClientes Destroy - e deu Free no FConexao às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FConexao.Free;
-
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - na Cadastro de Clientes: Linha : 773 - FrmCadastroClientes Destroy - deu Free no FController às '  + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FController.Free;
-
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - na Cadastro de Clientes: Linha : 780 - Criar DataSet Destroy - deu Free no CDS às '  + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    //DataSet.Free;
-
-  finally
-    LogManager.Free;
-  end;
-  inherited;
 end;
 
 procedure TFrmCadastroClientes.PopularDataSet;
@@ -994,33 +925,41 @@ begin
   try
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Linha: 979 - FormClose -  Deu Free no CDS às ' + DateTimeStr);
+    LogManager.AddLog('Tela Cadastro de Clientes - Linha: 928 - FormClose -  Deu Free no CDS às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     CDS.Free;
 
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 985 - FormClose -  Deu Free no FCliente às ' + DateTimeStr);
+    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 934 - FormClose -  Deu Free no FCliente às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     FCliente.Free;
 
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 991 - FormClose -  Deu Free no FContato às ' + DateTimeStr);
+    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 940 - FormClose -  Deu Free no FContato às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     FContato.Free;
 
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 997 - FormClose -  Deu Free no FController às ' + DateTimeStr);
+    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 946 - FormClose -  Deu Free no FController às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     FController.Free;
 
-    //  CurrentDateTime := Now;
-    //  DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    //  LogManager.AddLog('Tela Cadastro de Clientes - Liha: 919 - FormClose -  Deu Free no DataSet às ' + DateTimeStr);
-    //  LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    //  DataSet.Free;
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela - na Cadastro de Clientes - Linha : 952 - FrmCadastroClientes Destroy - e deu Free no FConexao às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    FConexao.Close;
+    FConexao.Free;
+
+    if Assigned(qry) then
+    begin
+      qry.Close;
+      qry.Free;
+    end;
+
   finally
     LogManager.Free;
   end;
@@ -1038,18 +977,42 @@ begin
      LogManager.AddLog('Tela - Cadastro de Clientes - Linha: 1018 - FormCreate - Criou o LogManager às ' + DateTimeStr);
      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 680 - Create - Criou o LogManager às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 685 - Create - Criou o FConexao às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+     FConexao := TConnection.CreateConnection;
+
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager.AddLog('Tela -  Cadastro de Clientes: Linha : 691 - Create - Criou o FCliente às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+     FCliente := TClientes.create;
+
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 697 - Create - Criou o FContato às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+     FContato := TContato.Create;
+
+     CurrentDateTime := Now;
+     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 679 - Create - Criou o FController às ' + DateTimeStr);
+     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+     FController:= TControllerCliente.Create;
+
      CarregarConfiguracao;
      PopularDataSet;
      CarregarCores;
      CarregarLinguagem;
 
-//     CurrentDateTime := Now;
-//     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-//     LogManager.AddLog('Tela - Cadastro de Clientes: Linha 1028: FormCreate Criou o FController às ' + DateTimeStr);
-//     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-//     FController:= TControllerCliente.create;
   finally
-     //LogManager.Free; //Deu Freen Antes
+    LogManager.Free;
   end;
 
 end;
@@ -1147,7 +1110,7 @@ begin
     PopularContatos; //Popula Variável FContato
 
   finally
-    //LogManager.Free;
+    LogManager.Free;
   end;
 
 end;
@@ -1160,9 +1123,9 @@ begin
   try
      CurrentDateTime := Now;
      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1140 - Entrou on PopularConntatos e Criou Fcontato às ' + DateTimeStr);
+     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1119 - Entrou on PopularConntatos e Criou Fcontato às ' + DateTimeStr);
      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FContato := TContato.Create;
+
      try
        if FTipo<>'N' then
          FContato.idcontato := StrToInt(EdtCodContato.Text);
@@ -1174,14 +1137,13 @@ begin
        FContato.email       := EdtEmailContato.Text;
      //    FContato.cnpjrevenda := ; //Provável que não seja necessário
      finally
-       //FContato.Free;//Liberar ao fechar o form.
        CurrentDateTime := Now;
        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-       LogManager.AddLog('Tela - Cadastro de Clientes: Linha :  1157 - Finalizou a PopularConntatos e NÂO deu free no FContato às ' + DateTimeStr);
+       LogManager.AddLog('Tela - Cadastro de Clientes: Linha :  1135 - Finalizou a PopularConntatos e NÂO deu free no FContato às ' + DateTimeStr);
        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
      end;
   finally
-     //LogManager.Free;  ficou Free
+     LogManager.Free;
   end;
 
 end;
@@ -1197,7 +1159,7 @@ begin
     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1172 - Entrou na PopularClientes e Criou FCliente às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    FCliente := TClientes.Create;
+//    FCliente := TClientes.Create;
     try
        if FTIpo<>'N' then
          FCliente.idcliente   := StrTOInt(EdtCodCliente.Text);
@@ -1319,6 +1281,8 @@ begin
     end;
   finally
     LogManager.Free;
+    DataSet.Close;
+    DataSet.Free;
   end;
 
 end;

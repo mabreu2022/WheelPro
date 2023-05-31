@@ -34,7 +34,6 @@ type
       FSomenteAtivos: string;
       CurrentDateTime: TDateTime;
       DateTimeStr: string;
-      //LogManager: TLogManager;
       FGravarLogs: Boolean;
     procedure SetSomenteAtivos(const Value: string);
     public
@@ -175,6 +174,7 @@ begin
     finally
       LogManager.Free;
     end;
+    qry.Close;
     qry.Free;
   end;
 
@@ -235,6 +235,7 @@ begin
     finally
       LogManager.Free;
     end;
+    qry.Close;
     qry.Free;
   end;
 
@@ -277,7 +278,7 @@ begin
     qry.SQL.Add('ORDER BY CL.IDCLIENTES ASC');
     qry.Open;
 
-    ShowMessage('A qtde. de todos os clientes é de: ' + IntToStr(qry.recordcount));
+    //ShowMessage('A qtde. de todos os clientes é de: ' + IntToStr(qry.recordcount));
 
     qry.First;
 
@@ -294,6 +295,7 @@ begin
 
   except
     Result := nil;
+    qry.Free;
   end;
 
 end;

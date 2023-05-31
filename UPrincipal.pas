@@ -214,7 +214,6 @@ type
     procedure Circle1DblClick(Sender: TObject);
     procedure Image4DblClick(Sender: TObject);
     procedure MenuItemFabricantesCategoriasClick(Sender: TObject);
-    procedure NewImagemClick(Sender: TObject);
     procedure NewImagemDbClick(Sender: TObject);
     procedure NewImagemMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
@@ -274,7 +273,6 @@ type
     ProdutoDS: TDataSet;
     qry: TFDQuery;
     FConexao: TFDConnection;
-    //LogManager: TLogManager;    //Para uso com o Log
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
 
@@ -414,7 +412,7 @@ begin
       NewImagem.Align:=  TalignLayout.Client;
 
       // Eventos
-      NewImagem.OnClick      :=  NewImagemClick;
+      //NewImagem.OnClick      :=  NewImagemClick;
       NewImagem.OnDblClick   :=  NewImagemDbClick;
       NewImagem.OnGesture    :=  NewImagemGesture;
       NewImagem.OnMouseDown  :=  NewImagemMouseDown;
@@ -930,7 +928,12 @@ begin
   finally
     LogManager.Free;
   end;
-
+  if Assigned(qry) then
+  begin
+    qry.Close;
+    qry.Free;
+  end;
+  DM.FDConnection1.Close;
 end;
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
@@ -1207,7 +1210,7 @@ end;
 
 procedure TFrmPrincipal.TrackBar1Change(Sender: TObject);
 begin
-  Image4.Opacity    := TrackBar1.Value / TrackBar1.Max;
+  Image4.Opacity      := TrackBar1.Value / TrackBar1.Max;
   if Assigned(NewImagem) then
     NewImagem.Opacity := TrackBar1.Value / TrackBar1.Max;
 end;
@@ -1384,12 +1387,6 @@ begin
     end;
   end;
 
-end;
-
-procedure TFrmPrincipal.NewImagemClick(Sender: TObject);
-begin
-//  if MoveObjeto then
-//    Modo_Edicao(False);
 end;
 
 procedure TFrmPrincipal.NewImagemDbClick(Sender: TObject);

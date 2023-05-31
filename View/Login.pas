@@ -70,7 +70,6 @@ type
     { Private declarations }
     FConexao: TFDConnection;
     FLinguagem: string;
-    //LogManager: TLogManager;    //Para uso com o Log
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
     FHabilitarLog: String;
@@ -130,6 +129,7 @@ begin
     end;
   finally
     Login.Free;
+    LogManager.Free;
   end;
 
 end;
@@ -268,28 +268,17 @@ var
 begin
   if FHabilitarLog='S' then
   begin
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager:= TlogManager.Create;
     try
-      LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na FConexao às ' + DateTimeStr);
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 275 - e deu Free na FConexao às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      FConexao.Free;
+
     finally
-      LogManager.Free;
-    end;
-  end;
-
-  FConexao.Free;
-
-  if FHabilitarLog='S' then
-  begin
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager:= TlogManager.Create;
-    try
-      LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 213 - e deu Free na LogManager e FConexao às ' + DateTimeStr);
+      LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 280 - e deu Free na LogManager e FConexao às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
-    finally
       LogManager.Free;
     end;
   end;

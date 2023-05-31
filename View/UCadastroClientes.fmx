@@ -27042,4 +27042,9 @@ object FrmCadastroClientes: TFrmCadastroClientes
       end
     end
   end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 552
+    Top = 114
+  end
 end
