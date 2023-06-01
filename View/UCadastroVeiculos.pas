@@ -21,7 +21,8 @@ uses
   FMX.Edit,
   FMX.ListBox,
   IniFiles,
-  System.UIConsts;
+  System.UIConsts, FireDAC.UI.Intf, FireDAC.FMXUI.Wait, FireDAC.Stan.Intf,
+  FireDAC.Comp.UI;
 
 type
   TFrmCadastroVeiculos = class(TForm)
@@ -84,6 +85,7 @@ type
     ShadowEffect27: TShadowEffect;
     ComboBox3: TComboBox;
     ShadowEffect11: TShadowEffect;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }

@@ -20,6 +20,7 @@ uses
   FireDAC.Comp.Client,
   Data.DB,
   Entity.Clientes,
+  Entity.Contatos,
   System.Generics.Collections,
   Dao.Conexao,
   Datasnap.DBClient,
@@ -477,31 +478,40 @@ begin
     qry.Close;
     qry.SQL.Clear;
     qry.SQL.Add('INSERT INTO '  +
-                ' fulanorodas.Clientes '    +
-                '(idclientes, ' +
-                'razao, '       +
-                'cnpj_cpf, '    +
-                'endereco, '    +
-                'numero, '      +
-                'complemento, ' +
-                'cep, '         +
-                'cidade, '      +
-                'bairro, '      +
-                'ativo, '       +
-                'uf) '          +
-                'VALUES ('      +
-                ':idclientes, ' +
-                ':razao, '      +
-                ':cnpj_cpf, '   +
-                ':endereco, '   +
-                ':numero,  '    +
-                ':complemento, '+
-                ':cep, '        +
-                ':cidade, '     +
-                ':bairro, '     +
-                ':ativo, '      +
-                ':idmodelocarro'+
-                ':uf)');
+                ' fulanorodas.Clientes ' +
+                '(idclientes,          ' +
+                'razao,                ' +
+                'cnpj_cpf,             ' +
+                'endereco,             ' +
+                'numero,               ' +
+                'complemento,          ' +
+                'cep,                  ' +
+                'cidade,               ' +
+                'bairro,               ' +
+                'ativo,                ' +
+                'uf,                   ' +
+                'datacadastro,         ' +
+                'datalateracao,        ' +
+               // 'dataexclusao,       ' +
+                'idmodelocarro         ' +
+                ')                     ' +
+                'VALUES (              ' +
+                ':idclientes,          ' +
+                ':razao,               ' +
+                ':cnpj_cpf,            ' +
+                ':endereco,            ' +
+                ':numero,              ' +
+                ':complemento,         ' +
+                ':cep,                 ' +
+                ':cidade,              ' +
+                ':bairro,              ' +
+                ':ativo,               ' +
+                ':uf,                  ' +
+                ':datacadastro,        ' +
+                ':dataalteracao,       ' +
+              //  ':dataexclusao,        ' +
+                ':idmodelocarro,       ' +
+                ':)                  ');
 
      qry.ParamByName('idclientes').DataType    := ftInteger;
      qry.ParamByName('razao').DataType         := ftString;
@@ -520,15 +530,6 @@ begin
      qry.ParamByName('cidade').AsString        := aCliente.Cidade;
      qry.ParamByName('bairro').DataType        := ftString;
      qry.ParamByName('bairro').AsString        := aCliente.Bairro;
-     qry.ParamByName('idmodelocarro').AsInteger:= aCliente.Idmodelocarro;
-
-     qry.ParamByName('uf').DataType            := ftString;
-     if Length(aCliente.UF) > 0 then
-       UF := Copy(aCliente.UF, 1, 2)
-     else
-       UF := '';
-
-     qry.ParamByName('uf').AsString            := UF;
 
      qry.ParamByName('ativo').DataType         := ftString;
      if Length(aCliente.ativo) > 0 then
@@ -538,12 +539,28 @@ begin
 
      qry.ParamByName('ativo').AsString         := Ativo;
 
+     qry.ParamByName('uf').DataType            := ftString;
+     if Length(aCliente.UF) > 0 then
+       UF := Copy(aCliente.UF, 1, 2)
+     else
+       UF := '';
+
+     qry.ParamByName('uf').AsString            := UF;
+
+     qry.ParamByName('datacadastro').DataType  := ftDateTime;
+     qry.ParamByName('datacadastro').AsDateTime:= Now;
+
+     qry.ParamByName('dataalteracao').DataType  := ftDateTime;
+     qry.ParamByName('dataalteracao').AsDateTime:= Now;
+
+//     qry.ParamByName('dataexclusao').DataType := ftDateTime;
+//     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao;
+
+     qry.ParamByName('idmodelocarro').DataType := ftInteger;
+     qry.ParamByName('idmodelocarro').AsInteger:= aCliente.Idmodelocarro;
+
      qry.ExecSQL;
      qry.Connection.Commit;
-
-     Result:=True;
-
-     //Chamar o Salvar Contato?
 
   finally
     qry.Close;

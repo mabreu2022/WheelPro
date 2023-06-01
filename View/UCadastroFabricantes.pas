@@ -47,7 +47,7 @@ uses
   Dao.Conexao,
   IniFiles,
   System.UIConsts,
-  LogManager;
+  LogManager, FireDAC.FMXUI.Wait;
 
 type
   TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);
@@ -133,6 +133,7 @@ type
     ShadowEffect34: TShadowEffect;
     BtnPesquisar: TButton;
     ShadowEffect30: TShadowEffect;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     procedure BtnPrimeiroClick(Sender: TObject);
     procedure BtnAnteriorClick(Sender: TObject);
     procedure BtnProximoClick(Sender: TObject);

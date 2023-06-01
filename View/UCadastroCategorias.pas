@@ -22,7 +22,8 @@ uses
   FMX.Edit,
   System.UIConsts,
   IniFiles,
-  LogManager;
+  LogManager, FireDAC.UI.Intf, FireDAC.FMXUI.Wait, FireDAC.Stan.Intf,
+  FireDAC.Comp.UI;
 
 type
   TFrmCategorias = class(TForm)
@@ -69,6 +70,7 @@ type
     BtnSalvar: TButton;
     ShadowEffect18: TShadowEffect;
     ShadowEffect19: TShadowEffect;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }

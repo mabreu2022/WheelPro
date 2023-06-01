@@ -321,7 +321,7 @@ begin
          if FTipo='N' then //Novo Registro
          begin
            RegrasDeNegocios.SalvarCliente(FCliente);
-           FModelContato.SalvarContato(FContato); //ver onde preenche o FContato
+           FModelContato.SalvarContato(FContato, FCliente);
            PopularDataSet;
            OnDataSetChange;
            Exit;
@@ -390,7 +390,7 @@ end;
 procedure TFrmCadastroClientes.BtnNovoClick(Sender: TObject);
 var
   qry: TFDQuery;
-  NextID: Integer;
+  NextID, NextIDContato: Integer;
   LogManager: TLogManager;
 begin
   LogManager:= TLogManager.Create;
@@ -404,7 +404,7 @@ begin
     LogManager.AddLog('Tela - Cadastro de Clientes: Linha 399 - BtnNovoClick - Criou a qry às '  + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    qry := TFDQuery.Create(nil); // Crie o objeto TFDQuery
+    qry := TFDQuery.Create(nil);
     try
       qry.Connection := TConnection.CreateConnection;
 
@@ -425,7 +425,7 @@ begin
       qry.Free;
     end;
 
-    // Limpar todos os campos da tela
+    // Limpar todos os campos de clientes
     EdtCodCliente.Text := IntToStr(NextID);
     EdtRazao.Text := '';
     EdtCnpj.Text := '';
@@ -441,6 +441,34 @@ begin
     // Foco no campo EdtRazao
     if EdtRazao.CanFocus then
       EdtRazao.SetFocus;
+
+    qry := TFDQuery.Create(nil);
+    qry.Connection := TConnection.CreateConnection;
+    try
+      qry.SQL.Text := 'SELECT MAX(idcontatos) + 1 AS NextIDContatos FROM contatos';
+      qry.Open;
+
+      NextIDContato := qry.FieldByName('NextIDContatos').AsInteger;
+
+      // Verifique se o valor retornado é NULL (sem registros na tabela)
+      if qry.FieldByName('NextIDContatos').IsNull then
+        NextIDContato := 1;
+
+    finally
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha 418: BtnNovoClick - Free qry às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      qry.Free;
+    end;
+
+    //Limpar todos os campos dos contatos
+    EdtCodContato.Text       := IntToStr(NextIDContato);
+    EdtNomeContato.Text      := '';
+    EdtTelefoneContato.Text  := '';
+    EdtCElularContato.Text   := '';
+    EdtEmailContato.Text     := '';
+    CBAtivoContato.ItemIndex := 1;
 
   finally
     LogManager.Free;
@@ -1099,7 +1127,7 @@ begin
     else
       CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
 
-    //Preenche os campos do conntato
+    //Preenche os campos do contato
     EdtCodContato.Text      := IntToStr(DataSet.FieldByName('IDCONTATOS').AsInteger);
     EdtNomeContato.Text     := DataSet.FieldByName('NOMECONTATO').AsString;
     EdtTelefoneContato.Text := DataSet.FieldByName('TELEFONE').AsString;
@@ -1131,7 +1159,7 @@ begin
          FContato.idcontato := StrToInt(EdtCodContato.Text);
 
        FContato.idcliente   := StrToInt(EdtCodCliente.Text);
-       FContato.Nome        := EdtNomeContato.Text;
+       FContato.NomeContato := EdtNomeContato.Text;
        FContato.telefone    := EdtTelefoneContato.Text;
        FContato.celular     := EdtCelularContato.Text;
        FContato.email       := EdtEmailContato.Text;
@@ -1330,8 +1358,11 @@ end;
 
 procedure TFrmCadastroClientes.TabItemPesquisaClick(Sender: TObject);
 begin
-  PopularDataSet;
-  PopularGridClientes;
+  if FTipo<>'N' then
+  begin
+    PopularDataSet;
+    PopularGridClientes;
+  end;
 end;
 
 end.

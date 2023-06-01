@@ -510,4 +510,9 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       end
     end
   end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 648
+    Top = 216
+  end
 end

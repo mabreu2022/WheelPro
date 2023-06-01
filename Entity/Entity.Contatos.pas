@@ -37,7 +37,7 @@ type
     Fativo: string;
     FdataAlteracao: TDateTime;
     FdataCadastro: TDatetime;
-    FNome: String;
+    FNomeContato: String;
     Ftelefone: string;
     FdataExclusao: TDateTime;
     Fidcliente: integer;
@@ -50,7 +50,7 @@ type
     procedure SetdataCadastro(const Value: TDatetime);
     procedure Setemail(const Value: string);
     procedure Setidcontato(const Value: Integer);
-    procedure SetNome(const Value: String);
+    procedure SetNomeContato(const Value: String);
     procedure Settelefone(const Value: string);
     procedure SetdataExclusao(const Value: TDateTime);
     procedure Setidcliente(const Value: integer);
@@ -60,7 +60,7 @@ type
     public
       property idcontato: Integer read Fidcontato write Setidcontato;
       property idcliente: integer read Fidcliente write Setidcliente;
-      property Nome: String read FNome write SetNome;
+      property NomeContato: String read FNomeContato write SetNomeContato;
       property telefone: string read Ftelefone write Settelefone;
       property celular: string read Fcelular write Setcelular;
       property email:string read Femail write Setemail;
@@ -142,9 +142,9 @@ begin
   Fidcontato := Value;
 end;
 
-procedure TContato.SetNome(const Value: String);
+procedure TContato.SetNomeContato(const Value: String);
 begin
-  FNome := Value;
+  FNomeContato := Value;
 end;
 
 procedure TContato.Settelefone(const Value: string);

@@ -36,7 +36,7 @@ type
       FContatos: TContato;
       property SomenteAtivos: string read FSomenteAtivos write SetSomenteAtivos;
       //create
-      Class function SalvarContato(aContato: TContato): Boolean;
+      Class function SalvarContato(aContato: TContato; aCliente: TClientes): Boolean;
 
       //Read
       function CarregarContatos(const aId: Integer): TContato;
@@ -168,7 +168,7 @@ begin
     begin
       FContatos.idcontato   := qry.FieldByName('IDCONTATOS').AsInteger;
       FContatos.idcliente   := qry.FieldByName('idclientes').AsInteger;
-      FContatos.Nome        := qry.FieldByName('nomecontato').AsString;
+      FContatos.NomeContato := qry.FieldByName('nomecontato').AsString;
       FContatos.telefone    := qry.FieldByName('telefone').AsString;
       Fcontatos.celular     := qry.FieldByName('celular').AsString;
       FContatos.email       := qry.FieldByName('email').AsString;
@@ -214,7 +214,7 @@ begin
 //
 end;
 
-class function TModelContato.SalvarContato(aContato: TContato): Boolean;
+class function TModelContato.SalvarContato(aContato: TContato; aCliente: TClientes): Boolean;
 var
   qry   : TFDQuery;
   Ativo : string;
@@ -222,59 +222,72 @@ var
 begin
   Result:= False;
 
-  qry:=TFDQuery.Create(nil);
-  qry.Connection := TConnection.CreateConnection;
-  try
+ //Extrair o método o Salvar como SalvarContato   mover para o Model.Contatos
+     qry:=TFDQuery.Create(nil);
+     qry.Connection := TConnection.CreateConnection;
+     try
+       qry.Close;
+       qry.SQL.Clear;
+       qry.SQL.Add('INSERT INTO     ' +
+                    'idcontatos,     ' +
+                    'idcliente,      ' +
+                    'telefone,       ' +
+                    'celular,        ' +
+                    'email,          ' +
+                    'datacadastro    ' +
+                    'dataalteracao,  ' +
+                    'cnpjrevenda,    ' +
+                    'ativo,          ' +
+                    'nomecontato)    ' +
+                    'VALUES(         ' +
+                    ':idcontatos,    ' +
+                    ':idcliente,     ' +
+                    ':telefone,      ' +
+                    ':celular,       ' +
+                    ':email,         ' +
+                    ':datacadastro   ' +
+                    ':dataalteracao, ' +
+                    ':cnpjrevenda,   ' +
+                    'ativo)          ');
 
-    qry.Close;
-    qry.SQL.Clear;
-    qry.SQL.Add('INSERT INTO '  +
-                ' fulanorodas.contatos '    +
-                '(idcontatos, ' +
-                'idclientes, '  +
-                'telefone, '    +
-                'celular, '     +
-                'email, '       +
-                'cnpjrevenda, ' +
-                'ativo) '       +
-                'VALUES ('      +
-                ':idcontatos, ' +
-                ':idclientes, ' +
-                ':telefone, '   +
-                ':celular, '    +
-                ':email, '      +
-                ':cnpjrevenda, '+
-                ':ativo) ');
-     qry.ParamByName('idcontatos').DataType    := ftInteger;
-     qry.ParamByName('idcontatos').AsInteger   := aContato.idcontato;
-     qry.ParamByName('idclientes').DataType    := ftInteger;
-     qry.ParamByName('idclientes').AsInteger   := aContato.idcliente;
-     qry.ParamByName('telefone').DataType      := ftString;
-     qry.ParamByName('telefone').AsString      := aContato.telefone;
-     qry.ParamByName('celular').DataType       := ftString;
-     qry.ParamByName('celular').AsString       := aContato.celular ;
-     qry.ParamByName('email').DataType         := ftString;
-     qry.ParamByName('email').AsString         := aContato.email;
-     qry.ParamByName('cnpjrevenda').DataType   := ftString;
-     qry.ParamByName('cnpjrevenda').AsString   := aContato.cnpjrevenda;
+       qry.ParamByName('idcontatos').DataType      := ftInteger;
+       qry.ParamByName('idcliente').DataType       := ftInteger;
+       qry.ParamByName('idcliente').AsInteger      := aCliente.idcliente;
+       qry.ParamByName('telefone').DataType        := ftString;
+       qry.ParamByName('telefone').AsString        := aContato.telefone;
+       qry.ParamByName('celular').DataType         := ftString;
+       qry.ParamByName('celular').AsString         := aContato.celular;
+       qry.ParamByName('email').DataType           := ftString;
+       qry.ParamByName('email').AsString           := aContato.email;
+       qry.ParamByName('datacadastro').DataType    := ftDateTime;
+       qry.ParamByName('datacadastro').AsDateTime  := Now;
+       qry.ParamByName('dataalteracao').DataType   := ftDateTime;
+       qry.ParamByName('dataalteracao').AsDateTime := Now;
+       qry.ParamByName('cnpjrevenda').DataType     := ftString;
+       qry.ParamByName('cnpjrevenda').AsString     := aContato.cnpjrevenda;
+       qry.ParamByName('ativo').DataType           := ftString;
 
-     qry.ParamByName('ativo').DataType         := ftString;
-     if Length(aContato.ativo) > 0 then
-       Ativo := Copy(aContato.ativo, 1, 1)
-     else
-       Ativo := '';
+       qry.ParamByName('ativo').DataType           := ftString;
+       if Length(aContato.ativo) > 0 then
+         Ativo := Copy(aContato.ativo, 1, 1)
+       else
+         Ativo := '';
 
-     qry.ParamByName('ativo').AsString         := Ativo;
+       qry.ParamByName('ativo').AsString           := Ativo;
 
-     qry.ExecSQL;
-     qry.Connection.Commit;
+       qry.ParamByName('ativo').AsString           := aContato.ativo;
 
-     Result:=True;
+       qry.ParamByName('nomecontato').DataType     := ftString;
+       qry.ParamByName('nomecontato').AsString     := aContato.NomeContato;
 
-  finally
-    qry.Close;
-    qry.Free;
-  end;
+       qry.ExecSQL;
+       qry.Connection.Commit;
+
+       Result:=True;
+     finally
+       qry.Close;
+       qry.Free;
+     end;
 
 end;
 
@@ -295,7 +308,7 @@ begin
     exit;
   end;
 
-  if Trim(aContato.Nome) = '' then
+  if Trim(aContato.NomeContato) = '' then
   begin
     raise Exception.Create('O nome do contato não pode ser vazio.');
     Result:= False;

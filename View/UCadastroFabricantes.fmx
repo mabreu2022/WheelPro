@@ -585,8 +585,8 @@ object FrmFabricantes: TFrmFabricantes
           Size.Height = 284.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 1
-          Viewport.Width = 708.000000000000000000
-          Viewport.Height = 259.000000000000000000
+          Viewport.Width = 712.000000000000000000
+          Viewport.Height = 284.000000000000000000
         end
         object Panel1: TPanel
           Align = Bottom
@@ -658,5 +658,10 @@ object FrmFabricantes: TFrmFabricantes
         ExplicitSize.cy = 26.000000000000000000
       end
     end
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 440
+    Top = 228
   end
 end

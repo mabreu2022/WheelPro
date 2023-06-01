@@ -319,4 +319,9 @@ object FrmCategorias: TFrmCategorias
       end
     end
   end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 648
+    Top = 88
+  end
 end
