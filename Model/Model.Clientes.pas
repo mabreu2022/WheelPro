@@ -25,7 +25,8 @@ uses
   Dao.Conexao,
   Datasnap.DBClient,
   LogManager,
-  FMX.Dialogs;
+  FMX.Dialogs,
+  System.IniFiles;
 
 
 type
@@ -36,13 +37,15 @@ type
       FSomenteAtivos: string;
       CurrentDateTime: TDateTime;
       DateTimeStr: string;
-      FGravarLogs: Boolean;
+      class var FGravarLogs: Boolean;
     procedure SetSomenteAtivos(const Value: string);
+    class procedure CarregarFGravarLog;
     public
       FCliente: TClientes;
 
       property SomenteAtivos: string read FSomenteAtivos write SetSomenteAtivos;
 
+      procedure LimparContatos;
       //create
       Class function SalvarCliente(aCliente: TClientes): Boolean;
       function GravarLogNoBancoDeDados(
@@ -51,9 +54,8 @@ type
 
       //Read
       function CarregarClientes(const ACNPJ: String): TClientes;
-      function CarregarTodosClientes(aDataSet: TClientDataSet;
-                                     aSomenteAtivos: string;
-                                     aSemContatos: string): TFDquery;
+      function CarregarTodosClientes(
+  aDataSet: TClientDataSet; aSomenteAtivos: string; aSemContatos: string; aNomeBotao: string = ''): TFDquery;
       function ObterClientePorId(aId: Integer): TFDQuery;
 
       //Update
@@ -78,28 +80,49 @@ implementation
 
 class function TModelCliente.AlterarCliente(aCliente: TClientes): Boolean;
 var
-   qry: TFDQuery;
-   UF: String;
-   Ativo: String;
-   LogManager: TLogManager;
-   CurrentDateTime: TDateTime;
-   DateTimeStr: string;
+   qry             : TFDQuery;
+   UF              : String;
+   Ativo           : String;
+   LogManager      : TLogManager;
+   CurrentDateTime : TDateTime;
+   DateTimeStr     : string;
+   FGravarLogs     : Boolean;
+   Valor           : String;
+   IniFile         : TIniFile;
 begin
-  LogManager:= TLogManager.Create;
+  //ler procedure do pode gravar log
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager := TLogManager.Create;
-    LogManager.AddLog('Classe Model.Clientes - Linha : 88 - Entrou no Alterar Cliente às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+    Valor := IniFile.ReadString('Sistema', 'SalvarLogsBancoDeDados', '');
+
+    if Valor='S' then
+      FGravarLogs := True
+    else
+      FGravarLogs := False;
+
   finally
-    LogManager.Free;
+    IniFile.Free;
+  end;
+
+  if FGravarLogs then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager := TLogManager.Create;
+      LogManager.AddLog('Classe Model.Clientes - Linha : 114 - Entrou no Alterar Cliente às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
   end;
 
   Result:=False;
 
   qry:=TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
   try
     qry.Close;
     qry.SQL.Clear;
@@ -167,20 +190,29 @@ begin
 
     Result:=True;
 
-  finally
-    LogManager:= TLogManager.Create;
-    try
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Classe Model.Clientes - Linha : 170 - Finalizou o Alterar Cliente finalizou qry às '+ DateTimeStr);
-      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-    finally
-      LogManager.Free;
-    end;
-    qry.Close;
-    qry.Free;
-  end;
+  Except
+     on E: Exception do
+      begin
+        ShowMessage('Ocorreu um erro ao salvar o cliente: ' + E.Message);
+        qry.Connection.Rollback;
+        qry.Close;
 
+        if FGravarLogs then
+        begin
+          LogManager:= TLogManager.Create;
+          try
+            CurrentDateTime := Now;
+            DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+            LogManager.AddLog('Classe Model.Clientes - Linha : 206 - Finalizou o Alterar Cliente finalizou qry às '+ DateTimeStr);
+            LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+          finally
+            LogManager.Free;
+          end;
+        end;
+        qry.Free;
+      end;
+
+  end;
 end;
 
 function TModelCliente.CarregarClientes(const ACNPJ: String): TClientes;
@@ -188,14 +220,17 @@ var
  qry: TFDQuery;
  LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Classe Model.Clientes: Linha 188: Entrou na Function Carregar Clientes e criou qry às '+ DateTimeStr);
-    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-  finally
-    LogManager.Free;
+  if FGravarLogs then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Classe Model.Clientes: Linha 229: Entrou na Function Carregar Clientes e criou qry às '+ DateTimeStr);
+      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
   end;
 
   Result:= Nil;
@@ -229,34 +264,60 @@ begin
     end;
 
   finally
-    LogManager:= TLogManager.Create;
-    try
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Classe Model.Clientes: Linha 229: Entrou na Function Carregar Clientes e criou qry às '+ DateTimeStr);
-      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-    finally
-      LogManager.Free;
-    end;
+   if FGravarLogs then
+   begin
+     LogManager:= TLogManager.Create;
+     try
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Classe Model.Clientes: Linha 273: Entrou na Function Carregar Clientes e criou qry às '+ DateTimeStr);
+       LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+     finally
+       LogManager.Free;
+     end;
+   end;
     qry.Close;
     qry.Free;
   end;
 
 end;
 
+class procedure TModelCliente.CarregarFGravarLog;
+var
+  IniFile : TIniFile;
+  Valor   : String;
+begin
+  //ler procedure do pode gravar log
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Valor := IniFile.ReadString('Sistema', 'SalvarLogsBancoDeDados', '');
+
+    if Valor='S' then
+      FGravarLogs := True
+    else
+      FGravarLogs := False;
+
+  finally
+    IniFile.Free;
+  end;
+end;
+
 function TModelCliente.CarregarTodosClientes(
-  aDataSet: TClientDataSet; aSomenteAtivos: string; aSemContatos: string): TFDquery;
+  aDataSet: TClientDataSet; aSomenteAtivos: string; aSemContatos: string; aNomeBotao: string = ''): TFDquery;
 var
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Classe Model.Clientes: Linha : 246 - Carregar Todos Clientes e criou qry às '+ DateTimeStr);
-    LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-  finally
-    LogManager.Free;
+  if FGravarLogs then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Classe Model.Clientes: Linha : 296 - Carregar Todos Clientes e criou qry às '+ DateTimeStr);
+      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
   end;
 
   //rever campos ao abrir o formulário de clientes
@@ -265,7 +326,7 @@ begin
   try
     qry.SQL.Clear;
     if aSemContatos='S' then
-    begin
+    begin //Se não tiver contato precisa carregar sem nada e pegar idContato novo
       qry.SQL.Add('SELECT CL.*, CO.* FROM CLIENTES CL');
       qry.SQL.Add('JOIN CONTATOS CO');
     end
@@ -281,15 +342,20 @@ begin
     qry.SQL.Add('ORDER BY CL.IDCLIENTES ASC');
     qry.Open;
 
-    //ShowMessage('A qtde. de todos os clientes é de: ' + IntToStr(qry.recordcount));
+    ShowMessage('A qtde. de todos os clientes é de: ' + IntToStr(qry.recordcount));
 
-    qry.First;
+    if aNomeBotao = '' then
+      qry.First
+    else
+    begin
+
+    end;
 
     LogManager:= TLogManager.Create;
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Classe Model.Clientes: Linha : 245 - Carregar Clientes Resultou a qry mas NÂO deu FREE às '+ DateTimeStr);
+      LogManager.AddLog('Classe Model.Clientes: Linha : 333 - Carregar Clientes Resultou a qry mas NÂO deu FREE às '+ DateTimeStr);
       LogManager.SaveLogToFile('Log_Model_Clientes.txt');
       Result := qry;
     finally
@@ -297,8 +363,12 @@ begin
     end;
 
   except
-    Result := nil;
-    qry.Free;
+    on E: Exception do
+    begin
+      ShowMessage('Erro ao carregar todos os clientes' + E.Message);
+      Result := nil;
+      qry.Free;
+    end;
   end;
 
 end;
@@ -317,7 +387,7 @@ begin
      CurrentDateTime := Now;
      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
      LogManager := TLogManager.Create;
-     LogManager.AddLog('Classe na Model.Clientes - Linha 267 - Entrou na Cliente Existe e Criou qry às ' + DateTimeStr);
+     LogManager.AddLog('Classe na Model.Clientes - Linha 365 - Entrou na Cliente Existe e Criou qry às ' + DateTimeStr);
      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
 
      qry:= TFDquery.Create(nil);
@@ -348,12 +418,14 @@ constructor TModelCliente.Create;
 var
   LogManager: TLogManager;
 begin
+
+
   LogManager := TLogManager.Create;
   try
     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
     CurrentDateTime := Now;
     DateTimeStr := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Entrou na Model.Clientes - Create: Linha : 323 - E Criou a FCliente às ' + DateTimeStr);
+    LogManager.AddLog('Entrou na Model.Clientes - Create: Linha : 401 - E Criou a FCliente às ' + DateTimeStr);
     FCliente := TClientes.Create;
   finally
     LogManager.Free;
@@ -368,7 +440,7 @@ begin
   try
      CurrentDateTime := Now;
      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Entrou na Model.Clientes - Destroy: Linha : 337 - e Deu Free na Fcliente às ' + DateTimeStr);
+     LogManager.AddLog('Entrou na Model.Clientes - Destroy: Linha : 416 - e Deu Free na Fcliente às ' + DateTimeStr);
      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
      FCliente.Free;
   finally
@@ -465,71 +537,76 @@ end;
 
 class function TModelCliente.SalvarCliente(aCliente: TClientes): Boolean;
 var
-  qry   : TFDQuery;
-  Ativo : string;
-  UF    : string;
+  qry             : TFDQuery;
+  Ativo           : string;
+  UF              : string;
+  LogManager      : TLogManager;
+  CurrentDateTime : TDateTime;
+  DateTimeStr     : string;
 begin
   Result:= False;
 
   qry:=TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
   try
 
     qry.Close;
     qry.SQL.Clear;
     qry.SQL.Add('INSERT INTO '  +
                 ' fulanorodas.Clientes ' +
-                '(idclientes,          ' +
-                'razao,                ' +
-                'cnpj_cpf,             ' +
-                'endereco,             ' +
-                'numero,               ' +
-                'complemento,          ' +
-                'cep,                  ' +
-                'cidade,               ' +
-                'bairro,               ' +
-                'ativo,                ' +
-                'uf,                   ' +
-                'datacadastro,         ' +
-                'datalateracao,        ' +
-               // 'dataexclusao,       ' +
-                'idmodelocarro         ' +
+                '(idclientes,          ' +   //1
+                'razao,                ' +   //2
+                'cnpj_cpf,             ' +   //3
+                'endereco,             ' +   //4
+                'numero,               ' +   //5
+                'complemento,          ' +   //6
+                'cep,                  ' +   //7
+                'cidade,               ' +   //8
+                'bairro,               ' +   //9
+                'ativo,                ' +   //10
+                'uf,                   ' +   //11
+                'datacadastro,         ' +   //12
+                'dataalteracao,        ' +   //13
+               // 'dataexclusao,       ' +   //14
+                'idmodelocarro         ' +   //15
                 ')                     ' +
                 'VALUES (              ' +
-                ':idclientes,          ' +
-                ':razao,               ' +
-                ':cnpj_cpf,            ' +
-                ':endereco,            ' +
-                ':numero,              ' +
-                ':complemento,         ' +
-                ':cep,                 ' +
-                ':cidade,              ' +
-                ':bairro,              ' +
-                ':ativo,               ' +
-                ':uf,                  ' +
-                ':datacadastro,        ' +
-                ':dataalteracao,       ' +
-              //  ':dataexclusao,        ' +
-                ':idmodelocarro,       ' +
-                ':)                  ');
+                ':idclientes,          ' +   //1 ok
+                ':razao,               ' +   //2 ok
+                ':cnpj_cpf,            ' +   //3 ok
+                ':endereco,            ' +   //4 ok
+                ':numero,              ' +   //5 ok
+                ':complemento,         ' +   //6 ok
+                ':cep,                 ' +   //7 ok
+                ':cidade,              ' +   //8 ok
+                ':bairro,              ' +   //9 ok
+                ':ativo,               ' +   //10 ok
+                ':uf,                  ' +   //11 ok
+                ':datacadastro,        ' +   //12 ok
+                ':dataalteracao,       ' +   //13 ok
+              //  ':dataexclusao,        ' + //14 ok
+                ':idmodelocarro        ' +   //15 ok
+                ')                     ');
 
-     qry.ParamByName('idclientes').DataType    := ftInteger;
+     qry.ParamByName('idclientes').DataType    := ftInteger;            //1
+
      qry.ParamByName('razao').DataType         := ftString;
-     qry.ParamByName('razao').AsString         := aCliente.razaosocial;
+     qry.ParamByName('razao').AsString         := aCliente.razaosocial; //2
      qry.ParamByName('cnpj_cpf').DataType      := ftString;
-     qry.ParamByName('cnpj_cpf').AsString      := aCliente.cnpj ;
+     qry.ParamByName('cnpj_cpf').AsString      := aCliente.cnpj ;       //3
      qry.ParamByName('endereco').DataType      := ftString;
-     qry.ParamByName('endereco').AsString      := aCliente.endereco;
+     qry.ParamByName('endereco').AsString      := aCliente.endereco;    //4
      qry.ParamByName('numero').DataType        := ftInteger;
-     qry.ParamByName('numero').AsInteger       := aCliente.numero;
+     qry.ParamByName('numero').AsInteger       := aCliente.numero;      //5
      qry.ParamByName('complemento').DataType   := ftString;
-     qry.ParamByName('complemento').AsString   := aCliente.complemento;
+     qry.ParamByName('complemento').AsString   := aCliente.complemento; //6
      qry.ParamByName('cep').DataType           := ftString;
-     qry.ParamByName('cep').AsString           := aCliente.CEP;
+     qry.ParamByName('cep').AsString           := aCliente.CEP;         //7
      qry.ParamByName('cidade').DataType        := ftString;
-     qry.ParamByName('cidade').AsString        := aCliente.Cidade;
+     qry.ParamByName('cidade').AsString        := aCliente.Cidade;      //8
      qry.ParamByName('bairro').DataType        := ftString;
-     qry.ParamByName('bairro').AsString        := aCliente.Bairro;
+     qry.ParamByName('bairro').AsString        := aCliente.Bairro;      //9
 
      qry.ParamByName('ativo').DataType         := ftString;
      if Length(aCliente.ativo) > 0 then
@@ -537,7 +614,7 @@ begin
      else
        Ativo := '';
 
-     qry.ParamByName('ativo').AsString         := Ativo;
+     qry.ParamByName('ativo').AsString         := Ativo;               //10
 
      qry.ParamByName('uf').DataType            := ftString;
      if Length(aCliente.UF) > 0 then
@@ -545,28 +622,53 @@ begin
      else
        UF := '';
 
-     qry.ParamByName('uf').AsString            := UF;
+     qry.ParamByName('uf').AsString            := UF;                  //11
 
      qry.ParamByName('datacadastro').DataType  := ftDateTime;
-     qry.ParamByName('datacadastro').AsDateTime:= Now;
+     qry.ParamByName('datacadastro').AsDateTime:= Now;                 //12
 
-     qry.ParamByName('dataalteracao').DataType  := ftDateTime;
+     qry.ParamByName('dataalteracao').DataType  := ftDateTime;         //13
      qry.ParamByName('dataalteracao').AsDateTime:= Now;
 
 //     qry.ParamByName('dataexclusao').DataType := ftDateTime;
-//     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao;
+//     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao; //14
 
      qry.ParamByName('idmodelocarro').DataType := ftInteger;
-     qry.ParamByName('idmodelocarro').AsInteger:= aCliente.Idmodelocarro;
+     qry.ParamByName('idmodelocarro').AsInteger:= aCliente.Idmodelocarro; //15
+
+     CarregarFGravarLog;
+
+     if FGravarLogs then
+       qry.SQL.SaveToFile('c:\ClientesSQL.txt');
 
      qry.ExecSQL;
      qry.Connection.Commit;
 
-  finally
-    qry.Close;
-    qry.Free;
-  end;
+     Result := True;
+  Except
+     on E: Exception do
+      begin
+        Result := False;
+        ShowMessage('Ocorreu um erro ao salvar o cliente: ' + E.Message);
+        qry.Connection.Rollback;
+        qry.Close;
 
+        if True then
+        begin
+          LogManager:= TLogManager.Create;
+          try
+            CurrentDateTime := Now;
+            DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+            LogManager.AddLog('Classe Model.Clientes - Linha : 629 - Finalizou o Alterar Cliente finalizou qry às '+ DateTimeStr);
+            LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+          finally
+            LogManager.Free;
+          end;
+        end;
+        qry.Free;
+      end;
+  end;
+  qry.Free;
 end;
 
 procedure TModelCliente.SetSomenteAtivos(const Value: string);

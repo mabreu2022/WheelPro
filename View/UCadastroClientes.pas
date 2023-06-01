@@ -233,6 +233,7 @@ type
     DataSet: TClientDataSet;
     FSomenteAtivos: string;
     FSemContatos  : string;
+    FBtnUltimo    : string;
     Function CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
     procedure OnDataSetChange;
     procedure PopularClientes;
@@ -523,6 +524,7 @@ end;
 
 procedure TFrmCadastroClientes.BtnUltimoClick(Sender: TObject);
 begin
+  PopularDataSet;  //Ver uma forma de aba Cnotatos Limpar Campo se não tiver registro de contatos daquele cliente.
   DataSet.Last;
   OnDataSetChange;
 end;
@@ -788,7 +790,11 @@ begin
 
     DataSet       := TClientDataset.Create(nil);
     try
-      qry     := Model.CarregarTodosClientes(DataSet, FSomenteAtivos, FSemContatos);
+      if FBtnUltimo='S' then
+        qry     := Model.CarregarTodosClientes(DataSet, FSomenteAtivos, FSemContatos, 'S')
+      else
+        qry     := Model.CarregarTodosClientes(DataSet, FSomenteAtivos, FSemContatos);
+
       DataSet := CriarDataSet(DataSet);
       DataSet.Open;
       qry.First;
@@ -1091,55 +1097,57 @@ var
   Index: Integer;
   LogManager: TLogManager;
 begin
-  LogManager:=TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1086 - Entrou no OnDataChange às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-    EdtCodCliente.Text  := IntToStr(DataSet.FieldByName('idclientes').AsInteger);
-    EdtRazao.Text       := DataSet.FieldByName('razao').AsString;
-    EdtCnpj.Text        := DataSet.FieldByName('cnpj_cpf').AsString;
-    EdtEndereco.Text    := DataSet.FieldByName('endereco').AsString;
-    EdtNumero.Text      := IntToStr(DataSet.FieldByName('numero').AsInteger);
-    EdtComplemento.Text := DataSet.FieldByName('complemento').AsString;
-    EdtCep.Text         := DataSet.FieldByName('CEP').AsString;
-    EdtCidade.Text      := DataSet.FieldByName('Cidade').AsString;
-    EdtBairro.Text      := DataSet.FieldByName('Bairro').AsString;
-
-    // Definir o valor do campo UF no combobox CBUF
-    // Obter o valor dos campos UF e Ativo do DataSet
-    ufCliente    := DataSet.FieldByName('uf').AsString;
-    ativoCliente := DataSet.FieldByName('Ativo').AsString;
-
-    // Definir o valor do campo UF no combobox CBUF
-    if CBUF.Items.IndexOf(ufCliente) > -1 then
-      CBUF.ItemIndex := CBUF.Items.IndexOf(ufCliente)
-    else
-      CBUF.ItemIndex := -1; // ou algum valor padrão, caso UF não seja válido
-
-    // Definir o valor do campo Ativo no combobox CBATivo
-    if ativoCliente = 'S' then
-      CBATivo.ItemIndex := CBATivo.Items.IndexOf('S')
-    else if ativoCliente = 'N' then
-      CBATivo.ItemIndex := CBATivo.Items.IndexOf('N')
-    else
-      CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
-
-    //Preenche os campos do contato
-    EdtCodContato.Text      := IntToStr(DataSet.FieldByName('IDCONTATOS').AsInteger);
-    EdtNomeContato.Text     := DataSet.FieldByName('NOMECONTATO').AsString;
-    EdtTelefoneContato.Text := DataSet.FieldByName('TELEFONE').AsString;
-    EdtCelularContato.Text  := DataSet.FieldByName('CELULAR').AsString;
-    EdtEmailContato.Text    := DataSet.FieldByName('EMAIL').AsString;
-
-    PopularClientes;  //Popula a variável FClientes
-    PopularContatos; //Popula Variável FContato
-
-  finally
-    LogManager.Free;
+  if FGravarLog then
+  begin
+    LogManager:=TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1086 - Entrou no OnDataChange às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
   end;
+
+  EdtCodCliente.Text  := IntToStr(DataSet.FieldByName('idclientes').AsInteger);
+  EdtRazao.Text       := DataSet.FieldByName('razao').AsString;
+  EdtCnpj.Text        := DataSet.FieldByName('cnpj_cpf').AsString;
+  EdtEndereco.Text    := DataSet.FieldByName('endereco').AsString;
+  EdtNumero.Text      := IntToStr(DataSet.FieldByName('numero').AsInteger);
+  EdtComplemento.Text := DataSet.FieldByName('complemento').AsString;
+  EdtCep.Text         := DataSet.FieldByName('CEP').AsString;
+  EdtCidade.Text      := DataSet.FieldByName('Cidade').AsString;
+  EdtBairro.Text      := DataSet.FieldByName('Bairro').AsString;
+
+  // Definir o valor do campo UF no combobox CBUF
+  // Obter o valor dos campos UF e Ativo do DataSet
+  ufCliente    := DataSet.FieldByName('uf').AsString;
+  ativoCliente := DataSet.FieldByName('Ativo').AsString;
+
+  // Definir o valor do campo UF no combobox CBUF
+  if CBUF.Items.IndexOf(ufCliente) > -1 then
+    CBUF.ItemIndex := CBUF.Items.IndexOf(ufCliente)
+  else
+    CBUF.ItemIndex := -1; // ou algum valor padrão, caso UF não seja válido
+
+  // Definir o valor do campo Ativo no combobox CBATivo
+  if ativoCliente = 'S' then
+    CBATivo.ItemIndex := CBATivo.Items.IndexOf('S')
+  else if ativoCliente = 'N' then
+    CBATivo.ItemIndex := CBATivo.Items.IndexOf('N')
+  else
+    CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
+
+  //Preenche os campos do contato
+  EdtCodContato.Text      := IntToStr(DataSet.FieldByName('IDCONTATOS').AsInteger);
+  EdtNomeContato.Text     := DataSet.FieldByName('NOMECONTATO').AsString;
+  EdtTelefoneContato.Text := DataSet.FieldByName('TELEFONE').AsString;
+  EdtCelularContato.Text  := DataSet.FieldByName('CELULAR').AsString;
+  EdtEmailContato.Text    := DataSet.FieldByName('EMAIL').AsString;
+
+  PopularClientes;  //Popula a variável FClientes
+  PopularContatos; //Popula Variável FContato
 
 end;
 
@@ -1147,33 +1155,41 @@ procedure TFrmCadastroClientes.PopularContatos;
 var
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1119 - Entrou on PopularConntatos e Criou Fcontato às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-     try
-       if FTipo<>'N' then
-         FContato.idcontato := StrToInt(EdtCodContato.Text);
-
-       FContato.idcliente   := StrToInt(EdtCodCliente.Text);
-       FContato.NomeContato := EdtNomeContato.Text;
-       FContato.telefone    := EdtTelefoneContato.Text;
-       FContato.celular     := EdtCelularContato.Text;
-       FContato.email       := EdtEmailContato.Text;
-     //    FContato.cnpjrevenda := ; //Provável que não seja necessário
-     finally
-       CurrentDateTime := Now;
-       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-       LogManager.AddLog('Tela - Cadastro de Clientes: Linha :  1135 - Finalizou a PopularConntatos e NÂO deu free no FContato às ' + DateTimeStr);
-       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     end;
-  finally
-     LogManager.Free;
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1119 - Entrou on PopularConntatos e Criou Fcontato às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
   end;
 
+  if FTipo<>'N' then
+    FContato.idcontato := StrToInt(EdtCodContato.Text);
+
+  FContato.idcliente   := StrToInt(EdtCodCliente.Text);
+  FContato.NomeContato := EdtNomeContato.Text;
+  FContato.telefone    := EdtTelefoneContato.Text;
+  FContato.celular     := EdtCelularContato.Text;
+  FContato.email       := EdtEmailContato.Text;
+//  FContato.cnpjrevenda := ; //Provável que não seja necessário
+
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha :  1135 - Finalizou a PopularConntatos e NÂO deu free no FContato às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
+  end;
 end;
 
 procedure TFrmCadastroClientes.PopularClientes;
