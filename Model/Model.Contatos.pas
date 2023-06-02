@@ -22,7 +22,8 @@ uses
   Dao.Conexao,
   Datasnap.DBClient,
   Entity.Contatos,
-  LogManager;
+  LogManager,
+  FMX.Dialogs;
 
 type
   TModelContato = class
@@ -30,7 +31,7 @@ type
       Fconn: TFDConnection;
       qry: TFDQuery;
       FSomenteAtivos: string;
-      //LogManager: TLogManager;
+      FGravarLog: Boolean;
     procedure SetSomenteAtivos(const Value: string);
     public
       FContatos: TContato;
@@ -43,18 +44,18 @@ type
       function CarregarTodosContatos(
                aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
 //      function ObterContatoPorId(aId: Integer): TFDQuery;
-//
-//      //Update
+
+      //Update
       class function AlterarContato(aContato: TContato): Boolean;
 
-//      //Delete
+      //Delete
       function RemoverContato(aContato: TContato): Boolean;
-//
-//      //Regras
+
+      //Regras
       class function TestaSeCamposPreenchidos(
   aContato: TContato): Boolean;
 //      class function ContatoExiste(aCNPJ: string):Boolean;
-//
+
       constructor Create;
       destructor destroy;override;
   end;
@@ -73,13 +74,13 @@ var
    CurrentDateTime: TDateTime;
    DateTimeStr: string;
 begin
-  Result:=False;
+  Result := False;
 
   LogManager := TLogManager.Create;
   try
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Classe Model.Contatos - Linha : 82 - Entrou no Alterar Contato e criou a qry às ' + DateTimeStr);
+    LogManager.AddLog('Classe Model.Contatos - Linha : 83 - Entrou no Alterar Contato e criou a qry às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Model_Clientes.txt');
   finally
     LogManager.Free;
@@ -87,21 +88,24 @@ begin
 
   qry:=TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
   try
     qry.Close;
     qry.SQL.Clear;
-    qry.SQL.Text:='UPDATE fulanorodas.contatos  ' +
-                  'SET                          ' +
+    qry.SQL.Text:='UPDATE fulanorodas.contatos    ' +
+                  'SET                            ' +
 //                  'idcontatos  = :idcontatos    ' +
-                  'idclientes  = :idclientes,   ' +
-                  'telefone    = :telefone,     ' +
-                  'celular     = :celular,      ' +
-                  'email       = :email,        ' +
-                  'cnpjrevenda = :cnpjrevenda,  ' +
-                  'ativo       = :ativo,        ' +
-                  'datacadastro= :datacadastro  ' +
-                  'WHERE                        ' +
-                  'idclientes = :idclientes     ';
+                  'idclientes    = :idclientes,   ' +
+                  'telefone      = :telefone,     ' +
+                  'celular       = :celular,      ' +
+                  'email         = :email,        ' +
+                  'cnpjrevenda   = :cnpjrevenda,  ' +
+                  'ativo         = :ativo,        ' +
+                  'nomecontato   = :nomecontato,  ' +
+                  'datacadastro  = :datacadastro, ' +
+                  'dataalteracao = :dataalteracao ' +
+                  'WHERE                          ' +
+                  'idclientes = :idclientes       ';
 
     qry.ParamByName('idclientes').DataType    := ftInteger;
     qry.ParamByName('idclientes').AsInteger   := aContato.idcliente;
@@ -123,25 +127,38 @@ begin
 
     qry.ParamByName('ativo').AsString         := Ativo;
 
+    qry.ParamByName('nomecontato').DataType         := ftString;
+    qry.ParamByName('nomecontato').AsString         := aContato.NomeContato;
+
     qry.ParamByName('datacadastro').DataType  := ftDateTime;
     qry.ParamByName('datacadastro').AsDateTime:= aContato.datacadastro;
+
+    qry.ParamByName('dataalteracao').DataType  := ftDateTime;
+    qry.ParamByName('dataalteracao').AsDateTime:= aContato.dataAlteracao;
 
     qry.ExecSQL;
     qry.Connection.Commit;
 
     Result:=True;
 
-  finally
-    LogManager := TLogManager.Create;
-    try
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Classe Model.Contatos - Linha : 139 - Finalizou o Alterar Contato e deu FREE na qry às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Model_Clientes.txt');
-    finally
-      LogManager.Free;
+  Except
+    on E: Exception do
+    begin
+      Result := False;
+      qry.Connection.Rollback;
+      ShowMessage('Houve um erro ao tentar alterar os dados do contato' + E.Message);
+
+      LogManager := TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Classe Model.Contatos - Linha : 155 - Finalizou o Alterar Contato e deu FREE na qry às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Model_Clientes.txt');
+      finally
+        LogManager.Free;
+      end;
+       qry.Free;
     end;
-     qry.Free;
   end;
 
 end;
@@ -174,6 +191,7 @@ begin
       FContatos.email       := qry.FieldByName('email').AsString;
       FContatos.cnpjrevenda := qry.FieldByName('cnpjrevenda').AsString;
       FContatos.ativo       := qry.FieldByName('ativo').AsString;
+      FContatos.NomeContato := qry.FieldByName('nomecontato').AsString;
     end;
 
     Result:=FContatos;
@@ -196,7 +214,7 @@ begin
   LogManager := TLogManager.Create;
   try
     LogManager.SaveLogToFile('Log_Model_Contatos.txt');
-    LogManager.AddLog('Entrou na Model.Contatos - Create: Linha 170: e Criou FContatos.');
+    LogManager.AddLog('Entrou na Model.Contatos - Create: Linha 217: e Criou FContatos.');
     FContatos := TContato.Create;
   finally
     LogManager.Free;
@@ -216,78 +234,97 @@ end;
 
 class function TModelContato.SalvarContato(aContato: TContato; aCliente: TClientes): Boolean;
 var
-  qry   : TFDQuery;
-  Ativo : string;
-  UF    : string;
+  qry        : TFDQuery;
+  Ativo      : string;
+  UF         : string;
+  LogManager : TLogManager;
 begin
   Result:= False;
 
- //Extrair o método o Salvar como SalvarContato   mover para o Model.Contatos
-     qry:=TFDQuery.Create(nil);
-     qry.Connection := TConnection.CreateConnection;
-     try
-       qry.Close;
-       qry.SQL.Clear;
-       qry.SQL.Add('INSERT INTO     ' +
-                    'idcontatos,     ' +
-                    'idcliente,      ' +
-                    'telefone,       ' +
-                    'celular,        ' +
-                    'email,          ' +
-                    'datacadastro    ' +
-                    'dataalteracao,  ' +
-                    'cnpjrevenda,    ' +
-                    'ativo,          ' +
-                    'nomecontato)    ' +
-                    'VALUES(         ' +
-                    ':idcontatos,    ' +
-                    ':idcliente,     ' +
-                    ':telefone,      ' +
-                    ':celular,       ' +
-                    ':email,         ' +
-                    ':datacadastro   ' +
-                    ':dataalteracao, ' +
-                    ':cnpjrevenda,   ' +
-                    'ativo)          ');
+  qry:=TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
+  try
+     qry.Close;
+     qry.SQL.Clear;
+     qry.SQL.Add('INSERT INTO     ' +
+                  'idcontatos,     ' +
+                  'idcliente,      ' +
+                  'telefone,       ' +
+                  'celular,        ' +
+                  'email,          ' +
+                  'datacadastro    ' +
+                  'dataalteracao,  ' +
+                  'cnpjrevenda,    ' +
+                  'ativo,          ' +
+                  'nomecontato)    ' +
+                  'VALUES(         ' +
+                  ':idcontatos,    ' +
+                  ':idcliente,     ' +
+                  ':telefone,      ' +
+                  ':celular,       ' +
+                  ':email,         ' +
+                  ':datacadastro   ' +
+                  ':dataalteracao, ' +
+                  ':cnpjrevenda,   ' +
+                  ':ativo,         ' +
+                  ':nomecontato)   ');
 
-       qry.ParamByName('idcontatos').DataType      := ftInteger;
-       qry.ParamByName('idcliente').DataType       := ftInteger;
-       qry.ParamByName('idcliente').AsInteger      := aCliente.idcliente;
-       qry.ParamByName('telefone').DataType        := ftString;
-       qry.ParamByName('telefone').AsString        := aContato.telefone;
-       qry.ParamByName('celular').DataType         := ftString;
-       qry.ParamByName('celular').AsString         := aContato.celular;
-       qry.ParamByName('email').DataType           := ftString;
-       qry.ParamByName('email').AsString           := aContato.email;
-       qry.ParamByName('datacadastro').DataType    := ftDateTime;
-       qry.ParamByName('datacadastro').AsDateTime  := Now;
-       qry.ParamByName('dataalteracao').DataType   := ftDateTime;
-       qry.ParamByName('dataalteracao').AsDateTime := Now;
-       qry.ParamByName('cnpjrevenda').DataType     := ftString;
-       qry.ParamByName('cnpjrevenda').AsString     := aContato.cnpjrevenda;
-       qry.ParamByName('ativo').DataType           := ftString;
+     qry.ParamByName('idcontatos').DataType      := ftInteger;
+     qry.ParamByName('idcliente').DataType       := ftInteger;
+     qry.ParamByName('idcliente').AsInteger      := aCliente.idcliente;
+     qry.ParamByName('telefone').DataType        := ftString;
+     qry.ParamByName('telefone').AsString        := aContato.telefone;
+     qry.ParamByName('celular').DataType         := ftString;
+     qry.ParamByName('celular').AsString         := aContato.celular;
+     qry.ParamByName('email').DataType           := ftString;
+     qry.ParamByName('email').AsString           := aContato.email;
+     qry.ParamByName('datacadastro').DataType    := ftDateTime;
+     qry.ParamByName('datacadastro').AsDateTime  := Now;
+     qry.ParamByName('dataalteracao').DataType   := ftDateTime;
+     qry.ParamByName('dataalteracao').AsDateTime := Now;
+     qry.ParamByName('cnpjrevenda').DataType     := ftString;
+     qry.ParamByName('cnpjrevenda').AsString     := aContato.cnpjrevenda;
+     qry.ParamByName('ativo').DataType           := ftString;
 
-       qry.ParamByName('ativo').DataType           := ftString;
-       if Length(aContato.ativo) > 0 then
-         Ativo := Copy(aContato.ativo, 1, 1)
-       else
-         Ativo := '';
+     qry.ParamByName('ativo').DataType           := ftString;
+     if Length(aContato.ativo) > 0 then
+       Ativo := Copy(aContato.ativo, 1, 1)
+     else
+       Ativo := '';
 
-       qry.ParamByName('ativo').AsString           := Ativo;
+     qry.ParamByName('ativo').AsString           := Ativo;
 
-       qry.ParamByName('ativo').AsString           := aContato.ativo;
+     qry.ParamByName('ativo').AsString           := aContato.ativo;
 
-       qry.ParamByName('nomecontato').DataType     := ftString;
-       qry.ParamByName('nomecontato').AsString     := aContato.NomeContato;
+     qry.ParamByName('nomecontato').DataType     := ftString;
+     qry.ParamByName('nomecontato').AsString     := aContato.NomeContato;
 
-       qry.ExecSQL;
-       qry.Connection.Commit;
+     qry.ExecSQL;
+     qry.Connection.Commit;
 
-       Result:=True;
-     finally
-       qry.Close;
-       qry.Free;
-     end;
+     Result:=True;
+
+  Except
+    on E: Exception do
+    begin
+      Result:= False;
+      qry.Connection.Rollback;
+      ShowMessage('Houve um erro ao gravar os dados do contato' + E.Message);
+      qry.Close;
+      qry.Free;
+
+      //if  then
+
+      LogManager := TLogManager.Create;
+      try
+        LogManager.SaveLogToFile('Log_Model_Contatos.txt');
+        LogManager.AddLog('Saiu na Model.Contatos - SalvarContato: Linha 320: e deu erro ao gravar o contato.');
+      finally
+        LogManager.Free;
+      end;
+    end;
+  end;
 
 end;
 

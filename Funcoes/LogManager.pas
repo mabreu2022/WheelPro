@@ -4,18 +4,26 @@ interface
 
 uses
   Sysutils,
-  System.Classes;
+  System.Classes,
+  System.IniFiles;
 
 type
   TLogManager = class
   private
     FLogList: TStringList;
   public
+    CurrentDateTime: TDateTime; //Para uso com o Log
+    DateTimeStr: string;        //Para uso com o Log
+    FGravarLog: Boolean;        //Para uso com o Log
+    FSomenteAtivos: string;
+    FSemContatos  : string;
+    FHabilitarLogsSistema: string;
     constructor Create;
     destructor Destroy; override;
     procedure AddLog(const Message: string);
     procedure SaveLogToFile(const FileName: string);
     function GravarLogsnoBanco(aIdRevenda: Integer): Boolean;
+    procedure CarregarConfiguracao;
 
   end;
 
@@ -26,6 +34,50 @@ implementation
 procedure TLogManager.AddLog(const Message: string);
 begin
   FLogList.Add(Message);
+end;
+
+procedure TLogManager.CarregarConfiguracao;
+var
+   IniFile    : TIniFile;
+   LogManager : TLogManager;
+begin
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 581 - Carregar Configuração - Criou o IniFile às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
+  end;
+
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FSomenteAtivos        := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+    FSemContatos          := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+    FHabilitarLogsSistema := IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
+  finally
+    if FGravarLog then
+    begin
+      LogManager := TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 600 - Carregar Configuração - Deu Free no IniFile às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+
+      finally
+        LogManager.Free;
+      end;
+
+    end;
+    IniFile.Free;
+  end;
+
+
 end;
 
 constructor TLogManager.Create;

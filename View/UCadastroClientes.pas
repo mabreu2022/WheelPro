@@ -220,6 +220,7 @@ type
     DateTimeStr: string;        //Para uso com o Log
     FGravarLog: Boolean;        //Para uso com o Log
     FHabilitarLogsSistema: string;
+    FNextIDContato: Integer;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     Procedure PopularGridClientes;
     procedure PreencheDadosEncontradosDoCliente;
@@ -239,6 +240,7 @@ type
     procedure PopularClientes;
     procedure CarregarCores;
     procedure CarregarLinguagem;
+    function ProximoIDContato: integer;
 
 
   end;
@@ -279,201 +281,236 @@ procedure TFrmCadastroClientes.BtnGravarClick(Sender: TObject);
 var
   Abortar: Boolean;
   Confirmacao: Integer;
-   LogManager: TLogManager;
+  LogManager: TLogManager;
 begin
   PopularClientes;
   PopularContatos;
 
-  LogManager:= TLogManager.Create;
-  try
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 289 - BtnnGravar - Criou a RegrasdeNegocios às ' +  DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     RegrasDeNegocios:= TModelCliente.Create;
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 295 - BtnnGravar - Criou a RegrasdeNegocios às ' +  DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
+  end;
 
-     FModelContato   := TModelContato.Create;
+  RegrasDeNegocios:= TModelCliente.Create;
 
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 297 - BtnnGravar - Criou a FModelContato às ' +  DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-     //Testar se os campos foram todos preenchidos
-     PodeGravar      := RegrasDeNegocios.TestaSeCamposPreenchidos(Fcliente);
-
-     if PodeGravar then //testar preenchimento dos campos
-     begin
-
-       Abortar:= RegrasDeNegocios.ClienteExiste(FCliente.cnpj);
-       if Abortar then  //cliente Existe
-       begin
-         ShowMessage('Cliente já existe no Cadastro!');
-
-         if FTipo='A' then //Alterar
-         begin
-           RegrasDeNegocios.AlterarCliente(FCliente);
-           FModelContato.AlterarContato(FContato);
-           PopularDataSet;
-           OnDataSetChange;
-           Exit;
-         end;
-
-         if FTipo='N' then //Novo Registro
-         begin
-           RegrasDeNegocios.SalvarCliente(FCliente);
-           FModelContato.SalvarContato(FContato, FCliente);
-           PopularDataSet;
-           OnDataSetChange;
-           Exit;
-         end;
-
-         if FTipo='E' then //Excluir
-         begin
-           RegrasDeNegocios.RemoverCliente(FCliente);
-           FModelContato.RemoverContato(FContato);
-           PopularDataSet;
-           OnDataSetChange;
-           Exit;
-         end;
-
-       end
-       else //Cadastra o Cliente novo
-       begin
-         RegrasDeNegocios.SalvarCliente(FCliente);
-         PopularDataSet;
-         OnDataSetChange;
-         Exit;
-       end;
-
-     end
-     else //Não atendeu as regras de negócios e não grava
-     begin
-       ShowMessage('Não foi possível salvar os dados do cliente');
-
-       if EdtRazao.CanFocus then
-         EdtRazao.SetFocus;
+  if FGravarLog then
+  begin
+     LogManager:= TLogManager.Create;
+     try
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 310 - BtnnGravar - Criou a FModelContato às ' +  DateTimeStr);
+       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+     finally
+       LogManager.Free;
      end;
+  end;
 
-     DesabilitaBotoes([BiPrimeiro,BiAnterior,BiProximo,BiUltimo,BiNovo,BiAlterar,BiExcluir,BiGravar]);
+  FModelContato   := TModelContato.Create;
 
-  finally
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 360 - BtnnGravar - deu Free na FCliente às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FCliente.Free;
+  //Testar se os campos foram todos preenchidos
+  PodeGravar      := RegrasDeNegocios.TestaSeCamposPreenchidos(Fcliente);
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 366 BtnnGravar - deu Free na RegrasDeNegocios às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    RegrasDeNegocios.Free;
+  if PodeGravar then //testar preenchimento dos campos
+  begin
+    Abortar:= RegrasDeNegocios.ClienteExiste(FCliente.cnpj);
+    if Abortar then  //cliente Existe
+    begin
+      ShowMessage('Cliente já existe no Cadastro!');
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 372 - BtnnGravar - deu Free na FModelContato às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FModelContato.Free;
+      if FTipo='A' then //Alterar
+      begin
+        RegrasDeNegocios.AlterarCliente(FCliente);
+        FModelContato.AlterarContato(FContato);
+        PopularDataSet;
+        OnDataSetChange;
+        Exit;
+      end;
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 372 - BtnnGravar - deu Free na LogManager às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    LogManager.Free;
+      if FTipo='N' then //Novo Registro
+      begin
+        RegrasDeNegocios.SalvarCliente(FCliente);
+        FModelContato.SalvarContato(FContato, FCliente);
+        PopularDataSet;
+        OnDataSetChange;
+        Exit;
+      end;
 
-    //Chamar Rotina de Salvar Logs Caso esteja configurado para isso.
-    //if FLogar then
+      if FTipo='E' then //Excluir
+      begin
+        RegrasDeNegocios.RemoverCliente(FCliente);
+        FModelContato.RemoverContato(FContato);
+        PopularDataSet;
+        OnDataSetChange;
+        Exit;
+      end;
+
+    end
+    else //Cadastra o Cliente novo
+    begin
+      RegrasDeNegocios.SalvarCliente(FCliente);
+      PopularDataSet;
+      OnDataSetChange;
+      Exit;
+    end;
+
+  end
+  else //Não atendeu as regras de negócios e não grava
+  begin
+    ShowMessage('Não foi possível salvar os dados do cliente');
+
+    if EdtRazao.CanFocus then
+      EdtRazao.SetFocus;
+  end;
+
+  DesabilitaBotoes([BiPrimeiro,BiAnterior,BiProximo,BiUltimo,BiNovo,BiAlterar,BiExcluir,BiGravar]);
+
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 382 - BtnnGravar - deu Free na FCliente às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      FCliente.Free;
+
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 388 BtnnGravar - deu Free na RegrasDeNegocios às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      RegrasDeNegocios.Free;
+
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 394 - BtnnGravar - deu Free na FModelContato às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      FModelContato.Free;
+
+    finally
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 401 - BtnnGravar - deu Free na LogManager às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      LogManager.Free;
+    end;
   end;
 
 end;
 
 procedure TFrmCadastroClientes.BtnNovoClick(Sender: TObject);
 var
-  qry: TFDQuery;
-  NextID, NextIDContato: Integer;
-  LogManager: TLogManager;
+  qry                   : TFDQuery;
+  NextID, NextIDContato : Integer;
+  LogManager            : TLogManager;
 begin
-  LogManager:= TLogManager.Create;
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha 421 - BtnNovoClick - Criou a qry às '  + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
+  end;
+
+  FTipo := 'N';
+
+  DesabilitaBotoes([BiGravar]); // Desabilita todos os botões, exceto o botão Gravar
+
+  qry := TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
   try
-    FTipo := 'N';
+    qry.SQL.Clear;
+    qry.SQL.Text := 'SELECT MAX(idclientes) + 1 AS NextID FROM Clientes';
+    qry.Open;
 
-    DesabilitaBotoes([BiGravar]); // Desabilita todos os botões, exceto o botão Gravar
+    NextID := qry.FieldByName('NextID').AsInteger;
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha 399 - BtnNovoClick - Criou a qry às '  + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-    qry := TFDQuery.Create(nil);
-    try
-      qry.Connection := TConnection.CreateConnection;
-
-      qry.SQL.Text := 'SELECT MAX(idclientes) + 1 AS NextID FROM Clientes';
-      qry.Open;
-
-      NextID := qry.FieldByName('NextID').AsInteger;
-
-      // Verifique se o valor retornado é NULL (sem registros na tabela)
-      if qry.FieldByName('NextID').IsNull then
-        NextID := 1;
-
-    finally
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha 418: BtnNovoClick - Free qry às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-      qry.Free;
-    end;
-
-    // Limpar todos os campos de clientes
-    EdtCodCliente.Text := IntToStr(NextID);
-    EdtRazao.Text := '';
-    EdtCnpj.Text := '';
-    EdtEndereco.Text := '';
-    EdtNumero.Text := '';
-    EdtComplemento.Text := '';
-    EdtCep.Text := '';
-    EdtCidade.Text := '';
-    EdtBairro.Text := '';
-    CBUF.ItemIndex := 24;
-    CBAtivo.ItemIndex := 1;
-
-    // Foco no campo EdtRazao
-    if EdtRazao.CanFocus then
-      EdtRazao.SetFocus;
-
-    qry := TFDQuery.Create(nil);
-    qry.Connection := TConnection.CreateConnection;
-    try
-      qry.SQL.Text := 'SELECT MAX(idcontatos) + 1 AS NextIDContatos FROM contatos';
-      qry.Open;
-
-      NextIDContato := qry.FieldByName('NextIDContatos').AsInteger;
-
-      // Verifique se o valor retornado é NULL (sem registros na tabela)
-      if qry.FieldByName('NextIDContatos').IsNull then
-        NextIDContato := 1;
-
-    finally
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha 418: BtnNovoClick - Free qry às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-      qry.Free;
-    end;
-
-    //Limpar todos os campos dos contatos
-    EdtCodContato.Text       := IntToStr(NextIDContato);
-    EdtNomeContato.Text      := '';
-    EdtTelefoneContato.Text  := '';
-    EdtCElularContato.Text   := '';
-    EdtEmailContato.Text     := '';
-    CBAtivoContato.ItemIndex := 1;
+    // Verifique se o valor retornado é NULL (sem registros na tabela)
+    if qry.FieldByName('NextID').IsNull then
+      NextID := 1;
 
   finally
-    LogManager.Free;
+    if FGravarLog then
+    begin
+      LogManager := TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha 452: BtnNovoClick - Free qry às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      finally
+        LogManager.Free;
+      end;
+    end;
+    qry.Free;
   end;
+
+  // Limpar todos os campos de clientes
+  EdtCodCliente.Text := IntToStr(NextID);
+  EdtRazao.Text := '';
+  EdtCnpj.Text := '';
+  EdtEndereco.Text := '';
+  EdtNumero.Text := '';
+  EdtComplemento.Text := '';
+  EdtCep.Text := '';
+  EdtCidade.Text := '';
+  EdtBairro.Text := '';
+  CBUF.ItemIndex := 24;
+  CBAtivo.ItemIndex := 1;
+
+  // Foco no campo EdtRazao
+  if EdtRazao.CanFocus then
+    EdtRazao.SetFocus;
+
+  qry := TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  try
+    qry.SQL.Text := 'SELECT MAX(idcontatos) + 1 AS NextIDContatos FROM contatos';
+    qry.Open;
+
+    NextIDContato := qry.FieldByName('NextIDContatos').AsInteger;
+
+    // Verifique se o valor retornado é NULL (sem registros na tabela)
+    if qry.FieldByName('NextIDContatos').IsNull then
+      NextIDContato := 1;
+
+  finally
+    if FGravarLog then
+    begin
+      LogManager := TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha 497: BtnNovoClick - Free qry às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      finally
+        LogManager.free;
+      end;
+    end;
+    qry.Free;
+  end;
+
+  //Limpar todos os campos dos contatos
+  EdtCodContato.Text       := IntToStr(NextIDContato);
+  EdtNomeContato.Text      := '';
+  EdtTelefoneContato.Text  := '';
+  EdtCElularContato.Text   := '';
+  EdtEmailContato.Text     := '';
+  CBAtivoContato.ItemIndex := 1;
+
 end;
 
 procedure TFrmCadastroClientes.BtnPesquisarClick(Sender: TObject);
@@ -524,39 +561,55 @@ end;
 
 procedure TFrmCadastroClientes.BtnUltimoClick(Sender: TObject);
 begin
-  PopularDataSet;  //Ver uma forma de aba Cnotatos Limpar Campo se não tiver registro de contatos daquele cliente.
+  FBtnUltimo:='S';
+  PopularDataSet;  //Ver uma forma de aba Contatos Limpar Campos e pegar o proxi IDContato se não tiver registro de contatos daquele cliente.
   DataSet.Last;
   OnDataSetChange;
 end;
 
 procedure TFrmCadastroClientes.CarregarConfiguracao;
 var
-   IniFile: TIniFile;
-   LogManager: TLogManager;
+   IniFile    : TIniFile;
+   LogManager : TLogManager;
 begin
   LogManager:= TLogManager.Create;
   try
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 501 - Carregar Configuração - Criou o IniFile às ' + DateTimeStr);
+    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 581 - Carregar Configuração - Criou o IniFile às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
-    try
-      FSomenteAtivos := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
-      FSemContatos   := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
-      FHabilitarLogsSistema := IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
-   finally
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 512 - Carregar Configuração - Deu Free no IniFile às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-      IniFile.Free;
-   end;
-
+    LogManager.CarregarConfiguracao;
+    FSomenteAtivos        := LogManager.FSomenteAtivos;
+    FSemContatos          := LogManager.FSemContatos;
+    FHabilitarLogsSistema := LogManager.FHabilitarLogsSistema;
   finally
     LogManager.Free;
   end;
+
+
+//  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+//  try
+//    FSomenteAtivos        := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+//    FSemContatos          := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+//    FHabilitarLogsSistema := IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
+//  finally
+//    if FGravarLog then
+//    begin
+//      LogManager := TLogManager.Create;
+//      try
+//        CurrentDateTime := Now;
+//        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+//        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 600 - Carregar Configuração - Deu Free no IniFile às ' + DateTimeStr);
+//        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+//
+//      finally
+//        LogManager.Free;
+//      end;
+//
+//    end;
+//    IniFile.Free;
+//  end;
 
 end;
 
@@ -566,29 +619,31 @@ var
   Cor: TAlphaColor;
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - na Cadastro de Clientes: Linha : 533 - Entrou no Carregar Cores às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-    IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
     try
-      Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - na Cadastro de Clientes: Linha : 625 - Entrou no Carregar Cores às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
-      IniFile.UpdateFile;
-      IniFile.Free;
+      LogManager.Free;
     end;
+  end;
 
-    for var I := 0 to FrmCadastroClientes.ComponentCount - 1 do
-    begin
-      if FrmCadastroClientes.Components[I] is TRectangle then
-        TRectangle(FrmCadastroClientes.Components[I]).Fill.Color := Cor;
-    end;
-
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
   finally
-    LogManager.Free;
+    IniFile.UpdateFile;
+    IniFile.Free;
+  end;
+  //Varre todos os TRecTangle para pintar com a cor escolhida
+  for var I := 0 to FrmCadastroClientes.ComponentCount - 1 do
+  begin
+    if FrmCadastroClientes.Components[I] is TRectangle then
+      TRectangle(FrmCadastroClientes.Components[I]).Fill.Color := Cor;
   end;
 
 end;
@@ -599,96 +654,107 @@ var
   I: Integer;
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 565 - Entrou no Carregar Linguagem - Criou o IniFile às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-    IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
     try
-      FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
-
-     if FLinguagem = 'Portuguese' then
-     begin
-       TabItemCadastro.Text         := 'Cadastro';
-       LblCodCliente.Text           := 'Cod.Cliente';
-       LblRazaoSocial.Text          := 'Razão Social / Nome';
-       LblCnpj.Text                 := 'CNPJ / CPF';
-       LblEndereco.Text             := 'Endereço';
-       LblNumero.Text               := 'Número';
-       LblComplemento.Text          := 'Complemento';
-       LblCEP.Text                  := 'CEP';
-       LblCidade.Text               := 'Cidade';
-       LblBairro.Text               := 'Bairro';
-       LblUF.Text                   := 'UF';
-       LblAtivo.Text                := 'Ativo';
-       TabItemPesquisa.Text         := 'Pesquisa';
-       LblPesquisar.Text            := 'Pesquisar';
-       BtnPesquisar.Text            := '&Confirmar';
-       BtnNovo.Text                 := '&Novo';
-       BtnAlterar.Text              := '&Alterar';
-       BtnExcluir.Text              := '&Excluir';
-       BtnGravar.Text               := '&Salvar';
-       TabItemContato.Text          := 'Contato';
-       lblCondContato.Text          := 'Cod. Contato';
-       LblNomeContato.Text          := 'Nome';
-       lblTelefoneContato.Text      := 'Telefone';
-       lblEmailContato.Text         := 'E-mail';
-       LblAtivoContato.Text         := 'Ativo';
-       TabItemModeloCarro.Text      := 'Modelo Carro';
-       lblidmodelocarro.Text        := 'Cod. Modelo';
-       lblModelo.Text               := 'Modelo';
-       GroupBoxFoto.Text            := 'Foto';
-       FrmCadastroClientes.Caption  := 'Cadastro de Clientes';
-       lblTitulo.Text               := 'Cadastro de Clientes';
-     end
-     else if FLinguagem = 'Ingles' then
-     begin
-       TabItemCadastro.Text         := 'Register';
-       LblCodCliente.Text           := 'Customer Code';
-       LblRazaoSocial.Text          := 'Corporate Name / Name';
-       LblCnpj.Text                 := 'Tax Identification Number - TIN';
-       LblEndereco.Text             := 'Address';
-       LblNumero.Text               := 'Number';
-       LblComplemento.Text          := 'Complement';
-       LblCEP.Text                  := 'Zip code';
-       LblCidade.Text               := 'City';
-       LblBairro.Text               := 'Neighborhood';
-       LblUF.Text                   := 'State';
-       LblAtivo.Text                := 'Active';
-       TabItemPesquisa.Text         := 'Search';
-       LblPesquisar.Text            := 'To look for';
-       BtnPesquisar.Text            := '&Confirm';
-       BtnNovo.Text                 := '&New';
-       BtnAlterar.Text              := '&Alter';
-       BtnExcluir.Text              := '&Delete';
-       BtnGravar.Text               := '&Save';
-       TabItemContato.Text          := 'Contact';
-       lblCondContato.Text          := 'Cod. Contact';
-       LblNomeContato.Text          := 'Name';
-       lblTelefoneContato.Text      := 'Telephone';
-       lblEmailContato.Text         := 'E-mail';
-       LblAtivoContato.Text         := 'Active';
-       TabItemModeloCarro.Text      := 'Model Car';
-       lblidmodelocarro.Text        := 'Model Id';
-       lblModelo.Text               := 'Model';
-       GroupBoxFoto.Text            := 'Photo';
-       FrmCadastroClientes.Caption  := 'Customer Registration';
-       lblTitulo.Text               := 'Customer Registration';
-     end;
-
-    finally
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 644 - Finalizou o Carregar Linguagem - Deu Free no IniFile às ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 660 - Entrou no Carregar Linguagem - Criou o IniFile às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-      IniFile.Free;
+    finally
+      Logmanager.Free;
     end;
+  end;
+
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+    FLinguagem :=IniFile.ReadString('Traducao', 'Linguagem', '');
+
+   if FLinguagem = 'Portuguese' then
+   begin
+     TabItemCadastro.Text         := 'Cadastro';
+     LblCodCliente.Text           := 'Cod.Cliente';
+     LblRazaoSocial.Text          := 'Razão Social / Nome';
+     LblCnpj.Text                 := 'CNPJ / CPF';
+     LblEndereco.Text             := 'Endereço';
+     LblNumero.Text               := 'Número';
+     LblComplemento.Text          := 'Complemento';
+     LblCEP.Text                  := 'CEP';
+     LblCidade.Text               := 'Cidade';
+     LblBairro.Text               := 'Bairro';
+     LblUF.Text                   := 'UF';
+     LblAtivo.Text                := 'Ativo';
+     TabItemPesquisa.Text         := 'Pesquisa';
+     LblPesquisar.Text            := 'Pesquisar';
+     BtnPesquisar.Text            := '&Confirmar';
+     BtnNovo.Text                 := '&Novo';
+     BtnAlterar.Text              := '&Alterar';
+     BtnExcluir.Text              := '&Excluir';
+     BtnGravar.Text               := '&Salvar';
+     TabItemContato.Text          := 'Contato';
+     lblCondContato.Text          := 'Cod. Contato';
+     LblNomeContato.Text          := 'Nome';
+     lblTelefoneContato.Text      := 'Telefone';
+     lblEmailContato.Text         := 'E-mail';
+     LblAtivoContato.Text         := 'Ativo';
+     TabItemModeloCarro.Text      := 'Modelo Carro';
+     lblidmodelocarro.Text        := 'Cod. Modelo';
+     lblModelo.Text               := 'Modelo';
+     GroupBoxFoto.Text            := 'Foto';
+     FrmCadastroClientes.Caption  := 'Cadastro de Clientes';
+     lblTitulo.Text               := 'Cadastro de Clientes';
+   end
+   else if FLinguagem = 'Ingles' then
+   begin
+     TabItemCadastro.Text         := 'Register';
+     LblCodCliente.Text           := 'Customer Code';
+     LblRazaoSocial.Text          := 'Corporate Name / Name';
+     LblCnpj.Text                 := 'Tax Identification Number - TIN';
+     LblEndereco.Text             := 'Address';
+     LblNumero.Text               := 'Number';
+     LblComplemento.Text          := 'Complement';
+     LblCEP.Text                  := 'Zip code';
+     LblCidade.Text               := 'City';
+     LblBairro.Text               := 'Neighborhood';
+     LblUF.Text                   := 'State';
+     LblAtivo.Text                := 'Active';
+     TabItemPesquisa.Text         := 'Search';
+     LblPesquisar.Text            := 'To look for';
+     BtnPesquisar.Text            := '&Confirm';
+     BtnNovo.Text                 := '&New';
+     BtnAlterar.Text              := '&Alter';
+     BtnExcluir.Text              := '&Delete';
+     BtnGravar.Text               := '&Save';
+     TabItemContato.Text          := 'Contact';
+     lblCondContato.Text          := 'Cod. Contact';
+     LblNomeContato.Text          := 'Name';
+     lblTelefoneContato.Text      := 'Telephone';
+     lblEmailContato.Text         := 'E-mail';
+     LblAtivoContato.Text         := 'Active';
+     TabItemModeloCarro.Text      := 'Model Car';
+     lblidmodelocarro.Text        := 'Model Id';
+     lblModelo.Text               := 'Model';
+     GroupBoxFoto.Text            := 'Photo';
+     FrmCadastroClientes.Caption  := 'Customer Registration';
+     lblTitulo.Text               := 'Customer Registration';
+   end;
 
   finally
-    LogManager.Free;
+    if FGravarLog then
+    begin
+      LogManager:= TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 747 - Finalizou o Carregar Linguagem - Deu Free no IniFile às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+
+      finally
+        LogManager.Free;
+      end;
+    end;
+    IniFile.Free;
   end;
 
 end;
@@ -715,50 +781,63 @@ Function TFrmCadastroClientes.CriarDataSet(aDadaSet: TClientDataSet): TClientDat
 var
   LogManager: TLogManager;
 begin
-  LogManager:=TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 717 - Criar DataSet - Criou o CDS às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-    CDS := TClientDataSet.Create(nil);
+  if FGravarLog then
+  begin
+    LogManager:=TLogManager.Create;
     try
-      CDS.FieldDefs.Add('IDCLIENTES', ftInteger);
-      CDS.FieldDefs.Add('RAZAO', ftString, 100);
-      CDS.FieldDefs.Add('CNPJ_CPF', ftString, 18);
-      CDS.FieldDefs.Add('ENDERECO', ftString, 100);
-      CDS.FieldDefs.Add('NUMERO', ftInteger);
-      CDS.FieldDefs.Add('COMPLEMENTO', ftString, 100);
-      CDS.FieldDefs.Add('CEP', ftString, 10);
-      CDS.FieldDefs.Add('CIDADE', ftString, 100);
-      CDS.FieldDefs.Add('BAIRRO', ftString, 100);
-      CDS.FieldDefs.Add('UF', ftString, 2);
-      CDS.FieldDefs.Add('ATIVO', ftString,1);
-
-      CDS.FieldDefs.Add('IDCONTATOS', ftInteger); //Campos da Tabela Contatos
-      CDS.FieldDefs.Add('NOMECONTATO', ftString, 45);
-      CDS.FieldDefs.Add('TELEFONE', ftString,45);
-      CDS.FieldDefs.Add('CELULAR', ftString,45);
-      CDS.FieldDefs.Add('EMAIL', ftString, 100);
-      CDS.FieldDefs.Add('CNPJREVENDA', ftString, 15);
-      CDS.FieldDefs.Add('ATIVOCONTATO', ftString,1);
-
-      CDS.CreateDataSet;
-
-      Result:= CDS;
-
-    finally
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 750 - Finalizou o Criar DataSet - e não deu Free no CDS às ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 717 - Criar DataSet - Criou o CDS às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-      FGravarLog:=  LerSalvarLogsBancoDeDados;
-      if (FGravarLog) and (FHabilitarLogsSistema='S') then
-        GravarLogsBancoDeDados;
+    finally
+      LogManager.Free;
     end;
+  end;
+
+  CDS := TClientDataSet.Create(nil);
+  try
+    CDS.FieldDefs.Add('IDCLIENTES', ftInteger);
+    CDS.FieldDefs.Add('RAZAO', ftString, 100);
+    CDS.FieldDefs.Add('CNPJ_CPF', ftString, 18);
+    CDS.FieldDefs.Add('ENDERECO', ftString, 100);
+    CDS.FieldDefs.Add('NUMERO', ftInteger);
+    CDS.FieldDefs.Add('COMPLEMENTO', ftString, 100);
+    CDS.FieldDefs.Add('CEP', ftString, 10);
+    CDS.FieldDefs.Add('CIDADE', ftString, 100);
+    CDS.FieldDefs.Add('BAIRRO', ftString, 100);
+    CDS.FieldDefs.Add('UF', ftString, 2);
+    CDS.FieldDefs.Add('ATIVO', ftString,1);
+
+    CDS.FieldDefs.Add('IDCONTATOS', ftInteger); //Campos da Tabela Contatos
+    CDS.FieldDefs.Add('NOMECONTATO', ftString, 45);
+    CDS.FieldDefs.Add('TELEFONE', ftString,45);
+    CDS.FieldDefs.Add('CELULAR', ftString,45);
+    CDS.FieldDefs.Add('EMAIL', ftString, 100);
+    CDS.FieldDefs.Add('CNPJREVENDA', ftString, 15);
+    CDS.FieldDefs.Add('ATIVOCONTATO', ftString,1);
+
+    CDS.CreateDataSet;
+
+    Result:= CDS;
+
   finally
-    LogManager.Free;
+    if FGravarLog then
+    begin
+      LogManager := TLogManager.Create;
+      try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 827 - Finalizou o Criar DataSet - e não deu Free no CDS às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      finally
+        LogManager.Free;
+      end;
+    end;
+
+    FGravarLog:=  LerSalvarLogsBancoDeDados;
+    if (FGravarLog) and (FHabilitarLogsSistema='S') then
+      GravarLogsBancoDeDados;
+
   end;
 
 end;
@@ -769,85 +848,99 @@ var
   ModelContatos: TModelContato;
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 799 - Entrou no PopularDataSet e criou Model às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    Model         := TModelCliente.create;
-
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 805 - Entrou o PopularDataSet - e criou ModelContatos às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    ModelContatos := TModelContato.Create;
-
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 811 - Entrou o PopularDataSet - e criou DataSet às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-    DataSet       := TClientDataset.Create(nil);
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
     try
-      if FBtnUltimo='S' then
-        qry     := Model.CarregarTodosClientes(DataSet, FSomenteAtivos, FSemContatos, 'S')
-      else
-        qry     := Model.CarregarTodosClientes(DataSet, FSomenteAtivos, FSemContatos);
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 854 - Entrou no PopularDataSet e criou Model às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-      DataSet := CriarDataSet(DataSet);
-      DataSet.Open;
-      qry.First;
-      while not qry.eof do
-      begin
-        DataSet.Append;
-        DataSet.FieldByName('idclientes').AsInteger := Qry.FieldByName('idclientes').AsInteger;
-        DataSet.FieldByName('razao').AsString       := Qry.FieldByName('razao').AsString;
-        DataSet.FieldByName('cnpj_cpf').AsString    := Qry.FieldByName('cnpj_cpf').AsString;
-        DataSet.FieldByName('endereco').AsString    := Qry.FieldByName('endereco').AsString;
-        DataSet.FieldByName('numero').AsInteger     := Qry.FieldByName('numero').AsInteger;
-        DataSet.FieldByName('complemento').AsString := Qry.FieldByName('complemento').AsString;
-        DataSet.FieldByName('CEP').AsString         := Qry.FieldByName('CEP').AsString;
-        DataSet.FieldByName('Cidade').AsString      := Qry.FieldByName('Cidade').AsString;
-        DataSet.FieldByName('Bairro').AsString      := Qry.FieldByName('Bairro').AsString;
-        DataSet.FieldByName('UF').AsString          := Qry.FieldByName('UF').AsString;
-        DataSet.FieldByName('ATIVO').AsString       := Qry.FieldByName('ATIVO').AsString;
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 859 - Entrou o PopularDataSet - e criou ModelContatos às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-        //Campos da Tabela Contatos
-        DataSet.FieldByName('IDCONTATOS').AsInteger  := Qry.FieldByName('IDCONTATOS').AsInteger;
-        DataSet.FieldByName('NOMECONTATO').AsString  := Qry.FieldByName('NOMECONTATO').AsString;
-        DataSet.FieldByName('TELEFONE').AsString     := Qry.FieldByName('TELEFONE').AsString;
-        DataSet.FieldByName('CELULAR').AsString      := Qry.FieldByName('CELULAR').AsString;
-        DataSet.FieldByName('EMAIL').AsString        := Qry.FieldByName('EMAIL').AsString;
-        DataSet.FieldByName('CNPJREVENDA').AsString  := Qry.FieldByName('CNPJREVENDA').AsString;
-        DataSet.FieldByName('ATIVOCONTATO').AsString := Qry.FieldByName('ATIVO').AsString;
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 864 - Entrou o PopularDataSet - e criou DataSet às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-        DataSet.Post;
-        qry.Next;
-      end;
-      DataSet.First;
-      OnDataSetChange;
     finally
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 852 - Finalizou a PopularDataSet - Free Model  às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-      Model.Free;
+      LogManager.Free;
+    end;
+  end;
+  Model         := TModelCliente.create;
+  ModelContatos := TModelContato.Create;
 
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 858 - Finalizou a PopularDataSet - Free ModelContatos  às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-      ModelContatos.Free;
+  DataSet       := TClientDataset.Create(nil);
+  try
+    if FBtnUltimo='S' then
+      qry := Model.CarregarTodosClientes(DataSet, FSomenteAtivos, FSemContatos, 'S')
+    else
+      qry := Model.CarregarTodosClientes(DataSet, FSomenteAtivos, FSemContatos);
 
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 864 - Finalizou a PopularDataSet - E não deu free no DadaSet às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    DataSet := CriarDataSet(DataSet);
+    DataSet.Open;
+    qry.First;
+    while not qry.eof do
+    begin
+      DataSet.Append;
+      DataSet.FieldByName('idclientes').AsInteger := Qry.FieldByName('idclientes').AsInteger;
+      DataSet.FieldByName('razao').AsString       := Qry.FieldByName('razao').AsString;
+      DataSet.FieldByName('cnpj_cpf').AsString    := Qry.FieldByName('cnpj_cpf').AsString;
+      DataSet.FieldByName('endereco').AsString    := Qry.FieldByName('endereco').AsString;
+      DataSet.FieldByName('numero').AsInteger     := Qry.FieldByName('numero').AsInteger;
+      DataSet.FieldByName('complemento').AsString := Qry.FieldByName('complemento').AsString;
+      DataSet.FieldByName('CEP').AsString         := Qry.FieldByName('CEP').AsString;
+      DataSet.FieldByName('Cidade').AsString      := Qry.FieldByName('Cidade').AsString;
+      DataSet.FieldByName('Bairro').AsString      := Qry.FieldByName('Bairro').AsString;
+      DataSet.FieldByName('UF').AsString          := Qry.FieldByName('UF').AsString;
+      DataSet.FieldByName('ATIVO').AsString       := Qry.FieldByName('ATIVO').AsString;
+
+      //Campos da Tabela Contatos
+      DataSet.FieldByName('IDCONTATOS').AsInteger  := Qry.FieldByName('IDCONTATOS').AsInteger;
+      DataSet.FieldByName('NOMECONTATO').AsString  := Qry.FieldByName('NOMECONTATO').AsString;
+      DataSet.FieldByName('TELEFONE').AsString     := Qry.FieldByName('TELEFONE').AsString;
+      DataSet.FieldByName('CELULAR').AsString      := Qry.FieldByName('CELULAR').AsString;
+      DataSet.FieldByName('EMAIL').AsString        := Qry.FieldByName('EMAIL').AsString;
+      DataSet.FieldByName('CNPJREVENDA').AsString  := Qry.FieldByName('CNPJREVENDA').AsString;
+      DataSet.FieldByName('ATIVOCONTATO').AsString := Qry.FieldByName('ATIVO').AsString;
+
+      DataSet.Post;
+      qry.Next;
     end;
 
+    DataSet.First;
+    OnDataSetChange;
+
   finally
-    LogManager.Free;
+    if FGravarLog then
+    begin
+      LogManager := TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 922 - Finalizou a PopularDataSet - Free Model  às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 927 - Finalizou a PopularDataSet - Free ModelContatos  às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 932 - Finalizou a PopularDataSet - E não deu free no DadaSet às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      finally
+        LogManager.Free;
+      end;
+
+    end;
+    Model.Free;
+    ModelContatos.Free;
   end;
 
 end;
@@ -955,48 +1048,52 @@ procedure TFrmCadastroClientes.FormClose(Sender: TObject;
 var
    LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Linha: 928 - FormClose -  Deu Free no CDS às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    CDS.Free;
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Cadastro de Clientes - Linha: 1054 - FormClose -  Deu Free no CDS às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 934 - FormClose -  Deu Free no FCliente às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FCliente.Free;
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Cadastro de Clientes - Liha: 1059 - FormClose -  Deu Free no FCliente às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 940 - FormClose -  Deu Free no FContato às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FContato.Free;
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Cadastro de Clientes - Liha: 1064 - FormClose -  Deu Free no FContato às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Cadastro de Clientes - Liha: 946 - FormClose -  Deu Free no FController às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FController.Free;
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela Cadastro de Clientes - Liha: 1069 - FormClose -  Deu Free no FController às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - na Cadastro de Clientes - Linha : 952 - FrmCadastroClientes Destroy - e deu Free no FConexao às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-    FConexao.Close;
-    FConexao.Free;
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - na Cadastro de Clientes - Linha : 1074 - FrmCadastroClientes Destroy - e deu Free no FConexao às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-    if Assigned(qry) then
-    begin
-      qry.Close;
-      qry.Free;
+      if Assigned(qry) then
+      begin
+        qry.Close;
+        qry.Free;
+      end;
+
+    finally
+      LogManager.Free;
     end;
-
-  finally
-    LogManager.Free;
   end;
+
+  CDS.Free;
+  FCliente.Free;
+  FContato.Free;
+  FController.Free;
+  FConexao.Close;
+  FConexao.Free;
 
 end;
 
@@ -1004,50 +1101,48 @@ procedure TFrmCadastroClientes.FormCreate(Sender: TObject);
 var
   LogManager: TLogManager;
 begin
-  LogManager := TLogManager.Create;
-  try
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes - Linha: 1018 - FormCreate - Criou o LogManager às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+  if FGravarLog then
+  begin
+    LogManager := TLogManager.Create;
+    try
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Tela - Cadastro de Clientes - Linha: 1107 - FormCreate - Criou o LogManager às ' + DateTimeStr);
+       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 680 - Create - Criou o LogManager às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1112 - Create - Criou o FConexao às ' + DateTimeStr);
+       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 685 - Create - Criou o FConexao às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FConexao := TConnection.CreateConnection;
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Tela -  Cadastro de Clientes: Linha : 1117 - Create - Criou o FCliente às ' + DateTimeStr);
+       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela -  Cadastro de Clientes: Linha : 691 - Create - Criou o FCliente às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FCliente := TClientes.create;
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1122 - Create - Criou o FContato às ' + DateTimeStr);
+       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 697 - Create - Criou o FContato às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FContato := TContato.Create;
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1127 - Create - Criou o FController às ' + DateTimeStr);
+       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
 
-     CurrentDateTime := Now;
-     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-     LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 679 - Create - Criou o FController às ' + DateTimeStr);
-     LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-     FController:= TControllerCliente.Create;
-
-     CarregarConfiguracao;
-     PopularDataSet;
-     CarregarCores;
-     CarregarLinguagem;
-
-  finally
-    LogManager.Free;
+    finally
+      LogManager.Free;
+    end;
   end;
+  FConexao := TConnection.CreateConnection;
+  FCliente := TClientes.create;
+  FContato := TContato.Create;
+  FController:= TControllerCliente.Create;
+
+  CarregarConfiguracao;
+  PopularDataSet;
+  CarregarCores;
+  CarregarLinguagem;
 
 end;
 
@@ -1103,7 +1198,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1086 - Entrou no OnDataChange às ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1198 - Entrou no OnDataChange às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
       LogManager.Free;
@@ -1161,7 +1256,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1119 - Entrou on PopularConntatos e Criou Fcontato às ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1256 - Entrou on PopularConntatos e Criou Fcontato às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
       LogManager.Free;
@@ -1176,7 +1271,7 @@ begin
   FContato.telefone    := EdtTelefoneContato.Text;
   FContato.celular     := EdtCelularContato.Text;
   FContato.email       := EdtEmailContato.Text;
-//  FContato.cnpjrevenda := ; //Provável que não seja necessário
+  //FContato.cnpjrevenda := ; //Provável que não seja necessário
 
   if FGravarLog then
   begin
@@ -1184,7 +1279,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha :  1135 - Finalizou a PopularConntatos e NÂO deu free no FContato às ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha :  1279 - Finalizou a PopularConntatos e NÂO deu free no FContato às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
       LogManager.Free;
@@ -1196,36 +1291,46 @@ procedure TFrmCadastroClientes.PopularClientes;
 var
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1172 - Entrou na PopularClientes e Criou FCliente às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-//    FCliente := TClientes.Create;
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
     try
-       if FTIpo<>'N' then
-         FCliente.idcliente   := StrTOInt(EdtCodCliente.Text);
-
-       FCliente.razaosocial := EdtRazao.Text;
-       FCliente.cnpj        := EdtCnpj.Text;
-       FCliente.Endereco    := EdtEndereco.Text;
-       FCliente.Numero      := StrToInt(EdtNumero.Text);
-       FCliente.Complemento := EdtComplemento.Text;
-       FCliente.Cep         := EdtCep.Text;
-       FCliente.Cidade      := EdtCidade.Text;
-       FCliente.Bairro      := EdtBairro.Text;
-       FCliente.UF          := CBUF.Items[CBUF.ItemIndex];
-       FCliente.Ativo       := CBAtivo.Items[CBAtivo.ItemIndex];
+       CurrentDateTime := Now;
+       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+       LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1297 - Entrou na PopularClientes e Criou FCliente às ' + DateTimeStr);
+       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
-      CurrentDateTime := Now;
-      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1193 - Finalizou a PopularClientes e não deu Free na FCliente às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+       LogManager.Free;
     end;
+  end;
+
+  try
+     if FTIpo<>'N' then
+       FCliente.idcliente   := StrTOInt(EdtCodCliente.Text);
+
+     FCliente.razaosocial := EdtRazao.Text;
+     FCliente.cnpj        := EdtCnpj.Text;
+     FCliente.Endereco    := EdtEndereco.Text;
+     FCliente.Numero      := StrToInt(EdtNumero.Text);
+     FCliente.Complemento := EdtComplemento.Text;
+     FCliente.Cep         := EdtCep.Text;
+     FCliente.Cidade      := EdtCidade.Text;
+     FCliente.Bairro      := EdtBairro.Text;
+     FCliente.UF          := CBUF.Items[CBUF.ItemIndex];
+     FCliente.Ativo       := CBAtivo.Items[CBAtivo.ItemIndex];
   finally
-    LogManager.Free;
+    if FGravarLog then
+    begin
+      LogManager:= TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1325 - Finalizou a PopularClientes e não deu Free na FCliente às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      finally
+        LogManager.Free;
+      end;
+    end;
   end;
 
 end;
@@ -1235,16 +1340,22 @@ var
   I, J: Integer;
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1210 - Entrou na PopularGridClientes às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 1346 - Entrou na PopularGridClientes às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
+    end;
+  end;
 
-    // Limpar as colunas existentes
-    while GridClientes.ColumnCount > 0 do  //Não teria que ter um begin aqui?
-      GridClientes.RemoveObject(GridClientes.Columns[0]);
+  // Limpar as colunas existentes
+  while GridClientes.ColumnCount > 0 do
+    GridClientes.RemoveObject(GridClientes.Columns[0]);
 
     // Configurar as colunas do grid
     GridClientes.RowCount := DataSet.RecordCount + 1;
@@ -1289,24 +1400,23 @@ begin
         else
         if UPPERCASE(DataSet.Fields[I].FieldName) = 'UF' then
           GridClientes.Columns[I].Header := 'STATE'
-        {
-        ver aqui se serão necessários os campos de datas e idmodelocarro
-        }
+
       end;
     end;
 
-    // Populando as células do grid com os dados do dataset
-    DataSet.First;
-    I := 0;
+  // Populando as células do grid com os dados do dataset
+  DataSet.First;
+  I := 0;
 
-    while not DataSet.Eof do
+  while not DataSet.Eof do
+  begin
+    Inc(I);
+
+    for J := 0 to DataSet.FieldCount - 1 do
     begin
-      Inc(I);
-      for J := 0 to DataSet.FieldCount - 1 do
+      if FLinguagem = 'Ingles' then
       begin
-        if FLinguagem = 'Ingles' then
-        begin
-          if DataSet.Fields[J].FieldName = 'ATIVO' then
+        if DataSet.Fields[J].FieldName = 'ATIVO' then
         begin
           if DataSet.Fields[J].AsString = 'S' then
             GridClientes.Cells[J, I] := 'Y'
@@ -1318,58 +1428,94 @@ begin
       end
       else
         GridClientes.Cells[J, I] := DataSet.Fields[J].AsString;
-      end;
-
-      DataSet.Next;
-
     end;
-  finally
-    LogManager.Free;
-    DataSet.Close;
-    DataSet.Free;
+
+    DataSet.Next;
+
   end;
+  //DataSet.Close;
+  DataSet.Free;
 
 end;
+
+
 
 procedure TFrmCadastroClientes.PreencheDadosEncontradosDoCliente;
 var
   SelectedRow: Integer;
   LogManager: TLogManager;
 begin
-  LogManager:= TLogManager.Create;
-  try
-    CurrentDateTime := Now;
-    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Clientes  - Linha : 1308 - Enntrou na PreecheDadosEncontratosDoCliente às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
-
-    if GridClientes.Selected >= 0 then
-    begin
-      SelectedRow := GridClientes.Selected;
-      EdtCodCliente.Text  := GridClientes.Cells[0, SelectedRow];
-      EdtRazao.Text       := GridClientes.Cells[1, SelectedRow];
-      EdtCnpj.Text        := GridClientes.Cells[2, SelectedRow];
-      EdtEndereco.Text    := GridClientes.Cells[3, SelectedRow];
-      EdtNumero.Text      := GridClientes.Cells[4, SelectedRow];
-      EdtComplemento.Text := GridClientes.Cells[5, SelectedRow];
-      EdtCep.Text         := GridClientes.Cells[6, SelectedRow];
-      EdtCidade.Text      := GridClientes.Cells[7, SelectedRow];
-      EdtBairro.Text      := GridClientes.Cells[8, SelectedRow];
-      CBUF.ItemIndex      := CBUF.Items.IndexOf(GridClientes.Cells[9, SelectedRow]);
-      CBAtivo.ItemIndex   := CBAtivo.Items.IndexOf(GridClientes.Cells[10, SelectedRow]);
-
-      //CONTATO
-      EdtCodContato.Text       := GridClientes.Cells[11, SelectedRow];
-      EdtNomeContato.Text      := GridClientes.Cells[12, SelectedRow];
-      EdtTelefoneContato.Text  := GridClientes.Cells[13, SelectedRow];
-      EdtCelularContato.Text   := GridClientes.Cells[14, SelectedRow];
-      EdtEmailContato.Text     := GridClientes.Cells[15, SelectedRow];
-      CBAtivoContato.ItemIndex := CBAtivoContato.Items.IndexOf(GridClientes.Cells[9, SelectedRow]);
+  if FGravarLog then
+  begin
+    LogManager:= TLogManager.Create;
+    try
+      CurrentDateTime := Now;
+      DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+      LogManager.AddLog('Tela - Cadastro de Clientes  - Linha : 1453 - Enntrou na PreecheDadosEncontratosDoCliente às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    finally
+      LogManager.Free;
     end;
-  finally
-    LogManager.Free;
   end;
 
+  if GridClientes.Selected >= 0 then
+  begin
+    SelectedRow := GridClientes.Selected;
+    EdtCodCliente.Text  := GridClientes.Cells[0, SelectedRow];
+    EdtRazao.Text       := GridClientes.Cells[1, SelectedRow];
+    EdtCnpj.Text        := GridClientes.Cells[2, SelectedRow];
+    EdtEndereco.Text    := GridClientes.Cells[3, SelectedRow];
+    EdtNumero.Text      := GridClientes.Cells[4, SelectedRow];
+    EdtComplemento.Text := GridClientes.Cells[5, SelectedRow];
+    EdtCep.Text         := GridClientes.Cells[6, SelectedRow];
+    EdtCidade.Text      := GridClientes.Cells[7, SelectedRow];
+    EdtBairro.Text      := GridClientes.Cells[8, SelectedRow];
+    CBUF.ItemIndex      := CBUF.Items.IndexOf(GridClientes.Cells[9, SelectedRow]);
+    CBAtivo.ItemIndex   := CBAtivo.Items.IndexOf(GridClientes.Cells[10, SelectedRow]);
+
+    //CONTATO
+    EdtCodContato.Text       := GridClientes.Cells[11, SelectedRow];
+    EdtNomeContato.Text      := GridClientes.Cells[12, SelectedRow];
+    EdtTelefoneContato.Text  := GridClientes.Cells[13, SelectedRow];
+    EdtCelularContato.Text   := GridClientes.Cells[14, SelectedRow];
+    EdtEmailContato.Text     := GridClientes.Cells[15, SelectedRow];
+    CBAtivoContato.ItemIndex := CBAtivoContato.Items.IndexOf(GridClientes.Cells[9, SelectedRow]);
+  end;
+
+end;
+
+function TFrmCadastroClientes.ProximoIDContato: integer;
+var
+  qry: TFDQuery;
+  LogManager: TLogManager;
+begin
+  qry := TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  try
+    qry.SQL.Text := 'SELECT MAX(idcontatos) + 1 AS NextIDContatos FROM contatos';
+    qry.Open;
+
+    FNextIDContato := qry.FieldByName('NextIDContatos').AsInteger;
+
+    // Verifique se o valor retornado é NULL (sem registros na tabela)
+    if qry.FieldByName('NextIDContatos').IsNull then
+      FNextIDContato := 1;
+
+  finally
+    if FGravarLog then
+    begin
+      LogManager:= TLogManager.Create;
+      try
+        CurrentDateTime := Now;
+        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha 1510 - Fucntion ProximoIDContato - Free qry às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      finally
+        LogManager.Free;
+      end;
+    end;
+    qry.Free;
+  end;
 end;
 
 procedure TFrmCadastroClientes.TabItemPesquisaClick(Sender: TObject);
