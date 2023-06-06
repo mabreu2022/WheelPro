@@ -255,7 +255,7 @@ begin
   begin
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela Login - Entrou no Create : Linha : 205 - e criou a FConexao às ' + DateTimeStr);
+    LogManager.AddLog('Tela Login - Entrou no Create : Linha : 258 - e criou a FConexao às ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
   end;
 
@@ -295,7 +295,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela Login - Entrou no FormCreate : Linha 228 - e criou LogManager às ' + DateTimeStr);
+      LogManager.AddLog('Tela Login - Entrou no FormCreate : Linha 298 - e criou LogManager às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
     finally
       LogManager.Free;

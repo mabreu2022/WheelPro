@@ -29,12 +29,13 @@ type
   TModelContato = class
     private
       Fconn: TFDConnection;
-      qry: TFDQuery;
       FSomenteAtivos: string;
       FGravarLog: Boolean;
+      class  var  qry: TFDQuery;
     procedure SetSomenteAtivos(const Value: string);
     public
-      FContatos: TContato;
+      FContatos : TContato;
+
       property SomenteAtivos: string read FSomenteAtivos write SetSomenteAtivos;
       //create
       Class function SalvarContato(aContato: TContato; aCliente: TClientes): Boolean;
@@ -43,7 +44,8 @@ type
       function CarregarContatos(const aId: Integer): TContato;
       function CarregarTodosContatos(
                aDataSet: TClientDataSet; aSomenteAtivos: string): TFDquery; //ok
-//      function ObterContatoPorId(aId: Integer): TFDQuery;
+
+      class function ObterContatoPorId(aId: Integer): TFDQuery;
 
       //Update
       class function AlterarContato(aContato: TContato): Boolean;
@@ -66,13 +68,12 @@ implementation
 
 class function TModelContato.AlterarContato(aContato: TContato): Boolean;
 var
-   qry: TFDQuery;
-   UF: String;
-   Ativo: String;
-
-   LogManager: TLogManager;
-   CurrentDateTime: TDateTime;
-   DateTimeStr: string;
+   qry             : TFDQuery;
+   UF              : String;
+   Ativo           : String;
+   LogManager      : TLogManager;
+   CurrentDateTime : TDateTime;
+   DateTimeStr     : string;
 begin
   Result := False;
 
@@ -94,7 +95,7 @@ begin
     qry.SQL.Clear;
     qry.SQL.Text:='UPDATE fulanorodas.contatos    ' +
                   'SET                            ' +
-//                  'idcontatos  = :idcontatos    ' +
+                  //'idcontatos    = :idcontatos  ' +
                   'idclientes    = :idclientes,   ' +
                   'telefone      = :telefone,     ' +
                   'celular       = :celular,      ' +
@@ -104,37 +105,30 @@ begin
                   'nomecontato   = :nomecontato,  ' +
                   'datacadastro  = :datacadastro, ' +
                   'dataalteracao = :dataalteracao ' +
+                  //'dataexclusao  = :dataexclusao  ' +
                   'WHERE                          ' +
-                  'idclientes = :idclientes       ';
+                  'idcontatos = :idcontatos       ';
 
-    qry.ParamByName('idclientes').DataType    := ftInteger;
-    qry.ParamByName('idclientes').AsInteger   := aContato.idcliente;
-    qry.ParamByName('telefone').DataType      := ftString;
-    qry.ParamByName('telefone').AsString      := aContato.telefone;
-    qry.ParamByName('celular').DataType       := ftString;
-    qry.ParamByName('celular').AsString       := aContato.celular;
-    qry.ParamByName('email').DataType         := ftString;
-    qry.ParamByName('email').AsString         := aContato.email;
-    qry.ParamByName('cnpjrevenda').DataType   := ftString;
-    qry.ParamByName('cnpjrevenda').AsString   := aContato.cnpjrevenda;
-
-
-    qry.ParamByName('ativo').DataType         := ftString;
-    if Length(aContato.ativo) > 0 then
-      Ativo := Copy(aContato.ativo, 1, 1)
-    else
-      Ativo := '';
-
-    qry.ParamByName('ativo').AsString         := Ativo;
-
-    qry.ParamByName('nomecontato').DataType         := ftString;
-    qry.ParamByName('nomecontato').AsString         := aContato.NomeContato;
-
-    qry.ParamByName('datacadastro').DataType  := ftDateTime;
-    qry.ParamByName('datacadastro').AsDateTime:= aContato.datacadastro;
-
-    qry.ParamByName('dataalteracao').DataType  := ftDateTime;
-    qry.ParamByName('dataalteracao').AsDateTime:= aContato.dataAlteracao;
+    qry.ParamByName('idclientes').DataType      := ftInteger;
+    qry.ParamByName('idclientes').AsInteger     := aContato.idcliente;
+    qry.ParamByName('telefone').DataType        := ftString;
+    qry.ParamByName('telefone').AsString        := aContato.telefone;
+    qry.ParamByName('celular').DataType         := ftString;
+    qry.ParamByName('celular').AsString         := aContato.celular;
+    qry.ParamByName('email').DataType           := ftString;
+    qry.ParamByName('email').AsString           := aContato.email;
+    qry.ParamByName('cnpjrevenda').DataType     := ftString;
+    qry.ParamByName('cnpjrevenda').AsString     := aContato.cnpjrevenda;
+    qry.ParamByName('ativo').DataType           := ftString;
+    qry.ParamByName('ativo').AsString           := aContato.ativo;
+    qry.ParamByName('nomecontato').DataType     := ftString;
+    qry.ParamByName('nomecontato').AsString     := aContato.NomeContato;
+    qry.ParamByName('datacadastro').DataType    := ftDateTime;
+    qry.ParamByName('datacadastro').AsDateTime  := aContato.datacadastro;
+    qry.ParamByName('dataalteracao').DataType   := ftDateTime;
+    qry.ParamByName('dataalteracao').AsDateTime := aContato.dataAlteracao;
+    qry.ParamByName('idcontatos').DataType      := ftInteger;
+    qry.ParamByName('idcontatos').AsInteger     := aContato.idcontato;
 
     qry.ExecSQL;
     qry.Connection.Commit;
@@ -224,7 +218,31 @@ end;
 destructor TModelContato.destroy;
 begin
   FContatos.Free;
+
   inherited;
+end;
+
+class function TModelContato.ObterContatoPorId(aId: Integer): TFDQuery;
+begin
+  Result := Nil;
+
+  qry:= TFDQuery.Create(nil);
+  qry.Connection:=TConnection.CreateConnection;
+  try
+    qry.SQL.Clear;
+    qry.SQL.Add('SELECT * FROM CONTATOS');
+    qry.SQL.Add('WHERE IDCONTATOS=:IDCONTATOS');
+    qry.ParamByName('IDCONTATOS').DataType  := ftInteger;
+    qry.ParamByName('IDCONTATOS').AsInteger := aId;
+    qry.Open;
+
+    //ShowMessage(qry.FieldByName('ATIVO').AsString);
+
+    Result := qry;
+
+  finally
+    //qry.Free;
+  end;
 end;
 
 function TModelContato.RemoverContato(aContato: TContato): Boolean;
@@ -314,7 +332,7 @@ begin
       qry.Close;
       qry.Free;
 
-      //if  then
+      if True then
 
       LogManager := TLogManager.Create;
       try

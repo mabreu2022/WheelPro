@@ -126,22 +126,23 @@ begin
   try
     qry.Close;
     qry.SQL.Clear;
-    qry.SQL.Text:='UPDATE fulanorodas.clientes  ' +
-                  'SET                          ' +
-                  'idclientes  = :idclientes,   ' +
-                  'razao       = :razao,        ' +
-                  'cnpj_cpf    = :cnpj_cpf,     ' +
-                  'endereco    = :endereco,     ' +
-                  'numero      = :numero,       ' +
-                  'complemento = :complemento,  ' +
-                  'cep         = :cep,          ' +
-                  'cidade      = :cidade,       ' +
-                  'bairro      = :bairro,       ' +
-                  'ativo       = :ativo,        ' +
-                  'uf          = :uf,           ' +
-                  'datacadastro= :datacadastro  ' +
-                  'WHERE                        ' +
-                  'CNPJ_CPF = :CNPJ_CPF         ';
+    qry.SQL.Text:='UPDATE fulanorodas.clientes   ' +
+                  'SET                           ' +
+                  'idclientes   = :idclientes,   ' +
+                  'razao        = :razao,        ' +
+                  'cnpj_cpf     = :cnpj_cpf,     ' +
+                  'endereco     = :endereco,     ' +
+                  'numero       = :numero,       ' +
+                  'complemento  = :complemento,  ' +
+                  'cep          = :cep,          ' +
+                  'cidade       = :cidade,       ' +
+                  'bairro       = :bairro,       ' +
+                  'ativo        = :ativo,        ' +
+                  'uf           = :uf,           ' +
+                  'datacadastro = :datacadastro, ' +
+                  'dataalteracao= :dataalteracao ' +
+                  'WHERE                         ' +
+                  'CNPJ_CPF = :CNPJ_CPF          ';
 
     qry.ParamByName('idclientes').DataType    := ftInteger;
     qry.ParamByName('idclientes').AsInteger   := aCliente.idcliente;
@@ -181,6 +182,9 @@ begin
 
     qry.ParamByName('datacadastro').DataType  := ftDateTime;
     qry.ParamByName('datacadastro').AsDateTime:= aCliente.datacadastro;
+
+    qry.ParamByName('dataalteracao').DataType  := ftDateTime;
+    qry.ParamByName('dataalteracao').AsDateTime:= Now;
 
     qry.ParamByName('CNPJ_CPF').DataType       := ftString;
     qry.ParamByName('CNPJ_CPF').AsString       := aCliente.cnpj;
@@ -286,16 +290,20 @@ class procedure TModelCliente.CarregarFGravarLog;
 var
   IniFile : TIniFile;
   Valor   : String;
+  Valor2  : string;
 begin
   //ler procedure do pode gravar log
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     Valor := IniFile.ReadString('Sistema', 'SalvarLogsBancoDeDados', '');
+    Valor2:= IniFile.ReadString('Sistema', 'CarregarClientesSemContato', '');
 
-    if Valor='S' then
+    if Valor = 'S' then
       FGravarLogs := True
     else
       FGravarLogs := False;
+
+    if Valor2 = 'S' then
 
   finally
     IniFile.Free;
@@ -306,7 +314,6 @@ function TModelCliente.CarregarTodosClientes(
   aDataSet: TClientDataSet; aSomenteAtivos: string; aSemContatos: string; aNomeBotao: string = ''; aIdCliente: Integer = 0): TFDquery;
 var
   LogManager: TLogManager;
-
 begin
   if FGravarLogs then
   begin
@@ -353,15 +360,15 @@ begin
       //Caso nao encontre abrir para novo contato
       //caso encontre carregar os dados nos edits da aba de contatos.
       qry.SQL.add(' AND CO.IDCLIENTES=:IDCLIENTES');
-      qry.ParamByName('IIDCLIENTES').DataType  := ftInteger;
-      qry.ParamByName('IIDCLIENTES').AsInteger := aIdCliente;
+      qry.ParamByName('IDCLIENTES').DataType  := ftInteger;
+      qry.ParamByName('IDCLIENTES').AsInteger := aIdCliente;
       qry.Open;
 
       Result:= qry;
 
     end;
 
-    ShowMessage('A qtde. de todos os clientes é de: ' + IntToStr(qry.recordcount));
+    //ShowMessage('A qtde. de todos os clientes é de: ' + IntToStr(qry.recordcount));
 
     if FGravarLogs then
     begin
