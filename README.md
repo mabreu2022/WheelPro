@@ -1,5 +1,5 @@
-# WheelPro
-Sistema para Vendas de Peças Automotivas
+# Wheel Pro v1.0 
+Sistema para Vendas de Rodas/Calotas
 
 
 WHEEL PRO ROADMAP
