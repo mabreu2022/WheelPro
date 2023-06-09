@@ -76,7 +76,7 @@ uses
   Vcl.Dialogs,
   IdCoderMIME,
   IdGlobal,
-  LogManager;
+  LogManager, Funcoes.PintarJante;
 
 type
   TFrmPrincipal = class(TForm)
@@ -195,6 +195,10 @@ type
     Image3: TImage;
     RectanguleLaretalDireito: TRectangle;
     VertScrollBoxRodas: TVertScrollBox;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -254,6 +258,9 @@ type
     procedure MenuItemFabricantesDeVeiculosClick(Sender: TObject);
     procedure Image5Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
+    procedure MenuItem2Click(Sender: TObject);
+    procedure MenuItem3Click(Sender: TObject);
+    procedure MenuItem4Click(Sender: TObject);
 
 
   private
@@ -928,11 +935,12 @@ begin
   finally
     LogManager.Free;
   end;
-  if Assigned(qry) then
-  begin
-    qry.Close;
-    qry.Free;
-  end;
+
+//  if Assigned(qry) then
+//  begin
+//    qry.Close;
+//    qry.Free;
+//  end;
   DM.FDConnection1.Close;
 end;
 
@@ -1307,6 +1315,34 @@ begin
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), 0, 0); // Pressiona a tecla Print Screen
   keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Print Screen
   keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
+end;
+
+procedure TFrmPrincipal.MenuItem2Click(Sender: TObject);
+begin
+  ShellExecute(HInstance, 'open', 'https://www.watermarkremover.io/pt/upload', '', '', 0);
+end;
+
+procedure TFrmPrincipal.MenuItem3Click(Sender: TObject);
+var
+  PintarJantes: TPintarJante;
+  OpenFile: TOpenDialog;
+
+begin
+  OpenFile:= TOpenDialog.Create(self);
+  try
+     if OpenFile.Execute then
+       PintarJantes.ModifyPixelColors(OpenFile.filename, clblue);
+
+     Image4.Bitmap.LoadFromFile('arquivo_pintado.png');
+  finally
+    OpenFile.Free;
+  end;
+
+end;
+
+procedure TFrmPrincipal.MenuItem4Click(Sender: TObject);
+begin
+  ShellExecute(HInstance, 'open', 'https://picwish.com/pt/remove-background?apptype=aps-gg-pt&gclid=Cj0KCQjw6cKiBhD5ARIsAKXUdybLa_UduPxAhjURvYGZVnAfi-3J_so8DbkY-C3xVByV8_VH56uq2s8aAme7EALw_wcB', '', '', 0);
 end;
 
 procedure TFrmPrincipal.MenuItemFabricantesDeVeiculosClick(Sender: TObject);

@@ -9,6 +9,9 @@
         <Projects Include="Mobile\WheelPro.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Encriptografar\Encriptografar.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="WheelPro:Make">
         <MSBuild Projects="Mobile\WheelPro.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Encriptografar">
+        <MSBuild Projects="Encriptografar\Encriptografar.dproj"/>
+    </Target>
+    <Target Name="Encriptografar:Clean">
+        <MSBuild Projects="Encriptografar\Encriptografar.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Encriptografar:Make">
+        <MSBuild Projects="Encriptografar\Encriptografar.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="WheelProV3;WheelPro"/>
+        <CallTarget Targets="WheelProV3;WheelPro;Encriptografar"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean"/>
+        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean;Encriptografar:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="WheelProV3:Make;WheelPro:Make"/>
+        <CallTarget Targets="WheelProV3:Make;WheelPro:Make;Encriptografar:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

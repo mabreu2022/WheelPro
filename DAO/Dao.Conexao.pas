@@ -22,7 +22,7 @@ uses
   FireDAC.Phys.PG,
   FireDAC.Comp.UI,
   FireDAC.Phys.MySQLDef,
-  FireDAC.Phys.MySQL;
+  FireDAC.Phys.MySQL, Funcoes.Criptografia;
 
 type
   TConnection = class
@@ -34,10 +34,6 @@ type
     class function  CreateConnection: TFDConnection;
 
   end;
-
-//  const
-//    ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini'; //Compilar para testes de programação
-    //ARQ_INI = 'C:\Program Files (x86)\WheelPro\Server.Ini'; //Compilar para Cliente final/Maquina da mesma rede
 
 
 implementation
@@ -57,25 +53,41 @@ class procedure TConnection.CarregarConfig(Connection: TFDconnection);
 var
   ini: TIniFile;
   FDPhysDriverLink: TFDPhysDriverLink;
+  EncryptedServer    : string;
+  DecryptedServer    : string;
+  EncryptedPassword  : string;
+  DecryptedPassword  : string;
+  EncryptedDataBase  : string;
+  DescryptedDataBase : string;
+  EncryptedUserName  : string;
+  DescryptedUserName : string;
+  Funcao: TCriptografia;
 
 begin
+   ini := TIniFile.Create(ExtractFileDir(ParamStr(0)) + '\Server.ini');
+   Funcao  := TCriptografia.Create;
    try
-     ini := TIniFile.Create(ExtractFileDir(ParamStr(0)) + '\Server.ini');//TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'Server.ini');//TIniFile.Create(ARQ_INI);
+
      Connection.DriverName := ini.ReadString('Banco de Dados', 'DriverID', '');
 
      with Connection.Params do
      begin
        Clear;
+       EncryptedServer   := ini.ReadString('Banco de Dados', 'Server' , '');
+       EncryptedPassword := ini.ReadString('Banco de Dados', 'DataBase', '');
+       EncryptedDataBase := ini.ReadString('Banco de Dados', 'User_Name', '');
+       EncryptedUserName := ini.ReadString('Banco de Dados', 'Password', '');
+
        Add('DriverID='  + ini.ReadString('Banco de Dados', 'DriverID' , ''));
-       Add('DataBase='  + ini.ReadString('Banco de Dados', 'DataBase', ''));
-       Add('User_Name=' + ini.ReadString('Banco de Dados', 'User_Name', ''));
-       Add('PassWord='  + ini.ReadString('Banco de Dados', 'Password', ''));
+       Add('DataBase='  + Funcao.DecryptString(ini.ReadString('Banco de Dados', 'DataBase', ''),123));
+       Add('User_Name=' + Funcao.DecryptString(ini.ReadString('Banco de Dados', 'User_Name', ''),123));
+       Add('PassWord='  + Funcao.DecryptString(ini.ReadString('Banco de Dados', 'Password', ''),123));
        //Add('Initial Catalog' + ini.ReadString('Banco de Dados', 'Initial Catalog',''));
        //Add('Extended Properties="' + ini.ReadString('Banco de Dados', 'Extended Properties', '') + '"');
        Add('Protocol=TCPIP');
 
-       if ini.ReadString('Banco de Dados' , 'Server' , '') <> '' then
-         Add('Server=' + ini.ReadString('Banco de Dados', 'Server', ''));
+       if Funcao.DecryptString(ini.ReadString('Banco de Dados' , 'Server' , '') ,123)<> '' then
+         Add('Server=' + Funcao.DecryptString(ini.ReadString('Banco de Dados', 'Server', ''),123));
 
        if ini.ReadString('Banco de Dados', 'Port', '') <> '' then
          Add('Port=' + ini.ReadString('Banco de Dados', 'Port', ''));
@@ -97,6 +109,7 @@ begin
      if Assigned(ini) then
        ini.DisposeOf;
      FDPhysDriverLink.Free;
+     Funcao.Free;
    end;
 end;
 

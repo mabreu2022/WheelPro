@@ -26,7 +26,9 @@ uses
   Controller.Contatos in 'Controller\Controller.Contatos.pas',
   Model.Contatos in 'Model\Model.Contatos.pas',
   LogManager in 'Funcoes\LogManager.pas',
-  Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas';
+  Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas',
+  Funcoes.PintarJante in 'Funcoes\Funcoes.PintarJante.pas',
+  Funcoes.Criptografia in 'Funcoes\Funcoes.Criptografia.pas';
 
 {$R *.res}
 

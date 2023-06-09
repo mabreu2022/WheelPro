@@ -3,9 +3,25 @@ unit LogManager;
 interface
 
 uses
-  Sysutils,
+  System.Sysutils,
   System.Classes,
-  System.IniFiles;
+  System.IniFiles,
+  FireDAC.Stan.Util,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.VCLUI.Wait,
+  FireDAC.Comp.Client,
+  Data.DB,
+  Dao.Conexao,
+  FMX.Dialogs;
 
 type
   TLogManager = class
@@ -22,7 +38,8 @@ type
     destructor Destroy; override;
     procedure AddLog(const Message: string);
     procedure SaveLogToFile(const FileName: string);
-    function GravarLogsnoBanco(aIdRevenda: Integer): Boolean;
+    function GravarLogNoBancoDeDados(const caminhoArquivoLog: string;
+                                     anomearquivo: string) : Boolean;
     procedure CarregarConfiguracao;
 
   end;
@@ -91,9 +108,45 @@ begin
   inherited;
 end;
 
-function TLogManager.GravarLogsnoBanco(aIdRevenda: Integer): Boolean;
+function TLogManager.GravarLogNoBancoDeDados(
+  const caminhoArquivoLog: string; anomearquivo: string) : Boolean;
+var
+  qry           : TFDQuery;
+  arquivoStream : TMemoryStream;
+  blobStream    : TStream;
 begin
-  //Gravar na tabelaa Logs o arquivo txt via streamig no campo arquivo Blob
+  Result := False;
+
+  qry := TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
+  arquivoStream := TMemoryStream.Create;
+  try
+    arquivoStream.LoadFromFile(caminhoArquivoLog);
+
+    qry.SQL.Text := 'INSERT INTO logs (arquivo, datainclusao, nomearquivo) VALUES (:arquivo, :datainclusao, :nomearquivo)';
+
+    qry.ParamByName('arquivo').DataType := ftBlob;
+    qry.ParamByName('arquivo').LoadFromFile(caminhoArquivoLog, ftBlob);
+
+    qry.ParamByName('datainclusao').AsDateTime := Now;
+    qry.ParamByName('nomearquivo').AsString    := anomearquivo;
+    qry.ExecSQL;
+
+    Result := True;
+
+  Except
+    on E: Exception do
+     begin
+       Result := False;
+       qry.Connection.Rollback;
+       ShowMessage('Houve um erro ao tentar gravar o arquivo de Log' + E.Message);
+       arquivoStream.Free;
+       qry.Close;
+       qry.Free;
+     end;
+  end;
+
 end;
 
 procedure TLogManager.SaveLogToFile(const FileName: string);
