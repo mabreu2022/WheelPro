@@ -25,7 +25,18 @@ uses
   FMX.ScrollBox,
   IniFiles,
   System.UIConsts,
-  LogManager;
+  LogManager,
+  FMX.ListBox,
+  IdMessage,
+  IdBaseComponent,
+  IdComponent,
+  IdTCPConnection,
+  IdTCPClient,
+  IdExplicitTLSClientServerBase,
+  IdMessageClient,
+  IdSMTPBase,
+  IdSMTP,
+  Model.Registro;
 
 type
   TFrmRegistrar = class(TForm)
@@ -84,7 +95,22 @@ type
     EdtCidade: TEdit;
     ShadowEffect22: TShadowEffect;
     ShadowEffect23: TShadowEffect;
+    lblUF: TLabel;
+    ShadowEffect24: TShadowEffect;
+    CBUF: TComboBox;
+    ShadowEffect26: TShadowEffect;
+    LblAtivo: TLabel;
+    ShadowEffect25: TShadowEffect;
+    CBAtivo: TComboBox;
+    ShadowEffect27: TShadowEffect;
+    IdSMTP1: TIdSMTP;
+    IdMessage1: TIdMessage;
+    EdtCEP: TEdit;
+    lblCEP: TLabel;
+    ShadowEffect28: TShadowEffect;
+    ShadowEffect29: TShadowEffect;
     procedure FormCreate(Sender: TObject);
+    procedure BtnRegistrarClick(Sender: TObject);
   private
     { Private declarations }
     FLinguagem: string;
@@ -102,6 +128,57 @@ implementation
 {$R *.fmx}
 
 { TFrmRegistrar }
+
+procedure TFrmRegistrar.BtnRegistrarClick(Sender: TObject);
+var
+  Registro: TModelRegistro;
+  Ativo: String;
+  UF: String;
+  Validou: Boolean;
+begin
+  //enviar esses dados para o e-mail ou gravar no banco?
+  //pode-se chamar o site com um formulário para o registro enviar por e-mail para conect
+  Registro:= TModelRegistro.Create;
+  try
+    Registro.razao       := EdtRazao.Text;
+    Registro.cnpj        := EdtCnpj.Text;
+    Registro.endereco    := EdtEndereco.Text;
+    if EdtNumero.Text<>'' then
+      Registro.numero      := StrToInt(EdtNumero.Text);
+    Registro.complemento := EdtComplemento.Text;
+    Registro.bairro      := EdtBairro.Text;
+    Registro.cidade      := EdtCidade.Text;
+    Registro.responsavel := EdtResponsavel.Text;
+    Registro.telefone    := EdtTelefone.Text;
+    Registro.email       := EdtEmail.Text;
+
+    if CBUF.ItemIndex <> -1 then
+    begin
+      UF := CBUF.Items[CBUF.ItemIndex];
+      Registro.uf          := UF;
+    end;
+
+    if CBATivo.ItemIndex <> -1 then
+    begin
+      Ativo := CBATivo.Items[CBATivo.ItemIndex];
+      Registro.ativo       := Ativo;
+    end;
+
+    Validou:= Registro.validarDados(Registro);
+
+    if Validou then
+      Registro.enviarEmail
+    else
+    begin
+      if EdtRazao.CanFocus then
+        EdtRazao.SetFocus;
+    end;
+
+  finally
+    Registro.Free;
+  end;
+
+end;
 
 procedure TFrmRegistrar.CarregarCores;
 var

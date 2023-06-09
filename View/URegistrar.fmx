@@ -5,7 +5,7 @@ object FrmRegistrar: TFrmRegistrar
   BorderStyle = Single
   Caption = 'Formul'#225'rio de Registro do Wheel Pro'
   ClientHeight = 584
-  ClientWidth = 664
+  ClientWidth = 924
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -14,26 +14,26 @@ object FrmRegistrar: TFrmRegistrar
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Client
-    Size.Width = 664.000000000000000000
+    Size.Width = 924.000000000000000000
     Size.Height = 584.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Layout2: TLayout
       Align = Top
-      Size.Width = 664.000000000000000000
+      Size.Width = 924.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 0
+      TabOrder = 13
       object Rectangle1: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
-        Size.Width = 664.000000000000000000
+        Size.Width = 924.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         object LblTitulo: TLabel
           Align = Contents
           StyledSettings = [Family, FontColor]
-          Size.Width = 664.000000000000000000
+          Size.Width = 924.000000000000000000
           Size.Height = 50.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 20.000000000000000000
@@ -54,25 +54,26 @@ object FrmRegistrar: TFrmRegistrar
     object Layout3: TLayout
       Align = Bottom
       Position.Y = 534.000000000000000000
-      Size.Width = 664.000000000000000000
+      Size.Width = 924.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 1
+      TabOrder = 14
       object Rectangle2: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
-        Size.Width = 664.000000000000000000
+        Size.Width = 924.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         object BtnRegistrar: TButton
           Margins.Right = 10.000000000000000000
-          Position.X = 572.000000000000000000
+          Position.X = 828.000000000000000000
           Position.Y = 12.000000000000000000
           Size.Width = 80.000000000000000000
           Size.Height = 25.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           Text = '&Registrar'
+          OnClick = BtnRegistrarClick
           object ShadowEffect14: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -87,7 +88,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 35.000000000000000000
       Position.Y = 64.000000000000000000
       Text = 'Raz'#227'o Social / Nome'
-      TabOrder = 14
+      TabOrder = 17
       object ShadowEffect2: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -98,7 +99,7 @@ object FrmRegistrar: TFrmRegistrar
     end
     object EdtRazao: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 2
+      TabOrder = 0
       Position.X = 32.000000000000000000
       Position.Y = 88.000000000000000000
       Size.Width = 433.000000000000000000
@@ -116,7 +117,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 36.000000000000000000
       Position.Y = 115.000000000000000000
       Text = 'CNPJ / CPF'
-      TabOrder = 15
+      TabOrder = 18
       object ShadowEffect3: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -127,7 +128,7 @@ object FrmRegistrar: TFrmRegistrar
     end
     object EdtCnpj: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 3
+      TabOrder = 1
       Position.X = 32.000000000000000000
       Position.Y = 136.000000000000000000
       Size.Width = 185.000000000000000000
@@ -143,7 +144,7 @@ object FrmRegistrar: TFrmRegistrar
     end
     object EdtEndereco: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 5
+      TabOrder = 2
       Position.X = 32.000000000000000000
       Position.Y = 184.000000000000000000
       Size.Width = 433.000000000000000000
@@ -161,7 +162,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 473.000000000000000000
       Position.Y = 165.000000000000000000
       Text = 'N'#250'mero'
-      TabOrder = 16
+      TabOrder = 19
       object ShadowEffect5: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -174,7 +175,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 36.000000000000000000
       Position.Y = 212.000000000000000000
       Text = 'Complemento'
-      TabOrder = 17
+      TabOrder = 21
       object ShadowEffect6: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -185,7 +186,7 @@ object FrmRegistrar: TFrmRegistrar
     end
     object EdtNumero: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 6
+      TabOrder = 3
       Position.X = 473.000000000000000000
       Position.Y = 184.000000000000000000
       Size.Width = 129.000000000000000000
@@ -201,7 +202,7 @@ object FrmRegistrar: TFrmRegistrar
     end
     object EdtComplemento: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 7
+      TabOrder = 4
       Position.X = 32.000000000000000000
       Position.Y = 232.000000000000000000
       Size.Width = 185.000000000000000000
@@ -219,7 +220,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 225.000000000000000000
       Position.Y = 214.000000000000000000
       Text = 'Bairro'
-      TabOrder = 18
+      TabOrder = 22
       object ShadowEffect7: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -230,7 +231,7 @@ object FrmRegistrar: TFrmRegistrar
     end
     object EdtBairro: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 8
+      TabOrder = 5
       Position.X = 224.000000000000000000
       Position.Y = 232.000000000000000000
       Size.Width = 241.000000000000000000
@@ -251,7 +252,7 @@ object FrmRegistrar: TFrmRegistrar
       Size.Height = 129.000000000000000000
       Size.PlatformDefault = False
       Text = 'Dados sobre a licen'#231'a'
-      TabOrder = 13
+      TabOrder = 16
       object Grid1: TGrid
         CanFocus = True
         ClipChildren = True
@@ -289,7 +290,7 @@ object FrmRegistrar: TFrmRegistrar
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Nome do respons'#225'vel pelo registro'
-      TabOrder = 19
+      TabOrder = 23
       object ShadowEffect15: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -318,7 +319,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 331.000000000000000000
       Position.Y = 264.000000000000000000
       Text = 'Telefone/WhatsApp'
-      TabOrder = 20
+      TabOrder = 24
       object ShadowEffect18: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -347,7 +348,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 36.000000000000000000
       Position.Y = 315.000000000000000000
       Text = 'E-mail'
-      TabOrder = 21
+      TabOrder = 25
       object ShadowEffect20: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -376,7 +377,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 472.000000000000000000
       Position.Y = 215.000000000000000000
       Text = 'Cidade'
-      TabOrder = 22
+      TabOrder = 26
       object ShadowEffect23: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -387,9 +388,9 @@ object FrmRegistrar: TFrmRegistrar
     end
     object EdtCidade: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 9
+      TabOrder = 6
       Position.X = 473.000000000000000000
-      Position.Y = 233.000000000000000000
+      Position.Y = 232.000000000000000000
       Size.Width = 183.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -405,7 +406,7 @@ object FrmRegistrar: TFrmRegistrar
       Position.X = 35.000000000000000000
       Position.Y = 165.000000000000000000
       Text = 'Endere'#231'o'
-      TabOrder = 4
+      TabOrder = 15
       object ShadowEffect4: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -414,5 +415,148 @@ object FrmRegistrar: TFrmRegistrar
         ShadowColor = claBlack
       end
     end
+    object lblUF: TLabel
+      Position.X = 774.000000000000000000
+      Position.Y = 216.000000000000000000
+      Size.Width = 49.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'UF'
+      TabOrder = 27
+      object ShadowEffect24: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object CBUF: TComboBox
+      Items.Strings = (
+        'AC'
+        'AL'
+        'AP'
+        'AM'
+        'BA'
+        'CE'
+        'DF'
+        'ES'
+        'GO'
+        'MA'
+        'MT'
+        'MS'
+        'MG'
+        'PA'
+        'PB'
+        'PR'
+        'PE'
+        'PI'
+        'RJ'
+        'RN'
+        'RS'
+        'RO'
+        'RR'
+        'SC'
+        'SP'
+        'SE'
+        'TO')
+      ItemIndex = 0
+      Position.X = 774.000000000000000000
+      Position.Y = 233.000000000000000000
+      Size.Width = 53.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 8
+      object ShadowEffect26: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object LblAtivo: TLabel
+      Position.X = 835.000000000000000000
+      Position.Y = 214.000000000000000000
+      Size.Width = 60.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Ativo'
+      TabOrder = 20
+      object ShadowEffect25: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object CBAtivo: TComboBox
+      Items.Strings = (
+        'S'
+        'N')
+      ItemIndex = 0
+      Position.X = 835.000000000000000000
+      Position.Y = 233.000000000000000000
+      Size.Width = 53.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 9
+      object ShadowEffect27: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object EdtCEP: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 7
+      Position.X = 664.000000000000000000
+      Position.Y = 233.000000000000000000
+      object ShadowEffect29: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object lblCEP: TLabel
+      Position.X = 664.000000000000000000
+      Position.Y = 216.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'CEP'
+      TabOrder = 28
+      object ShadowEffect28: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+  end
+  object IdSMTP1: TIdSMTP
+    SASLMechanisms = <>
+    Left = 624
+    Top = 352
+  end
+  object IdMessage1: TIdMessage
+    AttachmentEncoding = 'MIME'
+    BccList = <>
+    CCList = <>
+    Encoding = meDefault
+    FromList = <
+      item
+      end>
+    Recipients = <>
+    ReplyTo = <>
+    ConvertPreamble = True
+    Left = 624
+    Top = 416
   end
 end

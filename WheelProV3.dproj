@@ -326,6 +326,7 @@
         <DCCReference Include="Interfaces\Interfaces.Clientes.pas"/>
         <DCCReference Include="Funcoes\Funcoes.PintarJante.pas"/>
         <DCCReference Include="Funcoes\Funcoes.Criptografia.pas"/>
+        <DCCReference Include="Model\Model.Registro.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

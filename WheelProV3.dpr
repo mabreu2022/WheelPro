@@ -28,7 +28,8 @@ uses
   LogManager in 'Funcoes\LogManager.pas',
   Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas',
   Funcoes.PintarJante in 'Funcoes\Funcoes.PintarJante.pas',
-  Funcoes.Criptografia in 'Funcoes\Funcoes.Criptografia.pas';
+  Funcoes.Criptografia in 'Funcoes\Funcoes.Criptografia.pas',
+  Model.Registro in 'Model\Model.Registro.pas';
 
 {$R *.res}
 

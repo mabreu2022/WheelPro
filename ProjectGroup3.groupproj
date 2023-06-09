@@ -12,6 +12,12 @@
         <Projects Include="Encriptografar\Encriptografar.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Gerar Contra Senha\GerarContraSenha.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="obtendo numero serial do hd\GerarSerial.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +53,32 @@
     <Target Name="Encriptografar:Make">
         <MSBuild Projects="Encriptografar\Encriptografar.dproj" Targets="Make"/>
     </Target>
+    <Target Name="GerarContraSenha">
+        <MSBuild Projects="Gerar Contra Senha\GerarContraSenha.dproj"/>
+    </Target>
+    <Target Name="GerarContraSenha:Clean">
+        <MSBuild Projects="Gerar Contra Senha\GerarContraSenha.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GerarContraSenha:Make">
+        <MSBuild Projects="Gerar Contra Senha\GerarContraSenha.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GerarSerial">
+        <MSBuild Projects="obtendo numero serial do hd\GerarSerial.dproj"/>
+    </Target>
+    <Target Name="GerarSerial:Clean">
+        <MSBuild Projects="obtendo numero serial do hd\GerarSerial.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GerarSerial:Make">
+        <MSBuild Projects="obtendo numero serial do hd\GerarSerial.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="WheelProV3;WheelPro;Encriptografar"/>
+        <CallTarget Targets="WheelProV3;WheelPro;Encriptografar;GerarContraSenha;GerarSerial"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean;Encriptografar:Clean"/>
+        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean;Encriptografar:Clean;GerarContraSenha:Clean;GerarSerial:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="WheelProV3:Make;WheelPro:Make;Encriptografar:Make"/>
+        <CallTarget Targets="WheelProV3:Make;WheelPro:Make;Encriptografar:Make;GerarContraSenha:Make;GerarSerial:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
