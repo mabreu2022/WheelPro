@@ -139,6 +139,7 @@ begin
       'Bairro: ' + bairro + #13#10 +
       'Cidade: ' + cidade + #13#10 +
       'UF: ' + uf + #13#10 +
+      'CEP: ' + cep + #13#10 +
       'Ativo: ' + ativo + #13#10 +
       'Responsável: ' + responsavel + #13#10 +
       'Telefone: ' + telefone + #13#10 +

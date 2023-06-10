@@ -546,7 +546,7 @@ object FrmRegistrar: TFrmRegistrar
     Top = 352
   end
   object IdMessage1: TIdMessage
-    AttachmentEncoding = 'MIME'
+    AttachmentEncoding = 'UUE'
     BccList = <>
     CCList = <>
     Encoding = meDefault

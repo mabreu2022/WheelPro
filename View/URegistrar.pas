@@ -151,6 +151,7 @@ begin
     Registro.responsavel := EdtResponsavel.Text;
     Registro.telefone    := EdtTelefone.Text;
     Registro.email       := EdtEmail.Text;
+    Registro.cep         := EdtCEP.Text;
 
     if CBUF.ItemIndex <> -1 then
     begin
