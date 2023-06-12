@@ -240,16 +240,16 @@ class function TModelRegistro.validarDados(aRegistro: TModelRegistro) : boolean;
 begin
    Result := False;
 
-  if aRegistro.CEP.Length < 8  then
+  if Trim(aRegistro.Frazao) = '' then
   begin
-    raise Exception.Create('O CEP não pode ser menor que 8 caracteres.');
+    raise Exception.Create('a Razão Social não pode ser vazia.');
     Result:= False;
     exit;
   end;
 
-  if Trim(aRegistro.Frazao) ='' then
+  if Trim(aRegistro.cnpj) = '' then
   begin
-    raise Exception.Create('a Razão Social não pode ser vazia.');
+    raise Exception.Create('o CNPJ/CPF não pode ser vazio.');
     Result:= False;
     exit;
   end;
@@ -261,9 +261,9 @@ begin
     exit;
   end;
 
-  if Trim(aRegistro.uf) = '' then
+  if Trim(aRegistro.Bairro) = '' then
   begin
-    raise Exception.Create('É necessário preencher a UF.');
+    raise Exception.Create('É necessário preencher o Bairro.');
     Result:= False;
     exit;
   end;
@@ -275,14 +275,22 @@ begin
     exit;
   end;
 
-  if Trim(aRegistro.Bairro) = '' then
+  if aRegistro.CEP.Length < 8  then
   begin
-    raise Exception.Create('É necessário preencher o Bairro.');
+    raise Exception.Create('O CEP não pode ser menor que 8 caracteres.');
+    Result:= False;
+    exit;
+  end;
+
+  if Trim(aRegistro.uf) = '' then
+  begin
+    raise Exception.Create('É necessário preencher a UF.');
     Result:= False;
     exit;
   end;
 
   Result:= True;
+
 end;
 
 end.

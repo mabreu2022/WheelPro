@@ -327,6 +327,11 @@
         <DCCReference Include="Funcoes\Funcoes.PintarJante.pas"/>
         <DCCReference Include="Funcoes\Funcoes.Criptografia.pas"/>
         <DCCReference Include="Model\Model.Registro.pas"/>
+        <DCCReference Include="Model\Model.Backup.pas"/>
+        <DCCReference Include="View\View.Backup.pas">
+            <Form>FrmBackup</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

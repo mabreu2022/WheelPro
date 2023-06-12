@@ -76,7 +76,7 @@ uses
   Vcl.Dialogs,
   IdCoderMIME,
   IdGlobal,
-  LogManager, Funcoes.PintarJante;
+  LogManager, Funcoes.PintarJante, View.Backup;
 
 type
   TFrmPrincipal = class(TForm)
@@ -199,6 +199,7 @@ type
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
+    MenuItemBackup: TMenuItem;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -261,6 +262,7 @@ type
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
+    procedure MenuItemBackupClick(Sender: TObject);
 
 
   private
@@ -536,6 +538,7 @@ begin
     MenuItemConfiguracoesSistema.Text  := 'Sistema';
     MenuItemRegistrar.Text             := 'Registrar';
     MenuItemDeslogar.Text              := 'Deslogar';
+    MenuItemBackup.Text                := 'Cópia de segurança';
     MenuItemSair.Text                  := 'Sair';
   end
   else if FLinguagem = 'Ingles' then
@@ -579,6 +582,7 @@ begin
     MenuItemConfiguracoesSistema.Text  := 'System';
     MenuItemRegistrar.Text             := 'Register';
     MenuItemDeslogar.Text              := 'Log  Out';
+    MenuItemBackup.Text                := 'Backup';
     MenuItemSair.Text                  := 'To go out';
   end;
 
@@ -1343,6 +1347,12 @@ end;
 procedure TFrmPrincipal.MenuItem4Click(Sender: TObject);
 begin
   ShellExecute(HInstance, 'open', 'https://picwish.com/pt/remove-background?apptype=aps-gg-pt&gclid=Cj0KCQjw6cKiBhD5ARIsAKXUdybLa_UduPxAhjURvYGZVnAfi-3J_so8DbkY-C3xVByV8_VH56uq2s8aAme7EALw_wcB', '', '', 0);
+end;
+
+procedure TFrmPrincipal.MenuItemBackupClick(Sender: TObject);
+begin
+  Application.CreateForm(TFrmBackup, FrmBackup);
+  FrmBackup.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItemFabricantesDeVeiculosClick(Sender: TObject);

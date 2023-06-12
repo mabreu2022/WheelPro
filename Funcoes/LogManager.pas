@@ -38,8 +38,8 @@ type
     destructor Destroy; override;
     procedure AddLog(const Message: string);
     procedure SaveLogToFile(const FileName: string);
-    function GravarLogNoBancoDeDados(const caminhoArquivoLog: string;
-                                     anomearquivo: string) : Boolean;
+    function GravarLogNoBancoDeDados(
+  const caminhoArquivoLog: string; anomearquivo: string; aTabela: string) : Boolean;
     procedure CarregarConfiguracao;
 
   end;
@@ -109,11 +109,12 @@ begin
 end;
 
 function TLogManager.GravarLogNoBancoDeDados(
-  const caminhoArquivoLog: string; anomearquivo: string) : Boolean;
+  const caminhoArquivoLog: string; anomearquivo: string; aTabela: string) : Boolean;
 var
   qry           : TFDQuery;
   arquivoStream : TMemoryStream;
   blobStream    : TStream;
+  ArquivoParaGravar: string;
 begin
   Result := False;
 
@@ -122,12 +123,13 @@ begin
   qry.Connection.StartTransaction;
   arquivoStream := TMemoryStream.Create;
   try
-    arquivoStream.LoadFromFile(caminhoArquivoLog);
+    ArquivoParaGravar:= caminhoArquivoLog+aNomeArquivo;
+    arquivoStream.LoadFromFile(ArquivoParaGravar);
 
-    qry.SQL.Text := 'INSERT INTO logs (arquivo, datainclusao, nomearquivo) VALUES (:arquivo, :datainclusao, :nomearquivo)';
+    qry.SQL.Text := 'INSERT INTO ' + aTabela + ' (arquivo, datainclusao, nomearquivo) VALUES (:arquivo, :datainclusao, :nomearquivo)';
 
     qry.ParamByName('arquivo').DataType := ftBlob;
-    qry.ParamByName('arquivo').LoadFromFile(caminhoArquivoLog, ftBlob);
+    qry.ParamByName('arquivo').LoadFromFile(ArquivoParaGravar, ftBlob);
 
     qry.ParamByName('datainclusao').AsDateTime := Now;
     qry.ParamByName('nomearquivo').AsString    := anomearquivo;

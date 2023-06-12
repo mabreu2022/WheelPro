@@ -29,7 +29,9 @@ uses
   Interfaces.Clientes in 'Interfaces\Interfaces.Clientes.pas',
   Funcoes.PintarJante in 'Funcoes\Funcoes.PintarJante.pas',
   Funcoes.Criptografia in 'Funcoes\Funcoes.Criptografia.pas',
-  Model.Registro in 'Model\Model.Registro.pas';
+  Model.Registro in 'Model\Model.Registro.pas',
+  Model.Backup in 'Model\Model.Backup.pas',
+  View.Backup in 'View\View.Backup.pas' {FrmBackup};
 
 {$R *.res}
 
@@ -39,5 +41,6 @@ begin
   Application.CreateForm(TDM, DM);
   Application.CreateForm(TFrmLogin, FrmLogin);
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
+  Application.CreateForm(TFrmBackup, FrmBackup);
   Application.Run;
 end.

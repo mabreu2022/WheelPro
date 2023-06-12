@@ -29,7 +29,6 @@ type
   private
 
   public
-
     class procedure CarregarConfig(Connection: TFDconnection);
     class function  CreateConnection: TFDConnection;
 
