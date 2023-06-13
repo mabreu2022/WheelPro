@@ -1,7 +1,7 @@
 # Wheel Pro v1.0 
 Sistema para Vendas de Rodas/Calotas
 
-WHEEL PRO ROADMAP
+WHEEL PRO RECURSOS JÁ DISPONÍVEIS
 
 - LOGIN USUARIO E SENHA.
 - CADASTRO DE CLIENTES.
