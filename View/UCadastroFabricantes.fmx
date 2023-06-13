@@ -185,7 +185,7 @@ object FrmFabricantes: TFrmFabricantes
       Size.Width = 712.000000000000000000
       Size.Height = 348.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 5
       TabPosition = PlatformDefault
       Sizes = (
@@ -199,7 +199,7 @@ object FrmFabricantes: TFrmFabricantes
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -286,6 +286,7 @@ object FrmFabricantes: TFrmFabricantes
           Size.Width = 185.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
+          OnExit = EdtCnpjExit
           object ShadowEffect13: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -567,7 +568,7 @@ object FrmFabricantes: TFrmFabricantes
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -585,8 +586,8 @@ object FrmFabricantes: TFrmFabricantes
           Size.Height = 284.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 1
-          Viewport.Width = 712.000000000000000000
-          Viewport.Height = 284.000000000000000000
+          Viewport.Width = 708.000000000000000000
+          Viewport.Height = 259.000000000000000000
         end
         object Panel1: TPanel
           Align = Bottom

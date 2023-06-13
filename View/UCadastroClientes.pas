@@ -52,7 +52,7 @@ uses
   System.UIConsts,
   Winapi.Windows,
   LogManager,
-  FireDAC.FMXUI.Wait;
+  FireDAC.FMXUI.Wait, Funcoes.CNPJCPF;
 
 
 type
@@ -201,6 +201,7 @@ type
     procedure BtnPesquisarClick(Sender: TObject);
     procedure TabItemPesquisaClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure EdtCnpjExit(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -971,6 +972,36 @@ begin
     // Permite a entrada de caracteres válidos
     EdtCep.Tag := 0;
   end;
+end;
+
+procedure TFrmCadastroClientes.EdtCnpjExit(Sender: TObject);
+var
+  Funcoes: TCNPJCPF;
+begin
+  Funcoes:= TCNPJCPF.Create;
+  try
+    if not Funcoes.ValidarCNPJ(EdtCNPJ.Text) then
+    begin
+      ShowMessage('CNPJ inválido');
+      EdtCnpj.SetFocus;
+      BtnGravar.Enabled:= False;
+    end
+    else
+      BtnGravar.Enabled:= True;;
+
+    if not Funcoes.ValidarCPF(EdtCnpj.Text) then
+    begin
+      ShowMessage('CPF inválido');
+      EdtCnpj.SetFocus;
+      BtnGravar.Enabled:= False;
+    end
+    else
+      BtnGravar.Enabled:= True;
+
+  finally
+    Funcoes.Free;
+  end;
+
 end;
 
 procedure TFrmCadastroClientes.EdtCnpjKeyDown(Sender: TObject; var Key: Word;

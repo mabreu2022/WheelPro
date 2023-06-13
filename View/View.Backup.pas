@@ -36,7 +36,7 @@ type
     Rectangle1: TRectangle;
     Label1: TLabel;
     Rectangle2: TRectangle;
-    Button1: TButton;
+    BtnFazerBackup: TButton;
     ShadowEffect1: TShadowEffect;
     ShadowEffect2: TShadowEffect;
     lblProgresso: TLabel;
@@ -45,9 +45,11 @@ type
     recBackPRogress: TRectangle;
     recProgress: TRectangle;
     lytProgress: TLayout;
+    BtnRestaurarBackup: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure BtnFazerBackupClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure BtnRestaurarBackupClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -72,7 +74,7 @@ implementation
 
 { TFrmBackup }
 
-procedure TFrmBackup.Button1Click(Sender: TObject);
+procedure TFrmBackup.BtnFazerBackupClick(Sender: TObject);
 var
   ini: TIniFile;
   Host,User,Password,Database, BackupPath, DumpFileName:  string;
@@ -107,6 +109,52 @@ begin
   finally
     FBackup.Free;
   end;
+end;
+
+procedure TFrmBackup.BtnRestaurarBackupClick(Sender: TObject);
+var
+  ini: TIniFile;
+  Host,User,Password,Database, BackupPath, DumpFileName:  string;
+  DeuCerto: Boolean;
+  OpenDialog: TOpenDialog;
+begin
+  FBackup:= TBackup.Create;
+  try
+    ini := TIniFile.Create(ExtractFileDir(ParamStr(0)) + '\Server.ini');
+    Criptografia:= TCriptografia.Create;
+    try
+       Host       := Criptografia.DecryptString(ini.ReadString('Banco de Dados', 'Server', ''),123);
+       User       := Criptografia.DecryptString(ini.ReadString('Banco de Dados', 'User_Name', ''),123);
+       PassWord   := Criptografia.DecryptString(ini.ReadString('Banco de Dados', 'Password', ''),123);
+       Database   := Criptografia.DecryptString(ini.ReadString('Banco de Dados', 'Database', ''),123);
+       BackupPath := ExtractFileDir(ParamStr(0))+'\Backup\';
+
+       Step := 0;
+       Timer1.Enabled := True;
+       StepUnit:= (recBackPRogress.Width / 10);
+       recProgress.Width := Step;
+
+       //Usar um OpenFileDialog aqui para esolher o arquivo a ser restaurado
+       OpenDialog:= TOpenDialog.Create(Self);
+       try
+         OpenDialog.Filter:='*.sql';
+         if OpenDialog.Execute then
+           DumpFileName := OpenDialog.FileName;
+       finally
+         OpenDialog.Free;
+       end;
+
+       DeuCerto := FBackup.RestoreMySQLBackup(Host,User, PassWord, Database, BackupPath, DumpFileName);
+
+    finally
+      ini.Free;
+      Criptografia.Free;
+    end;
+
+  finally
+    FBackup.Free;
+  end;
+
 end;
 
 procedure TFrmBackup.CarregarCores;

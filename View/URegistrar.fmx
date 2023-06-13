@@ -116,7 +116,7 @@ object FrmRegistrar: TFrmRegistrar
     object lblCnpj_cpf: TLabel
       Position.X = 36.000000000000000000
       Position.Y = 115.000000000000000000
-      Text = 'CNPJ / CPF'
+      Text = 'CNPJ'
       TabOrder = 18
       object ShadowEffect3: TShadowEffect
         Distance = 3.000000000000000000
@@ -134,6 +134,7 @@ object FrmRegistrar: TFrmRegistrar
       Size.Width = 185.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
+      OnExit = EdtCnpjExit
       object ShadowEffect9: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000

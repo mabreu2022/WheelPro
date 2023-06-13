@@ -31,7 +31,8 @@ uses
   Funcoes.Criptografia in 'Funcoes\Funcoes.Criptografia.pas',
   Model.Registro in 'Model\Model.Registro.pas',
   Model.Backup in 'Model\Model.Backup.pas',
-  View.Backup in 'View\View.Backup.pas' {FrmBackup};
+  View.Backup in 'View\View.Backup.pas' {FrmBackup},
+  Funcoes.CNPJCPF in 'Funcoes\Funcoes.CNPJCPF.pas';
 
 {$R *.res}
 

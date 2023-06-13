@@ -52,6 +52,8 @@ type
       property database   : string read Fdatabase write Setdatabase;
       property BackupPath : string read FBackupPath write SetBackupPath;
       function  BackupMySQLDatabase(const host, user, password, database, backupPath, dumpFileName: string): Boolean;
+      function RestoreMySQLBackup(const host, user, password, database,
+  backupFilePath: string; DumpFileName: string): Boolean;
   end;
 
 implementation
@@ -94,6 +96,36 @@ begin
     on E: Exception do
       ShowMessage('Erro durante o backup do banco de dados: ' + E.Message);
   end;
+end;
+
+function TBackup.RestoreMySQLBackup(const host, user, password, database,
+  backupFilePath: string; DumpFileName: string): Boolean;
+var
+  command: string;
+begin
+  try
+    // Constrói o comando para restaurar o backup
+    command := Format('mysql -h%s -u%s -p%s %s < "%s"', [host, user, password, database, backupFilePath+DumpFileName]);
+
+    // Executa o comando
+    if ShellExecute(0, 'open', 'cmd.exe', PChar('/C ' + command), nil, SW_HIDE) > 32 then
+    begin
+      Result := True; // Restauração iniciada com sucesso
+      ShowMessage('Backup Restaurado com sucesso!');
+    end
+    else
+    begin
+      Result := False; // Falha ao iniciar a restauração
+      ShowMessage('Falha ao iniciar a restauração');
+    end;
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro durante a restauração do banco de dados: ' + E.Message);
+      Result := False;
+    end;
+  end;
+
 end;
 
 procedure TBackup.SetBackupPath(const Value: string);

@@ -63,7 +63,7 @@ object FrmBackup: TFrmBackup
         Size.Width = 640.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
-        object Button1: TButton
+        object BtnFazerBackup: TButton
           Position.X = 512.000000000000000000
           Position.Y = 15.000000000000000000
           Size.Width = 104.000000000000000000
@@ -71,7 +71,7 @@ object FrmBackup: TFrmBackup
           Size.PlatformDefault = False
           TabOrder = 0
           Text = 'Fazer Backup'
-          OnClick = Button1Click
+          OnClick = BtnFazerBackupClick
           object ShadowEffect1: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -79,6 +79,16 @@ object FrmBackup: TFrmBackup
             Opacity = 0.600000023841857900
             ShadowColor = claBlack
           end
+        end
+        object BtnRestaurarBackup: TButton
+          Position.X = 384.000000000000000000
+          Position.Y = 15.000000000000000000
+          Size.Width = 112.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Text = 'Restaurar Backup'
+          OnClick = BtnRestaurarBackupClick
         end
       end
     end

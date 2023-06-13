@@ -50,8 +50,8 @@ type
       Fendereco: string;
       Ftelefone: string;
       Frazao: string;
-    Fdataregistro: TDatetime;
-    FCEP: string;
+      Fdataregistro: TDatetime;
+      FCEP: string;
       procedure Setativo(const Value: string);
       procedure Setbairro(const Value: string);
       procedure Setcidade(const Value: string);
@@ -64,11 +64,8 @@ type
       procedure Setresponsavel(const Value: string);
       procedure Settelefone(const Value: string);
       procedure Setuf(const Value: string);
-
-
-
       procedure Setdataregistro(const Value: TDatetime);
-    procedure SetCEP(const Value: string);
+      procedure SetCEP(const Value: string);
 
     public
       property razao: string read Frazao write Setrazao;
@@ -88,6 +85,7 @@ type
 
       procedure enviarEmail;
       class function validarDados(aRegistro: TModelRegistro) : boolean;
+      class function GravarNoBancoLicencas(aRegistro : TModelRegistro): Boolean;
 
 
 
@@ -150,6 +148,7 @@ begin
       IdSMTP1.Connect;
       IdSMTP1.Send(IdMessage);
       ShowMessage('Registro enviado com sucesso');
+      GravarNoBancoLicencas;
     Except
       On E: Exception do
       begin
@@ -164,6 +163,12 @@ begin
     IdSSLIOHandler.Free;
   end;
 
+end;
+
+class function TModelRegistro.GravarNoBancoLicencas(
+  aRegistro: TModelRegistro): Boolean;
+begin
+  //gravar no Banco de Licenças
 end;
 
 procedure TModelRegistro.Setativo(const Value: string);

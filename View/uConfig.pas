@@ -27,7 +27,8 @@ uses
   ShellAPI,
   Winapi.Windows,
   Vcl.Dialogs,
-  LogManager;
+  LogManager,
+  System.IOUtils;
 
 type
   TFrmConfig = class(TForm)
@@ -82,10 +83,13 @@ type
     ShadowEffect21: TShadowEffect;
     CBGravarLogsBanco: TCheckBox;
     ShadowEffect22: TShadowEffect;
+    GroupBox1: TGroupBox;
+    Button1: TButton;
     procedure BtnSalvarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
     FCorMudou: Boolean;
@@ -144,6 +148,47 @@ begin
     // Execute o aplicativo novamente
     ShellExecute(0, 'open', PChar(AppPath), nil, nil, SW_SHOW);
   end;
+end;
+
+procedure TFrmConfig.Button1Click(Sender: TObject);
+var
+  IniFile: TIniFile;
+  OpenDialog: TOpenDialog;
+  ArquivoDaLogo: String;
+  NovoNomeArquivo: String;
+  DiretorioDestino: String;
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  OpenDialog := TOpenDialog.Create(Self);
+  try
+    if OpenDialog.Execute then
+    begin
+      ArquivoDaLogo := OpenDialog.FileName;
+      NovoNomeArquivo := ExtractFilePath(ParamStr(0)) + 'Logo.png';
+      DiretorioDestino := ExtractFilePath(NovoNomeArquivo);
+
+      // Verifica se o diretório de destino existe, se não, cria-o
+      if not DirectoryExists(DiretorioDestino) then
+        ForceDirectories(DiretorioDestino);
+
+      // Verifica se o arquivo "Logo.png" já existe, se sim, exclui-o
+      if FileExists(NovoNomeArquivo) then
+        DeleteFile(Pchar(NovoNomeArquivo));
+
+      // Copia o arquivo para o diretório da aplicação
+      CopyFile(PChar(ArquivoDaLogo), PChar(NovoNomeArquivo), False);
+
+      // Atualiza o valor no arquivo de configuração
+      IniFile.WriteString('Sistema', 'ArquivoLogo', NovoNomeArquivo);
+      IniFile.UpdateFile;
+
+      ShowMessage('Arquivo copiado com sucesso!');
+    end;
+  finally
+    IniFile.Free;
+    OpenDialog.Free;
+  end;
+
 end;
 
 procedure TFrmConfig.CarregarConfiguracao;

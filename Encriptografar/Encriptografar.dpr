@@ -2,7 +2,7 @@ program Encriptografar;
 
 uses
   Vcl.Forms,
-  View.Principal in 'View\View.Principal.pas' {Form1},
+  View.Principal in 'View\View.Principal.pas' {FrmPrincipal},
   Funcoes.Criptografia in '..\Funcoes\Funcoes.Criptografia.pas';
 
 {$R *.res}
@@ -10,6 +10,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.Run;
 end.

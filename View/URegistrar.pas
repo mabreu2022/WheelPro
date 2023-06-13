@@ -36,7 +36,7 @@ uses
   IdMessageClient,
   IdSMTPBase,
   IdSMTP,
-  Model.Registro;
+  Model.Registro, Funcoes.CNPJCPF;
 
 type
   TFrmRegistrar = class(TForm)
@@ -111,6 +111,7 @@ type
     ShadowEffect29: TShadowEffect;
     procedure FormCreate(Sender: TObject);
     procedure BtnRegistrarClick(Sender: TObject);
+    procedure EdtCnpjExit(Sender: TObject);
   private
     { Private declarations }
     FLinguagem: string;
@@ -247,6 +248,36 @@ begin
     IniFile.Free;
   end;
 
+end;
+
+procedure TFrmRegistrar.EdtCnpjExit(Sender: TObject);
+var
+  Funcoes: TCNPJCPF;
+begin
+  Funcoes:= TCNPJCPF.Create;
+  try
+    if not Funcoes.ValidarCNPJ(EdtCNPJ.Text) then
+    begin
+      ShowMessage('CNPJ inválido');
+      EdtCnpj.SetFocus;
+      BtnRegistrar.Enabled:= False;
+    end
+    else
+      BtnRegistrar.Enabled:= True;;
+
+
+    if not Funcoes.ValidarCPF(EdtCnpj.Text) then
+    begin
+      ShowMessage('CPF inválido');
+      EdtCnpj.SetFocus;
+      BtnRegistrar.Enabled:= False;
+    end
+    else
+      BtnRegistrar.Enabled:= True;;
+
+  finally
+    Funcoes.Free;
+  end;
 end;
 
 procedure TFrmRegistrar.FormCreate(Sender: TObject);

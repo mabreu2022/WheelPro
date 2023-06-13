@@ -332,6 +332,7 @@
             <Form>FrmBackup</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Funcoes\Funcoes.CNPJCPF.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

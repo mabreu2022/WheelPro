@@ -322,6 +322,25 @@ object FrmConfig: TFrmConfig
             ShadowColor = claBlack
           end
         end
+        object GroupBox1: TGroupBox
+          Position.X = 280.000000000000000000
+          Position.Y = 238.000000000000000000
+          Size.Width = 337.000000000000000000
+          Size.Height = 67.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Carregar Logo'
+          TabOrder = 6
+          object Button1: TButton
+            Position.X = 16.000000000000000000
+            Position.Y = 24.000000000000000000
+            Size.Width = 201.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 38
+            Text = 'Procurar arquivo da logo'
+            OnClick = Button1Click
+          end
+        end
       end
       object TabItemBancoDeDados: TTabItem
         CustomIcon = <

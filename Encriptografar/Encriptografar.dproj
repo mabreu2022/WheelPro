@@ -99,7 +99,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="View\View.Principal.pas">
-            <Form>Form1</Form>
+            <Form>FrmPrincipal</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\Funcoes\Funcoes.Criptografia.pas"/>

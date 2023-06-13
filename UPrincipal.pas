@@ -192,7 +192,7 @@ type
     TetheringManager1: TTetheringManager;
     TetheringAppProfile1: TTetheringAppProfile;
     EdtWhatsApp: TEdit;
-    Image3: TImage;
+    ImageLogo: TImage;
     RectanguleLaretalDireito: TRectangle;
     VertScrollBoxRodas: TVertScrollBox;
     MenuItem1: TMenuItem;
@@ -258,7 +258,7 @@ type
     procedure MenuItemFabricanteProdutosClick(Sender: TObject);
     procedure MenuItemFabricantesDeVeiculosClick(Sender: TObject);
     procedure Image5Click(Sender: TObject);
-    procedure Image3Click(Sender: TObject);
+    procedure ImageLogoClick(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
@@ -284,6 +284,7 @@ type
     FConexao: TFDConnection;
     CurrentDateTime: TDateTime; //Para uso com o Log
     DateTimeStr: string;        //Para uso com o Log
+    FArquivoLogo: String; //Nome do Arquivo da Logo a Ser carregado
 
     procedure Modo_Edicao(editar: Boolean);
     procedure Modo_Edicao2(editar: Boolean);
@@ -303,6 +304,7 @@ type
      property idUsuario: Integer read FidUsuario write SetidUsuario;
      procedure CarregarCores;
      procedure CarregarLinguagem;
+     procedure CarregarLogo;
      constructor create;
      destructor destroy;override;
 
@@ -584,6 +586,21 @@ begin
     MenuItemDeslogar.Text              := 'Log  Out';
     MenuItemBackup.Text                := 'Backup';
     MenuItemSair.Text                  := 'To go out';
+  end;
+
+end;
+
+procedure TFrmPrincipal.CarregarLogo;
+var
+  IniFile: TIniFile;
+
+begin
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
+  try
+     FArquivoLogo := IniFile.ReadString('Sistema', 'ArquivoLogo', '');
+     ImageLogo.MultiResBitmap.Items[0].Bitmap.LoadFromFile(FArquivoLogo);
+  finally
+    IniFile.Free;
   end;
 
 end;
@@ -955,6 +972,7 @@ begin
   DM.FDConnection1.Connected:= True;
   CarregarCores;
   CarregarLinguagem;
+  CarregarLogo;
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
@@ -1080,7 +1098,7 @@ end;
 
 
 
-procedure TFrmPrincipal.Image3Click(Sender: TObject);
+procedure TFrmPrincipal.ImageLogoClick(Sender: TObject);
 var
   Url: string;
 begin

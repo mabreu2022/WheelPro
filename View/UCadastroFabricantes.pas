@@ -47,7 +47,7 @@ uses
   Dao.Conexao,
   IniFiles,
   System.UIConsts,
-  LogManager, FireDAC.FMXUI.Wait;
+  LogManager, FireDAC.FMXUI.Wait, Funcoes.CNPJCPF;
 
 type
   TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);
@@ -147,6 +147,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure TabItemPesquisaClick(Sender: TObject);
     procedure BtnPesquisarClick(Sender: TObject);
+    procedure EdtCnpjExit(Sender: TObject);
   private
     { Private declarations }
     qry: TFDQuery;
@@ -513,6 +514,36 @@ begin
   Fcontroller.Free;
   //FFabricante.Free;
   inherited
+end;
+
+procedure TFrmFabricantes.EdtCnpjExit(Sender: TObject);
+var
+  Funcoes: TCNPJCPF;
+begin
+  Funcoes:= TCNPJCPF.Create;
+  try
+    if not Funcoes.ValidarCNPJ(EdtCNPJ.Text) then
+    begin
+      ShowMessage('CNPJ inválido');
+      EdtCnpj.SetFocus;
+      BtnSalvar.Enabled:= False;
+    end
+    else
+      BtnSalvar.Enabled:= True;;
+
+    if not Funcoes.ValidarCPF(EdtCnpj.Text) then
+    begin
+      ShowMessage('CPF inválido');
+      EdtCnpj.SetFocus;
+      BtnSalvar.Enabled:= False;
+    end
+    else
+      BtnSalvar.Enabled:= True;
+
+  finally
+    Funcoes.Free;
+  end;
+
 end;
 
 procedure TFrmFabricantes.FormCreate(Sender: TObject);
