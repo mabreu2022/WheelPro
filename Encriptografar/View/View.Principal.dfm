@@ -18,7 +18,7 @@ object FrmPrincipal: TFrmPrincipal
     Top = 0
     Width = 479
     Height = 212
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 418
@@ -282,7 +282,7 @@ object FrmPrincipal: TFrmPrincipal
           Width = 121
           Height = 23
           TabOrder = 1
-          TextHint = 'licenas'
+          TextHint = 'licencas'
         end
         object EdtEncryptadosBancoLicencasUserName: TEdit
           Left = 82

@@ -36,7 +36,24 @@ uses
   IdMessageClient,
   IdSMTPBase,
   IdSMTP,
-  Model.Registro, Funcoes.CNPJCPF;
+  Model.Registro,
+  Funcoes.CNPJCPF,
+  Data.DB,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.VCLUI.Wait,
+  FireDAC.Comp.Client,
+  FireDAC.Phys.PGDef,
+  FireDAC.Phys.PG,
+  FireDAC.Comp.UI,
+  DAO.ConexaoLicencas;
 
 type
   TFrmRegistrar = class(TForm)
@@ -109,12 +126,22 @@ type
     lblCEP: TLabel;
     ShadowEffect28: TShadowEffect;
     ShadowEffect29: TShadowEffect;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    ShadowEffect30: TShadowEffect;
+    ShadowEffect31: TShadowEffect;
+    Label1: TLabel;
+    Label2: TLabel;
+    ShadowEffect32: TShadowEffect;
+    ShadowEffect33: TShadowEffect;
     procedure FormCreate(Sender: TObject);
     procedure BtnRegistrarClick(Sender: TObject);
     procedure EdtCnpjExit(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FLinguagem: string;
+    FConexao: TFDConnection;
     procedure CarregarCores;
     procedure CarregarLinguagem;
   public
@@ -284,6 +311,12 @@ procedure TFrmRegistrar.FormCreate(Sender: TObject);
 begin
   CarregarCores;
   CarregarLinguagem;
+  FConexao := TConnection.CreateConnection;
+end;
+
+procedure TFrmRegistrar.FormDestroy(Sender: TObject);
+begin
+  FConexao.Free;
 end;
 
 end.

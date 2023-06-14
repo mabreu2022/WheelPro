@@ -85,18 +85,18 @@ var
   EncryptedUserNameLicencas : string;
   Funcoes: TCriptografia;
 begin
-  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Server.ini');
+  IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'Server.ini');
   Funcoes:= TCriptografia.Create;
   try
-     EncryptedServer   := Funcoes.EncryptString(EdtEncryptadosBancoServer.Text, 123);
-     EncryptedPassword := Funcoes.EncryptString(EdtEncryptadosBancoPassword.Text, 123);
-     EncryptedDataBase := Funcoes.EncryptString(EdtEncryptadosBancoDataBase.Text,123);
-     EncryptedUserName := Funcoes.EncryptString(EdtEncryptadosBancoUserName.Text,123);
+     EncryptedServer   := Funcoes.EncryptString(EdtDadosBancoServer.Text, 123);
+     EncryptedPassword := Funcoes.EncryptString(EdtDadosBancoPassword.Text, 123);
+     EncryptedDataBase := Funcoes.EncryptString(EdtDadosBancoDataBase.Text,123);
+     EncryptedUserName := Funcoes.EncryptString(EdtDadosBancoUserName.Text,123);
 
-     EncryptedServerLicencas   := Funcoes.EncryptString(EdtEncryptadosBancoLicencasServer.Text,123);
-     EncryptedPasswordLicencas := Funcoes.EncryptString(EdtEncryptadosBancoLicencasPassword.Text,123);
-     EncryptedDataBaseLicencas := Funcoes.EncryptString(EdtEncryptadosBancoLicencasDataBase.Text,123);
-     EncryptedUserNameLicencas := Funcoes.EncryptString(EdtEncryptadosBancoLicencasUserName.Text,123);
+     EncryptedServerLicencas   := Funcoes.EncryptString(EdtDadosLicenasServer.Text,123);
+     EncryptedPasswordLicencas := Funcoes.EncryptString(EdtDadosLicencasPassword.Text,123);
+     EncryptedDataBaseLicencas := Funcoes.EncryptString(EdtDadosLicenasDataBase.Text,123);
+     EncryptedUserNameLicencas := Funcoes.EncryptString(EdtDadosLicencasUserName.Text,123);
 
      //Escreve no arquivo ini
      IniFile.WriteString('Banco de Dados', 'Server', EncryptedServer);
@@ -104,10 +104,10 @@ begin
      IniFile.WriteString('Banco de Dados', 'Database', EncryptedDataBase);
      IniFile.WriteString('Banco de Dados', 'User_Name', EncryptedUserName);
 
-     IniFile.WriteString('BancoLicenas', 'Server',    EncryptedServerLicencas);
-     IniFile.WriteString('BancoLicenas', 'Password',  EncryptedPasswordLicencas);
-     IniFile.WriteString('BancoLicenas', 'Database',  EncryptedDataBaseLicencas);
-     IniFile.WriteString('BancoLicenas', 'User_Name', EncryptedUserNameLicencas);
+     IniFile.WriteString('BancoLicencas', 'Server',    EncryptedServerLicencas);
+     IniFile.WriteString('BancoLicencas', 'Password',  EncryptedPasswordLicencas);
+     IniFile.WriteString('BancoLicencas', 'Database',  EncryptedDataBaseLicencas);
+     IniFile.WriteString('BancoLicencas', 'User_Name', EncryptedUserNameLicencas);
 
      //Preenche os Edits da Aba Encriptada - Banco
      EdtEncryptadosBancoServer.Text   := EncryptedServer;

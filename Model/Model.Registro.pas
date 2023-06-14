@@ -22,7 +22,7 @@ uses
   Entity.Clientes,
   Entity.Contatos,
   System.Generics.Collections,
-  Dao.Conexao,
+  Dao.ConexaoLicencas,
   Datasnap.DBClient,
   LogManager,
   FMX.Dialogs,
@@ -52,6 +52,8 @@ type
       Frazao: string;
       Fdataregistro: TDatetime;
       FCEP: string;
+    Fim: string;
+    Fie: string;
       procedure Setativo(const Value: string);
       procedure Setbairro(const Value: string);
       procedure Setcidade(const Value: string);
@@ -66,10 +68,14 @@ type
       procedure Setuf(const Value: string);
       procedure Setdataregistro(const Value: TDatetime);
       procedure SetCEP(const Value: string);
+    procedure Setie(const Value: string);
+    procedure Setim(const Value: string);
 
     public
       property razao: string read Frazao write Setrazao;
       property cnpj : string read Fcnpj write Setcnpj;
+      property ie: string read Fie write Setie;
+      property im: string read Fim write Setim;
       property endereco: string read Fendereco write Setendereco;
       property numero: integer read Fnumero write Setnumero;
       property complemento: string read Fcomplemento write Setcomplemento;
@@ -87,7 +93,8 @@ type
       class function validarDados(aRegistro: TModelRegistro) : boolean;
       class function GravarNoBancoLicencas(aRegistro : TModelRegistro): Boolean;
 
-
+      constructor create;
+      destructor destroy;override;
 
   end;
 
@@ -95,11 +102,23 @@ implementation
 
 { TModelRegistro }
 
+constructor TModelRegistro.create;
+begin
+
+end;
+
+destructor TModelRegistro.destroy;
+begin
+
+  inherited;
+end;
+
 procedure TModelRegistro.enviarEmail;
 var
   IdMessage: TIdMessage;
   IdSMTP1: TIdSMTP;
   IdSSLIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+  aRegistro: TMOdelRegistro;
 begin
   IdSMTP1 := TIdSMTP.Create(nil);
   IdSMTP1.ConnectTimeout  := 10000;
@@ -129,26 +148,51 @@ begin
 
     // Construir o corpo da mensagem com os campos do formulário
     IdMessage.Body.Text :=
-      'Razão: ' + razao + #13#10 +
-      'CNPJ: ' + cnpj + #13#10 +
-      'Endereço: ' + endereco + #13#10 +
-      'Número: ' + IntToStr(numero) + #13#10 +
-      'Complemento: ' + complemento + #13#10 +
-      'Bairro: ' + bairro + #13#10 +
-      'Cidade: ' + cidade + #13#10 +
-      'UF: ' + uf + #13#10 +
-      'CEP: ' + cep + #13#10 +
-      'Ativo: ' + ativo + #13#10 +
-      'Responsável: ' + responsavel + #13#10 +
-      'Telefone: ' + telefone + #13#10 +
-      'E-mail: ' + email;
+      'Razão:       '    + razao            + #13#10 +
+      'CNPJ:        '    + cnpj             + #13#10 +
+      'IE:          '    + ie               + #13#10 +
+      'IM:          '    + im               + #13#10 +
+      'Endereço:    '    + endereco         + #13#10 +
+      'Número:      '    + IntToStr(numero) + #13#10 +
+      'Complemento: '    + complemento      + #13#10 +
+      'Bairro:      '    + bairro           + #13#10 +
+      'Cidade:      '    + cidade           + #13#10 +
+      'UF:          '    + uf               + #13#10 +
+      'CEP:         '    + cep              + #13#10 +
+      'Ativo:       '    + ativo            + #13#10 +
+      'Responsável: '    + responsavel      + #13#10 +
+      'Telefone:    '    + telefone         + #13#10 +
+      'E-mail:      '    + email;
 
     // Envie o e-mail
     try
       IdSMTP1.Connect;
       IdSMTP1.Send(IdMessage);
       ShowMessage('Registro enviado com sucesso');
-      GravarNoBancoLicencas;
+      aRegistro:= TModelRegistro.create;
+
+      try
+        aRegistro.razao       := razao;
+        aRegistro.cnpj        := cnpj;
+        aRegistro.ie          := ie;   //falta colocar no formulário
+        aRegistro.im          := im;   //falta colocar no formulário
+        aRegistro.endereco    := endereco;
+        aRegistro.numero      := numero;
+        aRegistro.complemento := complemento;
+        aRegistro.bairro      := bairro;
+        aRegistro.cidade      := cidade;
+        aRegistro.uf          := uf;
+        aRegistro.CEP         := cep;
+        aRegistro.ativo       := ativo;
+        aRegistro.responsavel := responsavel;
+        aRegistro.telefone    := telefone;
+        aRegistro.email       := email;
+
+        GravarNoBancoLicencas(aRegistro);
+      finally
+        aRegistro.Free;
+      end;
+
     Except
       On E: Exception do
       begin
@@ -167,8 +211,115 @@ end;
 
 class function TModelRegistro.GravarNoBancoLicencas(
   aRegistro: TModelRegistro): Boolean;
+var
+  qry   : TFDQuery;
+  Ativo : string;
+  UF    : string;
 begin
-  //gravar no Banco de Licenças
+  qry:= TFDquery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('INSERT INTO      ' +
+                ' licencas.chaves ' +
+                '(id_chave,       ' + //1
+                'razao,           ' + //2
+                'cnpj,            ' + //3
+                'ie,              ' + //4
+                'im,              ' + //5
+                'endereco,        ' + //6
+                'numero,          ' + //7
+                'complemento,     ' + //8
+                'bairro,          ' + //9
+                'cidade,          ' + //10
+                'cep,             ' + //11
+                'uf,              ' + //12
+                'ativo,           ' + //13
+                'datacadastro,    ' + //14
+                'dataalteracao    ' + //15
+               // 'dataexclusao   ' + //16
+                ')                ' +
+                'VALUES (         ' +
+                ':id_chave,       ' + //1 ok
+                ':razao,          ' + //2 ok
+                ':cnpj,           ' + //3 ok
+                ':ie,             ' + //4 ok
+                ':im,             ' + //5 ok
+                ':endereco,       ' + //6 ok
+                ':numero,         ' + //7 ok
+                ':complemento,    ' + //8 ok
+                ':bairro,         ' + //9 ok
+                ':cidade,         ' + //10 ok
+                ':cep,            ' + //11 ok
+                ':uf,             ' + //12 ok
+                ':ativo,          ' + //13 ok
+                ':datacadastro,   ' + //14 ok
+                ':dataalteracao   ' + //15 ok
+              //  ':dataexclusao, ' + //16 ok
+                ')                ');
+
+     qry.ParamByName('id_chave').DataType    := ftInteger;             //1
+     qry.ParamByName('razao').DataType       := ftString;
+     qry.ParamByName('razao').AsString       := aRegistro.razao;       //2
+     qry.ParamByName('cnpj').DataType        := ftString;
+     qry.ParamByName('cnpj').AsString        := aRegistro.cnpj ;       //3
+     qry.ParamByName('ie').DataType          := ftString;
+     qry.ParamByName('ie').AsString          := aRegistro.ie;          //4
+     qry.ParamByName('im').DataType          := ftString;
+     qry.ParamByName('im').AsString          := aRegistro.im;          //5
+     qry.ParamByName('endereco').DataType    := ftString;
+     qry.ParamByName('endereco').AsString    := aRegistro.endereco;    //6
+     qry.ParamByName('numero').DataType      := ftInteger;
+     qry.ParamByName('numero').AsInteger     := aRegistro.numero;      //7
+     qry.ParamByName('complemento').DataType := ftString;
+     qry.ParamByName('complemento').AsString := aRegistro.complemento; //8
+     qry.ParamByName('cep').DataType         := ftString;
+     qry.ParamByName('cep').AsString         := aRegistro.CEP;         //9
+     qry.ParamByName('cidade').DataType      := ftString;
+     qry.ParamByName('cidade').AsString      := aRegistro.Cidade;      //10
+     qry.ParamByName('bairro').DataType      := ftString;
+     qry.ParamByName('bairro').AsString      := aRegistro.Bairro;      //11
+     qry.ParamByName('uf').DataType          := ftString;
+     if Length(aRegistro.UF) > 0 then
+       UF := Copy(aRegistro.UF, 1, 2)
+     else
+       UF := '';
+
+     qry.ParamByName('uf').AsString          := UF;                    //12
+
+     qry.ParamByName('ativo').DataType       := ftString;
+     if Length(aRegistro.ativo) > 0 then
+       Ativo := Copy(aRegistro.ativo, 1, 1)
+     else
+       Ativo := '';
+
+     qry.ParamByName('ativo').AsString       := Ativo;                 //13
+
+     qry.ParamByName('datacadastro').DataType  := ftDateTime;
+     qry.ParamByName('datacadastro').AsDateTime:= Now;                 //14
+
+     qry.ParamByName('dataalteracao').DataType  := ftDateTime;         //15
+     qry.ParamByName('dataalteracao').AsDateTime:= Now;
+
+//     qry.ParamByName('dataexclusao').DataType := ftDateTime;
+//     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao; //15
+
+     qry.ExecSQL;
+     qry.Connection.Commit;
+
+     Result := True;
+  Except
+   On E: Exception do
+      begin
+        ShowMessage('Erro aoo tentar gravar licença!' + E.Message);
+        qry.Connection.Rollback;
+        qry.Free;
+      end;
+
+  end;
+  qry.Free;
 end;
 
 procedure TModelRegistro.Setativo(const Value: string);
@@ -214,6 +365,16 @@ end;
 procedure TModelRegistro.Setendereco(const Value: string);
 begin
   Fendereco := Value;
+end;
+
+procedure TModelRegistro.Setie(const Value: string);
+begin
+  Fie := Value;
+end;
+
+procedure TModelRegistro.Setim(const Value: string);
+begin
+  Fim := Value;
 end;
 
 procedure TModelRegistro.Setnumero(const Value: integer);
