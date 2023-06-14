@@ -179,7 +179,7 @@ begin
     Registro.bairro      := EdtBairro.Text;
     Registro.cidade      := EdtCidade.Text;
     Registro.responsavel := EdtResponsavel.Text;
-    Registro.telefone    := EdtTelefone.Text;
+    Registro.telcontato  := EdtTelefone.Text;
     Registro.email       := EdtEmail.Text;
     Registro.cep         := EdtCEP.Text;
     Registro.Linguagem   := FLinguagem;

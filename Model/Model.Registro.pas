@@ -55,6 +55,8 @@ type
       Fim: string;
       Fie: string;
       FLinguagem: string;
+    Ftelcontato: string;
+    Fcontato: string;
       procedure Setativo(const Value: string);
       procedure Setbairro(const Value: string);
       procedure Setcidade(const Value: string);
@@ -72,6 +74,8 @@ type
       procedure Setie(const Value: string);
       procedure Setim(const Value: string);
     procedure SetLinguagem(const Value: string);
+    procedure Setcontato(const Value: string);
+    procedure Settelcontato(const Value: string);
 
     public
       property razao: string read Frazao write Setrazao;
@@ -87,6 +91,8 @@ type
       property CEP: string read FCEP write SetCEP;
       property ativo: string read Fativo write Setativo;
       property responsavel: string read Fresponsavel write Setresponsavel;
+      property contato: string read Fcontato write Setcontato;
+      property telcontato: string read Ftelcontato write Settelcontato;
       property telefone: string read Ftelefone write Settelefone;
       property email: string read Femail write Setemail;
       property dataregistro: TDatetime read Fdataregistro write Setdataregistro;
@@ -164,8 +170,8 @@ begin
       'UF:          '    + uf               + #13#10 +
       'CEP:         '    + cep              + #13#10 +
       'Ativo:       '    + ativo            + #13#10 +
-      'Responsável: '    + responsavel      + #13#10 +
-      'Telefone:    '    + telefone         + #13#10 +
+      'Responsável: '    + contato          + #13#10 +
+      'Telefone:    '    + telcontato       + #13#10 +
       'E-mail:      '    + email;
 
     // Envie o e-mail
@@ -188,8 +194,8 @@ begin
         aRegistro.uf          := uf;
         aRegistro.CEP         := cep;
         aRegistro.ativo       := ativo;
-        aRegistro.responsavel := responsavel;
-        aRegistro.telefone    := telefone;
+        aRegistro.contato     := contato;
+        aRegistro.telcontato  := telcontato;
         aRegistro.email       := email;
         aRegistro.Linguagem   := linguagem;
 
@@ -212,7 +218,7 @@ begin
         if linguagem='Portugues' then
           ShowMessage('Ocorreu um erro ao enviar o registro' + e.Message)
         else
-          ShowMessage('An error occurred while sending the record');
+          ShowMessage('An error occurred while sending the record' + e.Message);
       end;
 
     end;
@@ -253,9 +259,12 @@ begin
                 'cep,             ' + //11
                 'uf,              ' + //12
                 'ativo,           ' + //13
-                'datacadastro,    ' + //14
-                'dataalteracao    ' + //15
-               // 'dataexclusao   ' + //16
+                'contato,         ' + //14
+                'telcontato,      ' + //15
+                'email,           ' + //16
+                'datacadastro,    ' + //17
+                'dataalteracao    ' + //18
+               // 'dataexclusao   ' + //19
                 ')                ' +
                 'VALUES (         ' +
                 ':id_chave,       ' + //1 ok
@@ -271,9 +280,12 @@ begin
                 ':cep,            ' + //11 ok
                 ':uf,             ' + //12 ok
                 ':ativo,          ' + //13 ok
-                ':datacadastro,   ' + //14 ok
-                ':dataalteracao   ' + //15 ok
-              //  ':dataexclusao, ' + //16 ok
+                ':contato,        ' + //14
+                ':telcontato,     ' + //15
+                ':email,          ' + //16
+                ':datacadastro,   ' + //17 ok
+                ':dataalteracao   ' + //18 ok
+              //  ':dataexclusao, ' + //19 ok
                 ')                ');
 
      qry.ParamByName('id_chave').DataType    := ftInteger;             //1
@@ -313,14 +325,23 @@ begin
 
      qry.ParamByName('ativo').AsString       := Ativo;                 //13
 
-     qry.ParamByName('datacadastro').DataType  := ftDateTime;
-     qry.ParamByName('datacadastro').AsDateTime:= Now;                 //14
+     qry.ParamByName('contato').DataType     := ftString;
+     qry.ParamByName('contato').AsString     := aRegistro.contato;     //14
 
-     qry.ParamByName('dataalteracao').DataType  := ftDateTime;         //15
+     qry.ParamByName('telcontato').DataType     := ftString;
+     qry.ParamByName('telcontato').AsString     := aRegistro.telcontato; //15
+
+     qry.ParamByName('email').DataType     := ftString;
+     qry.ParamByName('email').AsString     := aRegistro.email;           //16
+
+     qry.ParamByName('datacadastro').DataType  := ftDateTime;
+     qry.ParamByName('datacadastro').AsDateTime:= Now;                 //17
+
+     qry.ParamByName('dataalteracao').DataType  := ftDateTime;         //18
      qry.ParamByName('dataalteracao').AsDateTime:= Now;
 
 //     qry.ParamByName('dataexclusao').DataType := ftDateTime;
-//     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao; //15
+//     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao; //19
 
      qry.ExecSQL;
      qry.Connection.Commit;
@@ -372,6 +393,11 @@ begin
   Fcomplemento := Value;
 end;
 
+procedure TModelRegistro.Setcontato(const Value: string);
+begin
+  Fcontato := Value;
+end;
+
 procedure TModelRegistro.Setdataregistro(const Value: TDatetime);
 begin
   Fdataregistro := Value;
@@ -417,6 +443,11 @@ begin
   Fresponsavel := Value;
 end;
 
+procedure TModelRegistro.Settelcontato(const Value: string);
+begin
+  Ftelcontato := Value;
+end;
+
 procedure TModelRegistro.Settelefone(const Value: string);
 begin
   Ftelefone := Value;
@@ -436,7 +467,7 @@ begin
     if aLingua='Portugues' then
       raise Exception.Create('a Razão Social não pode ser vazia.')
     else
-      raise Exception.Create('the Social Reason cannot be empty.');
+      raise Exception.Create('the Social Reason cannot be empty.');  //verificar s a tradução para o que seria razão social nos EUA
     Result:= False;
     exit;
   end;
