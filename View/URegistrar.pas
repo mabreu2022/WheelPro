@@ -126,12 +126,12 @@ type
     lblCEP: TLabel;
     ShadowEffect28: TShadowEffect;
     ShadowEffect29: TShadowEffect;
-    Edit1: TEdit;
-    Edit2: TEdit;
+    EdtInscricaoEstadual: TEdit;
+    EdtIncricaoMunicipal: TEdit;
     ShadowEffect30: TShadowEffect;
     ShadowEffect31: TShadowEffect;
-    Label1: TLabel;
-    Label2: TLabel;
+    lblIe: TLabel;
+    lblIm: TLabel;
     ShadowEffect32: TShadowEffect;
     ShadowEffect33: TShadowEffect;
     procedure FormCreate(Sender: TObject);
@@ -170,6 +170,8 @@ begin
   try
     Registro.razao       := EdtRazao.Text;
     Registro.cnpj        := EdtCnpj.Text;
+    Registro.ie          := EdtInscricaoEstadual.Text;
+    Registro.im          := EdtIncricaoMunicipal.Text;
     Registro.endereco    := EdtEndereco.Text;
     if EdtNumero.Text<>'' then
       Registro.numero      := StrToInt(EdtNumero.Text);
@@ -180,6 +182,7 @@ begin
     Registro.telefone    := EdtTelefone.Text;
     Registro.email       := EdtEmail.Text;
     Registro.cep         := EdtCEP.Text;
+    Registro.Linguagem   := FLinguagem;
 
     if CBUF.ItemIndex <> -1 then
     begin
@@ -193,10 +196,10 @@ begin
       Registro.ativo       := Ativo;
     end;
 
-    Validou:= Registro.validarDados(Registro);
+    Validou:= Registro.validarDados(Registro, Registro.Linguagem);
 
     if Validou then
-      Registro.enviarEmail
+      Registro.enviarEmail  //dentro do Enviar Email chama a gravação no Banco de Licenças
     else
     begin
       if EdtRazao.CanFocus then
@@ -242,6 +245,8 @@ begin
    begin
      lblRazao.Text        := 'Razão Social / Nome';
      lblCnpj_cpf.Text     := 'CNPJ / CPF';
+     lblIe.Text           := 'Inscrição Estadual';
+     lblIm.Text           := 'Inscrição Municipal';
      lblEndereco.Text     := 'Endereço';
      lblNumero.Text       := 'Número';
      LblComplemento.Text  := 'Complemento';
@@ -258,6 +263,12 @@ begin
    begin
      lblRazao.Text        := 'Corporate Name / Name';
      lblCnpj_cpf.Text     := 'Tax Identification Number - TIN';
+     lblIe.Visible        := False;
+     EdtInscricaoEstadual.Visible:= False;
+     lblIe.Text           := 'Inscrição Estadual';
+     lblIm.Visible        := False;
+     EdtIncricaoMunicipal.Visible:= False;
+     lblIm.Text           := 'Inscrição Municipal';
      lblEndereco.Text     := 'Address';
      lblNumero.Text       := 'Number';
      LblComplemento.Text  := 'Complement';
@@ -281,6 +292,10 @@ procedure TFrmRegistrar.EdtCnpjExit(Sender: TObject);
 var
   Funcoes: TCNPJCPF;
 begin
+  //se for EUA pular validação desse campo?
+  if FLinguagem = 'Ingles' then
+    Exit;
+
   Funcoes:= TCNPJCPF.Create;
   try
     if not Funcoes.ValidarCNPJ(EdtCNPJ.Text) then

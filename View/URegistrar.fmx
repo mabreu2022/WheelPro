@@ -541,7 +541,7 @@ object FrmRegistrar: TFrmRegistrar
         ShadowColor = claBlack
       end
     end
-    object Edit1: TEdit
+    object EdtInscricaoEstadual: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 2
       Position.X = 232.000000000000000000
@@ -554,7 +554,7 @@ object FrmRegistrar: TFrmRegistrar
         ShadowColor = claBlack
       end
     end
-    object Edit2: TEdit
+    object EdtIncricaoMunicipal: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 3
       Position.X = 352.000000000000000000
@@ -567,7 +567,7 @@ object FrmRegistrar: TFrmRegistrar
         ShadowColor = claBlack
       end
     end
-    object Label1: TLabel
+    object lblIe: TLabel
       Position.X = 232.000000000000000000
       Position.Y = 115.000000000000000000
       Size.Width = 97.000000000000000000
@@ -583,7 +583,7 @@ object FrmRegistrar: TFrmRegistrar
         ShadowColor = claBlack
       end
     end
-    object Label2: TLabel
+    object lblIm: TLabel
       Position.X = 351.000000000000000000
       Position.Y = 115.000000000000000000
       Text = 'Inscri'#231#227'o Municipal'

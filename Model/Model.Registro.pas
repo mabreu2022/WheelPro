@@ -52,8 +52,9 @@ type
       Frazao: string;
       Fdataregistro: TDatetime;
       FCEP: string;
-    Fim: string;
-    Fie: string;
+      Fim: string;
+      Fie: string;
+      FLinguagem: string;
       procedure Setativo(const Value: string);
       procedure Setbairro(const Value: string);
       procedure Setcidade(const Value: string);
@@ -68,8 +69,9 @@ type
       procedure Setuf(const Value: string);
       procedure Setdataregistro(const Value: TDatetime);
       procedure SetCEP(const Value: string);
-    procedure Setie(const Value: string);
-    procedure Setim(const Value: string);
+      procedure Setie(const Value: string);
+      procedure Setim(const Value: string);
+    procedure SetLinguagem(const Value: string);
 
     public
       property razao: string read Frazao write Setrazao;
@@ -88,9 +90,10 @@ type
       property telefone: string read Ftelefone write Settelefone;
       property email: string read Femail write Setemail;
       property dataregistro: TDatetime read Fdataregistro write Setdataregistro;
+      property Linguagem: string read FLinguagem write SetLinguagem;
 
       procedure enviarEmail;
-      class function validarDados(aRegistro: TModelRegistro) : boolean;
+      class function validarDados(aRegistro: TModelRegistro ; aLingua: string) : boolean;
       class function GravarNoBancoLicencas(aRegistro : TModelRegistro): Boolean;
 
       constructor create;
@@ -115,10 +118,11 @@ end;
 
 procedure TModelRegistro.enviarEmail;
 var
-  IdMessage: TIdMessage;
-  IdSMTP1: TIdSMTP;
-  IdSSLIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-  aRegistro: TMOdelRegistro;
+  IdMessage      : TIdMessage;
+  IdSMTP1        : TIdSMTP;
+  IdSSLIOHandler : TIdSSLIOHandlerSocketOpenSSL;
+  aRegistro      : TMOdelRegistro;
+  Gravou         : Boolean;
 begin
   IdSMTP1 := TIdSMTP.Create(nil);
   IdSMTP1.ConnectTimeout  := 10000;
@@ -174,8 +178,8 @@ begin
       try
         aRegistro.razao       := razao;
         aRegistro.cnpj        := cnpj;
-        aRegistro.ie          := ie;   //falta colocar no formulário
-        aRegistro.im          := im;   //falta colocar no formulário
+        aRegistro.ie          := ie;
+        aRegistro.im          := im;
         aRegistro.endereco    := endereco;
         aRegistro.numero      := numero;
         aRegistro.complemento := complemento;
@@ -187,8 +191,17 @@ begin
         aRegistro.responsavel := responsavel;
         aRegistro.telefone    := telefone;
         aRegistro.email       := email;
+        aRegistro.Linguagem   := linguagem;
 
-        GravarNoBancoLicencas(aRegistro);
+        Gravou := GravarNoBancoLicencas(aRegistro);
+
+        if Gravou then
+        begin
+          if linguagem='Portugues' then
+            ShowMessage('Registro incluido com sucesso! Aguarde Retorno por E-mail da Conect com a chave do seu registro')
+          else
+            ShowMessage('Registration successfully added! Wait for an E-mail Return from Conect with your registration key');
+        end;
       finally
         aRegistro.Free;
       end;
@@ -196,7 +209,10 @@ begin
     Except
       On E: Exception do
       begin
-        ShowMessage('Ocorreu um erro ao enviar o registro' + e.Message);
+        if linguagem='Portugues' then
+          ShowMessage('Ocorreu um erro ao enviar o registro' + e.Message)
+        else
+          ShowMessage('An error occurred while sending the record');
       end;
 
     end;
@@ -313,7 +329,11 @@ begin
   Except
    On E: Exception do
       begin
-        ShowMessage('Erro aoo tentar gravar licença!' + E.Message);
+        if aRegistro.Linguagem='Portugues' then
+          ShowMessage('Erro ao tentar gravar licença!' + E.Message)
+        else
+          ShowMessage('Error trying to write license!!' + E.Message);
+
         qry.Connection.Rollback;
         qry.Free;
       end;
@@ -377,6 +397,11 @@ begin
   Fim := Value;
 end;
 
+procedure TModelRegistro.SetLinguagem(const Value: string);
+begin
+  FLinguagem := Value;
+end;
+
 procedure TModelRegistro.Setnumero(const Value: integer);
 begin
   Fnumero := Value;
@@ -402,50 +427,72 @@ begin
   Fuf := Value;
 end;
 
-class function TModelRegistro.validarDados(aRegistro: TModelRegistro) : boolean;
+class function TModelRegistro.validarDados(aRegistro: TModelRegistro ; aLingua: string) : boolean;
 begin
    Result := False;
 
   if Trim(aRegistro.Frazao) = '' then
   begin
-    raise Exception.Create('a Razão Social não pode ser vazia.');
+    if aLingua='Portugues' then
+      raise Exception.Create('a Razão Social não pode ser vazia.')
+    else
+      raise Exception.Create('the Social Reason cannot be empty.');
     Result:= False;
     exit;
   end;
 
-  if Trim(aRegistro.cnpj) = '' then
+  //se for ingles nao validar cnpj/cpf
+  if aLingua<>'Ingles' then
   begin
-    raise Exception.Create('o CNPJ/CPF não pode ser vazio.');
-    Result:= False;
-    exit;
+    if Trim(aRegistro.cnpj) = '' then
+    begin
+      raise Exception.Create('o CNPJ/CPF não pode ser vazio.');
+      Result:= False;
+      exit;
+    end;
   end;
 
   if Trim(aRegistro.Endereco) = '' then
   begin
-    raise Exception.Create('É necessário prencher o Endereço.');
+    if aLingua='Portugues' then
+      raise Exception.Create('É necessário prencher o campo Endereço.')
+    else
+      raise Exception.Create('You must fill in the Address field.');
     Result:= False;
     exit;
   end;
 
   if Trim(aRegistro.Bairro) = '' then
   begin
-    raise Exception.Create('É necessário preencher o Bairro.');
+    if aLingua='Portugues' then
+      raise Exception.Create('É necessário preencher o campo Bairro.')
+    else
+      raise Exception.Create('You must fill in the District field.');
     Result:= False;
     exit;
   end;
 
   if Trim(aRegistro.Cidade) = '' then
   begin
-    raise Exception.Create('É necessário preencher a Cidade.');
+    if aLingua='Portugues' then
+      raise Exception.Create('É necessário preencher o campo Cidade.')
+    else
+      raise Exception.Create('You must fill in the City field.');
     Result:= False;
     exit;
   end;
 
-  if aRegistro.CEP.Length < 8  then
+  if aLingua='Portugues' then //pular caso EUA
   begin
-    raise Exception.Create('O CEP não pode ser menor que 8 caracteres.');
-    Result:= False;
-    exit;
+    if aRegistro.CEP.Length < 8  then
+    begin
+      if aLingua='Portugues' then
+        raise Exception.Create('O CEP não pode ser menor que 8 caracteres.')
+      else
+        raise Exception.Create('Zip code cannot be less than 8 characters.');   //qual o tamanho do capo nos EUA???
+      Result:= False;
+      exit;
+    end;
   end;
 
   if Trim(aRegistro.uf) = '' then
