@@ -18,6 +18,9 @@
         <Projects Include="obtendo numero serial do hd\GerarSerial.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="obtendo numero serial do hd\Project1.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +74,23 @@
     <Target Name="GerarSerial:Make">
         <MSBuild Projects="obtendo numero serial do hd\GerarSerial.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Project1">
+        <MSBuild Projects="obtendo numero serial do hd\Project1.dproj"/>
+    </Target>
+    <Target Name="Project1:Clean">
+        <MSBuild Projects="obtendo numero serial do hd\Project1.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project1:Make">
+        <MSBuild Projects="obtendo numero serial do hd\Project1.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="WheelProV3;WheelPro;Encriptografar;GerarContraSenha;GerarSerial"/>
+        <CallTarget Targets="WheelProV3;WheelPro;Encriptografar;GerarContraSenha;GerarSerial;Project1"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean;Encriptografar:Clean;GerarContraSenha:Clean;GerarSerial:Clean"/>
+        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean;Encriptografar:Clean;GerarContraSenha:Clean;GerarSerial:Clean;Project1:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="WheelProV3:Make;WheelPro:Make;Encriptografar:Make;GerarContraSenha:Make;GerarSerial:Make"/>
+        <CallTarget Targets="WheelProV3:Make;WheelPro:Make;Encriptografar:Make;GerarContraSenha:Make;GerarSerial:Make;Project1:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

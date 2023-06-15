@@ -159,48 +159,49 @@ end;
 
 procedure TFRMGERARSERIAL.GerarserialClick(Sender: TObject);
 var
-x:string;
-Y:string;
-z:string;
-data : TDateTime;
+  x:string;
+  Y:string;
+  z:string;
+  data : TDateTime;
 begin
-      FSWbemLocator := CreateOleObject('WbemScripting.SWbemLocator');
-      FWMIService   := FSWbemLocator.ConnectServer('localhost', 'root\CIMV2', '', '');
-      X:=Trim(GetWMIstring('Win32_BIOS','SerialNumber'));
-      Y:=Trim(GetWMIstring('Win32_PhysicalMedia','SerialNumber'));
+  FSWbemLocator := CreateOleObject('WbemScripting.SWbemLocator');
+  FWMIService   := FSWbemLocator.ConnectServer('localhost', 'root\CIMV2', '', '');
+  X:=Trim(GetWMIstring('Win32_BIOS','SerialNumber'));
+  Y:=Trim(GetWMIstring('Win32_PhysicalMedia','SerialNumber'));
 
-      label2.Caption:= x;
-      label4.Caption:= y;
-      z:=x+y+(DateToStr(date));
-      //label5.Caption:=z;
-      label5.Caption:=z;
-      // Rotina de enviar por e-mail
+  label2.Caption:= x;
+  label4.Caption:= y;
+  z:=x+y+(DateToStr(date));
+  //label5.Caption:=z;
+  label5.Caption:=z;
+  // Rotina de enviar por e-mail
 
-      // Rotina de encriptar
+  // Rotina de encriptar
 
-      with FDQuery1,FDQuery2 do
+  with FDQuery1,FDQuery2 do
 
-           //FDQuery1.Edit;
-           //Desabilitar botao Geral Serial
-           Edit1.Enabled:=False;
-           Gerarserial.Enabled:=False;
-           Button1.Enabled:=False;
-           PageControl1.Pages[1].TabVisible := False;
-           // fim
+     //FDQuery1.Edit;
+     //Desabilitar botao Geral Serial
+     Edit1.Enabled:=False;
+     Gerarserial.Enabled:=False;
+     Button1.Enabled:=False;
+     PageControl1.Pages[1].TabVisible := False;
+     // fim
 
-           FDQuery1.Append;
-           FDQuery1.FieldByName('chave').AsString := z;
-           FDQuery1.FieldByName('Data_inc').AsDateTime := Date;
-           Data := date;
-           FDQuery1.FieldByName('Data_exp').AsDateTime:=Data;
-           //ShowMessage(DateToStr(Data+30));
-           FDQuery1.FieldByName('serialhd').AsString:=y;
+     FDQuery1.Append;
+     FDQuery1.FieldByName('chave').AsString := z;
+     FDQuery1.FieldByName('Data_inc').AsDateTime := Date;
+     Data := Date;
+     FDQuery1.FieldByName('Data_exp').AsDateTime:=Data;
+     //ShowMessage(DateToStr(Data+30));
+     FDQuery1.FieldByName('serialhd').AsString:=y;
 
-           FDQuery1.FieldByName('ID_Chave').AsInteger := FDQuery2.FieldByName('ID_Chave').AsInteger;
+     FDQuery1.FieldByName('ID_Chave').AsInteger := FDQuery2.FieldByName('ID_Chave').AsInteger;
 
-           FDQuery1.FieldByName('contrasenha').AsString:='0';
-           FDQuery1.FieldByName('ativado').AsString:='N';
-           FDQuery1.Post;
+     FDQuery1.FieldByName('contrasenha').AsString:='0';
+     FDQuery1.FieldByName('ativado').AsString:='N';
+     FDQuery1.Post;
+
 end;
 
       //ShowMessage('O número serial do HD é:'+ x +'E o da Bios do HD é:'+y);
@@ -289,6 +290,8 @@ begin
     FDQuery3.FieldByName('telcontato').AsString:=Edit12.Text;
     FDQuery3.FieldByName('website').AsString:=Edit13.Text;
     FDQuery3.FieldByName('email').AsString:=Edit14.Text;
+
+    //Faltaram bairro, cidade, ativo, datacadastro, uf
     FDQuery3.Post;
     ShowMessage('Dados Salvos com sucesso!');
 
@@ -325,9 +328,9 @@ begin
 
     textomsg                := TIdText.Create(IdMessage.MessageParts);
     //textomsg.Body.Text      := 'Se você consegue ler isto então é porque funcionou o teste!';
-    contatol:=FDQuery2.FieldByName('contato').AsString;
-    emaill:=FDQuery2.FieldByName('email').AsString;
-    telcontatol:=FDQuery2.FieldByName('telcontato').AsString;
+    contatol    := FDQuery2.FieldByName('contato').AsString;
+    emaill      := FDQuery2.FieldByName('email').AsString;
+    telcontatol := FDQuery2.FieldByName('telcontato').AsString;
     Memo1.Lines.Add(contatol);
     Memo1.Lines.Add(emaill);
     Memo1.Lines.Add(telcontatol);
@@ -453,7 +456,7 @@ end;
 
 procedure TFRMGERARSERIAL.Edit1Enter(Sender: TObject);
 begin
-Gerarserial.Enabled:=True;
+  Gerarserial.Enabled:=True;
 end;
 
 procedure TFRMGERARSERIAL.FormActivate(Sender: TObject);
@@ -462,14 +465,14 @@ begin
 end;
 
 procedure TFRMGERARSERIAL.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
+var CanClose: Boolean);
 begin
-Application.Terminate;
+  Application.Terminate;
 end;
 
 procedure TFRMGERARSERIAL.FormShow(Sender: TObject);
 begin
-Gerarserial.Enabled:=False;
+  Gerarserial.Enabled:=False;
   { with FDQuery3 do
    begin
        if FieldByName('contrasenha')<>0 then

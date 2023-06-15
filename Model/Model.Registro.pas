@@ -30,7 +30,10 @@ uses
   IdSMTP,
   IdMessage,
   IdExplicitTLSClientServerBase,
-  IdSSLOpenSSL;
+  IdSSLOpenSSL,
+  System.Win.ComObj,
+  Winapi.ActiveX,
+  System.Variants;
 
 
 type
@@ -55,8 +58,11 @@ type
       Fim: string;
       Fie: string;
       FLinguagem: string;
-    Ftelcontato: string;
-    Fcontato: string;
+      Ftelcontato: string;
+      Fcontato: string;
+      Fserial: string;
+      FOnLabel6TextChanged: TNotifyEvent;
+    Fserialhd: string;
       procedure Setativo(const Value: string);
       procedure Setbairro(const Value: string);
       procedure Setcidade(const Value: string);
@@ -73,10 +79,13 @@ type
       procedure SetCEP(const Value: string);
       procedure Setie(const Value: string);
       procedure Setim(const Value: string);
-    procedure SetLinguagem(const Value: string);
-    procedure Setcontato(const Value: string);
-    procedure Settelcontato(const Value: string);
-
+      procedure SetLinguagem(const Value: string);
+      procedure Setcontato(const Value: string);
+      procedure Settelcontato(const Value: string);
+      procedure Setserial(const Value: string);
+      function  GetWMIstring(const WMIClass, WMIProperty:string): string;
+      procedure SetOnLabel6TextChanged(const Value: TNotifyEvent);
+    procedure Setserialhd(const Value: string);
     public
       property razao: string read Frazao write Setrazao;
       property cnpj : string read Fcnpj write Setcnpj;
@@ -97,17 +106,33 @@ type
       property email: string read Femail write Setemail;
       property dataregistro: TDatetime read Fdataregistro write Setdataregistro;
       property Linguagem: string read FLinguagem write SetLinguagem;
+      property serial : string read Fserial write Setserial;  //transferir do projeto antigo para esse
+      property serialhd: string read Fserialhd write Setserialhd;
 
-      procedure enviarEmail;
+      //Verificar se será necessário criar mais propertys para a tabela Registro
+      property OnLabel6TextChanged: TNotifyEvent read FOnLabel6TextChanged write SetOnLabel6TextChanged;
+      procedure enviarEmail; //Já chama  aqui a gravação no banco de  licenças
+      function GerarSerial: string;
       class function validarDados(aRegistro: TModelRegistro ; aLingua: string) : boolean;
-      class function GravarNoBancoLicencas(aRegistro : TModelRegistro): Boolean;
+      class function GravarNoBancoLicencas(aRegistro : TModelRegistro): Boolean;  //Tabela Chaves
+      class function ValidarLicenca(adata: TDateTime): Boolean;
+      class function GravarRegistro(
+  aRegistro: TModelRegistro; achave: String): Boolean;
 
       constructor create;
       destructor destroy;override;
 
   end;
 
+  var
+  //FRMGERARSERIAL: TFRMGERARSERIAL;
+  FSWbemLocator : OLEVariant;
+  FWMIService   : OLEVariant;
+
 implementation
+
+uses
+  URegistrar; //ver se não vai dar problema de integridade referencial
 
 { TModelRegistro }
 
@@ -172,15 +197,18 @@ begin
       'Ativo:       '    + ativo            + #13#10 +
       'Responsável: '    + contato          + #13#10 +
       'Telefone:    '    + telcontato       + #13#10 +
+      'Serial:      '    + Serial           + #13#10 +
       'E-mail:      '    + email;
+
+      //Enviar o Serial do cliente para ser feita a validação na ferramenta externa
 
     // Envie o e-mail
     try
       IdSMTP1.Connect;
       IdSMTP1.Send(IdMessage);
       ShowMessage('Registro enviado com sucesso');
-      aRegistro:= TModelRegistro.create;
 
+      aRegistro:= TModelRegistro.create;
       try
         aRegistro.razao       := razao;
         aRegistro.cnpj        := cnpj;
@@ -198,6 +226,7 @@ begin
         aRegistro.telcontato  := telcontato;
         aRegistro.email       := email;
         aRegistro.Linguagem   := linguagem;
+        aRegistro.serial      := Serial;
 
         Gravou := GravarNoBancoLicencas(aRegistro);
 
@@ -229,6 +258,89 @@ begin
     IdSSLIOHandler.Free;
   end;
 
+end;
+
+function TModelRegistro.GerarSerial: string;
+var
+  x:string;
+  Y:string;
+  z:string;
+  data : TDateTime;
+  qry, qry2: TFDQuery;
+  Registrarfrm: TFrmRegistrar;
+begin
+  Result:= '';
+  FSWbemLocator := CreateOleObject('WbemScripting.SWbemLocator');
+  FWMIService   := FSWbemLocator.ConnectServer('localhost', 'root\CIMV2', '', '');
+  X:=Trim(GetWMIstring('Win32_BIOS','SerialNumber')); //Serial da Bios
+  Y:=Trim(GetWMIstring('Win32_PhysicalMedia','SerialNumber')); //Serial do HD
+
+  //label6.Caption:= x;
+  //label4.Caption:= y;
+  z:=x+y+(DateToStr(date));
+  //label5.Caption:=z;
+  Result:= z;
+
+  qry:= TFDquery.Create(nil);
+  qry.Connection  := TConnection.CreateConnection;
+  try
+    qry.SQL.Clear;
+    qry.SQL.Add('select * from registro');
+    qry.SQL.Add('');
+
+    qry.ExecSQL;
+    qry.Connection.Commit;
+
+    with qry do
+
+     //FDQuery1.Edit;
+     //Desabilitar botao Geral Serial
+     //Edit1.Enabled:=False;
+     //BtnRegistrar.Enabled:=False;
+     //Button1.Enabled:=False;
+     //PageControl1.Pages[1].TabVisible := False;
+     // fim
+
+
+
+
+     qry.FieldByName('chave').AsString      := z;
+     qry.FieldByName('Data_inc').AsDateTime := Date;
+     Data := date;
+     qry.FieldByName('Data_exp').AsDateTime:=Data;
+     //ShowMessage(DateToStr(Data+30));
+     qry.FieldByName('serialhd').AsString:=y;
+
+     qry.FieldByName('ID_Chave').AsInteger := qry2.FieldByName('ID_Chave').AsInteger;
+
+     qry.FieldByName('contrasenha').AsString:='0';
+     qry.FieldByName('ativado').AsString:='N';
+     qry.Post;
+
+  finally
+     qry.Free;
+  end;
+
+end;
+
+function TModelRegistro.GetWMIstring(const WMIClass,
+  WMIProperty: string): string;
+const
+  wbemFlagForwardOnly = $00000020;
+var
+  FWbemObjectSet: OLEVariant;
+  FWbemObject   : OLEVariant;
+  oEnum         : IEnumvariant;
+  iValue        : LongWord;
+begin;
+     Result:='';
+     FWbemObjectSet:= FWMIService.ExecQuery(Format('Select %s from %s',[WMIProperty, WMIClass]),'WQL',wbemFlagForwardOnly);
+     oEnum         := IUnknown(FWbemObjectSet._NewEnum) as IEnumVariant;
+     if oEnum.Next(1, FWbemObject, iValue) = 0 then
+
+        if not VarIsNull(FWbemObject.Properties_.Item(WMIProperty).Value) then
+           Result:=FWbemObject.Properties_.Item(WMIProperty).Value;
+           FWbemObject:=Unassigned;
 end;
 
 class function TModelRegistro.GravarNoBancoLicencas(
@@ -361,6 +473,74 @@ begin
 
   end;
   qry.Free;
+
+  //gravar na tabela Registros
+  GravarRegistro(aRegistro, aRegistro.serial);
+end;
+
+class function TModelRegistro.GravarRegistro(
+  aRegistro: TModelRegistro; achave: String): Boolean;
+var
+  qry: TFDQuery;
+  data: TDateTime;
+begin
+  qry:= TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
+  try
+     qry.SQL.Clear;
+     qry.SQL.Add('INSERT INTO REGISTRO      ' +
+                 '(id,                      ' +
+                 'id_chave,                 ' +
+                 'chave,                    ' +
+                 'data_inc,                 ' +
+                 'data_exp,                 ' +
+                 'contrasenha,              ' +
+                 'ativado,                  ' +
+                 'serialhd                  ' +
+               //  'WHERE id_chave =:id_chave ' +
+                 ')                         ' +
+                 'VALUES (                  ' +
+                 ':id,                      ' +
+                 ':id_chave,                ' +
+                 ':chave,                   ' +
+                 ':data_inc,                ' +
+                 ':data_exp,                ' +
+                 ':contrasenha,             ' +
+                 ':ativado,                 ' +
+                 ':serialhd                 ' +
+                 ')                         ');
+
+     qry.ParamByName('chave').DataType     := ftString;
+     qry.ParamByName('chave').AsString      := aChave;
+
+     qry.ParamByName('Data_inc').DataType   := ftDateTime;
+     qry.ParamByName('Data_inc').AsDateTime := Date;
+
+     Data := Date;
+
+     qry.ParamByName('Data_exp').DataType    := ftDateTime;
+     qry.ParamByName('Data_exp').AsDateTime  :=Data;
+
+     //ShowMessage(DateToStr(Data+30));
+     qry.ParamByName('serialhd').DataType    := ftDateTime;
+     qry.ParamByName('serialhd').AsString    :=aRegistro.serialhd;
+
+     qry.ParamByName('contrasenha').AsString :='0';
+     qry.ParamByName('ativado').AsString     :='N';
+
+     qry.ParamByName('id_chave').AsInteger := //qry2.FieldByName('ID_Chave').AsInteger;
+
+     qry.ExecSQL;
+     qry.Connection.Commit;
+
+  Except
+  On E: Exception do
+    begin
+       Showmessage('Erro ao gravar tabela registro!'+ E.Message);
+       qry.Connection.Rollback;
+    end;
+  end;
 end;
 
 procedure TModelRegistro.Setativo(const Value: string);
@@ -433,6 +613,11 @@ begin
   Fnumero := Value;
 end;
 
+procedure TModelRegistro.SetOnLabel6TextChanged(const Value: TNotifyEvent);
+begin
+  FOnLabel6TextChanged := Value;
+end;
+
 procedure TModelRegistro.Setrazao(const Value: string);
 begin
   Frazao := Value;
@@ -441,6 +626,16 @@ end;
 procedure TModelRegistro.Setresponsavel(const Value: string);
 begin
   Fresponsavel := Value;
+end;
+
+procedure TModelRegistro.Setserial(const Value: string);
+begin
+  Fserial := Value;
+end;
+
+procedure TModelRegistro.Setserialhd(const Value: string);
+begin
+  Fserialhd := Value;
 end;
 
 procedure TModelRegistro.Settelcontato(const Value: string);
@@ -535,6 +730,27 @@ begin
 
   Result:= True;
 
+end;
+
+class function TModelRegistro.ValidarLicenca(adata: TDateTime): Boolean;
+var
+  qry: TFDQuery;
+begin
+  Result := False;
+  qry:= TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  try
+    qry.SQL.Clear;
+    qry.SQL.Add('Select * from registro R ');
+    qry.SQL.Add('join chaves C on(C.id_chave = R.id_chave)' );
+    qry.SQL.Add('WHERE data_exp < :DataAtual');       // Adicione a condição para a data de expiração
+    qry.ParamByName('DataAtual').AsDateTime := adata; // Defina o valor atual da data
+    qry.Open;
+    if Qry.RecordCount > 0 then
+      Result:= true;
+  finally
+    qry.Free;
+  end;
 end;
 
 end.

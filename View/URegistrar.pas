@@ -53,7 +53,7 @@ uses
   FireDAC.Phys.PGDef,
   FireDAC.Phys.PG,
   FireDAC.Comp.UI,
-  DAO.ConexaoLicencas;
+  DAO.ConexaoLicencas, FMX.TabControl, FMX.Memo.Types, FMX.Memo;
 
 type
   TFrmRegistrar = class(TForm)
@@ -64,80 +64,96 @@ type
     Rectangle2: TRectangle;
     LblTitulo: TLabel;
     ShadowEffect1: TShadowEffect;
+    IdSMTP1: TIdSMTP;
+    IdMessage1: TIdMessage;
+    TabControl1: TTabControl;
+    TabItem1: TTabItem;
+    TabItem2: TTabItem;
+    TabItem3: TTabItem;
     lblRazao: TLabel;
     ShadowEffect2: TShadowEffect;
     EdtRazao: TEdit;
     ShadowEffect8: TShadowEffect;
     lblCnpj_cpf: TLabel;
-    lblEndereco: TLabel;
-    ShadowEffect4: TShadowEffect;
     ShadowEffect3: TShadowEffect;
     EdtCnpj: TEdit;
     ShadowEffect9: TShadowEffect;
+    lblIe: TLabel;
+    ShadowEffect32: TShadowEffect;
+    EdtInscricaoEstadual: TEdit;
+    ShadowEffect30: TShadowEffect;
+    lblIm: TLabel;
+    ShadowEffect33: TShadowEffect;
+    EdtIncricaoMunicipal: TEdit;
+    ShadowEffect31: TShadowEffect;
+    lblEndereco: TLabel;
+    ShadowEffect4: TShadowEffect;
     EdtEndereco: TEdit;
     ShadowEffect10: TShadowEffect;
     lblNumero: TLabel;
     ShadowEffect5: TShadowEffect;
-    LblComplemento: TLabel;
-    ShadowEffect6: TShadowEffect;
     EdtNumero: TEdit;
     ShadowEffect11: TShadowEffect;
-    EdtComplemento: TEdit;
-    ShadowEffect12: TShadowEffect;
+    LblComplemento: TLabel;
+    ShadowEffect6: TShadowEffect;
     LblBairro: TLabel;
     ShadowEffect7: TShadowEffect;
+    LblCidade: TLabel;
+    ShadowEffect23: TShadowEffect;
+    lblCEP: TLabel;
+    ShadowEffect28: TShadowEffect;
+    lblUF: TLabel;
+    ShadowEffect24: TShadowEffect;
+    LblAtivo: TLabel;
+    ShadowEffect25: TShadowEffect;
+    EdtComplemento: TEdit;
+    ShadowEffect12: TShadowEffect;
     EdtBairro: TEdit;
     ShadowEffect13: TShadowEffect;
-    BtnRegistrar: TButton;
-    ShadowEffect14: TShadowEffect;
+    EdtCidade: TEdit;
+    ShadowEffect22: TShadowEffect;
+    EdtCEP: TEdit;
+    ShadowEffect29: TShadowEffect;
+    CBUF: TComboBox;
+    ShadowEffect26: TShadowEffect;
+    CBAtivo: TComboBox;
+    ShadowEffect27: TShadowEffect;
+    LblResponnsavel: TLabel;
+    ShadowEffect15: TShadowEffect;
+    LblTelefone: TLabel;
+    ShadowEffect18: TShadowEffect;
+    EdtResponsavel: TEdit;
+    ShadowEffect16: TShadowEffect;
+    EdtTelefone: TEdit;
+    ShadowEffect19: TShadowEffect;
+    LblEmail: TLabel;
+    ShadowEffect20: TShadowEffect;
+    EdtEmail: TEdit;
+    ShadowEffect21: TShadowEffect;
     GroupBox1: TGroupBox;
     Grid1: TGrid;
     Column1: TColumn;
     Column2: TColumn;
     Column3: TColumn;
-    LblResponnsavel: TLabel;
-    EdtResponsavel: TEdit;
-    ShadowEffect15: TShadowEffect;
-    ShadowEffect16: TShadowEffect;
     ShadowEffect17: TShadowEffect;
-    LblTelefone: TLabel;
-    EdtTelefone: TEdit;
-    ShadowEffect18: TShadowEffect;
-    ShadowEffect19: TShadowEffect;
-    LblEmail: TLabel;
-    EdtEmail: TEdit;
-    ShadowEffect20: TShadowEffect;
-    ShadowEffect21: TShadowEffect;
-    LblCidade: TLabel;
-    EdtCidade: TEdit;
-    ShadowEffect22: TShadowEffect;
-    ShadowEffect23: TShadowEffect;
-    lblUF: TLabel;
-    ShadowEffect24: TShadowEffect;
-    CBUF: TComboBox;
-    ShadowEffect26: TShadowEffect;
-    LblAtivo: TLabel;
-    ShadowEffect25: TShadowEffect;
-    CBAtivo: TComboBox;
-    ShadowEffect27: TShadowEffect;
-    IdSMTP1: TIdSMTP;
-    IdMessage1: TIdMessage;
-    EdtCEP: TEdit;
-    lblCEP: TLabel;
-    ShadowEffect28: TShadowEffect;
-    ShadowEffect29: TShadowEffect;
-    EdtInscricaoEstadual: TEdit;
-    EdtIncricaoMunicipal: TEdit;
-    ShadowEffect30: TShadowEffect;
-    ShadowEffect31: TShadowEffect;
-    lblIe: TLabel;
-    lblIm: TLabel;
-    ShadowEffect32: TShadowEffect;
-    ShadowEffect33: TShadowEffect;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    lblSerial: TLabel;
+    Edit1: TEdit;
+    Button1: TButton;
+    lblSerialHD: TLabel;
+    Label7: TLabel;
+    Memo1: TMemo;
+    BtnGravar: TButton;
+    BtnRegistrar: TButton;
+    ShadowEffect14: TShadowEffect;
     procedure FormCreate(Sender: TObject);
     procedure BtnRegistrarClick(Sender: TObject);
     procedure EdtCnpjExit(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure BtnGravarClick(Sender: TObject);
   private
     { Private declarations }
     FLinguagem: string;
@@ -183,6 +199,7 @@ begin
     Registro.email       := EdtEmail.Text;
     Registro.cep         := EdtCEP.Text;
     Registro.Linguagem   := FLinguagem;
+    Registro.serial      := Registro.GerarSerial;
 
     if CBUF.ItemIndex <> -1 then
     begin
@@ -208,6 +225,58 @@ begin
 
   finally
     Registro.Free;
+    //Application.Terminate;
+  end;
+
+end;
+
+procedure TFrmRegistrar.BtnGravarClick(Sender: TObject);
+var
+  Registro: TModelRegistro;
+  DeuCerto: Boolean;
+begin
+  TabControl1.Tabs[0].Visible := False;
+  Button1.Enabled:=True; //
+  Edit1.Enabled:=True;   //
+  BtnRegistrar.Enabled:=True;
+
+  Registro:=TModelRegistro.create;
+  try
+     Registro.razao        := EdtRazao.Text;
+     Registro.cnpj         := EdtCnpj.Text;
+     Registro.ie           := EdtInscricaoEstadual.Text;
+     Registro.im           := EdtIncricaoMunicipal.Text;
+     Registro.endereco     := EdtEndereco.Text;
+     Registro.numero       := StrToInt(EdtNumero.Text);
+     Registro.complemento  := EdtComplemento.Text;
+     Registro.bairro       := EdtBairro.Text;
+     Registro.Cidade       := EdtCidade.Text;
+     Registro.uf           := CBUF.Items[CBUF.ItemIndex];
+     Registro.CEP          := EdtCep.Text;
+     Registro.ativo        := CBAtivo.Items[CBAtivo.ItemIndex];
+     Registro.contato      := EdtResponsavel.Text;
+     Registro.telcontato   := EdtTelefone.Text;
+     Registro.email        := Edtemail.Text;
+     Registro.dataregistro := Now;
+     Registro.serialHD     := lblSerialHD.Text;
+     Registro.serial       := lblSErial.Text;
+
+     //chamar a rotina de gravar serial no Model.Registro;
+     DeuCerto := Registro.GravarNoBancoLicencas(Registro); //select * from chaves  //Aqui  deve ser um Update , tendo que criar uma funcao para isso
+
+     if DeuCerto then
+     begin
+       ShowMessage('Dados Salvos com sucesso!');
+       TabControl1.Index:=1;
+     end
+     else
+     begin
+       ShowMessage('Erro ao gravar Registro!');
+       if EdtRazao.CanFocus then
+         EdtRazao.Setfocus;
+     end;
+  finally
+     Registro.Free;
   end;
 
 end;

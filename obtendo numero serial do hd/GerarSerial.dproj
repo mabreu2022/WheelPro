@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{5CE555F6-1F71-4CA5-88EB-DA07E172CFD9}</ProjectGuid>
+        <ProjectGuid>{AB861F3D-E25E-435E-8A86-8597B12A4FA0}</ProjectGuid>
         <ProjectVersion>19.5</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>GerarSerial.dpr</MainSource>

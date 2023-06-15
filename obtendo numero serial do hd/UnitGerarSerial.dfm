@@ -22,7 +22,7 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     Top = 0
     Width = 575
     Height = 377
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -346,20 +346,19 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
       'Database=licencas'
       'User_Name=root'
       'Password=19741974'
-      'Server=127.0.0.1'
+      'Server=192.168.15.178'
       'DriverID=MySQL')
     Connected = True
     LoginPrompt = False
-    Left = 288
-    Top = 32
+    Left = 32
+    Top = 224
   end
   object FDQuery1: TFDQuery
-    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'select * from registro')
-    Left = 368
-    Top = 32
+    Left = 32
+    Top = 288
     object FDQuery1id: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -408,18 +407,18 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
   end
   object DataSource1: TDataSource
     DataSet = FDQuery1
-    Left = 424
-    Top = 32
+    Left = 128
+    Top = 216
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 288
-    Top = 80
+    Left = 440
+    Top = 296
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
     VendorLib = 'C:\Program Files (x86)\MySQL\MySQL Server 5.7\lib\libmysql.dll'
-    Left = 456
-    Top = 88
+    Left = 440
+    Top = 104
   end
   object FDQuery2: TFDQuery
     Active = True
@@ -627,7 +626,7 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     ReplyTo = <>
     ConvertPreamble = True
     Left = 368
-    Top = 296
+    Top = 304
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -637,7 +636,7 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
     Left = 168
-    Top = 288
+    Top = 304
   end
   object IdSMTP1: TIdSMTP
     SASLMechanisms = <>
@@ -649,7 +648,7 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
       'Database=licencas'
       'User_Name=root'
       'Password=19741974'
-      'Server=127.0.0.1'
+      'Server=192.168.15.178'
       'DriverID=MySQL')
     Connected = True
     LoginPrompt = False

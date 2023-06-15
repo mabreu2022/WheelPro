@@ -4,7 +4,7 @@ object FrmRegistrar: TFrmRegistrar
   BorderIcons = [biSystemMenu]
   BorderStyle = Single
   Caption = 'Formul'#225'rio de Registro do Wheel Pro'
-  ClientHeight = 584
+  ClientHeight = 608
   ClientWidth = 924
   Position = ScreenCenter
   FormFactor.Width = 320
@@ -16,7 +16,7 @@ object FrmRegistrar: TFrmRegistrar
   object Layout1: TLayout
     Align = Client
     Size.Width = 924.000000000000000000
-    Size.Height = 584.000000000000000000
+    Size.Height = 608.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Layout2: TLayout
@@ -24,7 +24,7 @@ object FrmRegistrar: TFrmRegistrar
       Size.Width = 924.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 15
+      TabOrder = 0
       object Rectangle1: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
@@ -54,21 +54,639 @@ object FrmRegistrar: TFrmRegistrar
     end
     object Layout3: TLayout
       Align = Bottom
-      Position.Y = 534.000000000000000000
+      Position.Y = 558.000000000000000000
       Size.Width = 924.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 16
+      TabOrder = 1
       object Rectangle2: TRectangle
         Align = Client
         Fill.Color = claDarkseagreen
         Size.Width = 924.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
+      end
+    end
+    object TabControl1: TTabControl
+      Align = Client
+      Size.Width = 924.000000000000000000
+      Size.Height = 508.000000000000000000
+      Size.PlatformDefault = False
+      TabIndex = 0
+      TabOrder = 2
+      TabPosition = PlatformDefault
+      Sizes = (
+        924s
+        482s
+        924s
+        482s
+        924s
+        482s)
+      object TabItem1: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = True
+        Size.Width = 67.000000000000000000
+        Size.Height = 26.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Cadastro'
+        object lblRazao: TLabel
+          Position.X = 19.000000000000000000
+          Position.Y = 8.000000000000000000
+          Text = 'Raz'#227'o Social / Nome'
+          TabOrder = 19
+          object ShadowEffect2: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtRazao: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 0
+          Position.X = 16.000000000000000000
+          Position.Y = 32.000000000000000000
+          Size.Width = 433.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect8: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblCnpj_cpf: TLabel
+          Position.X = 20.000000000000000000
+          Position.Y = 59.000000000000000000
+          Text = 'CNPJ'
+          TabOrder = 20
+          object ShadowEffect3: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtCnpj: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 1
+          Position.X = 16.000000000000000000
+          Position.Y = 80.000000000000000000
+          Size.Width = 185.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          OnExit = EdtCnpjExit
+          object ShadowEffect9: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblIe: TLabel
+          Position.X = 216.000000000000000000
+          Position.Y = 59.000000000000000000
+          Size.Width = 97.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Inscri'#231#227'o Estadual'
+          TabOrder = 31
+          object ShadowEffect32: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtInscricaoEstadual: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 2
+          Position.X = 216.000000000000000000
+          Position.Y = 80.000000000000000000
+          object ShadowEffect30: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblIm: TLabel
+          Position.X = 335.000000000000000000
+          Position.Y = 59.000000000000000000
+          Text = 'Inscri'#231#227'o Municipal'
+          TabOrder = 32
+          object ShadowEffect33: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtIncricaoMunicipal: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 3
+          Position.X = 336.000000000000000000
+          Position.Y = 80.000000000000000000
+          object ShadowEffect31: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblEndereco: TLabel
+          Position.X = 19.000000000000000000
+          Position.Y = 109.000000000000000000
+          Text = 'Endere'#231'o'
+          TabOrder = 17
+          object ShadowEffect4: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtEndereco: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 4
+          Position.X = 16.000000000000000000
+          Position.Y = 128.000000000000000000
+          Size.Width = 433.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect10: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblNumero: TLabel
+          Position.X = 457.000000000000000000
+          Position.Y = 109.000000000000000000
+          Text = 'N'#250'mero'
+          TabOrder = 21
+          object ShadowEffect5: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtNumero: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 5
+          Position.X = 457.000000000000000000
+          Position.Y = 128.000000000000000000
+          Size.Width = 129.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect11: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblComplemento: TLabel
+          Position.X = 20.000000000000000000
+          Position.Y = 156.000000000000000000
+          Text = 'Complemento'
+          TabOrder = 23
+          object ShadowEffect6: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblBairro: TLabel
+          Position.X = 209.000000000000000000
+          Position.Y = 158.000000000000000000
+          Text = 'Bairro'
+          TabOrder = 24
+          object ShadowEffect7: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblCidade: TLabel
+          Position.X = 456.000000000000000000
+          Position.Y = 159.000000000000000000
+          Text = 'Cidade'
+          TabOrder = 28
+          object ShadowEffect23: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblCEP: TLabel
+          Position.X = 648.000000000000000000
+          Position.Y = 160.000000000000000000
+          Size.Width = 89.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'CEP'
+          TabOrder = 30
+          object ShadowEffect28: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object lblUF: TLabel
+          Position.X = 758.000000000000000000
+          Position.Y = 160.000000000000000000
+          Size.Width = 49.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'UF'
+          TabOrder = 29
+          object ShadowEffect24: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblAtivo: TLabel
+          Position.X = 819.000000000000000000
+          Position.Y = 158.000000000000000000
+          Size.Width = 60.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Ativo'
+          TabOrder = 22
+          object ShadowEffect25: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtComplemento: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 6
+          Position.X = 16.000000000000000000
+          Position.Y = 176.000000000000000000
+          Size.Width = 185.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect12: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtBairro: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 7
+          Position.X = 208.000000000000000000
+          Position.Y = 176.000000000000000000
+          Size.Width = 241.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect13: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtCidade: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 8
+          Position.X = 457.000000000000000000
+          Position.Y = 176.000000000000000000
+          Size.Width = 183.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect22: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtCEP: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 9
+          Position.X = 648.000000000000000000
+          Position.Y = 177.000000000000000000
+          object ShadowEffect29: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object CBUF: TComboBox
+          Items.Strings = (
+            'AC'
+            'AL'
+            'AP'
+            'AM'
+            'BA'
+            'CE'
+            'DF'
+            'ES'
+            'GO'
+            'MA'
+            'MT'
+            'MS'
+            'MG'
+            'PA'
+            'PB'
+            'PR'
+            'PE'
+            'PI'
+            'RJ'
+            'RN'
+            'RS'
+            'RO'
+            'RR'
+            'SC'
+            'SP'
+            'SE'
+            'TO')
+          ItemIndex = 0
+          Position.X = 758.000000000000000000
+          Position.Y = 177.000000000000000000
+          Size.Width = 53.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 10
+          object ShadowEffect26: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object CBAtivo: TComboBox
+          Items.Strings = (
+            'S'
+            'N')
+          ItemIndex = 0
+          Position.X = 819.000000000000000000
+          Position.Y = 177.000000000000000000
+          Size.Width = 53.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 11
+          object ShadowEffect27: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblResponnsavel: TLabel
+          Position.X = 20.000000000000000000
+          Position.Y = 208.000000000000000000
+          Size.Width = 285.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Nome do respons'#225'vel pelo registro'
+          TabOrder = 25
+          object ShadowEffect15: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblTelefone: TLabel
+          Position.X = 315.000000000000000000
+          Position.Y = 208.000000000000000000
+          Text = 'Telefone/WhatsApp'
+          TabOrder = 26
+          object ShadowEffect18: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtResponsavel: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 12
+          Position.X = 20.000000000000000000
+          Position.Y = 229.000000000000000000
+          Size.Width = 285.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect16: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtTelefone: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 13
+          Position.X = 315.000000000000000000
+          Position.Y = 229.000000000000000000
+          Size.Width = 129.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect19: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object LblEmail: TLabel
+          Position.X = 20.000000000000000000
+          Position.Y = 259.000000000000000000
+          Text = 'E-mail'
+          TabOrder = 27
+          object ShadowEffect20: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object EdtEmail: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 14
+          Position.X = 20.000000000000000000
+          Position.Y = 280.000000000000000000
+          Size.Width = 429.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object ShadowEffect21: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object GroupBox1: TGroupBox
+          Position.X = 16.000000000000000000
+          Position.Y = 313.000000000000000000
+          Size.Width = 337.000000000000000000
+          Size.Height = 129.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Dados sobre a licen'#231'a'
+          TabOrder = 18
+          object Grid1: TGrid
+            CanFocus = True
+            ClipChildren = True
+            Position.X = 1.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 432.000000000000000000
+            Size.Height = 113.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 13
+            Options = [ColLines, RowLines, Tabs, Header, AutoDisplacement]
+            Viewport.Width = 412.000000000000000000
+            Viewport.Height = 88.000000000000000000
+            object Column1: TColumn
+              Header = 'Data Inicio'
+            end
+            object Column2: TColumn
+              Header = 'Vencimento'
+            end
+            object Column3: TColumn
+              Header = 'Situa'#231#227'o Pgto.'
+            end
+          end
+          object ShadowEffect17: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object BtnGravar: TButton
+          Position.X = 792.000000000000000000
+          Position.Y = 454.000000000000000000
+          TabOrder = 33
+          Text = 'Gravar'
+          OnClick = BtnGravarClick
+        end
+      end
+      object TabItem2: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = False
+        Size.Width = 85.000000000000000000
+        Size.Height = 26.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Gerar Senha'
+        object Label1: TLabel
+          Position.X = 32.000000000000000000
+          Position.Y = 46.000000000000000000
+          Text = 'Entre seu CNPJ'
+          TabOrder = 1
+        end
+        object Label2: TLabel
+          Position.X = 32.000000000000000000
+          Position.Y = 78.000000000000000000
+          Text = 'Seu Serial '#233':'
+          TabOrder = 2
+        end
+        object Label3: TLabel
+          Position.X = 32.000000000000000000
+          Position.Y = 110.000000000000000000
+          Size.Width = 161.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'O n'#250'mero serial do seu HD '#233':'
+          TabOrder = 3
+        end
+        object Label4: TLabel
+          Position.X = 32.000000000000000000
+          Position.Y = 142.000000000000000000
+          Text = 'Seu Serial da Bios '#233' :'
+          TabOrder = 4
+        end
+        object lblSerial: TLabel
+          Position.X = 200.000000000000000000
+          Position.Y = 79.000000000000000000
+          Text = 'lblSerial'
+          TabOrder = 5
+        end
+        object Edit1: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 6
+          Position.X = 200.000000000000000000
+          Position.Y = 46.000000000000000000
+          Size.Width = 361.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+        end
+        object Button1: TButton
+          Position.X = 565.000000000000000000
+          Position.Y = 46.000000000000000000
+          TabOrder = 7
+          Text = 'Pesquisar'
+        end
+        object lblSerialHD: TLabel
+          Position.X = 200.000000000000000000
+          Position.Y = 109.000000000000000000
+          Text = 'lblSerialHD'
+          TabOrder = 8
+        end
+        object Label7: TLabel
+          Position.X = 200.000000000000000000
+          Position.Y = 142.000000000000000000
+          Text = 'Label7'
+          TabOrder = 9
+        end
         object BtnRegistrar: TButton
           Margins.Right = 10.000000000000000000
-          Position.X = 828.000000000000000000
-          Position.Y = 12.000000000000000000
+          Position.X = 562.000000000000000000
+          Position.Y = 156.000000000000000000
           Size.Width = 80.000000000000000000
           Size.Height = 25.000000000000000000
           Size.PlatformDefault = False
@@ -84,516 +702,29 @@ object FrmRegistrar: TFrmRegistrar
           end
         end
       end
-    end
-    object lblRazao: TLabel
-      Position.X = 35.000000000000000000
-      Position.Y = 64.000000000000000000
-      Text = 'Raz'#227'o Social / Nome'
-      TabOrder = 19
-      object ShadowEffect2: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtRazao: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 0
-      Position.X = 32.000000000000000000
-      Position.Y = 88.000000000000000000
-      Size.Width = 433.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect8: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object lblCnpj_cpf: TLabel
-      Position.X = 36.000000000000000000
-      Position.Y = 115.000000000000000000
-      Text = 'CNPJ'
-      TabOrder = 20
-      object ShadowEffect3: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtCnpj: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 1
-      Position.X = 32.000000000000000000
-      Position.Y = 136.000000000000000000
-      Size.Width = 185.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      OnExit = EdtCnpjExit
-      object ShadowEffect9: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtEndereco: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 4
-      Position.X = 32.000000000000000000
-      Position.Y = 184.000000000000000000
-      Size.Width = 433.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect10: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object lblNumero: TLabel
-      Position.X = 473.000000000000000000
-      Position.Y = 165.000000000000000000
-      Text = 'N'#250'mero'
-      TabOrder = 21
-      object ShadowEffect5: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object LblComplemento: TLabel
-      Position.X = 36.000000000000000000
-      Position.Y = 212.000000000000000000
-      Text = 'Complemento'
-      TabOrder = 23
-      object ShadowEffect6: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtNumero: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 5
-      Position.X = 473.000000000000000000
-      Position.Y = 184.000000000000000000
-      Size.Width = 129.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect11: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtComplemento: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 6
-      Position.X = 32.000000000000000000
-      Position.Y = 232.000000000000000000
-      Size.Width = 185.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect12: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object LblBairro: TLabel
-      Position.X = 225.000000000000000000
-      Position.Y = 214.000000000000000000
-      Text = 'Bairro'
-      TabOrder = 24
-      object ShadowEffect7: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtBairro: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 7
-      Position.X = 224.000000000000000000
-      Position.Y = 232.000000000000000000
-      Size.Width = 241.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect13: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object GroupBox1: TGroupBox
-      Position.X = 32.000000000000000000
-      Position.Y = 376.000000000000000000
-      Size.Width = 337.000000000000000000
-      Size.Height = 129.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'Dados sobre a licen'#231'a'
-      TabOrder = 18
-      object Grid1: TGrid
-        CanFocus = True
-        ClipChildren = True
-        Position.X = 1.000000000000000000
-        Position.Y = 16.000000000000000000
-        Size.Width = 432.000000000000000000
-        Size.Height = 113.000000000000000000
+      object TabItem3: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = False
+        Size.Width = 84.000000000000000000
+        Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 13
-        Options = [ColLines, RowLines, Tabs, Header, AutoDisplacement]
-        Viewport.Width = 412.000000000000000000
-        Viewport.Height = 88.000000000000000000
-        object Column1: TColumn
-          Header = 'Data Inicio'
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Enviar Serial'
+        object Memo1: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Position.X = 16.000000000000000000
+          Position.Y = 14.000000000000000000
+          Size.Width = 889.000000000000000000
+          Size.Height = 339.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Viewport.Width = 885.000000000000000000
+          Viewport.Height = 335.000000000000000000
         end
-        object Column2: TColumn
-          Header = 'Vencimento'
-        end
-        object Column3: TColumn
-          Header = 'Situa'#231#227'o Pgto.'
-        end
-      end
-      object ShadowEffect17: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object LblResponnsavel: TLabel
-      Position.X = 36.000000000000000000
-      Position.Y = 264.000000000000000000
-      Size.Width = 285.000000000000000000
-      Size.Height = 17.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'Nome do respons'#225'vel pelo registro'
-      TabOrder = 25
-      object ShadowEffect15: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtResponsavel: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 12
-      Position.X = 36.000000000000000000
-      Position.Y = 285.000000000000000000
-      Size.Width = 285.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect16: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object LblTelefone: TLabel
-      Position.X = 331.000000000000000000
-      Position.Y = 264.000000000000000000
-      Text = 'Telefone/WhatsApp'
-      TabOrder = 26
-      object ShadowEffect18: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtTelefone: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 13
-      Position.X = 331.000000000000000000
-      Position.Y = 285.000000000000000000
-      Size.Width = 129.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect19: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object LblEmail: TLabel
-      Position.X = 36.000000000000000000
-      Position.Y = 315.000000000000000000
-      Text = 'E-mail'
-      TabOrder = 27
-      object ShadowEffect20: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtEmail: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 14
-      Position.X = 36.000000000000000000
-      Position.Y = 336.000000000000000000
-      Size.Width = 429.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect21: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object LblCidade: TLabel
-      Position.X = 472.000000000000000000
-      Position.Y = 215.000000000000000000
-      Text = 'Cidade'
-      TabOrder = 28
-      object ShadowEffect23: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtCidade: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 8
-      Position.X = 473.000000000000000000
-      Position.Y = 232.000000000000000000
-      Size.Width = 183.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      object ShadowEffect22: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object lblEndereco: TLabel
-      Position.X = 35.000000000000000000
-      Position.Y = 165.000000000000000000
-      Text = 'Endere'#231'o'
-      TabOrder = 17
-      object ShadowEffect4: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object lblUF: TLabel
-      Position.X = 774.000000000000000000
-      Position.Y = 216.000000000000000000
-      Size.Width = 49.000000000000000000
-      Size.Height = 17.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'UF'
-      TabOrder = 29
-      object ShadowEffect24: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object CBUF: TComboBox
-      Items.Strings = (
-        'AC'
-        'AL'
-        'AP'
-        'AM'
-        'BA'
-        'CE'
-        'DF'
-        'ES'
-        'GO'
-        'MA'
-        'MT'
-        'MS'
-        'MG'
-        'PA'
-        'PB'
-        'PR'
-        'PE'
-        'PI'
-        'RJ'
-        'RN'
-        'RS'
-        'RO'
-        'RR'
-        'SC'
-        'SP'
-        'SE'
-        'TO')
-      ItemIndex = 0
-      Position.X = 774.000000000000000000
-      Position.Y = 233.000000000000000000
-      Size.Width = 53.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 10
-      object ShadowEffect26: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object LblAtivo: TLabel
-      Position.X = 835.000000000000000000
-      Position.Y = 214.000000000000000000
-      Size.Width = 60.000000000000000000
-      Size.Height = 17.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'Ativo'
-      TabOrder = 22
-      object ShadowEffect25: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object CBAtivo: TComboBox
-      Items.Strings = (
-        'S'
-        'N')
-      ItemIndex = 0
-      Position.X = 835.000000000000000000
-      Position.Y = 233.000000000000000000
-      Size.Width = 53.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 11
-      object ShadowEffect27: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtCEP: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 9
-      Position.X = 664.000000000000000000
-      Position.Y = 233.000000000000000000
-      object ShadowEffect29: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object lblCEP: TLabel
-      Position.X = 664.000000000000000000
-      Position.Y = 216.000000000000000000
-      Size.Width = 89.000000000000000000
-      Size.Height = 17.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'CEP'
-      TabOrder = 30
-      object ShadowEffect28: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtInscricaoEstadual: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 2
-      Position.X = 232.000000000000000000
-      Position.Y = 136.000000000000000000
-      object ShadowEffect30: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object EdtIncricaoMunicipal: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 3
-      Position.X = 352.000000000000000000
-      Position.Y = 136.000000000000000000
-      object ShadowEffect31: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object lblIe: TLabel
-      Position.X = 232.000000000000000000
-      Position.Y = 115.000000000000000000
-      Size.Width = 97.000000000000000000
-      Size.Height = 17.000000000000000000
-      Size.PlatformDefault = False
-      Text = 'Inscri'#231#227'o Estadual'
-      TabOrder = 31
-      object ShadowEffect32: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object lblIm: TLabel
-      Position.X = 351.000000000000000000
-      Position.Y = 115.000000000000000000
-      Text = 'Inscri'#231#227'o Municipal'
-      TabOrder = 32
-      object ShadowEffect33: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
       end
     end
   end
