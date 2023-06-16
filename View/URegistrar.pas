@@ -395,7 +395,7 @@ procedure TFrmRegistrar.FormCreate(Sender: TObject);
 begin
   CarregarCores;
   CarregarLinguagem;
-  FConexao := TConnection.CreateConnection;
+  FConexao := TConexaoLicencas.CreateConnection;
 end;
 
 procedure TFrmRegistrar.FormDestroy(Sender: TObject);

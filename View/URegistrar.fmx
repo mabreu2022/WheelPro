@@ -93,6 +93,8 @@ object FrmRegistrar: TFrmRegistrar
         StyleLookup = ''
         TabOrder = 0
         Text = 'Cadastro'
+        ExplicitSize.cx = 67.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object lblRazao: TLabel
           Position.X = 19.000000000000000000
           Position.Y = 8.000000000000000000
@@ -623,6 +625,8 @@ object FrmRegistrar: TFrmRegistrar
         StyleLookup = ''
         TabOrder = 0
         Text = 'Gerar Senha'
+        ExplicitSize.cx = 85.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object Label1: TLabel
           Position.X = 32.000000000000000000
           Position.Y = 46.000000000000000000
@@ -713,6 +717,8 @@ object FrmRegistrar: TFrmRegistrar
         StyleLookup = ''
         TabOrder = 0
         Text = 'Enviar Serial'
+        ExplicitSize.cx = 84.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object Memo1: TMemo
           Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
           DataDetectorTypes = []
@@ -722,8 +728,8 @@ object FrmRegistrar: TFrmRegistrar
           Size.Height = 339.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
-          Viewport.Width = 885.000000000000000000
-          Viewport.Height = 335.000000000000000000
+          Viewport.Width = 889.000000000000000000
+          Viewport.Height = 339.000000000000000000
         end
       end
     end

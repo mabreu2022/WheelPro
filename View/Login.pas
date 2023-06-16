@@ -39,7 +39,8 @@ uses
   FMX.Layouts,
   FMX.Effects,
   System.UIConsts,
-  LogManager;
+  LogManager,
+  Model.Registro;
 
 type
   TFrmLogin = class(TForm)
@@ -95,6 +96,9 @@ procedure TFrmLogin.BtnOKClick(Sender: TObject);
 Var
   Login: TLogin;
   LogManager: TLogManager;
+  Registro  : TModelRegistro;
+  LicencaValida: Boolean;
+  cnpj: string;
 begin
   LogManager:= TLogManager.Create;
   Login := TLogin.Create;
@@ -110,9 +114,27 @@ begin
         LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
 
       end;
-
-      FrmLogin.CloseModal;
-      FrmPrincipal.ShowModal;
+      //Testa se a Licença está válida lendo o banco Licencas Tabela registro campo data_exp
+      //Chamar o Model.Registro função ValidarLicença(adata: TDateTime): Boolean;
+      //
+      cnpj := Login.PesquisaCNPJ(EdtUsuario.Text, EdtSenha.Text);
+      Registro:= TModelRegistro.create;
+      try
+        Registro.cnpj:= cnpj;
+        LicencaValida := Registro.ValidarLicenca(Now, Registro.cnpj);
+        if LicencaValida then
+        begin
+          FrmLogin.CloseModal;
+          FrmPrincipal.ShowModal;
+        end
+        else
+        begin
+          Showmessage('Sua Licença está expirada, entre em contato com a Conect Solutions para averiguar comercial@conectsolutionsti.com.br ou Tel/WhatsApp : 11.9424.98529.');
+          Application.Terminate;
+        end;
+      finally
+        Registro.Free;
+      end;
     end
     else
     begin

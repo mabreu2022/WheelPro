@@ -984,19 +984,7 @@ var
   Index: integer;
   CaptionToFind: string;
   MainMenu: TMainMenu;
-  LicencaValida: Boolean;
-  Registro: TModelRegistro;
 begin
-   //Testa se a Licença está válida lendo o banco Licencas Tabela registro campo data_exp
-   //Chamar o Model.Registro função ValidarLicença(adata: TDateTime): Boolean;
-   Registro:= TModelRegistro.create;
-   try
-     LicencaValida := Registro.ValidarLicenca(Now);
-     if not LicencaValida then
-       Showmessage('Sua Licença está expirada, entre em contato com a Conect Solutions para averiguar comercial@conectsolutionsti.com.br ou Tel/WhatsApp : 11.9424.98529.');
-   finally
-     Registro.Free;
-   end;
 
    //Testa se é para desabilitar o campo de inserir telefone do Whatsapp
    DesabilitaEdtWhatsApp;

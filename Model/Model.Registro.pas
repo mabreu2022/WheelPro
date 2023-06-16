@@ -115,7 +115,7 @@ type
       function GerarSerial: string;
       class function validarDados(aRegistro: TModelRegistro ; aLingua: string) : boolean;
       class function GravarNoBancoLicencas(aRegistro : TModelRegistro): Boolean;  //Tabela Chaves
-      class function ValidarLicenca(adata: TDateTime): Boolean;
+      class function ValidarLicenca(adata: TDateTime; acnpj: string): Boolean;
       class function GravarRegistro(
   aRegistro: TModelRegistro; achave: String): Boolean;
 
@@ -282,7 +282,7 @@ begin
   Result:= z;
 
   qry:= TFDquery.Create(nil);
-  qry.Connection  := TConnection.CreateConnection;
+  qry.Connection  := TConexaoLicencas.CreateConnection;
   try
     qry.SQL.Clear;
     qry.SQL.Add('select * from registro');
@@ -351,7 +351,7 @@ var
   UF    : string;
 begin
   qry:= TFDquery.Create(nil);
-  qry.Connection := TConnection.CreateConnection;
+  qry.Connection := TConexaoLicencas.CreateConnection;
   qry.Connection.StartTransaction;
   try
     qry.Close;
@@ -485,7 +485,7 @@ var
   data: TDateTime;
 begin
   qry:= TFDQuery.Create(nil);
-  qry.Connection := TConnection.CreateConnection;
+  qry.Connection := TConexaoLicencas.CreateConnection;
   qry.Connection.StartTransaction;
   try
      qry.SQL.Clear;
@@ -529,16 +529,19 @@ begin
      qry.ParamByName('contrasenha').AsString :='0';
      qry.ParamByName('ativado').AsString     :='N';
 
-     qry.ParamByName('id_chave').AsInteger := //qry2.FieldByName('ID_Chave').AsInteger;
+     //Ver como fazer?
+     //qry.ParamByName('id_chave').AsInteger := //qry2.FieldByName('ID_Chave').AsInteger;
 
      qry.ExecSQL;
      qry.Connection.Commit;
 
+     Result := True;
   Except
   On E: Exception do
     begin
        Showmessage('Erro ao gravar tabela registro!'+ E.Message);
        qry.Connection.Rollback;
+       Result := False;
     end;
   end;
 end;
@@ -732,22 +735,34 @@ begin
 
 end;
 
-class function TModelRegistro.ValidarLicenca(adata: TDateTime): Boolean;
+class function TModelRegistro.ValidarLicenca(adata: TDateTime; acnpj: string): Boolean;
 var
-  qry: TFDQuery;
+  qry       : TFDQuery;
+  dataAtual : string;
 begin
   Result := False;
   qry:= TFDQuery.Create(nil);
-  qry.Connection := TConnection.CreateConnection;
+  qry.Connection := TConexaoLicencas.CreateConnection;
   try
     qry.SQL.Clear;
-    qry.SQL.Add('Select * from registro R ');
+    qry.SQL.Add('Select R.*, C.* from registro R ');
     qry.SQL.Add('join chaves C on(C.id_chave = R.id_chave)' );
-    qry.SQL.Add('WHERE data_exp < :DataAtual');       // Adicione a condição para a data de expiração
-    qry.ParamByName('DataAtual').AsDateTime := adata; // Defina o valor atual da data
+    qry.SQL.Add('WHERE C.cnpj = :cnpj');
+    qry.SQL.Add(' and  data_exp < :DataAtual');
+    //qry.SQL.Add(' and  contrasenha=0');
+    qry.ParamByName('cnpj').AsString := acnpj;
+
+    // Formate a data atual como uma string no formato 'YYYY/MM/DD'
+    dataAtual := FormatDateTime('YYYY/MM/DD', adata);
+    qry.ParamByName('DataAtual').AsString := dataAtual;
+
     qry.Open;
-    if Qry.RecordCount > 0 then
-      Result:= true;
+
+    if Qry.RecordCount = 0 then
+      Result:= True  //Sistema Válido
+    else
+      Result:= False; //Sistema Expirado
+
   finally
     qry.Free;
   end;

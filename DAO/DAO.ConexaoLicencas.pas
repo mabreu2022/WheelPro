@@ -25,7 +25,7 @@ uses
   FireDAC.Phys.MySQL, Funcoes.Criptografia;
 
 type
-  TConnection = class
+  TConexaoLicencas = class
   private
 
   public
@@ -39,7 +39,7 @@ implementation
 
 { TConnection }
 
-class function TConnection.CreateConnection: TFDConnection;
+class function TConexaoLicencas.CreateConnection: TFDConnection;
 var
   FConn: TFDConnection;
 begin
@@ -48,7 +48,7 @@ begin
   Result := FConn;
 end;
 
-class procedure TConnection.CarregarConfig(Connection: TFDconnection);
+class procedure TConexaoLicencas.CarregarConfig(Connection: TFDconnection);
 var
   ini: TIniFile;
   FDPhysDriverLink: TFDPhysDriverLink;
