@@ -1,6 +1,11 @@
 program WheelProV3;
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   System.StartUpCopy,
   FMX.Forms,
   UPrincipal in 'UPrincipal.pas' {FrmPrincipal},

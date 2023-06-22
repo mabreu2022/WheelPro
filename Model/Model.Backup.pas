@@ -87,7 +87,10 @@ begin
       // inserir rotina de gravar em uma tabela no banco o arquivo físico.
       LogManager:= TLogManager.Create;
       try
+         Sleep(5000);
+         ShowMessage('Arquivo Gerado, pressione ok');
         LogManager.GravarLogNoBancoDeDados(backupPath, StringReplace(dumpFileName, '/', '_', [rfReplaceAll]), 'logs');
+        ShowMessage('Backup efetuado com sucesso! Pressione ok');
       finally
         LogManager.Free;
       end;
@@ -105,7 +108,7 @@ var
 begin
   try
     // Constrói o comando para restaurar o backup
-    command := Format('mysql -h%s -u%s -p%s %s < "%s"', [host, user, password, database, backupFilePath+DumpFileName]);
+    command := Format('mysql -h%s -u%s -p%s %s < "%s"', [host, user, password, database, DumpFileName]); //backupFilePath+
 
     // Executa o comando
     if ShellExecute(0, 'open', 'cmd.exe', PChar('/C ' + command), nil, SW_HIDE) > 32 then

@@ -114,9 +114,10 @@ begin
         LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
 
       end;
+
       //Testa se a Licença está válida lendo o banco Licencas Tabela registro campo data_exp
       //Chamar o Model.Registro função ValidarLicença(adata: TDateTime): Boolean;
-      //
+
       cnpj := Login.PesquisaCNPJ(EdtUsuario.Text, EdtSenha.Text);
       Registro:= TModelRegistro.create;
       try

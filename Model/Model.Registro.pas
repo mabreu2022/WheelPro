@@ -302,8 +302,6 @@ begin
      // fim
 
 
-
-
      qry.FieldByName('chave').AsString      := z;
      qry.FieldByName('Data_inc').AsDateTime := Date;
      Data := date;

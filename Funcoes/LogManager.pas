@@ -111,9 +111,8 @@ end;
 function TLogManager.GravarLogNoBancoDeDados(
   const caminhoArquivoLog: string; anomearquivo: string; aTabela: string) : Boolean;
 var
-  qry           : TFDQuery;
-  arquivoStream : TMemoryStream;
-  blobStream    : TStream;
+  qry: TFDQuery;
+  arquivoStream: TMemoryStream;
   ArquivoParaGravar: string;
 begin
   Result := False;
@@ -123,31 +122,32 @@ begin
   qry.Connection.StartTransaction;
   arquivoStream := TMemoryStream.Create;
   try
-    ArquivoParaGravar:= caminhoArquivoLog+aNomeArquivo;
+    ArquivoParaGravar := caminhoArquivoLog + aNomeArquivo;
     arquivoStream.LoadFromFile(ArquivoParaGravar);
 
-    qry.SQL.Text := 'INSERT INTO ' + aTabela + ' (arquivo, datainclusao, nomearquivo) VALUES (:arquivo, :datainclusao, :nomearquivo)';
+    qry.SQL.Text := 'INSERT INTO ' + aTabela +
+      ' (arquivo, datainclusao, nomearquivo) VALUES (:arquivo, :datainclusao, :nomearquivo)';
 
-    qry.ParamByName('arquivo').DataType := ftBlob;
-    qry.ParamByName('arquivo').LoadFromFile(ArquivoParaGravar, ftBlob);
+    qry.ParamByName('arquivo').LoadFromStream(arquivoStream, ftBlob); // Use LoadFromStream with ftBlob type
 
     qry.ParamByName('datainclusao').AsDateTime := Now;
-    qry.ParamByName('nomearquivo').AsString    := anomearquivo;
+    qry.ParamByName('nomearquivo').AsString := anomearquivo;
     qry.ExecSQL;
 
+    qry.Connection.Commit;
     Result := True;
-
-  Except
+  except
     on E: Exception do
-     begin
-       Result := False;
-       qry.Connection.Rollback;
-       ShowMessage('Houve um erro ao tentar gravar o arquivo de Log' + E.Message);
-       arquivoStream.Free;
-       qry.Close;
-       qry.Free;
-     end;
+    begin
+      Result := False;
+      qry.Connection.Rollback;
+      ShowMessage('Houve um erro ao tentar gravar o arquivo de Log: ' + E.Message);
+    end;
   end;
+
+  qry.Close;
+  qry.Free;
+  arquivoStream.Free;
 
 end;
 
