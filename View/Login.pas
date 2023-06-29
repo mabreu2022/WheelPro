@@ -40,7 +40,7 @@ uses
   FMX.Effects,
   System.UIConsts,
   LogManager,
-  Model.Registro;
+  Model.Registro, URegistrar;
 
 type
   TFrmLogin = class(TForm)
@@ -128,9 +128,12 @@ begin
           FrmLogin.CloseModal;
           FrmPrincipal.ShowModal;
         end
-        else
+        else //Licença expirada ou inexistente? chama o formuláario de registro.
         begin
-          Showmessage('Sua Licença está expirada, entre em contato com a Conect Solutions para averiguar comercial@conectsolutionsti.com.br ou Tel/WhatsApp : 11.9424.98529.');
+          Showmessage('Sua Licença está expirada ou inexistente, entre em contato com a Conect Solutions para averiguar comercial@conectsolutionsti.com.br ou Tel/WhatsApp : 11.9424.98529.');
+          Application.CreateForm(TFrmRegistrar, FrmRegistrar);
+          FrmRegistrar.ShowModal;
+          FrmRegistrar.TabControl1.Index:=0;
           Application.Terminate;
         end;
       finally

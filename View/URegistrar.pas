@@ -149,11 +149,17 @@ type
     BtnGravar: TButton;
     BtnRegistrar: TButton;
     ShadowEffect14: TShadowEffect;
+    TabItem4: TTabItem;
+    EdtContraSenha: TEdit;
+    BtnEnviar: TButton;
+    Label5: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure BtnRegistrarClick(Sender: TObject);
     procedure EdtCnpjExit(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure BtnGravarClick(Sender: TObject);
+    procedure BtnEnviarClick(Sender: TObject);
+    procedure EdtContraSenhaExit(Sender: TObject);
   private
     { Private declarations }
     FLinguagem: string;
@@ -216,7 +222,10 @@ begin
     Validou:= Registro.validarDados(Registro, Registro.Linguagem);
 
     if Validou then
-      Registro.enviarEmail  //dentro do Enviar Email chama a gravação no Banco de Licenças
+    begin
+      Registro.enviarEmail;  //dentro do Enviar Email chama a gravação no Banco de Licenças
+      TabControl1.Index:=2;
+    end
     else
     begin
       if EdtRazao.CanFocus then
@@ -225,7 +234,35 @@ begin
 
   finally
     Registro.Free;
-    //Application.Terminate;
+  end;
+
+end;
+
+procedure TFrmRegistrar.BtnEnviarClick(Sender: TObject);
+var
+   Registro: TModelRegistro;
+   DeuCerto: Boolean;
+begin
+  TabControl1.Tabs[0].Visible := False;
+
+  Registro:=TModelRegistro.create;
+  try
+    Registro.ContraSenha := EdtContraSenha.Text;
+    Registro.ativo       := 'S';
+    Registro.Data_exp    := Now + 30;
+
+    DeuCerto := Registro.GravarContraSenha(Registro);
+
+    if DeuCerto then
+      ShowMessage('Sistema ativado com sucesso!')
+    else
+    begin
+      ShowMessage('Sistema não ativado, favor entrar em contato com o suporte!');
+      Application.Terminate;
+    end;
+
+  finally
+    Registro.Free;
   end;
 
 end;
@@ -355,6 +392,12 @@ begin
     IniFile.Free;
   end;
 
+end;
+
+procedure TFrmRegistrar.EdtContraSenhaExit(Sender: TObject);
+begin
+ if EdtContraSenha.Text<>'' then
+   BtnEnviar.Enabled:= True;
 end;
 
 procedure TFrmRegistrar.EdtCnpjExit(Sender: TObject);

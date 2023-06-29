@@ -185,29 +185,42 @@ begin
           Label3.Caption := '';
           for i := 1 to max do
           begin
-            FDQuery1.Edit;
-            Label3.Caption := Label3.Caption + str[Random(Length(str)) + 1];
-            FDQuery1.FieldByName('contrasenha').AsString := contrasenha +
+            try
+              FDConnection1.StartTransaction;
+
+              FDQuery1.Edit;
+              Label3.Caption := Label3.Caption + str[Random(Length(str)) + 1];
+              FDQuery1.FieldByName('contrasenha').AsString := contrasenha +
               Label3.Caption;
-            senhafinal := contrasenha + Label3.Caption;
+              senhafinal := contrasenha + Label3.Caption;
 
-            Memo1.Lines.Clear;
-            Memo1.Lines.Add(senhafinal);
+              Memo1.Lines.Clear;
+              Memo1.Lines.Add(senhafinal);
 
-            // Encriptar
-            // Memo1.Lines.Add(Crypt('D',senhafinal));
-            // fim de encriptar
+              // Encriptar
+              // Memo1.Lines.Add(Crypt('D',senhafinal));
+              // fim de encriptar
 
-            FDQuery1.FieldByName('ativado').AsString := 'S';
-            FDQuery1.FieldByName('data_exp').AsDateTime :=
+              FDQuery1.FieldByName('ativado').AsString := 'S';
+              FDQuery1.FieldByName('data_exp').AsDateTime :=
               StrToDateTime(EdtData.Text);
-            FDQuery1.Post;
+              FDQuery1.Post;
+              FDCOnnection1.Commit;
+
+             Except
+             on E: Exception do
+             begin
+               ShowMessage('Erro ao gravar Contra Senha' + e.Message);
+               FDConnection1.Rollback;
+               Exit;
+             end;
+
+            end;
 
           end;
-          ShowMessage('Dados gravados com sucesso!');
+
         end
         else
-
         begin
           ShowMessage('Chave não encontrada');
           Edit1.Text := '';

@@ -72,10 +72,12 @@ object FrmRegistrar: TFrmRegistrar
       Size.Width = 924.000000000000000000
       Size.Height = 508.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 2
+      TabIndex = 3
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
+        924s
+        482s
         924s
         482s
         924s
@@ -710,7 +712,7 @@ object FrmRegistrar: TFrmRegistrar
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 84.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -730,6 +732,42 @@ object FrmRegistrar: TFrmRegistrar
           TabOrder = 0
           Viewport.Width = 885.000000000000000000
           Viewport.Height = 335.000000000000000000
+        end
+      end
+      object TabItem4: TTabItem
+        CustomIcon = <
+          item
+          end>
+        IsSelected = True
+        Size.Width = 127.000000000000000000
+        Size.Height = 26.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Inserir Contra Senha'
+        object EdtContraSenha: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 0
+          Position.X = 16.000000000000000000
+          Position.Y = 38.000000000000000000
+          Size.Width = 337.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          OnExit = EdtContraSenhaExit
+        end
+        object BtnEnviar: TButton
+          Enabled = False
+          Position.X = 368.000000000000000000
+          Position.Y = 38.000000000000000000
+          TabOrder = 1
+          Text = 'Enviar'
+          OnClick = BtnEnviarClick
+        end
+        object Label5: TLabel
+          Position.X = 16.000000000000000000
+          Position.Y = 14.000000000000000000
+          Text = 'Contra Senha'
+          TabOrder = 2
         end
       end
     end

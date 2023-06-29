@@ -33,7 +33,8 @@ uses
   IdSSLOpenSSL,
   System.Win.ComObj,
   Winapi.ActiveX,
-  System.Variants;
+  System.Variants,
+  FMX.Forms;
 
 
 type
@@ -62,7 +63,10 @@ type
       Fcontato: string;
       Fserial: string;
       FOnLabel6TextChanged: TNotifyEvent;
-    Fserialhd: string;
+      Fserialhd: string;
+      FContraSenha: String;
+      FData_exp: TDateTime;
+    Fid_chave: string;
       procedure Setativo(const Value: string);
       procedure Setbairro(const Value: string);
       procedure Setcidade(const Value: string);
@@ -85,7 +89,10 @@ type
       procedure Setserial(const Value: string);
       function  GetWMIstring(const WMIClass, WMIProperty:string): string;
       procedure SetOnLabel6TextChanged(const Value: TNotifyEvent);
-    procedure Setserialhd(const Value: string);
+      procedure Setserialhd(const Value: string);
+      procedure SetContraSenha(const Value: String);
+      procedure SetData_exp(const Value: TDateTime);
+    procedure Setid_chave(const Value: string);
     public
       property razao: string read Frazao write Setrazao;
       property cnpj : string read Fcnpj write Setcnpj;
@@ -108,6 +115,9 @@ type
       property Linguagem: string read FLinguagem write SetLinguagem;
       property serial : string read Fserial write Setserial;  //transferir do projeto antigo para esse
       property serialhd: string read Fserialhd write Setserialhd;
+      property ContraSenha: String read FContraSenha write SetContraSenha;
+      property Data_exp: TDateTime read FData_exp write SetData_exp;
+      property id_chave: string read Fid_chave write Setid_chave;
 
       //Verificar se será necessário criar mais propertys para a tabela Registro
       property OnLabel6TextChanged: TNotifyEvent read FOnLabel6TextChanged write SetOnLabel6TextChanged;
@@ -116,8 +126,8 @@ type
       class function validarDados(aRegistro: TModelRegistro ; aLingua: string) : boolean;
       class function GravarNoBancoLicencas(aRegistro : TModelRegistro): Boolean;  //Tabela Chaves
       class function ValidarLicenca(adata: TDateTime; acnpj: string): Boolean;
-      class function GravarRegistro(
-  aRegistro: TModelRegistro; achave: String): Boolean;
+      class function GravarRegistro(aRegistro: TModelRegistro; achave: String): Boolean;
+      class function GravarContraSenha(aRegistro: TModelRegistro): Boolean;
 
       constructor create;
       destructor destroy;override;
@@ -341,139 +351,260 @@ begin;
            FWbemObject:=Unassigned;
 end;
 
+class function TModelRegistro.GravarContraSenha(
+  aRegistro: TModelRegistro): Boolean;
+var
+  qry: TFDQuery;
+begin
+  Result := False;
+  qry:= TFDQuery.Create(nil);
+  qry.Connection := TConexaoLicencas.CreateConnection;
+  //Checar se a CONTRASENHA Existe se não avisar ao usuário que a Contra Senha está errada e encerrar o programa?
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('select contrasenha from registro');
+    qry.SQL.Add(' where contrasenha = :contrasenha');
+    qry.ParamByName('contrasenha').DataType := ftString;
+    qry.ParamByName('contrasenha').AsString := aRegistro.ContraSenha;
+    qry.Open;
+
+    if qry.RecordCount > 0 then //Encontrou a ContraSenha faz o update
+    begin
+      qry.Connection.StartTransaction;
+      try
+        qry.close;
+        qry.SQL.Clear;
+
+        qry.SQL.Text:='UPDATE LICENCAS.REGISTRO      ' +
+                      'SET                           ' +
+                     // 'ID           = :id,           ' +
+                     // 'ID_CHAVE     = :ID_CHAVE,     ' +
+                     // 'CHAVE        = :CHAVE,        ' +
+                      'DATA_INC     = :DATA_INC,     ' +
+                      'DATA_EXP     = :DATA_EXP,     ' +
+                      'CONTRASENHA  = :CONTRASENHA,  ' +
+                      'ATIVADO      = :ATIVADO,      ' +
+                    //  'SERIALHD     = :SERIALHD      ' +
+                      'WHERE                         ' +
+                      'CONTRASENHA     = :CONTRASENHA      ';
+
+
+        qry.ParamByName('DATA_INC').DataType     := ftDate;
+        qry.ParamByName('DATA_INC').AsDateTime   := Now;
+        qry.ParamByName('DATA_EXP').DataType     := ftDate;
+        qry.ParamByName('DATA_EXP').AsDate       := aRegistro.Data_exp + 30;
+        qry.ParamByName('CONTRASENHA').DataType  := ftString;
+        qry.ParamByName('CONTRASENHA').AsString  := aRegistro.ContraSenha;
+        qry.ParamByName('ATIVADO').DataType      := ftString;
+        qry.ParamByName('ATIVADO').AsString      := aRegistro.ativo;
+
+        qry.ExecSQL;
+        qry.Connection.Commit;
+
+        Result := True;
+      Except
+      On E: Exception do
+        begin
+           Showmessage('Erro ao gravar tabela registro!'+ E.Message);
+           qry.Connection.Rollback;
+           Result := False;
+        end;
+      end;
+    end
+    else //Nãao encontrou a Contrasenha
+    begin
+       ShowMessage('Contra Senha Não existe, favor entrar em contato com o suporte!');
+       Application.Terminate;
+    end;
+  finally
+    qry.Free;
+  end;
+
+end;
+
 class function TModelRegistro.GravarNoBancoLicencas(
   aRegistro: TModelRegistro): Boolean;
 var
   qry   : TFDQuery;
   Ativo : string;
   UF    : string;
+  idChave : integer;
 begin
+  //Testar se a Licença já existe no banco de dados  buscar pelo cnpj  trazer o id e pesquisar na tabela registro
+  //Se já existir o cnpj na tabela chaves e estiver aguardando a gravação da contrasenha na tabela registro o que fazer?
+  // Informar o usuário que está aguardando a contrasenha e pular fora?
   qry:= TFDquery.Create(nil);
   qry.Connection := TConexaoLicencas.CreateConnection;
   qry.Connection.StartTransaction;
   try
     qry.Close;
     qry.SQL.Clear;
-    qry.SQL.Add('INSERT INTO      ' +
-                ' licencas.chaves ' +
-                '(id_chave,       ' + //1
-                'razao,           ' + //2
-                'cnpj,            ' + //3
-                'ie,              ' + //4
-                'im,              ' + //5
-                'endereco,        ' + //6
-                'numero,          ' + //7
-                'complemento,     ' + //8
-                'bairro,          ' + //9
-                'cidade,          ' + //10
-                'cep,             ' + //11
-                'uf,              ' + //12
-                'ativo,           ' + //13
-                'contato,         ' + //14
-                'telcontato,      ' + //15
-                'email,           ' + //16
-                'datacadastro,    ' + //17
-                'dataalteracao    ' + //18
-               // 'dataexclusao   ' + //19
-                ')                ' +
-                'VALUES (         ' +
-                ':id_chave,       ' + //1 ok
-                ':razao,          ' + //2 ok
-                ':cnpj,           ' + //3 ok
-                ':ie,             ' + //4 ok
-                ':im,             ' + //5 ok
-                ':endereco,       ' + //6 ok
-                ':numero,         ' + //7 ok
-                ':complemento,    ' + //8 ok
-                ':bairro,         ' + //9 ok
-                ':cidade,         ' + //10 ok
-                ':cep,            ' + //11 ok
-                ':uf,             ' + //12 ok
-                ':ativo,          ' + //13 ok
-                ':contato,        ' + //14
-                ':telcontato,     ' + //15
-                ':email,          ' + //16
-                ':datacadastro,   ' + //17 ok
-                ':dataalteracao   ' + //18 ok
-              //  ':dataexclusao, ' + //19 ok
-                ')                ');
+    qry.SQL.Add('Select * from chaves');
+    qry.SQL.Add(' where cnpj =:cnpj');
+    qry.ParamByName('cnpj').DataType := ftString;
+    qry.ParamByName('cnpj').AsString := aRegistro.cnpj;
+    qry.Open;
 
-     qry.ParamByName('id_chave').DataType    := ftInteger;             //1
-     qry.ParamByName('razao').DataType       := ftString;
-     qry.ParamByName('razao').AsString       := aRegistro.razao;       //2
-     qry.ParamByName('cnpj').DataType        := ftString;
-     qry.ParamByName('cnpj').AsString        := aRegistro.cnpj ;       //3
-     qry.ParamByName('ie').DataType          := ftString;
-     qry.ParamByName('ie').AsString          := aRegistro.ie;          //4
-     qry.ParamByName('im').DataType          := ftString;
-     qry.ParamByName('im').AsString          := aRegistro.im;          //5
-     qry.ParamByName('endereco').DataType    := ftString;
-     qry.ParamByName('endereco').AsString    := aRegistro.endereco;    //6
-     qry.ParamByName('numero').DataType      := ftInteger;
-     qry.ParamByName('numero').AsInteger     := aRegistro.numero;      //7
-     qry.ParamByName('complemento').DataType := ftString;
-     qry.ParamByName('complemento').AsString := aRegistro.complemento; //8
-     qry.ParamByName('cep').DataType         := ftString;
-     qry.ParamByName('cep').AsString         := aRegistro.CEP;         //9
-     qry.ParamByName('cidade').DataType      := ftString;
-     qry.ParamByName('cidade').AsString      := aRegistro.Cidade;      //10
-     qry.ParamByName('bairro').DataType      := ftString;
-     qry.ParamByName('bairro').AsString      := aRegistro.Bairro;      //11
-     qry.ParamByName('uf').DataType          := ftString;
-     if Length(aRegistro.UF) > 0 then
-       UF := Copy(aRegistro.UF, 1, 2)
-     else
-       UF := '';
+    if qry.RecordCount > 0 then //O registro dos dados do cliente existe na tabela chaves
+    begin
+      ShowMessage('Registro encontrado');
+      idChave:= qry.FieldByName('id_chave').AsInteger;
 
-     qry.ParamByName('uf').AsString          := UF;                    //12
+      qry.Close;
+      qry.SQL.Clear;
+      qry.SQL.Add('Select contrasenha from registro');
+      qry.SQL.Add(' where id_chave=:id_chave');
+      qry.ParamByName('id_chave').DataType  := ftInteger;
+      qry.ParamByName('id_chave').AsInteger := idChave;
+      qry.Open;
 
-     qry.ParamByName('ativo').DataType       := ftString;
-     if Length(aRegistro.ativo) > 0 then
-       Ativo := Copy(aRegistro.ativo, 1, 1)
-     else
-       Ativo := '';
-
-     qry.ParamByName('ativo').AsString       := Ativo;                 //13
-
-     qry.ParamByName('contato').DataType     := ftString;
-     qry.ParamByName('contato').AsString     := aRegistro.contato;     //14
-
-     qry.ParamByName('telcontato').DataType     := ftString;
-     qry.ParamByName('telcontato').AsString     := aRegistro.telcontato; //15
-
-     qry.ParamByName('email').DataType     := ftString;
-     qry.ParamByName('email').AsString     := aRegistro.email;           //16
-
-     qry.ParamByName('datacadastro').DataType  := ftDateTime;
-     qry.ParamByName('datacadastro').AsDateTime:= Now;                 //17
-
-     qry.ParamByName('dataalteracao').DataType  := ftDateTime;         //18
-     qry.ParamByName('dataalteracao').AsDateTime:= Now;
-
-//     qry.ParamByName('dataexclusao').DataType := ftDateTime;
-//     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao; //19
-
-     qry.ExecSQL;
-     qry.Connection.Commit;
-
-     Result := True;
-  Except
-   On E: Exception do
+      if (qry.RecordCount > 0) and (qry.fieldbyname('contrasenha').AsString='') then
       begin
-        if aRegistro.Linguagem='Portugues' then
-          ShowMessage('Erro ao tentar gravar licença!' + E.Message)
-        else
-          ShowMessage('Error trying to write license!!' + E.Message);
+          //Gravar no Banco primeiro registro
+          qry:= TFDquery.Create(nil);
+          qry.Connection := TConexaoLicencas.CreateConnection;
+          qry.Connection.StartTransaction;
+          try
+            qry.Close;
+            qry.SQL.Clear;
+            qry.SQL.Add('INSERT INTO      ' +
+                        ' licencas.chaves ' +
+                        '(id_chave,       ' + //1
+                        'razao,           ' + //2
+                        'cnpj,            ' + //3
+                        'ie,              ' + //4
+                        'im,              ' + //5
+                        'endereco,        ' + //6
+                        'numero,          ' + //7
+                        'complemento,     ' + //8
+                        'bairro,          ' + //9
+                        'cidade,          ' + //10
+                        'cep,             ' + //11
+                        'uf,              ' + //12
+                        'ativo,           ' + //13
+                        'contato,         ' + //14
+                        'telcontato,      ' + //15
+                        'email,           ' + //16
+                        'datacadastro,    ' + //17
+                        'dataalteracao    ' + //18
+                       // 'dataexclusao   ' + //19
+                        ')                ' +
+                        'VALUES (         ' +
+                        ':id_chave,       ' + //1 ok
+                        ':razao,          ' + //2 ok
+                        ':cnpj,           ' + //3 ok
+                        ':ie,             ' + //4 ok
+                        ':im,             ' + //5 ok
+                        ':endereco,       ' + //6 ok
+                        ':numero,         ' + //7 ok
+                        ':complemento,    ' + //8 ok
+                        ':bairro,         ' + //9 ok
+                        ':cidade,         ' + //10 ok
+                        ':cep,            ' + //11 ok
+                        ':uf,             ' + //12 ok
+                        ':ativo,          ' + //13 ok
+                        ':contato,        ' + //14
+                        ':telcontato,     ' + //15
+                        ':email,          ' + //16
+                        ':datacadastro,   ' + //17 ok
+                        ':dataalteracao   ' + //18 ok
+                      //  ':dataexclusao, ' + //19 ok
+                        ')                ');
 
-        qry.Connection.Rollback;
-        qry.Free;
+             qry.ParamByName('id_chave').DataType    := ftInteger;             //1
+             qry.ParamByName('razao').DataType       := ftString;
+             qry.ParamByName('razao').AsString       := aRegistro.razao;       //2
+             qry.ParamByName('cnpj').DataType        := ftString;
+             qry.ParamByName('cnpj').AsString        := aRegistro.cnpj ;       //3
+             qry.ParamByName('ie').DataType          := ftString;
+             qry.ParamByName('ie').AsString          := aRegistro.ie;          //4
+             qry.ParamByName('im').DataType          := ftString;
+             qry.ParamByName('im').AsString          := aRegistro.im;          //5
+             qry.ParamByName('endereco').DataType    := ftString;
+             qry.ParamByName('endereco').AsString    := aRegistro.endereco;    //6
+             qry.ParamByName('numero').DataType      := ftInteger;
+             qry.ParamByName('numero').AsInteger     := aRegistro.numero;      //7
+             qry.ParamByName('complemento').DataType := ftString;
+             qry.ParamByName('complemento').AsString := aRegistro.complemento; //8
+             qry.ParamByName('cep').DataType         := ftString;
+             qry.ParamByName('cep').AsString         := aRegistro.CEP;         //9
+             qry.ParamByName('cidade').DataType      := ftString;
+             qry.ParamByName('cidade').AsString      := aRegistro.Cidade;      //10
+             qry.ParamByName('bairro').DataType      := ftString;
+             qry.ParamByName('bairro').AsString      := aRegistro.Bairro;      //11
+             qry.ParamByName('uf').DataType          := ftString;
+             if Length(aRegistro.UF) > 0 then
+               UF := Copy(aRegistro.UF, 1, 2)
+             else
+               UF := '';
+
+             qry.ParamByName('uf').AsString          := UF;                    //12
+
+             qry.ParamByName('ativo').DataType       := ftString;
+             if Length(aRegistro.ativo) > 0 then
+               Ativo := Copy(aRegistro.ativo, 1, 1)
+             else
+               Ativo := '';
+
+             qry.ParamByName('ativo').AsString       := Ativo;                 //13
+
+             qry.ParamByName('contato').DataType     := ftString;
+             qry.ParamByName('contato').AsString     := aRegistro.contato;     //14
+
+             qry.ParamByName('telcontato').DataType     := ftString;
+             qry.ParamByName('telcontato').AsString     := aRegistro.telcontato; //15
+
+             qry.ParamByName('email').DataType     := ftString;
+             qry.ParamByName('email').AsString     := aRegistro.email;           //16
+
+             qry.ParamByName('datacadastro').DataType  := ftDateTime;
+             qry.ParamByName('datacadastro').AsDateTime:= Now;                 //17
+
+             qry.ParamByName('dataalteracao').DataType  := ftDateTime;         //18
+             qry.ParamByName('dataalteracao').AsDateTime:= Now;
+
+        //     qry.ParamByName('dataexclusao').DataType := ftDateTime;
+        //     qry.ParamByName('dataexclusao').AsDateTime:= aCliente.dataExclusao; //19
+
+             qry.ExecSQL;
+             qry.Connection.Commit;
+
+             Result := True;
+          Except
+           On E: Exception do
+              begin
+                if aRegistro.Linguagem='Portugues' then
+                  ShowMessage('Erro ao tentar gravar licença!' + E.Message)
+                else
+                  ShowMessage('Error trying to write license!!' + E.Message);
+
+                qry.Connection.Rollback;
+                qry.Free;
+              end;
+
+          end;
+          qry.Free;
+
+          //gravar na tabela Registros
+          GravarRegistro(aRegistro, aRegistro.serial);
+      end
+      else //O Registro existe na Tabela Registro mas está sem contrasenha
+      begin
+
       end;
 
-  end;
-  qry.Free;
+    end
+    else //Não existe o registro dos dados do cliente na tabela Chaves.
+    begin
 
-  //gravar na tabela Registros
-  GravarRegistro(aRegistro, aRegistro.serial);
+    end;
+
+  finally
+    qry.Free;
+  end;
+
+
 end;
 
 class function TModelRegistro.GravarRegistro(
@@ -579,9 +710,19 @@ begin
   Fcontato := Value;
 end;
 
+procedure TModelRegistro.SetContraSenha(const Value: String);
+begin
+  FContraSenha := Value;
+end;
+
 procedure TModelRegistro.Setdataregistro(const Value: TDatetime);
 begin
   Fdataregistro := Value;
+end;
+
+procedure TModelRegistro.SetData_exp(const Value: TDateTime);
+begin
+  FData_exp := Value;
 end;
 
 procedure TModelRegistro.Setemail(const Value: string);
@@ -592,6 +733,11 @@ end;
 procedure TModelRegistro.Setendereco(const Value: string);
 begin
   Fendereco := Value;
+end;
+
+procedure TModelRegistro.Setid_chave(const Value: string);
+begin
+  Fid_chave := Value;
 end;
 
 procedure TModelRegistro.Setie(const Value: string);
@@ -747,7 +893,7 @@ begin
     qry.SQL.Add('join chaves C on(C.id_chave = R.id_chave)' );
     qry.SQL.Add('WHERE C.cnpj = :cnpj');
     qry.SQL.Add(' and  data_exp < :DataAtual');
-    //qry.SQL.Add(' and  contrasenha=0');
+    qry.SQL.Add(' and  contrasenha<>''0''');
     qry.ParamByName('cnpj').AsString := acnpj;
 
     // Formate a data atual como uma string no formato 'YYYY/MM/DD'
