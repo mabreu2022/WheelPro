@@ -1,7 +1,7 @@
 object FRMGERARSERIAL: TFRMGERARSERIAL
   Left = 0
   Top = 0
-  BorderIcons = []
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Gerar e enviar Serial'
   ClientHeight = 377
@@ -22,7 +22,7 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     Top = 0
     Width = 575
     Height = 377
-    ActivePage = TabSheet2
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet

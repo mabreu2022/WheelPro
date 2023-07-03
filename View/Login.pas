@@ -140,7 +140,7 @@ begin
         Registro.Free;
       end;
     end
-    else
+    else  //Usuário ou senha não encontrato. Como fazer aqui o primeiro cadastro do usuário , senha?
     begin
       if FHabilitarLog='S' then
       begin

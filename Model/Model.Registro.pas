@@ -412,9 +412,9 @@ begin
         end;
       end;
     end
-    else //Nãao encontrou a Contrasenha
+    else //Não encontrou a Contrasenha
     begin
-       ShowMessage('Contra Senha Não existe, favor entrar em contato com o suporte!');
+       ShowMessage('Contra senha não existe, favor entrar em contato com o suporte!');
        Application.Terminate;
     end;
   finally
@@ -584,20 +584,20 @@ begin
               end;
 
           end;
-          qry.Free;
+//          qry.Free;
 
           //gravar na tabela Registros
           GravarRegistro(aRegistro, aRegistro.serial);
       end
       else //O Registro existe na Tabela Registro mas está sem contrasenha
       begin
-
+        ShowMessage('Entre em contato com o suporte para verificar a validação da sua licença.');
       end;
 
     end
     else //Não existe o registro dos dados do cliente na tabela Chaves.
     begin
-
+      ShowMessage('Não foram localizados seus dados no sistema.Favor entrar em contato com o suporte.');
     end;
 
   finally
@@ -814,7 +814,7 @@ begin
     exit;
   end;
 
-  //se for ingles nao validar cnpj/cpf
+  //se não for ingles nao validar cnpj/cpf
   if aLingua<>'Ingles' then
   begin
     if Trim(aRegistro.cnpj) = '' then

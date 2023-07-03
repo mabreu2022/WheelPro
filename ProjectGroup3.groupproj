@@ -18,6 +18,9 @@
         <Projects Include="obtendo numero serial do hd\GerarSerial.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="CriadorDeBancoWheelPro\CriadorBancoWheelPro.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +74,23 @@
     <Target Name="GerarSerial:Make">
         <MSBuild Projects="obtendo numero serial do hd\GerarSerial.dproj" Targets="Make"/>
     </Target>
+    <Target Name="CriadorBancoWheelPro">
+        <MSBuild Projects="CriadorDeBancoWheelPro\CriadorBancoWheelPro.dproj"/>
+    </Target>
+    <Target Name="CriadorBancoWheelPro:Clean">
+        <MSBuild Projects="CriadorDeBancoWheelPro\CriadorBancoWheelPro.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CriadorBancoWheelPro:Make">
+        <MSBuild Projects="CriadorDeBancoWheelPro\CriadorBancoWheelPro.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="WheelProV3;WheelPro;Encriptografar;GerarContraSenha;GerarSerial"/>
+        <CallTarget Targets="WheelProV3;WheelPro;Encriptografar;GerarContraSenha;GerarSerial;CriadorBancoWheelPro"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean;Encriptografar:Clean;GerarContraSenha:Clean;GerarSerial:Clean"/>
+        <CallTarget Targets="WheelProV3:Clean;WheelPro:Clean;Encriptografar:Clean;GerarContraSenha:Clean;GerarSerial:Clean;CriadorBancoWheelPro:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="WheelProV3:Make;WheelPro:Make;Encriptografar:Make;GerarContraSenha:Make;GerarSerial:Make"/>
+        <CallTarget Targets="WheelProV3:Make;WheelPro:Make;Encriptografar:Make;GerarContraSenha:Make;GerarSerial:Make;CriadorBancoWheelPro:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
