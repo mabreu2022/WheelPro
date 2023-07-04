@@ -34,7 +34,9 @@ uses
   FireDAC.Phys.MySQL,
   FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
-  System.StrUtils;
+  System.StrUtils,
+  ShellAPI,
+  System.IOUtils, Funcoes.Criptografia;
 
 type
   TFrmPrincipal = class(TForm)
@@ -50,7 +52,11 @@ type
     DataSource1: TDataSource;
     Label2: TLabel;
     Edit2: TEdit;
+    Button2: TButton;
+    CBRemoto: TCheckBox;
+    cbDemo: TCheckBox;
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     function ExtractDatabaseNameFromScript(const ScriptText: string): string;
     { Private declarations }
@@ -144,6 +150,27 @@ begin
 
             Memo1.Lines.Add('Banco de dados criado e script executado com sucesso: ' + DatabaseName);
 
+            //se é demo temos que adicionar a data do termino do demo na tabela registro
+            if cbDemo.Checked then
+            begin
+
+              //id, id_chave, chave, data_inc (now) ,  data_exp now+30, contrasenha, ativado ='S' e serialhd
+              Query.SQL.Clear;
+              Query.SQL.Text :=
+              'INSERT INTO registro (id, id_chave, data_inc, data_exp, contrasenha, ativo, serialhd ) ' +
+              'VALUES (:id, :id_chave, :data_inc, :data_exp, :contrasenha, :ativo, :serialhd)';
+              Query.Params.ParamByName('id').AsString          := '1';
+              Query.Params.ParamByName('id_chave').AsString    := '1';
+              Query.Params.ParamByName('data_inc').AsDate      := now;
+              Query.Params.ParamByName('data_exp').AsDate      := now+30;
+              Query.Params.ParamByName('contrasenha').AsString := 'Conect';
+              Query.Params.ParamByName('ativo').AsString       := 'S';
+              Query.Params.ParamByName('serialhd').AsString    := '0';
+              Query.ExecSQL;
+
+              Memo1.Lines.Add('Foi criada uma data de expiração ' + DateToStr(Now+30) + ' , pois o programa foi marcado como Demo');
+            end;
+
           end
           else
             ShowMessage('Não foi possível encontrar o nome do banco de dados no script.');
@@ -162,6 +189,52 @@ begin
 
   OpenDialog.Free;
 
+end;
+
+procedure TFrmPrincipal.Button2Click(Sender: TObject);
+var
+  InnoSetupPath: string;
+  ScriptPath: string;
+  Command: string;
+
+  SourceDir: string;
+  DestDir: string;
+  SourceFile: string;
+  DestFile: string;
+begin
+  Memo1.Clear;
+
+  DestDir := 'C:\Fontes\ProjetoRodas3\Instalador';
+  // Define o caminho para o executável do Inno Setup
+  InnoSetupPath := 'C:\Fontes\ProjetoRodas3\Instalador\ISStudio.exe';
+
+  // Define o caminho para o arquivo de script do Inno Setup
+  if CBRemoto.Checked then
+  begin
+    Memo1.Lines.Add('Gerando Setup para Instalação remota...');
+    //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
+    SourceDir := 'C:\Fontes\ProjetoRodas3\Instalador\Server Remoto';
+    SourceFile := TPath.Combine(SourceDir, 'Server.ini');
+    DestFile := TPath.Combine(DestDir, 'Server.ini');
+    TFile.Copy(SourceFile, DestFile, True);
+    ScriptPath := 'C:\Fontes\ProjetoRodas3\Instalador\WheelPro_Script_Instalador.iss'
+  end
+  else
+  begin
+    Memo1.Lines.Add('Gerando Setup para instalação com banco local...');
+    //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
+    SourceDir := 'C:\Fontes\ProjetoRodas3\Instalador\Server Local';
+    SourceFile := TPath.Combine(SourceDir, 'Server.ini');
+    DestFile := TPath.Combine(DestDir, 'Server.ini');
+    TFile.Copy(SourceFile, DestFile, True);
+    ScriptPath := 'C:\Fontes\ProjetoRodas3\Instalador\WheelPro_Script_InstaladorLocal.iss';
+  end;
+  // Cria o comando para gerar o arquivo de instalação
+  Command := '-compile "' + ScriptPath + '"';
+
+  // Executa o comando do Inno Setup para gerar o arquivo de instalação
+  ShellExecute(0, 'open', PChar(InnoSetupPath), PChar(Command), '', SW_HIDE);
+  Memo1.Lines.Add('Processo Finalizado com sucesso!');
 end;
 
 function TFrmPrincipal.ExtractDatabaseNameFromScript(const ScriptText: string): string;

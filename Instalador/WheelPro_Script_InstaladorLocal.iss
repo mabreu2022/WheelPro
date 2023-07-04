@@ -3,7 +3,7 @@
 
 #define MyAppName "WheelPro"
 #define MyAppVersion "1.5"
-#define MyAppPublisher "Conect Solutionns"
+#define MyAppPublisher "Conect Solutions"
 #define MyAppURL "https://conectsolutionsti.com.br"
 #define MyAppExeName "WheelProV3.exe"
 
@@ -24,7 +24,7 @@ DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=C:\Fontes\ProjetoRodas3\Instalador
-OutputBaseFilename=setup_WheelPro_final_18052023
+OutputBaseFilename=setup_WheelPro_Local
 SetupIconFile=C:\Fontes\ProjetoRodas3\Instalador\Icone.ico
 Password=123456
 Encryption=yes
@@ -48,6 +48,9 @@ Source: "Server.ini"; DestDir: "{app}"
 Source: "midas.dll"; DestDir: "{sys}"; Flags: 32bit
 Source: "libmysql.dll"; DestDir: "{app}"
 Source: "Config.ini"; DestDir: "{app}"
+Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "mysqldump.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -62,3 +65,6 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 [UninstallDelete]
 Type: files; Name: "{app}\midas.dll"
 Type: files; Name: "{app}\libmysql.dll"
+Type: files; Name: "{app}\libeay32.dll"
+Type: files; Name: "{app}\ssleay32.dll"
+Type: files; Name: "{app}\mysqldump.exe"

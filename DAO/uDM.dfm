@@ -7,8 +7,9 @@ object DM: TDM
       'Database=fulanorodas'
       'User_Name=root'
       'Password=19741974'
-      'Server=127.0.0.1'
+      'Server=187.75.162.220'
       'DriverID=MySQL')
+    Connected = True
     LoginPrompt = False
     Left = 72
     Top = 56

@@ -86,7 +86,6 @@ object FrmConfig: TFrmConfig
       Size.Width = 640.000000000000000000
       Size.Height = 380.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 0
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -98,7 +97,7 @@ object FrmConfig: TFrmConfig
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 62.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -244,6 +243,7 @@ object FrmConfig: TFrmConfig
           Text = 'Habilitar Logs'
           TabOrder = 4
           object CBHabilitarLogs: TCheckBox
+            Enabled = False
             Position.X = 16.000000000000000000
             Position.Y = 24.000000000000000000
             Size.Width = 225.000000000000000000
@@ -267,6 +267,7 @@ object FrmConfig: TFrmConfig
             ShadowColor = claBlack
           end
           object CBGravarLogsBanco: TCheckBox
+            Enabled = False
             Position.X = 16.000000000000000000
             Position.Y = 56.000000000000000000
             Size.Width = 233.000000000000000000
@@ -353,6 +354,7 @@ object FrmConfig: TFrmConfig
         StyleLookup = ''
         TabOrder = 0
         Text = 'Banco de Dados'
+        Visible = False
         ExplicitSize.cx = 106.000000000000000000
         ExplicitSize.cy = 26.000000000000000000
         object lblIPdoBanco: TLabel

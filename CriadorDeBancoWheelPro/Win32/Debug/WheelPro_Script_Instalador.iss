@@ -24,7 +24,7 @@ DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=C:\Fontes\ProjetoRodas3\Instalador
-OutputBaseFilename=setup_WheelPro_Remoto
+OutputBaseFilename=setup_WheelPro_local
 SetupIconFile=C:\Fontes\ProjetoRodas3\Instalador\Icone.ico
 Password=123456
 Encryption=yes
@@ -41,15 +41,15 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\Win32\Debug\WheelProV3.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "c:\Fontes\ProjetoRodas3\Win32\Debug\WheelProV3.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Fontes\ProjetoRodas3\Imagens\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: "Server.ini"; DestDir: "{app}"
-Source: "midas.dll"; DestDir: "{sys}"; Flags: 32bit
-Source: "libmysql.dll"; DestDir: "{app}"
-Source: "Config.ini"; DestDir: "{app}"
-Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Fontes\ProjetoRodas3\Instalador\Server.ini"; DestDir: "{app}"
+Source: "C:\Fontes\ProjetoRodas3\Instalador\midas.dll"; DestDir: "{sys}"; Flags: 32bit
+Source: "C:\Fontes\ProjetoRodas3\Instalador\libmysql.dll"; DestDir: "{app}"
+Source: "C:\Fontes\ProjetoRodas3\Instalador\Config.ini"; DestDir: "{app}"
+Source: "C:\Fontes\ProjetoRodas3\Instalador\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Fontes\ProjetoRodas3\Instalador\ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

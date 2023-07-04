@@ -258,7 +258,6 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>ProjetoRodasv3_Icon.ico</Icon_MainIcon>
         <DCC_MapFile>3</DCC_MapFile>
-        <DCC_Define>madExcept;LeakChecking;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>

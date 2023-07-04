@@ -2,7 +2,8 @@ program CriadorBancoWheelPro;
 
 uses
   Vcl.Forms,
-  uPrincipal in 'uPrincipal.pas' {FrmPrincipal};
+  uPrincipal in 'uPrincipal.pas' {FrmPrincipal},
+  Funcoes.Criptografia in '..\Funcoes\Funcoes.Criptografia.pas';
 
 {$R *.res}
 

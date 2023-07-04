@@ -44,17 +44,39 @@ object FrmPrincipal: TFrmPrincipal
     Color = clMoneyGreen
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 80
-    ExplicitTop = 400
-    ExplicitWidth = 185
     object Button1: TButton
-      Left = 808
+      Left = 8
       Top = 8
       Width = 75
       Height = 25
       Caption = 'Criar Base'
       TabOrder = 0
       OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 96
+      Top = 8
+      Width = 75
+      Height = 25
+      Caption = 'Gerar Setup'
+      TabOrder = 1
+      OnClick = Button2Click
+    end
+    object CBRemoto: TCheckBox
+      Left = 184
+      Top = 13
+      Width = 65
+      Height = 17
+      Caption = 'Remoto?'
+      TabOrder = 2
+    end
+    object cbDemo: TCheckBox
+      Left = 262
+      Top = 13
+      Width = 137
+      Height = 17
+      Caption = #201' para demostra'#231#227'o?'
+      TabOrder = 3
     end
   end
   object Memo1: TMemo
