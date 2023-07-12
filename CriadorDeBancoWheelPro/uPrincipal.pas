@@ -193,14 +193,14 @@ end;
 
 procedure TFrmPrincipal.Button2Click(Sender: TObject);
 var
-  InnoSetupPath: string;
-  ScriptPath: string;
-  Command: string;
+  InnoSetupPath : string;
+  ScriptPath    : string;
+  Command       : string;
 
-  SourceDir: string;
-  DestDir: string;
-  SourceFile: string;
-  DestFile: string;
+  SourceDir     : string;
+  DestDir       : string;
+  SourceFile    : string;
+  DestFile      : string;
 begin
   Memo1.Clear;
 
@@ -213,6 +213,7 @@ begin
   begin
     Memo1.Lines.Add('Gerando Setup para Instalação remota...');
     //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
+
     SourceDir := 'C:\Fontes\ProjetoRodas3\Instalador\Server Remoto';
     SourceFile := TPath.Combine(SourceDir, 'Server.ini');
     DestFile := TPath.Combine(DestDir, 'Server.ini');
