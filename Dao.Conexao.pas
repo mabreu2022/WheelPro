@@ -34,7 +34,7 @@ type
     class function  CreateConnection: TFDConnection;
   end;
 
-  const
+  const      //mudar para detectar diretorio do app
      ARQ_INI = 'C:\Fontes\ProjetoRodas3\Win32\Debug\Server.ini';
 
 
@@ -96,7 +96,5 @@ begin
 
    end;
 end;
-
-
 
 end.

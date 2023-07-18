@@ -54,8 +54,12 @@ type
 
       //Read
       function CarregarClientes(const ACNPJ: String): TClientes;
-      function CarregarTodosClientes(
-  aDataSet: TClientDataSet; aSomenteAtivos: string; aSemContatos: string; aNomeBotao: string = ''; aIdCliente: Integer = 0): TFDquery;
+      function CarregarTodosClientes(aDataSet: TClientDataSet;
+                                     aSomenteAtivos: string;
+                                     aSemContatos: string;
+                                     aNomeBotao: string = '';
+                                     aIdCliente: Integer = 0)
+                                     : TFDquery;
       function ObterClientePorId(aId: Integer): TFDQuery;
 
       //Update

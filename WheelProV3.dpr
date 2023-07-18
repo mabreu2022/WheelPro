@@ -33,7 +33,9 @@ uses
   Model.Backup in 'Model\Model.Backup.pas',
   View.Backup in 'View\View.Backup.pas' {FrmBackup},
   Funcoes.CNPJCPF in 'Funcoes\Funcoes.CNPJCPF.pas',
-  DAO.ConexaoLicencas in 'DAO\DAO.ConexaoLicencas.pas';
+  DAO.ConexaoLicencas in 'DAO\DAO.ConexaoLicencas.pas',
+  Entity.Categorias in 'Entity\Entity.Categorias.pas',
+  Model.Categorias in 'Model\Model.Categorias.pas';
 
 {$R *.res}
 

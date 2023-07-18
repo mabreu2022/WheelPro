@@ -55,6 +55,15 @@ type
     Button2: TButton;
     CBRemoto: TCheckBox;
     cbDemo: TCheckBox;
+    GroupBox1: TGroupBox;
+    Label3: TLabel;
+    ComboBox1: TComboBox;
+    Label5: TLabel;
+    Edit4: TEdit;
+    Label4: TLabel;
+    Edit3: TEdit;
+    Label6: TLabel;
+    Edit5: TEdit;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
   private
@@ -83,8 +92,8 @@ var
 begin
   ScriptsPath := ExtractFilePath(Application.ExeName) + 'scripts\'; // Caminho para a pasta "scripts" da aplicação
 
-  OpenDialog := TOpenDialog.Create(nil);
-  OpenDialog.Filter := 'Arquivos SQL (*.sql)|*.sql'; // Filtro para selecionar apenas arquivos SQL
+  OpenDialog            := TOpenDialog.Create(nil);
+  OpenDialog.Filter     := 'Arquivos SQL (*.sql)|*.sql'; // Filtro para selecionar apenas arquivos SQL
   OpenDialog.InitialDir := ScriptsPath; // Define a pasta inicial do OpenDialog como a pasta "scripts" da aplicação
 
   if OpenDialog.Execute then
@@ -214,9 +223,9 @@ begin
     Memo1.Lines.Add('Gerando Setup para Instalação remota...');
     //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
 
-    SourceDir := 'C:\Fontes\ProjetoRodas3\Instalador\Server Remoto';
+    SourceDir  := 'C:\Fontes\ProjetoRodas3\Instalador\Server Remoto';
     SourceFile := TPath.Combine(SourceDir, 'Server.ini');
-    DestFile := TPath.Combine(DestDir, 'Server.ini');
+    DestFile   := TPath.Combine(DestDir, 'Server.ini');
     TFile.Copy(SourceFile, DestFile, True);
     ScriptPath := 'C:\Fontes\ProjetoRodas3\Instalador\WheelPro_Script_Instalador.iss'
   end

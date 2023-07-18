@@ -335,6 +335,8 @@
         </DCCReference>
         <DCCReference Include="Funcoes\Funcoes.CNPJCPF.pas"/>
         <DCCReference Include="DAO\DAO.ConexaoLicencas.pas"/>
+        <DCCReference Include="Entity\Entity.Categorias.pas"/>
+        <DCCReference Include="Model\Model.Categorias.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
