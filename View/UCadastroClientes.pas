@@ -344,7 +344,7 @@ begin
     Abortar:= RegrasDeNegocios.ClienteExiste(FCliente.cnpj);
     if Abortar then  //cliente Existe
     begin
-      ShowMessage('Cliente já existe no Cadastro!');  //Comeentar depois
+      ShowMessage('Cliente já existe no Cadastro!');
 
       if FTipo='A' then //Alterar
       begin
@@ -1513,8 +1513,6 @@ begin
   DataSet.Free;
 
 end;
-
-
 
 procedure TFrmCadastroClientes.PreencheDadosEncontradosDoCliente;
 var

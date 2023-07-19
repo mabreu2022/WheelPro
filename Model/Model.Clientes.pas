@@ -40,6 +40,7 @@ type
       class var FGravarLogs: Boolean;
     procedure SetSomenteAtivos(const Value: string);
     class procedure CarregarFGravarLog;
+
     public
       FCliente: TClientes;
 

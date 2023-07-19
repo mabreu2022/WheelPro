@@ -13,6 +13,8 @@ uses
   UCadastroFabricantes in 'View\UCadastroFabricantes.pas' {FrmFabricantes},
   UCadastroOrcamentos in 'View\UCadastroOrcamentos.pas' {FrmOrcamentos},
   URegistrar in 'View\URegistrar.pas' {FrmRegistrar},
+  {$R}
+  {$R}
   Dao.Conexao in 'DAO\Dao.Conexao.pas' {$R *.res},
   Entity.Clientes in 'Entity\Entity.Clientes.pas',
   Model.Clientes in 'Model\Model.Clientes.pas',
@@ -35,7 +37,8 @@ uses
   Funcoes.CNPJCPF in 'Funcoes\Funcoes.CNPJCPF.pas',
   DAO.ConexaoLicencas in 'DAO\DAO.ConexaoLicencas.pas',
   Entity.Categorias in 'Entity\Entity.Categorias.pas',
-  Model.Categorias in 'Model\Model.Categorias.pas';
+  Model.Categorias in 'Model\Model.Categorias.pas',
+  Controller.Categorias in 'Controller\Controller.Categorias.pas';
 
 {$R *.res}
 

@@ -26,7 +26,7 @@ type
 
   public
 
-    Fmodel: TModelCliente;
+    FModel: TModelCliente;
     //create
     function SalvarCliente(aCliente: TClientes): Boolean;
 

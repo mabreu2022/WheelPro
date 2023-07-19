@@ -337,6 +337,7 @@
         <DCCReference Include="DAO\DAO.ConexaoLicencas.pas"/>
         <DCCReference Include="Entity\Entity.Categorias.pas"/>
         <DCCReference Include="Model\Model.Categorias.pas"/>
+        <DCCReference Include="Controller\Controller.Categorias.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -37,15 +37,22 @@ type
       CurrentDateTime: TDateTime;
       DateTimeStr: string;
       class var FGravarLogs: Boolean;
+
     public
+
+    Class function SalvarCategoria(aCategoria: TCategorias): Boolean;
     class function AlterarCategoria(aCategoria: TCategorias): Boolean;
     class function TestaSeCamposPreenchidos(aCategoria: TCategorias): Boolean;
     class function CategoriaExiste(aIDCategoria: Integer):Boolean;
+    class function PesquisaNomeFabricante(aCodFabricante: Integer): String;
+
     function CarregarTodasCategorias(aDataSet      : TClientDataSet;
                                      aSomenteAtivos: string;
                                      aNomeBotao    : string  = '';
                                      aIdCategorias : Integer = 0)
                                      : TFDquery;
+    //Delete
+    function RemoverCategoria(aCategoria: TCategorias): Boolean;
 
     constructor Create;
     destructor destroy;override;
@@ -304,6 +311,163 @@ destructor TModelCategorias.destroy;
 begin
 
   inherited;
+end;
+
+class function TModelCategorias.PesquisaNomeFabricante(
+  aCodFabricante: Integer): String;
+var
+  qry : TFDQuery;
+begin
+
+  qry:= TFDquery.Create(nil);
+  qry.Connection:= TConnection.CreateConnection;
+  try
+    qry.SQL.Clear;
+    qry.SQL.Add('select razao from fabricantes');
+    qry.SQL.Add(' where idfabricantes=:idfabricantes');
+    qry.ParamByName('idfabricantes').DataType   := ftInteger;
+    qry.ParamByName('idfabbricantes').AsInteger := aCodFabricante;
+    qry.Open;
+    if qry.RecordCount > 0 then
+      Result:= qry.FieldByName('razao').AsString
+    else
+      Result:='';
+  finally
+    qry.Free;
+  end;
+
+end;
+
+function TModelCategorias.RemoverCategoria(aCategoria: TCategorias): Boolean;
+var
+  Ativo: string;
+begin
+  Result := False;
+
+  qry:= TFDQuery.Create(nil);
+  qry.Connection:= TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
+  try
+
+    qry.Close;
+    qry.SQL.Text := 'UPDATE fulanorodas.categorias ' +
+                    'SET                         ' +
+                    'ativo       = ''N''         ' +
+                    'WHERE IDCATEGORIAS=:IDCATEGORIAS';
+    qry.ParamByName('IDCATEGORIAS').DataType:= ftInteger;
+    qry.ParamByName('IDCATEGORIAS').AsInteger:= aCategoria.idcategorias;
+
+    qry.ExecSQL;
+    qry.Connection.Commit;
+
+    Result := True;
+
+  Except
+    on E: Exception do
+    begin
+      Result := False;
+      qry.Connection.Rollback;
+      ShowMessage('Houve um erro ao tentar deletar a categoria' + E.Message);
+      qry.Close;
+      qry.Free;
+    end;
+  end;
+
+end;
+
+class function TModelCategorias.SalvarCategoria(
+  aCategoria: TCategorias): Boolean;
+var
+  qry             : TFDQuery;
+  Ativo           : string;
+  LogManager      : TLogManager;
+  CurrentDateTime : TDateTime;
+  DateTimeStr     : string;
+begin
+  Result:= False;
+
+  qry:=TFDQuery.Create(nil);
+  qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
+  try
+
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('INSERT INTO '  +
+                ' fulanorodas.categorias ' +
+                '(idcategorias,          ' +   //1
+                'categoria,              ' +   //2
+                'ativo,                  ' +   //3
+                'datacadastro,           ' +   //4
+                'dataalteracao,          ' +   //5
+                'dataexclusao            ' +   //6
+                ')                       ' +
+                'VALUES (                ' +
+                ':idcategorias,          ' +   //1 ok
+                ':categoria,             ' +   //2 ok
+                ':ativo,                 ' +   //3 ok
+                ':datacadastro,          ' +   //4 ok
+                ':dataalteracao,         ' +   //5 ok
+                ':dataexclusao           ' +   //6 ok
+                ')                       ');
+
+     qry.ParamByName('idcategorias').DataType  := ftInteger;            //1
+
+     qry.ParamByName('categoria').DataType     := ftString;
+     qry.ParamByName('categoria').AsString     := aCategoria.categoria; //2
+
+
+     qry.ParamByName('ativo').DataType         := ftString;
+     if Length(aCategoria.ativo) > 0 then
+       Ativo := Copy(aCategoria.ativo, 1, 1)
+     else
+       Ativo := '';
+
+     qry.ParamByName('ativo').AsString         := Ativo;               //3
+
+     qry.ParamByName('datacadastro').DataType  := ftDateTime;
+     qry.ParamByName('datacadastro').AsDateTime:= Now;                 //4
+
+     qry.ParamByName('dataalteracao').DataType  := ftDateTime;         //5
+     qry.ParamByName('dataalteracao').AsDateTime:= Now;
+
+     qry.ParamByName('dataexclusao').DataType := ftDateTime;
+     qry.ParamByName('dataexclusao').AsDateTime:= aCategoria.dataExclusao; //6
+
+     //CarregarFGravarLog;
+
+     if FGravarLogs then
+       qry.SQL.SaveToFile('C:\CategoriasSQL.txt');
+
+     qry.ExecSQL;
+     qry.Connection.Commit;
+
+     Result := True;
+  Except
+     on E: Exception do
+      begin
+        Result := False;
+        ShowMessage('Ocorreu um erro ao salvar a categoria: ' + E.Message);
+        qry.Connection.Rollback;
+        qry.Close;
+
+        if True then
+        begin
+          LogManager:= TLogManager.Create;
+          try
+            CurrentDateTime := Now;
+            DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+            LogManager.AddLog('Classe Model.Categoria - Linha : 421 - Finalizou o Alterar Categoria finalizou qry às '+ DateTimeStr);
+            LogManager.SaveLogToFile('Log_Model_Categorias.txt');
+          finally
+            LogManager.Free;
+          end;
+        end;
+        qry.Free;
+      end;
+  end;
+  qry.Free;
+
 end;
 
 class function TModelCategorias.TestaSeCamposPreenchidos(
