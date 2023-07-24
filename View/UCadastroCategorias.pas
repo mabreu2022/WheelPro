@@ -118,6 +118,11 @@ type
     procedure BtnGravarClick(Sender: TObject);
     procedure CBCodFabricanteChange(Sender: TObject);
     procedure BtnPesquisarClick(Sender: TObject);
+    procedure BtnProximoClick(Sender: TObject);
+    procedure BtnAnteriorClick(Sender: TObject);
+    procedure BtnPrimeiroClick(Sender: TObject);
+    procedure BtnUltimoClick(Sender: TObject);
+    procedure CBCodFabricanteExit(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -145,12 +150,14 @@ type
     procedure PreencheDadosEncontradosDaCategoria;
     function GravarLogsBancoDeDados: Boolean;
     procedure CarregarConfiguracao;
+    procedure SelecionarFabricantePorID(idfabricanteValor: Integer);
   public
     { Public declarations }
     DataSet: TClientDataSet;
     FSomenteAtivos: string;
     FSemContatos  : string;
     FBtnUltimo    : string;
+    codFabricante : string;
     procedure OnDataSetChange;
     Function CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
   end;
@@ -173,11 +180,17 @@ begin
 
 end;
 
+procedure TFrmCategorias.BtnAnteriorClick(Sender: TObject);
+begin
+  PopularDataSet;
+  DataSet.prior;
+  OnDataSetChange;
+end;
+
 procedure TFrmCategorias.BtnExcluirClick(Sender: TObject);
 begin
   FTipo:='E';
   DesabilitaBotoes([BiGravar]);
-  //Chamar o Model de Excluir
 end;
 
 procedure TFrmCategorias.BtnGravarClick(Sender: TObject);
@@ -195,7 +208,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 161 - BtnnGravar - Criou a RegrasdeNegocios às ' +  DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 197 - BtnGravar - Criou a RegrasdeNegocios às ' +  DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Categorias.txt');
     finally
       LogManager.Free;
@@ -298,7 +311,7 @@ begin
   qry.Connection := TConnection.CreateConnection;
   try
     qry.SQL.Clear;
-    qry.SQL.Text := 'SELECT MAX(idcategorias) + 1 AS NextID FROM categorias';
+    qry.SQL.Text := 'SELECT MAX(idcategorias) + 1 AS NextID FROM categoria';
     qry.Open;
 
     NextID := qry.FieldByName('NextID').AsInteger;
@@ -328,8 +341,8 @@ begin
   EdtCategoria.Text    := '';
   EdtFabricante.Text   := '';
 
-  if EdtFabricante.CanFocus then
-     EdtFabricante.SetFocus;
+  if EdtCategoria.CanFocus then
+     EdtCategoria.SetFocus;
 
 end;
 
@@ -367,6 +380,28 @@ begin
 
 end;
 
+procedure TFrmCategorias.BtnPrimeiroClick(Sender: TObject);
+begin
+  PopularDataSet;
+  DataSet.First;
+  OnDataSetChange;
+end;
+
+procedure TFrmCategorias.BtnProximoClick(Sender: TObject);
+begin
+  PopularDataSet;
+  DataSet.Next;
+  OnDataSetChange;
+end;
+
+procedure TFrmCategorias.BtnUltimoClick(Sender: TObject);
+begin
+  FBtnUltimo:='S';
+  PopularDataSet;
+  DataSet.Last;
+  OnDataSetChange;
+end;
+
 procedure TFrmCategorias.CarregarConfiguracao;
 var
    IniFile    : TIniFile;
@@ -381,8 +416,8 @@ begin
 
     LogManager.CarregarConfiguracao;
     FSomenteAtivos        := LogManager.FSomenteAtivos;        //Carregar categorias Ativos='S'
-    //FSemContatos          := LogManager.FSemContatos;          //Carregar categorias sem contatos
     FHabilitarLogsSistema := LogManager.FHabilitarLogsSistema; //Salvar Logs do Sistema
+
   finally
     LogManager.Free;
   end;
@@ -484,10 +519,23 @@ var
 begin
   Model := TModelCategorias.Create;
   try
-    EdtFabricante.Text := Model.PesquisaNomeFabricante(StrToInt(CBCodFabricante.Items.Text));
+    EdtFabricante.Text := Model.PesquisaNomeFabricante(StrToInt(codFabricante));
   finally
     Model.Free;
   end;
+end;
+
+procedure TFrmCategorias.CBCodFabricanteExit(Sender: TObject);
+var
+  Model : TModelCategorias;
+begin
+  Model := TModelCategorias.Create;
+  try
+    EdtFabricante.Text := Model.PesquisaNomeFabricante(StrToInt(codFabricante));
+  finally
+    Model.Free;
+  end;
+
 end;
 
 function TFrmCategorias.CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
@@ -513,7 +561,7 @@ begin
     CDS.FieldDefs.Add('CATEGORIA', ftString, 100);
     CDS.FieldDefs.Add('ATIVO', ftString,1);
     CDS.FieldDefs.Add('DATACADASTRO', ftDateTime);
-    CDS.FieldDefs.Add('DATAALTERACAO', ftDateTime);
+    CDS.FieldDefs.Add('dataalteracao', ftDateTime);
     CDS.FieldDefs.Add('DATAEXCLUSAO', ftDateTime);
     CDS.FieldDefs.Add('IDFABRICANTE', ftInteger);
 
@@ -614,7 +662,7 @@ end;
 procedure TFrmCategorias.OnDataSetChange;
 var
   ativoCliente  : string;
-  codFabricante : Integer;
+
 begin
 
   EdtCodCategoria.Text  := IntToStr(DataSet.FieldByName('idcategorias').AsInteger);
@@ -622,9 +670,6 @@ begin
 
   // Obter o valor dos campos Ativo do DataSet
   ativoCliente := DataSet.FieldByName('Ativo').AsString;
-  codFabricante:= DataSet.FieldByName('IDFABRICANTE').AsInteger;
-
-  CBCodFabricante.ItemIndex := codFabricante;//CBCodFabricante.Items.indexof('');
 
   // Definir o valor do campo Ativo no combobox CBATivo
   if ativoCliente = 'S' then
@@ -634,7 +679,20 @@ begin
   else
     CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
 
-  PopularCategoria;  //Popula a variável FClientes
+  //ver uma function que devolva o fabricante gravado no banco para setar o fabricante no combobox
+  //SelecionarFabricantePorID(DataSet.FieldByName('IDFABRICANTE').AsInteger);
+  if not DataSet.FieldByName('IDFABRICANTE').IsNull then
+  begin
+    codFabricante := IntToStr(DataSet.FieldByName('IDFABRICANTE').AsInteger);
+    if CBCodFabricante.Items.IndexOf(codFabricante) > -1 then
+      CBCodFabricante.ItemIndex := CBCodFabricante.Items.IndexOf(codFabricante)
+    else
+      CBCodFabricante.ItemIndex := -1; // ou algum valor padrão, caso IDFABRICANTE não seja válido
+  end
+  else
+    CBCodFabricante.ItemIndex := -1; // ou algum valor padrão, caso IDFABRICANTE seja nulo
+
+  PopularCategoria;  //Popula a variável FCategoria
 
 end;
 
@@ -657,12 +715,14 @@ begin
 
   try
      if FTIpo<>'N' then
+     begin
+       FCategoria := TCategorias.create;
        FCategoria.idcategorias := StrTOInt(EdtCodCategoria.Text);
-
-     FCategoria.categoria    := EdtCategoria.Text;
-     FCategoria.idfabricante := StrToInt(CBCodFabricante.Items[CBCodFabricante.ItemIndex]);
-     FCategoria.fabricante   := EdtFabricante.Text;
-     FCategoria.Ativo        := CBAtivo.Items[CBAtivo.ItemIndex];
+       FCategoria.categoria    := EdtCategoria.Text;
+       FCategoria.idfabricante := StrToInt(CBCodFabricante.Items[CBCodFabricante.ItemIndex]);
+       FCategoria.fabricante   := EdtFabricante.Text;
+       FCategoria.Ativo        := CBAtivo.Items[CBAtivo.ItemIndex];
+     end;
 
   finally
     if FGravarLog then
@@ -677,6 +737,7 @@ begin
         LogManager.Free;
       end;
     end;
+    //FCategoria.Free;
   end;
 
 end;
@@ -689,7 +750,7 @@ begin
   Model         := TModelCategorias.create;
   DataSet       := TClientDataset.Create(nil);
   try
-    if FBtnUltimo='S' then
+    //if FBtnUltimo='S' then
       qry := Model.CarregarTodasCategorias(DataSet, FSomenteAtivos, FSemContatos, 0);
 
     DataSet := CriarDataSet(DataSet);
@@ -700,10 +761,11 @@ begin
       DataSet.Append;
       DataSet.FieldByName('idcategorias').AsInteger   := Qry.FieldByName('idcategorias').AsInteger;
       DataSet.FieldByName('categoria').AsString       := Qry.FieldByName('categoria').AsString;
+      DataSet.FieldByName('idfabricante').AsInteger   := Qry.FieldByName('idfabricante').AsInteger;
       DataSet.FieldByName('datacadastro').AsDateTime  := Qry.FieldByName('datacadastro').AsDateTime;
       DataSet.FieldByName('dataalteracao').AsDateTime := Qry.FieldByName('dataalteracao').AsDateTime;
       DataSet.FieldByName('dataexclusao').AsdateTime  := Qry.FieldByName('dataexclusao').AsDateTime;
-      DataSet.FieldByName('ATIVO').AsString       := Qry.FieldByName('ATIVO').AsString;
+      DataSet.FieldByName('ATIVO').AsString           := Qry.FieldByName('ATIVO').AsString;
 
       DataSet.Post;
       qry.Next;
@@ -768,6 +830,15 @@ begin
     CBAtivo.ItemIndex    := CBAtivo.Items.IndexOf(GridClientes.Cells[10, SelectedRow]);
 
   end;
+
+end;
+
+procedure TFrmCategorias.SelecionarFabricantePorID(idfabricanteValor: Integer);
+var
+  index: Integer;
+begin
+  index := CBCodFabricante.Items.IndexOf(IntToStr(idfabricanteValor));
+  CBCodFabricante.ItemIndex := index;
 
 end;
 

@@ -1,6 +1,11 @@
 program WheelProV3;
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   System.StartUpCopy,
   FMX.Forms,
   UPrincipal in 'UPrincipal.pas' {FrmPrincipal},
@@ -13,8 +18,6 @@ uses
   UCadastroFabricantes in 'View\UCadastroFabricantes.pas' {FrmFabricantes},
   UCadastroOrcamentos in 'View\UCadastroOrcamentos.pas' {FrmOrcamentos},
   URegistrar in 'View\URegistrar.pas' {FrmRegistrar},
-  {$R}
-  {$R}
   Dao.Conexao in 'DAO\Dao.Conexao.pas' {$R *.res},
   Entity.Clientes in 'Entity\Entity.Clientes.pas',
   Model.Clientes in 'Model\Model.Clientes.pas',

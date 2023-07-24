@@ -619,7 +619,7 @@ begin
      qry.Close;
      qry.SQL.Text:='SELECT L.IDLINHA, L.LINHA, L.IDCATEGORIA '+
                    ' FROM LINHA L ' +
-                   ' INNER JOIN CATEGORIAS C ON (L.IDCATEGORIA = C.IDCATEGORIAS)' +
+                   ' INNER JOIN CATEGORIA C ON (L.IDCATEGORIA = C.IDCATEGORIAS)' +
                    ' WHERE L.ATIVO=''S'' ' +
                    '   AND L.IDCATEGORIA = :IDCATEGORIA' +
                    ' ORDER BY L.IDLINHA ASC';
@@ -656,7 +656,7 @@ begin
    qry.Connection:= DM.FDConnection1;
    try
      qry.Close;
-     qry.SQL.Text:='SELECT C.IDCATEGORIAS,  C.CATEGORIA FROM CATEGORIAS C ' +
+     qry.SQL.Text:='SELECT C.IDCATEGORIAS,  C.CATEGORIA FROM CATEGORIA C ' +
                    ' INNER JOIN FABRICANTES F ON(F.IDFABRICANTES = C.IDFABRICANTE)' +
                    ' WHERE C.ATIVO=''S'' ' +
                    '  AND IDFABRICANTE = :IDFABRICANTE' +

@@ -94,8 +94,10 @@ end;
 
 class function TControllerCategoria.SalvarCategoria(
   aCategoria: TCategorias): Boolean;
+   var
+   FModel: TModelCategorias;
 begin
-  REsult:= FModel.
+  Result := FModel.SalvarCategoria(aCategoria);
 end;
 
 class function TControllerCategoria.TestaSeCamposPreenchidos(

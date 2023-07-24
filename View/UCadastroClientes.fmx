@@ -186,7 +186,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
       Size.Width = 712.000000000000000000
       Size.Height = 340.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -202,7 +202,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -600,7 +600,7 @@ object FrmCadastroClientes: TFrmCadastroClientes
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False

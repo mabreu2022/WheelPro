@@ -110,7 +110,7 @@ begin
   try
     qry.Close;
     qry.SQL.Clear;
-    qry.SQL.Text:='UPDATE fulanorodas.categorias  ' +
+    qry.SQL.Text:='UPDATE fulanorodas.categoria   ' +
                   'SET                            ' +
                   'idcategorias  = :idcategorias, ' +
                   'categoria     = :categoria,    ' +
@@ -193,7 +193,7 @@ begin
   qry.Connection:= TConnection.CreateConnection;
   try
     qry.SQL.Clear;
-    qry.SQL.Add('SELECT CA.* FROM CATEGORIAS CA ');
+    qry.SQL.Add('SELECT CA.* FROM CATEGORIA CA ');
 
     if aSomenteAtivos = 'S' then
       qry.SQL.Add('WHERE CA.ATIVO=''S''      ');
@@ -213,12 +213,14 @@ begin
       qry.SQL.add(' AND CA.IDCATEGORIAS=:IDCCATEGORIAS');
       qry.ParamByName('IDCCATEGORIAS').DataType  := ftInteger;
       qry.ParamByName('IDCCATEGORIAS').AsInteger := aIdCategorias;
+      //ShowMessage(qry.SQL.Text);
       qry.Open;
+
       Result:= qry;
 
     end;
 
-    ShowMessage('A qtde. de todos as categorias é de: ' + IntToStr(qry.recordcount));
+    //ShowMessage('A qtde. de todos as categorias é de: ' + IntToStr(qry.recordcount));
 
     if FGravarLogs then
     begin
@@ -274,7 +276,7 @@ begin
   try
     qry.Close;
     qry.SQL.Clear;
-    qry.SQL.Add('SELECT * FROM CATEGORIAS');
+    qry.SQL.Add('SELECT * FROM CATEGORIA');
     qry.SQL.Add('WHERE IDCATEGORIAS=:IDCATEGORIAS');
     qry.ParamByName('IDCATEGORIAS').DataType := ftInteger;
     qry.ParamByName('IDCATEGORIAS').AsInteger := aIDCategoria;
@@ -326,7 +328,7 @@ begin
     qry.SQL.Add('select razao from fabricantes');
     qry.SQL.Add(' where idfabricantes=:idfabricantes');
     qry.ParamByName('idfabricantes').DataType   := ftInteger;
-    qry.ParamByName('idfabbricantes').AsInteger := aCodFabricante;
+    qry.ParamByName('idfabricantes').AsInteger := aCodFabricante;
     qry.Open;
     if qry.RecordCount > 0 then
       Result:= qry.FieldByName('razao').AsString
@@ -350,9 +352,9 @@ begin
   try
 
     qry.Close;
-    qry.SQL.Text := 'UPDATE fulanorodas.categorias ' +
-                    'SET                         ' +
-                    'ativo       = ''N''         ' +
+    qry.SQL.Text := 'UPDATE fulanorodas.categoria ' +
+                    'SET                          ' +
+                    'ativo       = ''N''          ' +
                     'WHERE IDCATEGORIAS=:IDCATEGORIAS';
     qry.ParamByName('IDCATEGORIAS').DataType:= ftInteger;
     qry.ParamByName('IDCATEGORIAS').AsInteger:= aCategoria.idcategorias;
@@ -394,7 +396,7 @@ begin
     qry.Close;
     qry.SQL.Clear;
     qry.SQL.Add('INSERT INTO '  +
-                ' fulanorodas.categorias ' +
+                ' fulanorodas.categoria  ' +
                 '(idcategorias,          ' +   //1
                 'categoria,              ' +   //2
                 'ativo,                  ' +   //3
@@ -457,7 +459,7 @@ begin
           try
             CurrentDateTime := Now;
             DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-            LogManager.AddLog('Classe Model.Categoria - Linha : 421 - Finalizou o Alterar Categoria finalizou qry às '+ DateTimeStr);
+            LogManager.AddLog('Classe Model.Categoria - Linha : 460 - Finalizou o Alterar Categoria finalizou qry às '+ DateTimeStr);
             LogManager.SaveLogToFile('Log_Model_Categorias.txt');
           finally
             LogManager.Free;
