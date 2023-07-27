@@ -43,9 +43,9 @@ type
       FCidade: string;
       Fidfabricantes: Integer;
       Fendereco: string;
-    FDataExclusao: TDateTime;
-    FDataAlteracao: TDateTime;
-    FDataCadastro: TDateTime;
+      FDataExclusao: TDateTime;
+      FDataAlteracao: TDateTime;
+      FDataCadastro: TDateTime;
       procedure Setativo(const Value: string);
       procedure SetBairro(const Value: string);
       procedure SetCEP(const Value: string);

@@ -87,7 +87,7 @@ begin
                   'bairro        = :bairro,        ' +
                   'ativo         = :ativo,         ' +
                   'uf            = :uf,            ' +
-                  //'datacadastro  = now,            ' +
+                  'datacadastro  = now,            ' +
                   'datalateracao = now,            ' +
                   'WHERE                           ' +
                   'CNPJ          = :CNPJ           ';
@@ -134,7 +134,7 @@ begin
     qry.ParamByName('CNPJ').DataType            := ftString;
     qry.ParamByName('CNPJ').AsString            := aFabricante.cnpj;
 
-    qry.ExecSQL;
+    qry.ExecSQL;  //falta colocar o roolback
 
     Result:=True;
 
@@ -373,7 +373,7 @@ begin
      qry.ParamByName('dataalteracao').DataType:= ftDateTime;
      qry.ParamByName('dataalteracao').AsDateTime:= Now;
 
-     qry.ExecSQL;
+     qry.ExecSQL; //falta colocar o rollback
 
      Result:=True;
 

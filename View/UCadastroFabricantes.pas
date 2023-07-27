@@ -159,14 +159,20 @@ type
     FConexao: TFDConnection;
     FController: TControllerFabricante;
     FLinguagem: string;
+    CurrentDateTime: TDateTime; //Para uso com o Log
+    DateTimeStr: string;        //Para uso com o Log
+    FGravarLog: Boolean;        //Para uso com o Log
+    FHabilitarLogsSistema: string;
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     procedure CarregarCores;
     procedure CarregarLinguagem;
     Procedure PopularGridFabricante;
     procedure PreencheDadosEncontradosDoFabricante;
+    procedure CarregarConfiguracao;
   public
     { Public declarations }
     DataSet: TClientDataSet;
+    FSomenteAtivos: string;
     procedure OnDataSetChange;
     procedure PopularFabricante;
     Function CriarDataSet(aDadaSet: TClientDataSet): TClientDataSet;
@@ -365,6 +371,28 @@ begin
   OnDataSetChange;
 end;
 
+procedure TFrmFabricantes.CarregarConfiguracao;
+var
+   IniFile    : TIniFile;
+   LogManager : TLogManager;
+begin
+  LogManager:= TLogManager.Create;
+  try
+    CurrentDateTime := Now;
+    DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
+    LogManager.AddLog('Tela - Cadastro de Fabricantes: Linha : 378 - Carregar Configuração - Criou o IniFile às ' + DateTimeStr);
+    LogManager.SaveLogToFile('Log_Cadastro_de_Fabricantes.txt');
+
+    LogManager.CarregarConfiguracao;
+    FSomenteAtivos        := LogManager.FSomenteAtivos;        //Carregar categorias Ativos='S'
+    FHabilitarLogsSistema := LogManager.FHabilitarLogsSistema; //Salvar Logs do Sistema
+
+  finally
+    LogManager.Free;
+  end;
+
+end;
+
 procedure TFrmFabricantes.CarregarCores;
 var
   IniFile: TIniFile;
@@ -548,9 +576,13 @@ end;
 
 procedure TFrmFabricantes.FormCreate(Sender: TObject);
 begin
+  FConexao     := TConnection.CreateConnection;
+  FFabricante  := TFabricante.create;
   PopularDataSet;
   CarregarCores;
   CarregarLinguagem;
+  CarregarConfiguracao;
+  FController:= TControllerFabricante.Create;
 end;
 
 procedure TFrmFabricantes.FormShow(Sender: TObject);
