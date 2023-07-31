@@ -72,7 +72,7 @@ object FrmRegistrar: TFrmRegistrar
       Size.Width = 924.000000000000000000
       Size.Height = 508.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 3
+      TabIndex = 0
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -88,7 +88,7 @@ object FrmRegistrar: TFrmRegistrar
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -738,13 +738,15 @@ object FrmRegistrar: TFrmRegistrar
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 127.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = ''
         TabOrder = 0
         Text = 'Inserir Contra Senha'
+        ExplicitSize.cx = 127.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
         object EdtContraSenha: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           TabOrder = 0

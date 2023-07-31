@@ -66,7 +66,7 @@ type
       Fserialhd: string;
       FContraSenha: String;
       FData_exp: TDateTime;
-    Fid_chave: string;
+      Fid_chave: string;
       procedure Setativo(const Value: string);
       procedure Setbairro(const Value: string);
       procedure Setcidade(const Value: string);
@@ -94,30 +94,30 @@ type
       procedure SetData_exp(const Value: TDateTime);
     procedure Setid_chave(const Value: string);
     public
-      property razao: string read Frazao write Setrazao;
-      property cnpj : string read Fcnpj write Setcnpj;
-      property ie: string read Fie write Setie;
-      property im: string read Fim write Setim;
-      property endereco: string read Fendereco write Setendereco;
-      property numero: integer read Fnumero write Setnumero;
-      property complemento: string read Fcomplemento write Setcomplemento;
-      property bairro: string read Fbairro write Setbairro;
-      property cidade: string read Fcidade write Setcidade;
-      property uf: string read Fuf write Setuf;
-      property CEP: string read FCEP write SetCEP;
-      property ativo: string read Fativo write Setativo;
-      property responsavel: string read Fresponsavel write Setresponsavel;
-      property contato: string read Fcontato write Setcontato;
-      property telcontato: string read Ftelcontato write Settelcontato;
-      property telefone: string read Ftelefone write Settelefone;
-      property email: string read Femail write Setemail;
+      property razao       : string    read Frazao write Setrazao;
+      property cnpj        : string    read Fcnpj write Setcnpj;
+      property ie          : string    read Fie write Setie;
+      property im          : string    read Fim write Setim;
+      property endereco    : string    read Fendereco write Setendereco;
+      property numero      : integer   read Fnumero write Setnumero;
+      property complemento : string    read Fcomplemento write Setcomplemento;
+      property bairro      : string    read Fbairro write Setbairro;
+      property cidade      : string    read Fcidade write Setcidade;
+      property uf          : string    read Fuf write Setuf;
+      property CEP         : string    read FCEP write SetCEP;
+      property ativo       : string    read Fativo write Setativo;
+      property responsavel : string    read Fresponsavel write Setresponsavel;
+      property contato     : string    read Fcontato write Setcontato;
+      property telcontato  : string    read Ftelcontato write Settelcontato;
+      property telefone    : string    read Ftelefone write Settelefone;
+      property email       : string    read Femail write Setemail;
       property dataregistro: TDatetime read Fdataregistro write Setdataregistro;
-      property Linguagem: string read FLinguagem write SetLinguagem;
-      property serial : string read Fserial write Setserial;  //transferir do projeto antigo para esse
-      property serialhd: string read Fserialhd write Setserialhd;
-      property ContraSenha: String read FContraSenha write SetContraSenha;
-      property Data_exp: TDateTime read FData_exp write SetData_exp;
-      property id_chave: string read Fid_chave write Setid_chave;
+      property Linguagem   : string    read FLinguagem write SetLinguagem;
+      property serial      : string    read Fserial write Setserial;  //transferir do projeto antigo para esse
+      property serialhd    : string    read Fserialhd write Setserialhd;
+      property ContraSenha : String    read FContraSenha write SetContraSenha;
+      property Data_exp    : TDateTime read FData_exp write SetData_exp;
+      property id_chave    : string    read Fid_chave write Setid_chave;
 
       //Verificar se será necessário criar mais propertys para a tabela Registro
       property OnLabel6TextChanged: TNotifyEvent read FOnLabel6TextChanged write SetOnLabel6TextChanged;
