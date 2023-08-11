@@ -52,7 +52,8 @@ uses
   System.UIConsts,
   Winapi.Windows,
   LogManager,
-  FireDAC.FMXUI.Wait, Funcoes.CNPJCPF;
+  FireDAC.FMXUI.Wait,
+  Funcoes.CNPJCPF;
 
 
 type

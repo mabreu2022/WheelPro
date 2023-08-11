@@ -43,7 +43,10 @@ uses
   Model.Categorias in 'Model\Model.Categorias.pas',
   Controller.Categorias in 'Controller\Controller.Categorias.pas',
   Entity.Produtos in 'Entity\Entity.Produtos.pas',
-  Funcoes.EnviarEmail in 'Funcoes\Funcoes.EnviarEmail.pas';
+  Funcoes.EnviarEmail in 'Funcoes\Funcoes.EnviarEmail.pas',
+  View.Produtos in 'View\View.Produtos.pas' {FrmCadastrodeProdutos},
+  Controller.Produtos in 'Controller\Controller.Produtos.pas',
+  Model.Produtos in 'Model\Model.Produtos.pas';
 
 {$R *.res}
 
@@ -54,5 +57,6 @@ begin
   Application.CreateForm(TFrmLogin, FrmLogin);
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.CreateForm(TFrmBackup, FrmBackup);
+  Application.CreateForm(TFrmCadastrodeProdutos, FrmCadastrodeProdutos);
   Application.Run;
 end.

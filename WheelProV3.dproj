@@ -341,6 +341,12 @@
         <DCCReference Include="Controller\Controller.Categorias.pas"/>
         <DCCReference Include="Entity\Entity.Produtos.pas"/>
         <DCCReference Include="Funcoes\Funcoes.EnviarEmail.pas"/>
+        <DCCReference Include="View\View.Produtos.pas">
+            <Form>FrmCadastrodeProdutos</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="Controller\Controller.Produtos.pas"/>
+        <DCCReference Include="Model\Model.Produtos.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

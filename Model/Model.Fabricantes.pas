@@ -20,7 +20,8 @@ uses
   FireDAC.Comp.Client,
   System.Generics.Collections,
   Dao.Conexao,
-  Datasnap.DBClient;
+  Datasnap.DBClient,
+  FMX.Dialogs;
 
 type
   TModelFabricante = class
@@ -71,6 +72,7 @@ begin
 
   qry:=TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
   try
     qry.Close;
     qry.SQL.Clear;
@@ -134,14 +136,20 @@ begin
     qry.ParamByName('CNPJ').DataType            := ftString;
     qry.ParamByName('CNPJ').AsString            := aFabricante.cnpj;
 
-    qry.ExecSQL;  //falta colocar o roolback
+    qry.ExecSQL;
+    qry.connection.Commit;
 
     Result:=True;
 
-  finally
-    qry.Free;
+  Except
+     on E: Exception do
+      begin
+        ShowMessage('Ocorreu um erro ao tentar atualizar o fabricante : ' + E.Message);
+        qry.Connection.Rollback;
+        qry.Close;
+        qry.Free;
+      end;
   end;
-
 
 end;
 
@@ -267,6 +275,7 @@ begin
 
   qry:= TFDQuery.Create(nil);
   qry.Connection:= TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
   try
 
     qry.Close;
@@ -278,10 +287,18 @@ begin
     qry.ParamByName('IDFABRICANTES').AsInteger:= aFabricante.idfabricantes;
 
     qry.ExecSQL;
+    qry.Connection.Commit;
 
     Result := True;
-  finally
-    qry.Free;
+
+  Except
+     on E: Exception do
+      begin
+        ShowMessage('Ocorreu um erro ao tentar excluir o fabricante : ' + E.Message);
+        qry.Connection.Rollback;
+        qry.Close;
+        qry.Free;
+      end;
   end;
 
 end;
@@ -297,6 +314,7 @@ begin
 
   qry:=TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
+  qry.Connection.StartTransaction;
   try
 
     qry.Close;
@@ -373,13 +391,19 @@ begin
      qry.ParamByName('dataalteracao').DataType:= ftDateTime;
      qry.ParamByName('dataalteracao').AsDateTime:= Now;
 
-     qry.ExecSQL; //falta colocar o rollback
+     qry.ExecSQL;
+     qry.Connection.Commit;
 
      Result:=True;
 
-  finally
-    qry.Close;
-    qry.Free;
+  Except
+     on E: Exception do
+      begin
+        ShowMessage('Ocorreu um erro ao tentar salvar o fabricante : ' + E.Message);
+        qry.Connection.Rollback;
+        qry.Close;
+        qry.Free;
+      end;
   end;
 
 end;

@@ -89,7 +89,7 @@ end;
 function TControllerCategoria.RemoverCategoria(
   aCategoria: TCategorias): Boolean;
 begin
-
+  FModel.RemoverCategoria(aCategoria);
 end;
 
 class function TControllerCategoria.SalvarCategoria(

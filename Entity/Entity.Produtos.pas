@@ -30,7 +30,7 @@ uses
 
 
 type
-  TPRoduto = class
+  TProduto = class
     private
       FConn: TFDConnection;
       Ffuracao: integer;
@@ -48,6 +48,7 @@ type
       Fidacabamento: integer;
       Fdatainclusao: TDateTime;
       Flancamento: string;
+    Ffotobytes: tBytes;
     procedure Setaro(const Value: Integer);
     procedure Setativo(const Value: string);
     procedure Setdataalteracao(const Value: TDatetime);
@@ -66,6 +67,7 @@ type
 
     procedure SetFotoData(const AData: TBytes);
     function GetFotoData: TBytes;
+    procedure Setfotobytes(const Value: tBytes);
 
     public
       property idprodutos   : integer read Fidprodutos write Setidprodutos;
@@ -83,6 +85,7 @@ type
       property OffsetEt     : integer read FOffsetEt write SetOffsetEt;
       property idlinha      : integer read Fidlinha write Setidlinha;
       property idacabamento : integer read Fidacabamento write Setidacabamento;
+      property fotobytes : tBytes read Ffotobytes write Setfotobytes;
 
       constructor create;
       destructor destroy;override;
@@ -144,6 +147,11 @@ end;
 procedure TPRoduto.Setfoto(const Value: TStream);
 begin
   Ffoto := Value;
+end;
+
+procedure TProduto.Setfotobytes(const Value: tBytes);
+begin
+  Ffotobytes := Value;
 end;
 
 procedure TPRoduto.SetFotoData(const AData: TBytes);

@@ -158,8 +158,8 @@ begin
     IdMessage := TIdMessage.Create(nil);
     try
       IdMessage.From.Address := 'mauricio.magosoft@gmail.com';
-//      IdMessage.Recipients.Add.Address := 'comercial@conectsolutionsti.com.br';
-      IdMessage.Recipients.EMailAddresses:= aEmail1;
+//    IdMessage.Recipients.Add.Address := 'comercial@conectsolutionsti.com.br';
+      IdMessage.Recipients.Add.Address:= aEmail;
 
       IdMessage.Subject := 'Novo registro do Wheel Pro';
 

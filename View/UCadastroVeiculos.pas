@@ -53,21 +53,17 @@ type
     ShadowEffect9: TShadowEffect;
     ShadowEffect10: TShadowEffect;
     ShadowEffect12: TShadowEffect;
-    Edit3: TEdit;
     Edit4: TEdit;
     Label4: TLabel;
     Label5: TLabel;
     ShadowEffect13: TShadowEffect;
     ShadowEffect14: TShadowEffect;
-    ShadowEffect15: TShadowEffect;
     ShadowEffect16: TShadowEffect;
     Label6: TLabel;
     Label7: TLabel;
-    Edit5: TEdit;
     Edit6: TEdit;
     ShadowEffect17: TShadowEffect;
     ShadowEffect18: TShadowEffect;
-    ShadowEffect19: TShadowEffect;
     ShadowEffect20: TShadowEffect;
     Label8: TLabel;
     ComboBox1: TComboBox;
@@ -86,6 +82,10 @@ type
     ComboBox3: TComboBox;
     ShadowEffect11: TShadowEffect;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    ComboBox4: TComboBox;
+    ShadowEffect15: TShadowEffect;
+    ComboBox5: TComboBox;
+    ShadowEffect19: TShadowEffect;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }

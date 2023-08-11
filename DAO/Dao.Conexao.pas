@@ -22,7 +22,8 @@ uses
   FireDAC.Phys.PG,
   FireDAC.Comp.UI,
   FireDAC.Phys.MySQLDef,
-  FireDAC.Phys.MySQL, Funcoes.Criptografia;
+  FireDAC.Phys.MySQL,
+  Funcoes.Criptografia;
 
 type
   TConnection = class

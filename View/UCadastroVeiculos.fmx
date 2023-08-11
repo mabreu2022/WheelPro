@@ -214,22 +214,9 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
         ShadowColor = claBlack
       end
     end
-    object Edit3: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 5
-      Position.X = 24.000000000000000000
-      Position.Y = 125.000000000000000000
-      object ShadowEffect15: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
     object Edit4: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 6
+      TabOrder = 5
       Position.X = 136.000000000000000000
       Position.Y = 125.000000000000000000
       Size.Width = 481.000000000000000000
@@ -250,7 +237,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'ID. Marca'
-      TabOrder = 7
+      TabOrder = 6
       object ShadowEffect13: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -263,7 +250,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Position.X = 136.000000000000000000
       Position.Y = 104.000000000000000000
       Text = 'Marca'
-      TabOrder = 8
+      TabOrder = 7
       object ShadowEffect14: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -279,7 +266,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'ID. Modelo'
-      TabOrder = 9
+      TabOrder = 8
       object ShadowEffect17: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -292,21 +279,8 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Position.X = 136.000000000000000000
       Position.Y = 160.000000000000000000
       Text = 'Modelo'
-      TabOrder = 10
+      TabOrder = 9
       object ShadowEffect18: TShadowEffect
-        Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
-        Softness = 0.300000011920929000
-        Opacity = 0.600000023841857900
-        ShadowColor = claBlack
-      end
-    end
-    object Edit5: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 11
-      Position.X = 24.000000000000000000
-      Position.Y = 180.000000000000000000
-      object ShadowEffect19: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
         Softness = 0.300000011920929000
@@ -316,7 +290,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
     end
     object Edit6: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 12
+      TabOrder = 10
       Position.X = 136.000000000000000000
       Position.Y = 180.000000000000000000
       Size.Width = 481.000000000000000000
@@ -337,7 +311,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Ano'
-      TabOrder = 13
+      TabOrder = 11
       object ShadowEffect21: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -421,7 +395,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
         '2030')
       Position.X = 24.000000000000000000
       Position.Y = 229.000000000000000000
-      TabOrder = 14
+      TabOrder = 12
       object ShadowEffect22: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -437,7 +411,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 206.000000000000000000
       Size.PlatformDefault = False
       Text = 'Foto'
-      TabOrder = 15
+      TabOrder = 13
       object ShadowEffect23: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -453,7 +427,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Ativo'
-      TabOrder = 16
+      TabOrder = 14
       object ShadowEffect24: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -472,7 +446,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Width = 57.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 17
+      TabOrder = 15
       object ShadowEffect25: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
@@ -487,7 +461,7 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
       Size.Width = 97.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 18
+      TabOrder = 16
       Text = 'Inserir Foto'
       object ShadowEffect26: TShadowEffect
         Distance = 3.000000000000000000
@@ -500,8 +474,32 @@ object FrmCadastroVeiculos: TFrmCadastroVeiculos
     object ComboBox3: TComboBox
       Position.X = 24.000000000000000000
       Position.Y = 74.000000000000000000
-      TabOrder = 19
+      TabOrder = 17
       object ShadowEffect11: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object ComboBox5: TComboBox
+      Position.X = 24.000000000000000000
+      Position.Y = 180.000000000000000000
+      TabOrder = 20
+      object ShadowEffect19: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object ComboBox4: TComboBox
+      Position.X = 24.000000000000000000
+      Position.Y = 125.000000000000000000
+      TabOrder = 19
+      object ShadowEffect15: TShadowEffect
         Distance = 3.000000000000000000
         Direction = 45.000000000000000000
         Softness = 0.300000011920929000

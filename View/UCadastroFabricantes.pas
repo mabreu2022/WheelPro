@@ -313,7 +313,7 @@ begin
        Abortar:= RegrasDeNegocios.FabricanteExiste(FFabricante.cnpj);
        if Abortar then  //cliente Existe
        begin
-         ShowMessage('Cliente já existe no Cadastro!');
+         ShowMessage('Fabricante já existe no Cadastro!');
 
          if FTipo='A' then //Alterar
          begin
@@ -344,7 +344,7 @@ begin
      end
      else //Não atendeu as regras de negócios e não grava
      begin
-       ShowMessage('Não foi possível salvar os dados do cliente');
+       ShowMessage('Não foi possível salvar os dados do fabricante');
 
        if EdtRazao.CanFocus then
          EdtRazao.SetFocus;
