@@ -79,7 +79,7 @@ uses
   LogManager,
   Funcoes.PintarJante,
   View.Backup,
-  Model.Registro;
+  Model.Registro, View.Produtos;
 
 type
   TFrmPrincipal = class(TForm)
@@ -1314,11 +1314,8 @@ end;
 
 procedure TFrmPrincipal.MenuItemFabricanteProdutosClick(Sender: TObject);
 begin
-//  if not Assigned(FrmProdutos) then
-//  begin
-//    Application.CreateForm(TFrmProdutos, FrmProdutos);
-//    FrmProdutos.ShowModal;
-//  end;
+  Application.CreateForm(TFrmCadastrodeProdutos, FrmCadastrodeProdutos);
+  FrmCadastrodeProdutos.ShowModal;
 end;
 
 procedure TFrmPrincipal.MenuItemConfiguracoesSistemaClick(Sender: TObject);

@@ -48,7 +48,8 @@ uses
   Model.Produtos,
   System.UIConsts,
   Datasnap.DBClient,
-  Controller.Produtos;
+  Controller.Produtos,
+  Vcl.Imaging.pngimage;
 
 type
    TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);
@@ -146,6 +147,7 @@ type
     ShadowEffect40: TShadowEffect;
     EdtAcabamento: TEdit;
     ShadowEffect41: TShadowEffect;
+    OpenDialog1: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     procedure BtnPrimeiroClick(Sender: TObject);
     procedure BtnAnteriorClick(Sender: TObject);
@@ -155,6 +157,7 @@ type
     procedure BtnAlterarClick(Sender: TObject);
     procedure BtnExcluirClick(Sender: TObject);
     procedure BtnGravarClick(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -176,6 +179,7 @@ type
     procedure DesabilitaBotoes(const BotaoSet:TBotaoSet);
     function LerSalvarLogsBancoDeDados: Boolean;
     function GravarLogsBancoDeDados: Boolean;
+    Procedure CarregarImagemParaStream (const ABitmap: TBitmap; AStream: TStream);
   public
     { Public declarations }
      FSomenteAtivos : string;
@@ -460,6 +464,15 @@ begin
   OnDataSetChange;
 end;
 
+procedure TFrmCadastrodeProdutos.Button5Click(Sender: TObject);
+begin
+  if OpenDialog1.Execute then
+  begin
+    // Carregar a imagem do arquivo selecionado no TImage
+    ImageFoto.Bitmap.LoadFromFile(OpenDialog1.FileName);
+  end;
+end;
+
 procedure TFrmCadastrodeProdutos.CarregarConfiguracao;
 var
    IniFile    : TIniFile;
@@ -516,6 +529,21 @@ begin
       TRectangle(FrmCadastrodeProdutos.Components[I]).Fill.Color := Cor;
   end;
 
+end;
+
+procedure TFrmCadastrodeProdutos.CarregarImagemParaStream(
+  const ABitmap: TBitmap; AStream: TStream);
+var
+  PNGImage: TPngImage;
+  BitMapImagem: TBitMap;
+begin
+  BitMapImagem := TBitMap.Create;
+  try
+    BitMapImagem.Assign(ABitmap);
+    BitMapImagem.SaveToStream(AStream);
+  finally
+    BitMapImagem.Free;
+  end;
 end;
 
 procedure TFrmCadastrodeProdutos.CarregarLinguagem;
@@ -601,7 +629,9 @@ end;
 function TFrmCadastrodeProdutos.CriarDataSet(
   aDadaSet: TClientDataSet): TClientDataSet;
 var
-  LogManager: TLogManager;
+  LogManager   : TLogManager;
+  ImageStream  : TMemoryStream;
+  EncodedImage : string;
 begin
   if FGravarLog then
   begin
@@ -620,8 +650,8 @@ begin
   try
     CDS.FieldDefs.Add('IDPRODUTOS', ftInteger);
     CDS.FieldDefs.Add('PRODUTO', ftString, 100);
-    CDS.FieldDefs.Add('FOTO', ftStream);
-    CDS.FieldDefs.Add('PRECO', ftCurrency, 12);
+    CDS.FieldDefs.Add('FOTO', ftBlob);
+    CDS.FieldDefs.Add('PRECO', ftCurrency);
     CDS.FieldDefs.Add('ARO', ftInteger);
     CDS.FieldDefs.Add('IDFABRICANTE', ftInteger);
     CDS.FieldDefs.Add('DATAINCLUSAO', ftDateTime);
@@ -734,6 +764,8 @@ var
   ativoProduto: string;
   Index: Integer;
   LogManager: TLogManager;
+  ModelFabricante: TModelProduto;
+  Stream: TStream;
 begin
   if FGravarLog then
   begin
@@ -750,37 +782,52 @@ begin
 
   EdtIdProduto.Text            := IntToStr(DataSet.FieldByName('idprodutos').AsInteger);
   Edtproduto.Text              := DataSet.FieldByName('produto').AsString;
-  EdtPreco.Text                := DataSet.FieldByName('preco').AsString;
-  CBoxAro.ITems.Text           := DataSet.FieldByName('aro').AsString;
-  CBoxLancamento.Items.Text    := IntToStr(DataSet.FieldByName('lancamento').AsInteger);
-  CBoxFuracao.Items.Text       := DataSet.FieldByName('furacao').AsString;
-  CBoxIdFabricante.Items.Text  := IntToStr(DataSet.FieldByName('idfabricante').AsInteger);
-  //EdtFabricante.Text         := ;// Fazer a Pesquisa usando o model fabricante para saber a razão social do fabricante
-  CBoxIdLinha.Items.Text       := DataSet.FieldByName('idlinha').AsString;
-  //EdtLinha.Text              := ;// Fazer a pesquisa usando model fabricante para saber o nome da linha
-  //CBoxIdAcabamento.Items.Text  := ;
-  //EdtAcabamento.Text           := ;// Fazer a pesquisa usando model fabricante para saber  o nome do acabamento
-  CBoxOffSet.Items.Text        := DataSet.FieldByName('offset_et').AsString;
 
-  // Obter o valor dos campos UF e Ativo do DataSet
-  ativoProduto := DataSet.FieldByName('Ativo').AsString;
-  // Definir o valor do campo Ativo no combobox CBATivo
-  if ativoProduto = 'S' then
-    CBATivo.ItemIndex := CBATivo.Items.IndexOf('S')
-  else if ativoProduto = 'N' then
-    CBATivo.ItemIndex := CBATivo.Items.IndexOf('N')
-  else
-    CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
+  //Carregar Imagem no TImage
+  Stream := DataSet.CreateBlobStream(DataSet.FieldByName('foto'), bmRead);
+  try
+    ImageFoto.Bitmap.LoadFromStream(Stream);
+  finally
+    Stream.Free;
+  end;
 
-  PopularProdutos; //Criar essa procedure
+  ModelFabricante:= TModelProduto.Create;
+  try
+    EdtPreco.Text                := DataSet.FieldByName('preco').AsString;
+    CBoxAro.ITems.Text           := DataSet.FieldByName('aro').AsString;
+    CBoxLancamento.Items.Text    := DataSet.FieldByName('lancamento').AsString;
+    CBoxFuracao.Items.Text       := IntToStr(DataSet.FieldByName('furacao').AsInteger);
+    CBoxIdFabricante.Items.Text  := IntToStr(DataSet.FieldByName('idfabricante').AsInteger);
+    EdtFabricante.Text           := ModelFabricante.PesquisaNomeDoFabricante(DataSet.FieldByName('idfabricante').AsInteger);
+    CBoxIdLinha.Items.Text       := IntToStr(DataSet.FieldByName('idlinha').AsInteger);
+    EdtLinha.Text                := ModelFabricante.PesquisaNomeDaLinha(DataSet.FieldByName('idlinha').AsInteger);// Fazer a pesquisa usando model fabricante para saber o nome da linha
+    CBoxIdAcabamento.Items.Text  := IntToStr(DataSet.FieldByName('idacabamento').AsInteger);
+    EdtAcabamento.Text           := ModelFabricante.PesquisarNomeAcabamento(DataSet.FieldByName('idacabamento').AsInteger);// Fazer a pesquisa usando model fabricante para saber  o nome do acabamento
+    CBoxOffSet.Items.Text        := DataSet.FieldByName('offset_et').AsString;
+
+    // Obter o valor do campo Ativo do DataSet
+    ativoProduto := DataSet.FieldByName('Ativo').AsString;
+    // Definir o valor do campo Ativo no combobox CBATivo
+    if ativoProduto = 'S' then
+      CBATivo.ItemIndex := CBATivo.Items.IndexOf('S')
+    else if ativoProduto = 'N' then
+      CBATivo.ItemIndex := CBATivo.Items.IndexOf('N')
+    else
+      CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
+
+  finally
+     ModelFabricante.Free;
+  end;
+
+  PopularProdutos;
 
 end;
 
 procedure TFrmCadastrodeProdutos.PopularDataSet;
 var
   Model: TModelProduto;
-
   LogManager: TLogManager;
+  Stream: TStream;
 begin
   if FGravarLog then
   begin
@@ -822,7 +869,16 @@ begin
       DataSet.Append;
       DataSet.FieldByName('idprodutos').AsInteger     := Qry.FieldByName('idprodutos').AsInteger;
       DataSet.FieldByName('produto').AsString         := Qry.FieldByName('produto').AsString;
-      //DataSet.FieldByName('foto').AsString          := Qry.FieldByName('foto').AsString;  //verificar como faz no chatgpt
+
+      Stream := CDS.CreateBlobStream(CDS.FieldByName('foto'), bmWrite);
+      try
+        // Carregar os dados do campo do MySQL no stream do CDS
+        Stream.WriteBuffer(Qry.FieldByName('foto').AsBytes[0], Qry.FieldByName('foto').DataSize);
+      finally
+        Stream.Free;
+      end;
+
+       //verificar como faz no chatgpt
       DataSet.FieldByName('preco').AsCurrency         := Qry.FieldByName('preco').AsCurrency;
       DataSet.FieldByName('aro').AsInteger            := Qry.FieldByName('aro').AsInteger;
       DataSet.FieldByName('idfabricante').AsString    := Qry.FieldByName('idfabricante').AsString;
@@ -872,6 +928,8 @@ end;
 procedure TFrmCadastrodeProdutos.PopularProdutos;
 var
   LogManager: TLogManager;
+  Stream: TMemoryStream;
+  AroValue: Integer;
 begin
   if FGravarLog then
   begin
@@ -879,7 +937,7 @@ begin
     try
        CurrentDateTime := Now;
        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-       LogManager.AddLog('Tela - Cadastro de Produtos: Linha : 497 - Entrou na PopularProdutos e Criou FProdutos às ' + DateTimeStr);
+       LogManager.AddLog('Tela - Cadastro de Produtos: Linha : 940 - Entrou na PopularProdutos e Criou FProdutos às ' + DateTimeStr);
        LogManager.SaveLogToFile('Log_Cadastro_de_Produtos.txt');
     finally
        LogManager.Free;
@@ -891,13 +949,37 @@ begin
        FProduto.idprodutos   := StrTOInt(EdtIdProduto.Text);
 
      FProduto.Produto       := EdtProduto.Text;
-     //FProduto.Foto        := ;
+
+     Stream := TMemoryStream.Create;
+     try
+       CarregarImagemParaStream(ImageFoto.Bitmap, Stream);
+       Stream.Position := 0; // Certifique-se de que o stream comece do início
+       // Agora você pode atribuir o stream à propriedade FProduto.Foto
+       FProduto.Foto := Stream;
+
+       // ... Agora você pode salvar os detalhes do produto no banco de dados
+     finally
+       Stream.Free;
+     end;
+
      FProduto.Preco         := StrToCurr(EdtPreco.Text);
-     FProduto.aro           := StrToInt(CBoxAro.Items[CBoxAro.ItemIndex]);
+
+     if TryStrToInt(CBoxAro.Items[CBoxAro.ItemIndex], AroValue) then
+     begin
+       // Conversão bem-sucedida
+       FProduto.aro := AroValue;
+     end
+     else
+     begin
+       // Tratar a situação quando a conversão falha
+       ShowMessage('Valor inválido para Aro.');
+     end;
+
+//     FProduto.aro           := StrToInt(CBoxAro.Items[CBoxAro.ItemIndex]);
      FProduto.idfabricante  := StrToInt(CBoxIdFabricante.Items[CBoxIdFabricante.ItemIndex]);
      FProduto.DataInclusao  := Now;
      FProduto.DataAlteracao := Now;
-//     FProduto.DataExclusao  := Now;
+//     FProduto.DataExclusao  := Now; //O que carregar aqui?
      FProduto.Ativo        := CBAtivo.Items[CBAtivo.ItemIndex];
      FProduto.lancamento   := CBoxLancamento.Items[CBoxLancamento.ItemIndex];
   finally
@@ -915,7 +997,6 @@ begin
     end;
   end;
 
-//
 end;
 
 end.

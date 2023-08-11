@@ -284,6 +284,19 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           end
         end
         object CBoxAro: TComboBox
+          Items.Strings = (
+            '13'
+            '14'
+            '15'
+            '16'
+            '17'
+            '18'
+            '19'
+            '20'
+            '21'
+            '22'
+            '23'
+            '24')
           Position.X = 14.000000000000000000
           Position.Y = 72.000000000000000000
           TabOrder = 3
@@ -439,6 +452,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.PlatformDefault = False
           TabOrder = 14
           Text = 'Carregar Foto'
+          OnClick = Button5Click
           object ShadowEffect24: TShadowEffect
             Distance = 3.000000000000000000
             Direction = 45.000000000000000000
@@ -709,7 +723,11 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'FMX'
-    Left = 584
+    Left = 640
     Top = 10
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 488
+    Top = 274
   end
 end

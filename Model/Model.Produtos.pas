@@ -35,8 +35,8 @@ uses
       CurrentDateTime: TDateTime;
       DateTimeStr: string;
       class var FGravarLogs: Boolean;
-    procedure SetSomenteAtivos(const Value: string);
-    class procedure CarregarFGravarLog;
+      procedure SetSomenteAtivos(const Value: string);
+      class procedure CarregarFGravarLog;
 
     public
       FProduto: TProduto;
@@ -69,6 +69,10 @@ uses
       //Regras
       class function TestaSeCamposPreenchidos(aProduto: TProduto): Boolean;
       class function ProdutoExiste(aIdProduto: Integer):Boolean;
+
+      class function PesquisaNomeDoFabricante(aIdFabricante: integer): String;
+      class function PesquisaNomeDaLinha(aIdLinha: Integer): String;
+      class function PesquisarNomeAcabamento(aIdAcabamento: Integer): String;
 
       constructor Create;
       destructor destroy;override;
@@ -459,6 +463,82 @@ begin
     qry.Open;
 
     Result := qry;
+  finally
+    qry.Free;
+  end;
+
+end;
+
+class function TModelProduto.PesquisaNomeDaLinha(aIdLinha: Integer): String;
+var
+  qry: TFDQuery;
+begin
+  Result:='';
+  qry:= TFDquery.Create(nil);
+  qry.Connection:= TConnection.CreateConnection;
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('SELECT * FROM LINHA');
+    qry.SQL.Add('WHERE IDLINHA=:IDLINHA');
+    qry.ParamByName('IDLINHA').DataType := FTiNTEGER;
+    qry.ParamByName('IDLINHA').AsInteger := aIdLinha;
+    qry.Open;
+
+    if qry.RecordCount>0 then
+      Result:= qry.FieldByName('LINHA').AsString;
+
+  finally
+    qry.Free;
+  end;
+
+end;
+
+class function TModelProduto.PesquisaNomeDoFabricante(
+  aIdFabricante: integer): String;
+var
+  qry: TFDQuery;
+begin
+  Result:='';
+  qry:= TFDquery.Create(nil);
+  qry.Connection:= TConnection.CreateConnection;
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('SELECT * FROM PRODUTOS');
+    qry.SQL.Add('WHERE IDPRODUTOS=:IDPRODUTOS');
+    qry.ParamByName('IDPRODUTOS').DataType := FTiNTEGER;
+    qry.ParamByName('IDPRODUTOS').AsInteger := aIdFabricante;
+    qry.Open;
+
+    if qry.RecordCount>0 then
+      Result:= qry.FieldByName('produto').AsString;
+
+  finally
+    qry.Free;
+  end;
+end;
+
+class function TModelProduto.PesquisarNomeAcabamento(
+  aIdAcabamento: Integer): String;
+var
+  qry: TFDQuery;
+begin
+  Result:='';
+  qry:= TFDquery.Create(nil);
+  qry.Connection:= TConnection.CreateConnection;
+  try
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add('SELECT * FROM ACABAMENTO');
+    qry.SQL.Add('WHERE IDACABAMENTO=:IDACABAMENTO');
+    qry.ParamByName('IDACABAMENTO').DataType := ftInteger;
+    qry.ParamByName('IDACABAMENTO').AsInteger := aIdAcabamento;
+    qry.Open;
+
+    if qry.RecordCount>0 then
+      Result:= qry.FieldByName('ACABAMENTO').AsString;
+
   finally
     qry.Free;
   end;
