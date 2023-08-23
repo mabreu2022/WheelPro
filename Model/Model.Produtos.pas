@@ -361,6 +361,7 @@ begin
     begin
       qry.SQL.Add('ORDER BY P.IDPRODUTOS ASC');
       qry.Open;
+      Showmessage('Abri os produtos qtde de registros é de : ' + IntToStr(qry.RecordCount));
       qry.First;
       Result:= qry;
     end;
@@ -761,6 +762,17 @@ end;
 class function TModelProduto.TestaSeCamposPreenchidos(
   aProduto: TProduto): Boolean;
 begin
+
+  Result := False;
+
+  if aProduto.produto = ''  then
+  begin
+    raise Exception.Create('O nome do produto tem que estar preenchido.');
+    Result:= False;
+    exit;
+  end;
+
+  Result:= True;
 
 end;
 

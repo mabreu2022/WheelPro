@@ -28,12 +28,13 @@ type
   private
     FLogList: TStringList;
   public
-    CurrentDateTime: TDateTime;
-    DateTimeStr: string;
-    FGravarLog: Boolean;
-    FSomenteAtivos: string;
-    FSemContatos  : string;
-    FHabilitarLogsSistema: string;
+    CurrentDateTime        : TDateTime;
+    DateTimeStr            : string;
+    FGravarLog             : Boolean;
+    FSomenteAtivos         : string;
+    FSomenteProdutosAtivos : string;
+    FSemContatos           : string;
+    FHabilitarLogsSistema  : string;
     constructor Create;
     destructor Destroy; override;
     procedure AddLog(const Message: string);
@@ -74,6 +75,7 @@ begin
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
     FSomenteAtivos        := IniFile.ReadString('Sistema', 'carregaclientesativosn', '');
+    FSomenteProdutosAtivos:= IniFile.ReadString('Sistema', 'CarregarProdutosAtivos', '');
     FSemContatos          := IniFile.ReadString('Sistema', 'CarregarClientesSemContato', '');
     FHabilitarLogsSistema := IniFile.ReadString('HabilitarLogs', 'HabilitarLogsSistema', '');
   finally

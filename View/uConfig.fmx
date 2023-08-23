@@ -4,7 +4,7 @@ object FrmConfig: TFrmConfig
   BorderIcons = [biSystemMenu]
   BorderStyle = Single
   Caption = 'Configura'#231#245'es do sistema'
-  ClientHeight = 480
+  ClientHeight = 536
   ClientWidth = 640
   Position = ScreenCenter
   FormFactor.Width = 320
@@ -16,7 +16,7 @@ object FrmConfig: TFrmConfig
   object Layout1: TLayout
     Align = Client
     Size.Width = 640.000000000000000000
-    Size.Height = 480.000000000000000000
+    Size.Height = 536.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Layout2: TLayout
@@ -54,7 +54,7 @@ object FrmConfig: TFrmConfig
     end
     object Layout3: TLayout
       Align = Bottom
-      Position.Y = 430.000000000000000000
+      Position.Y = 486.000000000000000000
       Size.Width = 640.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
@@ -84,20 +84,21 @@ object FrmConfig: TFrmConfig
     object TabControl1: TTabControl
       Align = Client
       Size.Width = 640.000000000000000000
-      Size.Height = 380.000000000000000000
+      Size.Height = 436.000000000000000000
       Size.PlatformDefault = False
+      TabIndex = 0
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
         640s
-        354s
+        410s
         640s
         354s)
       object TabItemSistema: TTabItem
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 62.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -330,7 +331,7 @@ object FrmConfig: TFrmConfig
           Size.Height = 67.000000000000000000
           Size.PlatformDefault = False
           Text = 'Carregar Logo'
-          TabOrder = 6
+          TabOrder = 7
           object Button1: TButton
             Position.X = 16.000000000000000000
             Position.Y = 24.000000000000000000
@@ -340,6 +341,38 @@ object FrmConfig: TFrmConfig
             TabOrder = 38
             Text = 'Procurar arquivo da logo'
             OnClick = Button1Click
+          end
+          object ShadowEffect23: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object GroupBox2: TGroupBox
+          Position.X = 281.000000000000000000
+          Position.Y = 318.000000000000000000
+          Size.Width = 337.000000000000000000
+          Size.Height = 67.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Cadastro de Produtos'
+          TabOrder = 6
+          object ShadowEffect24: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+          object CheckBox_CarregarTambemProdutosAtivoIgualN: TCheckBox
+            Position.X = 24.000000000000000000
+            Position.Y = 32.000000000000000000
+            Size.Width = 305.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 38
+            Text = 'Carregar tamb'#233'm produtos Ativo = N'
           end
         end
       end

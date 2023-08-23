@@ -48,7 +48,7 @@ type
       Fidacabamento: integer;
       Fdatainclusao: TDateTime;
       Flancamento: string;
-    Ffotobytes: tBytes;
+      Ffotobytes: tBytes;
     procedure Setaro(const Value: Integer);
     procedure Setativo(const Value: string);
     procedure Setdataalteracao(const Value: TDatetime);
@@ -100,7 +100,7 @@ implementation
 constructor TPRoduto.create;
 begin
   FConn:= TConnection.CreateConnection;
-  FFoto := TMemoryStream.Create;
+  FFoto := TStream.Create;
 end;
 
 destructor TPRoduto.destroy;

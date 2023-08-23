@@ -49,7 +49,8 @@ uses
   System.UIConsts,
   Datasnap.DBClient,
   Controller.Produtos,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage,
+  Vcl.Imaging.jpeg;
 
 type
    TBotaoIndex = (biAlterar, biExcluir, biPrimeiro, biAnterior, biProximo, biUltimo, biNovo, BiGravar);
@@ -148,6 +149,7 @@ type
     EdtAcabamento: TEdit;
     ShadowEffect41: TShadowEffect;
     OpenDialog1: TOpenDialog;
+    SpeedButton1: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure BtnPrimeiroClick(Sender: TObject);
     procedure BtnAnteriorClick(Sender: TObject);
@@ -158,6 +160,7 @@ type
     procedure BtnExcluirClick(Sender: TObject);
     procedure BtnGravarClick(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FConexao: TFDConnection;
@@ -180,6 +183,8 @@ type
     function LerSalvarLogsBancoDeDados: Boolean;
     function GravarLogsBancoDeDados: Boolean;
     Procedure CarregarImagemParaStream (const ABitmap: TBitmap; AStream: TStream);
+    procedure CarregarCBoxAro;
+    procedure LoadImageFromBlobToImage(CDS: TClientDataSet; FieldName: string; Image: TImage);
   public
     { Public declarations }
      FSomenteAtivos : string;
@@ -347,7 +352,7 @@ begin
   RegrasDeNegocios:= TModelProduto.Create;
 
   //Testar se os campos foram todos preenchidos
-  PodeGravar      := RegrasDeNegocios.TestaSeCamposPreenchidos(FProduto);
+  PodeGravar  := RegrasDeNegocios.TestaSeCamposPreenchidos(FProduto);
 
   if PodeGravar then //testar preenchimento dos campos
   begin  //Rever regras
@@ -432,7 +437,6 @@ begin
     end;
   end;
 
-
 end;
 
 procedure TFrmCadastrodeProdutos.BtnPrimeiroClick(Sender: TObject);
@@ -508,8 +512,8 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - na Cadastro de Clientes: Linha : 629 - Entrou no Carregar Cores às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      LogManager.AddLog('Tela - na Cadastro de Produtos: Linha : 512 - Entrou no Carregar Cores às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Produtos.txt');
     finally
       LogManager.Free;
     end;
@@ -558,8 +562,8 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 664 - Entrou no Carregar Linguagem - Criou o IniFile às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      LogManager.AddLog('Tela - Cadastro de Produtos: Linha : 562 - Entrou no Carregar Linguagem - Criou o IniFile às ' + DateTimeStr);
+      LogManager.SaveLogToFile('Log_Cadastro_de_Produtos.txt');
     finally
       Logmanager.Free;
     end;
@@ -613,8 +617,8 @@ begin
       try
         CurrentDateTime := Now;
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 751 - Finalizou o Carregar Linguagem - Deu Free no IniFile às ' + DateTimeStr);
-        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+        LogManager.AddLog('Tela - Cadastro de Produtos: Linha : 617 - Finalizou o Carregar Linguagem - Deu Free no IniFile às ' + DateTimeStr);
+        LogManager.SaveLogToFile('Log_Cadastro_de_Produtos.txt');
 
       finally
         LogManager.Free;
@@ -622,7 +626,6 @@ begin
     end;
     IniFile.Free;
   end;
-
 
 end;
 
@@ -676,7 +679,7 @@ begin
       try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Produtos: Linha : 648 - Gravou os arquivos de Logs nno Banco de Dados às ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Produtos: Linha : 680 - Gravou os arquivos de Logs nno Banco de Dados às ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Produtos.txt');
       finally
         LogManager.Free;
@@ -725,6 +728,36 @@ begin
   CarregarLinguagem;
 end;
 
+procedure TFrmCadastrodeProdutos.FormShow(Sender: TObject);
+begin
+  //Carregar os Combobox ao abrir o formulário
+  CarregarCBoxAro;   //- Esse tem numeros já definidos mas de acordo com o que vier do banco tem que mudar para o correto
+  //CBoxLancamento     - Esse tem numeros já definidos mas de acordo com o que vier do banco tem que mudar para o correto
+  //CBoxFuracao        - Esse tem numeros já definidos mas de acordo com o que vier do banco tem que mudar para o correto
+  //CBoxIdFabricante   - Esse tem que carregar os do banco
+  //CBoxIdLinha        - Esse tem que carregar os do banco
+  //CBoxIdAcabamento   - Esse tem que carregar os do banco
+
+  if EdtProduto.CanFocus then
+    EdtProduto.SetFocus;
+
+  BtnGravar.Enabled:= False;
+  TabControl1.ActiveTab:=TabItemCadastro;
+
+  PopularDataSet;
+end;
+
+procedure TFrmCadastrodeProdutos.CarregarCBoxAro;
+begin
+   // Definir o valor do campo Ativo no combobox CBATivo
+//  if ativoCliente = 'S' then
+//    CBATivo.ItemIndex := CBATivo.Items.IndexOf('S')
+//  else if ativoCliente = 'N' then
+//    CBATivo.ItemIndex := CBATivo.Items.IndexOf('N')
+//  else
+//    CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
+end;
+
 function TFrmCadastrodeProdutos.GravarLogsBancoDeDados: Boolean;
 var
   FLogManager: TLogManager;
@@ -759,13 +792,49 @@ begin
 
 end;
 
+
+procedure TFrmCadastrodeProdutos.LoadImageFromBlobToImage(CDS: TClientDataSet;
+  FieldName: string; Image: TImage);
+var
+  BlobStream: TStream;
+  ImageData: TBytes;
+  Bitmap: TBitmap;
+begin
+  ImageData := CDS.FieldByName(FieldName).AsBytes;
+
+  if Length(ImageData) > 0 then
+  begin
+    BlobStream := TBytesStream.Create(ImageData);
+    try
+      Bitmap := TBitmap.Create;
+      try
+        Bitmap.LoadFromStream(BlobStream);
+        Image.Bitmap.Assign(Bitmap);
+      finally
+        Bitmap.Free;
+      end;
+    finally
+      BlobStream.Free;
+    end;
+  end
+  else
+  begin
+    Image.Bitmap.Assign(nil); // Ou carregar uma imagem padrão
+  end;
+
+end;
+
 procedure TFrmCadastrodeProdutos.OnDataSetChange;
 var
-  ativoProduto: string;
-  Index: Integer;
-  LogManager: TLogManager;
-  ModelFabricante: TModelProduto;
-  Stream: TStream;
+  ativoProduto    : string;
+  aro             : string;
+  lancamento      : string;
+  furacao         : string;
+  idfabricante    : string;
+  Index           : Integer;
+  LogManager      : TLogManager;
+  ModelFabricante : TModelProduto;
+  Stream          : TStream;
 begin
   if FGravarLog then
   begin
@@ -786,7 +855,8 @@ begin
   //Carregar Imagem no TImage
   Stream := DataSet.CreateBlobStream(DataSet.FieldByName('foto'), bmRead);
   try
-    ImageFoto.Bitmap.LoadFromStream(Stream);
+     if Stream.Size > 0 then
+       ImageFoto.BitMap.LoadFromStream(Stream);//   Bitmap.LoadFromStream(Stream);
   finally
     Stream.Free;
   end;
@@ -815,6 +885,51 @@ begin
     else
       CBATivo.ItemIndex := -1; // ou algum valor padrão, caso Ativo não seja válido
 
+    //Obter o valor do campo Aro
+    aro := IntToStr(DataSet.FieldByName('aro').AsInteger);
+    if aro = '13' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('13')
+    else if aro = '14' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('14')
+    else if aro = '15' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('15')
+    else if aro = '16' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('16')
+    else if aro = '17' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('17')
+    else if aro = '18' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('18')
+    else if aro = '19' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('19')
+    else if aro = '20' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('20')
+    else if aro = '21' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('21')
+    else if aro = '22' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('22')
+    else if aro = '23' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('23')
+    else if aro = '24' then
+      CBoxAro.ItemIndex := CBoxAro.Items.IndexOf('24');
+
+    //obter valor do campo lancamento
+    lancamento:= DataSet.FieldByName('lancamento').AsString;
+    if lancamento = 'S' then
+      CBoxLancamento.ItemIndex := CBoxLancamento.Items.IndexOf('S')
+    else if lancamento='N' then
+      CBoxLancamento.ItemIndex := CBoxLancamento.Items.IndexOf('N');
+
+    //obter valor do campo Furacao
+    furacao:= IntToStr(DataSet.FieldByName('furacao').AsInteger);
+    if furacao = '4' then
+      CBoxFuracao.ItemIndex := CBoxFuracao.Items.IndexOf('4')
+    else if furacao = '5' then
+      CBoxFuracao.ItemIndex := CBoxFuracao.Items.IndexOf('5');
+
+    //obter o valor do campo  IdFAbricante
+    idfabricante  := IntToStr(DataSet.FieldByName('idfabricante').AsInteger);
+     //Fazer a pesquisa e devolver string com o nome do fabricante e se não existir sugerir o cadastro do mesmo
+
   finally
      ModelFabricante.Free;
   end;
@@ -825,9 +940,10 @@ end;
 
 procedure TFrmCadastrodeProdutos.PopularDataSet;
 var
-  Model: TModelProduto;
-  LogManager: TLogManager;
-  Stream: TStream;
+  Model        : TModelProduto;
+  LogManager   : TLogManager;
+  Stream       : TStream;
+  PNGImage     : TPngImage;
 begin
   if FGravarLog then
   begin
@@ -870,13 +986,23 @@ begin
       DataSet.FieldByName('idprodutos').AsInteger     := Qry.FieldByName('idprodutos').AsInteger;
       DataSet.FieldByName('produto').AsString         := Qry.FieldByName('produto').AsString;
 
-      Stream := CDS.CreateBlobStream(CDS.FieldByName('foto'), bmWrite);
-      try
-        // Carregar os dados do campo do MySQL no stream do CDS
-        Stream.WriteBuffer(Qry.FieldByName('foto').AsBytes[0], Qry.FieldByName('foto').DataSize);
-      finally
-        Stream.Free;
-      end;
+
+     Showmessage('O cod. produto é: ' + IntToStr(Qry.FieldByName('idprodutos').AsInteger));
+     if not qry.FieldByName('FOTO').IsNull then
+     begin
+       (DataSet.FieldByName('FOTO') as TBlobField).LoadFromStream(qry.CreateBlobStream(qry.FieldByName('FOTO'), bmRead));
+     end;
+
+//      Stream := DataSet.CreateBlobStream(DataSet.FieldByName('FOTO'), bmReadWrite);
+//      try
+//        // Carregar os dados do campo do MySQL no stream do CDS
+//        //Stream.WriteBuffer(Qry.FieldByName('FOTO').AsBytes[0], Qry.FieldByName('FOTO').DataSize);
+//        Stream.Write(Qry.FieldByName('FOTO').AsBytes[0], Qry.FieldByName('FOTO').DataSize);
+//      finally
+//        Stream.Free;
+//      end;
+
+      //LoadImageFromBlobToImage(DataSet, 'foto', ImageFoto);
 
        //verificar como faz no chatgpt
       DataSet.FieldByName('preco').AsCurrency         := Qry.FieldByName('preco').AsCurrency;
@@ -928,7 +1054,7 @@ end;
 procedure TFrmCadastrodeProdutos.PopularProdutos;
 var
   LogManager: TLogManager;
-  Stream: TMemoryStream;
+  Stream: TStream;
   AroValue: Integer;
 begin
   if FGravarLog then
@@ -950,7 +1076,9 @@ begin
 
      FProduto.Produto       := EdtProduto.Text;
 
-     Stream := TMemoryStream.Create;
+     //Onde carregamos o que veio no FProduto.Foto???
+
+     Stream := TStream.Create;
      try
        CarregarImagemParaStream(ImageFoto.Bitmap, Stream);
        Stream.Position := 0; // Certifique-se de que o stream comece do início
@@ -976,7 +1104,7 @@ begin
      end;
 
 //     FProduto.aro           := StrToInt(CBoxAro.Items[CBoxAro.ItemIndex]);
-     FProduto.idfabricante  := StrToInt(CBoxIdFabricante.Items[CBoxIdFabricante.ItemIndex]);
+    // FProduto.idfabricante  := StrToInt(CBoxIdFabricante.Items[CBoxIdFabricante.ItemIndex]);
      FProduto.DataInclusao  := Now;
      FProduto.DataAlteracao := Now;
 //     FProduto.DataExclusao  := Now; //O que carregar aqui?

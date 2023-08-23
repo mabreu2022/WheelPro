@@ -85,6 +85,10 @@ type
     ShadowEffect22: TShadowEffect;
     GroupBox1: TGroupBox;
     Button1: TButton;
+    ShadowEffect23: TShadowEffect;
+    GroupBox2: TGroupBox;
+    ShadowEffect24: TShadowEffect;
+    CheckBox_CarregarTambemProdutosAtivoIgualN: TCheckBox;
     procedure BtnSalvarClick(Sender: TObject);
     procedure CCBCoresDoSistemaChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -357,6 +361,11 @@ begin
        IniFile.WriteString('Sistema','SalvarLogsBancoDeDados' , 'S')
      else
        IniFile.WriteString('Sistema','SalvarLogsBancoDeDados' , 'N');
+
+     if CheckBox_CarregarTambemProdutosAtivoIgualN.IsChecked then
+       IniFile.WriteString('Sistema', 'CarregarProdutosAtivos', 'S')
+     else
+       IniFile.WriteString('Sistema', 'CarregarProdutosAtivos', 'N');
 
 
   finally

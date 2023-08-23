@@ -110,7 +110,7 @@ begin
         CurrentDateTime := Now;
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
 
-        LogManager.AddLog('Tela Login - Linha : 102 - Usuário: ' + EdtUsuario.Text + ' fez login às ' + DateTimeStr);
+        LogManager.AddLog('Tela Login - Linha : 113 - Usuário: ' + EdtUsuario.Text + ' fez login às ' + DateTimeStr);
         LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
 
       end;
