@@ -39,6 +39,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           TextSettings.Font.Size = 20.000000000000000000
           TextSettings.Font.StyleExt = {00070000000000000004000000}
           TextSettings.HorzAlign = Center
+          TextSettings.Trimming = None
           Text = 'Cadastro de Produtos'
           TabOrder = 0
           object ShadowEffect1: TShadowEffect
@@ -52,6 +53,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
             Position.X = 504.000000000000000000
             Position.Y = 32.000000000000000000
             Text = 'SpeedButton1'
+            TextSettings.Trimming = None
           end
         end
       end
@@ -77,6 +79,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.PlatformDefault = False
           TabOrder = 7
           Text = '&Salvar'
+          TextSettings.Trimming = None
           OnClick = BtnGravarClick
           object ShadowEffect27: TShadowEffect
             Distance = 3.000000000000000000
@@ -91,6 +94,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Position.Y = 14.000000000000000000
           TabOrder = 6
           Text = '&Excluir'
+          TextSettings.Trimming = None
           OnClick = BtnExcluirClick
           object ShadowEffect8: TShadowEffect
             Distance = 3.000000000000000000
@@ -105,6 +109,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Position.Y = 14.000000000000000000
           TabOrder = 5
           Text = '&Alterar'
+          TextSettings.Trimming = None
           OnClick = BtnAlterarClick
           object ShadowEffect7: TShadowEffect
             Distance = 3.000000000000000000
@@ -119,6 +124,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Position.Y = 14.000000000000000000
           TabOrder = 4
           Text = '&Novo'
+          TextSettings.Trimming = None
           OnClick = BtnNovoClick
           object ShadowEffect6: TShadowEffect
             Distance = 3.000000000000000000
@@ -133,6 +139,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Position.Y = 14.000000000000000000
           TabOrder = 3
           Text = '>|'
+          TextSettings.Trimming = None
           OnClick = BtnUltimoClick
           object ShadowEffect5: TShadowEffect
             Distance = 3.000000000000000000
@@ -147,6 +154,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Position.Y = 14.000000000000000000
           TabOrder = 2
           Text = '>'
+          TextSettings.Trimming = None
           OnClick = BtnProximoClick
           object ShadowEffect4: TShadowEffect
             Distance = 3.000000000000000000
@@ -161,6 +169,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Position.Y = 14.000000000000000000
           TabOrder = 1
           Text = '<'
+          TextSettings.Trimming = None
           OnClick = BtnAnteriorClick
           object ShadowEffect3: TShadowEffect
             Distance = 3.000000000000000000
@@ -175,6 +184,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Position.Y = 14.000000000000000000
           TabOrder = 0
           Text = '|<'
+          TextSettings.Trimming = None
           OnClick = BtnPrimeiroClick
           object ShadowEffect2: TShadowEffect
             Distance = 3.000000000000000000
@@ -203,6 +213,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
         CustomIcon = <
           item
           end>
+        TextSettings.Trimming = None
         IsSelected = True
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
@@ -218,6 +229,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 60.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'Ativo'
           TabOrder = 28
           object ShadowEffect21: TShadowEffect
@@ -395,6 +407,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 97.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'id Produto'
           TabOrder = 29
           object ShadowEffect10: TShadowEffect
@@ -411,6 +424,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 49.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'Pre'#231'o'
           TabOrder = 30
           object ShadowEffect12: TShadowEffect
@@ -427,6 +441,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 97.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'Produto'
           TabOrder = 31
           object ShadowEffect11: TShadowEffect
@@ -462,6 +477,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.PlatformDefault = False
           TabOrder = 14
           Text = 'Carregar Foto'
+          TextSettings.Trimming = None
           OnClick = Button5Click
           object ShadowEffect24: TShadowEffect
             Distance = 3.000000000000000000
@@ -477,6 +493,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 96.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'Aro'
           TabOrder = 33
           object ShadowEffect31: TShadowEffect
@@ -493,6 +510,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 98.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'Id Fabricante'
           TabOrder = 34
           object lblFuracao: TLabel
@@ -501,6 +519,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
             Size.Width = 95.000000000000000000
             Size.Height = 17.000000000000000000
             Size.PlatformDefault = False
+            TextSettings.Trimming = None
             Text = 'Fura'#231#227'o'
             TabOrder = 4
             object ShadowEffect37: TShadowEffect
@@ -525,6 +544,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 97.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'offSet'
           TabOrder = 36
           object ShadowEffect29: TShadowEffect
@@ -541,6 +561,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 97.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'id Linha'
           TabOrder = 37
           object ShadowEffect30: TShadowEffect
@@ -557,6 +578,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 98.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'Lan'#231'amento'
           TabOrder = 15
           object ShadowEffect36: TShadowEffect
@@ -617,6 +639,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Width = 97.000000000000000000
           Size.Height = 17.000000000000000000
           Size.PlatformDefault = False
+          TextSettings.Trimming = None
           Text = 'Id Acabamento'
           TabOrder = 35
           object ShadowEffect40: TShadowEffect
@@ -648,6 +671,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
         CustomIcon = <
           item
           end>
+        TextSettings.Trimming = None
         IsSelected = False
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
@@ -665,8 +689,8 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           Size.Height = 268.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
-          Viewport.Width = 720.000000000000000000
-          Viewport.Height = 243.000000000000000000
+          Viewport.Width = 724.000000000000000000
+          Viewport.Height = 268.000000000000000000
         end
         object Panel1: TPanel
           Align = Bottom
@@ -681,6 +705,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
             Size.Width = 57.000000000000000000
             Size.Height = 17.000000000000000000
             Size.PlatformDefault = False
+            TextSettings.Trimming = None
             Text = 'Pesquisar'
             TabOrder = 2
             object ShadowEffect34: TShadowEffect
@@ -712,6 +737,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
             Position.Y = 9.000000000000000000
             TabOrder = 1
             Text = 'Confirmar'
+            TextSettings.Trimming = None
             object ShadowEffect35: TShadowEffect
               Distance = 3.000000000000000000
               Direction = 45.000000000000000000

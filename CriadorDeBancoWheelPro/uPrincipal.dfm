@@ -44,6 +44,8 @@ object FrmPrincipal: TFrmPrincipal
     Color = clMoneyGreen
     ParentBackground = False
     TabOrder = 2
+    ExplicitTop = 481
+    ExplicitWidth = 886
     object Button1: TButton
       Left = 8
       Top = 8
@@ -88,6 +90,8 @@ object FrmPrincipal: TFrmPrincipal
     Lines.Strings = (
       '')
     TabOrder = 3
+    ExplicitTop = 190
+    ExplicitWidth = 886
   end
   object Edit2: TEdit
     Left = 504
@@ -176,7 +180,7 @@ object FrmPrincipal: TFrmPrincipal
     Top = 208
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
-    VendorLib = 'C:\Fontes\ProjetoRodas3\CriadorDeBancoWheelPro\dll\libmysql.dll'
+    VendorLib = 'C:\Fontes\WheelPro\WheelPro\Win64\Debug\libmysql.dll'
     Left = 720
     Top = 128
   end

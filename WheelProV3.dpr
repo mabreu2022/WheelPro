@@ -1,11 +1,7 @@
 program WheelProV3;
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
+
   System.StartUpCopy,
   FMX.Forms,
   UPrincipal in 'UPrincipal.pas' {FrmPrincipal},
@@ -57,6 +53,6 @@ begin
   Application.CreateForm(TFrmLogin, FrmLogin);
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.CreateForm(TFrmBackup, FrmBackup);
-  Application.CreateForm(TFrmCadastrodeProdutos, FrmCadastrodeProdutos);
+  //Application.CreateForm(TFrmCadastrodeProdutos, FrmCadastrodeProdutos);
   Application.Run;
 end.

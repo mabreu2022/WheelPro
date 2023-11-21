@@ -213,9 +213,9 @@ var
 begin
   Memo1.Clear;
 
-  DestDir := 'C:\Fontes\ProjetoRodas3\Instalador';
+  DestDir := 'C:\Fontes\WheelPro\WheelPro\Instalador';
   // Define o caminho para o executável do Inno Setup
-  InnoSetupPath := 'C:\Fontes\ProjetoRodas3\Instalador\ISStudio.exe';
+  InnoSetupPath := 'C:\Fontes\WheelPro\WheelPro\Instalador\ISStudio.exe';
 
   // Define o caminho para o arquivo de script do Inno Setup
   if CBRemoto.Checked then
@@ -223,21 +223,21 @@ begin
     Memo1.Lines.Add('Gerando Setup para Instalação remota...');
     //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
 
-    SourceDir  := 'C:\Fontes\ProjetoRodas3\Instalador\Server Remoto';
+    SourceDir  := 'C:\Fontes\WheelPro\WheelPro\Instalador\Server Remoto';
     SourceFile := TPath.Combine(SourceDir, 'Server.ini');
     DestFile   := TPath.Combine(DestDir, 'Server.ini');
     TFile.Copy(SourceFile, DestFile, True);
-    ScriptPath := 'C:\Fontes\ProjetoRodas3\Instalador\WheelPro_Script_Instalador.iss'
+    ScriptPath := 'C:\Fontes\WheelPro\WheelPro\Instalador\WheelPro_Script_Instalador.iss'
   end
   else
   begin
     Memo1.Lines.Add('Gerando Setup para instalação com banco local...');
     //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
-    SourceDir := 'C:\Fontes\ProjetoRodas3\Instalador\Server Local';
+    SourceDir := 'C:\Fontes\WheelPro\WheelPro\Instalador\Server Local';
     SourceFile := TPath.Combine(SourceDir, 'Server.ini');
     DestFile := TPath.Combine(DestDir, 'Server.ini');
     TFile.Copy(SourceFile, DestFile, True);
-    ScriptPath := 'C:\Fontes\ProjetoRodas3\Instalador\WheelPro_Script_InstaladorLocal.iss';
+    ScriptPath := 'C:\Fontes\WheelPro\WheelPro\Instalador\WheelPro_Script_InstaladorLocal.iss';
   end;
   // Cria o comando para gerar o arquivo de instalação
   Command := '-compile "' + ScriptPath + '"';

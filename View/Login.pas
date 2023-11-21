@@ -195,7 +195,7 @@ begin
 
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
   try
-    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'Cor', ''));
+    Cor := StringToAlphaColor(IniFile.ReadString('Cores', 'cor', ''));
   finally
     if FHabilitarLog='S' then
     begin

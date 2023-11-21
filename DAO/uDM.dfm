@@ -7,7 +7,6 @@ object DM: TDM
       'Database=fulanorodas'
       'User_Name=root'
       'Password=19741974'
-      'Server=187.75.162.220'
       'DriverID=MySQL')
     Connected = True
     LoginPrompt = False
@@ -16,7 +15,7 @@ object DM: TDM
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
     DriverID = 'MySQL'
-    VendorLib = 'libmysql.dll'
+    VendorLib = 'C:\Fontes\WheelPro\WheelPro\Win64\Debug\libmysql.dll'
     Left = 240
     Top = 56
   end

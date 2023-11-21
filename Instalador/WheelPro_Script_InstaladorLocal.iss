@@ -23,9 +23,9 @@ DefaultDirName={pf}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
-OutputDir=C:\Fontes\ProjetoRodas3\Instalador
+OutputDir=C:\Fontes\WheelPro\WheelPro\Instalador
 OutputBaseFilename=setup_WheelPro_Local
-SetupIconFile=C:\Fontes\ProjetoRodas3\Instalador\Icone.ico
+SetupIconFile=C:\Fontes\WheelPro\WheelPro\Instalador\Icone.ico
 Password=123456
 Encryption=yes
 Compression=lzma
@@ -42,7 +42,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "..\Win32\Debug\WheelProV3.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Fontes\ProjetoRodas3\Imagens\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Fontes\WheelPro\WheelPro\Imagens\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: "Server.ini"; DestDir: "{app}"
 Source: "midas.dll"; DestDir: "{sys}"; Flags: 32bit

@@ -544,6 +544,8 @@ begin
   BitMapImagem := TBitMap.Create;
   try
     BitMapImagem.Assign(ABitmap);
+    // Certifique-se de posicionar o início do TMemoryStream antes de salvar a imagem
+    AStream.Position := 0;
     BitMapImagem.SaveToStream(AStream);
   finally
     BitMapImagem.Free;
@@ -762,20 +764,20 @@ function TFrmCadastrodeProdutos.GravarLogsBancoDeDados: Boolean;
 var
   FLogManager: TLogManager;
 begin
-  Result:=False;
-  FLogManager:= TLogManager.Create;
-  try
-    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Cadastro_de_Clientes.txt', 'Log_Cadastro_de_Clientes.txt' ,'Logs');
-    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Cadastro_de_Produtos.txt', 'Log_Cadastro_de_Produtos.txt' ,'Logs');
-    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Entity_Contatos.txt' ,'Log_Entity_Contatos.txt','Logs');
-    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Model_Clientes.txt', 'Log_Model_Clientes.txt','Logs');
-    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Model_Contatos.txt', 'Log_Model_Contatos.txt','Logs');
-    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Tela_de_Login.txt', 'Log_Tela_de_Login.txt','Logs');
-
-  finally
-    FLogManager.Free;
-    Result:= True;
-  end;
+//  Result:=False;
+//  FLogManager:= TLogManager.Create;
+//  try
+//    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Cadastro_de_Clientes.txt', 'Log_Cadastro_de_Clientes.txt' ,'Logs');
+//    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Cadastro_de_Produtos.txt', 'Log_Cadastro_de_Produtos.txt' ,'Logs');
+//    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Entity_Contatos.txt' ,'Log_Entity_Contatos.txt','Logs');
+//    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Model_Clientes.txt', 'Log_Model_Clientes.txt','Logs');
+//    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Model_Contatos.txt', 'Log_Model_Contatos.txt','Logs');
+//    FLogManager.GravarLogNoBancoDeDados(ExtractFilePath(ParamStr(0)) + '\Log_Tela_de_Login.txt', 'Log_Tela_de_Login.txt','Logs');
+//
+//  finally
+//    FLogManager.Free;
+//    Result:= True;
+//  end;
 
 end;
 
@@ -1078,7 +1080,7 @@ begin
 
      //Onde carregamos o que veio no FProduto.Foto???
 
-     Stream := TStream.Create;
+     Stream := TMemoryStream.Create;
      try
        CarregarImagemParaStream(ImageFoto.Bitmap, Stream);
        Stream.Position := 0; // Certifique-se de que o stream comece do início
@@ -1090,7 +1092,8 @@ begin
        Stream.Free;
      end;
 
-     FProduto.Preco         := StrToCurr(EdtPreco.Text);
+     if EdtPreco.Text<>'' then
+       FProduto.Preco         := StrToCurr(EdtPreco.Text);
 
      if TryStrToInt(CBoxAro.Items[CBoxAro.ItemIndex], AroValue) then
      begin
