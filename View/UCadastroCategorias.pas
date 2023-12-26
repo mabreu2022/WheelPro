@@ -1,4 +1,4 @@
-unit UCadastroCategorias;
+Ôªøunit UCadastroCategorias;
 
 interface
 
@@ -208,7 +208,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 197 - BtnGravar - Criou a RegrasdeNegocios ‡s ' +  DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 197 - BtnGravar - Criou a RegrasdeNegocios √†s ' +  DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Categorias.txt');
     finally
       LogManager.Free;
@@ -225,7 +225,7 @@ begin
     Abortar:= RegrasDeNegocios.CategoriaExiste(FCategoria.idcategorias);
     if Abortar then  //Categoria Existe
     begin
-      ShowMessage('Categoria j· existe no Cadastro!');
+      ShowMessage('Categoria j√° existe no Cadastro!');
 
       if FTipo='A' then //Alterar
       begin
@@ -272,9 +272,9 @@ begin
     end;
 
   end
-  else //N„o atendeu as regras de negÛcios e n„o grava
+  else //N√£o atendeu as regras de neg√≥cios e n√£o grava
   begin
-    ShowMessage('N„o foi possÌvel salvar os dados da categoria');
+    ShowMessage('N√£o foi poss√≠vel salvar os dados da categoria');
 
     Tabcontrol1.TabIndex:=0;
 
@@ -296,7 +296,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Clientes: Linha 422 - BtnNovoClick - Criou a qry ‡s '  + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Clientes: Linha 422 - BtnNovoClick - Criou a qry √†s '  + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
       LogManager.Free;
@@ -305,7 +305,7 @@ begin
 
   FTipo := 'N';
 
-  DesabilitaBotoes([BiGravar]); // Desabilita todos os botıes, exceto o bot„o Gravar
+  DesabilitaBotoes([BiGravar]); // Desabilita todos os bot√µes, exceto o bot√£o Gravar
 
   qry := TFDQuery.Create(nil);
   qry.Connection := TConnection.CreateConnection;
@@ -316,7 +316,7 @@ begin
 
     NextID := qry.FieldByName('NextID').AsInteger;
 
-    // Verifique se o valor retornado È NULL (sem registros na tabela)
+    // Verifique se o valor retornado √© NULL (sem registros na tabela)
     if qry.FieldByName('NextID').IsNull then
       NextID := 1;
 
@@ -327,7 +327,7 @@ begin
       try
         CurrentDateTime := Now;
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-        LogManager.AddLog('Tela - Cadastro de Clientes: Linha 453: BtnNovoClick - Free qry ‡s ' + DateTimeStr);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha 453: BtnNovoClick - Free qry √†s ' + DateTimeStr);
         LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
       finally
         LogManager.Free;
@@ -336,7 +336,7 @@ begin
     qry.Free;
   end;
 
-  //Limpas Campos do Formul·rio
+  //Limpas Campos do Formul√°rio
   EdtCodCategoria.Text := IntToStr(NextID);
   EdtCategoria.Text    := '';
   EdtFabricante.Text   := '';
@@ -355,23 +355,23 @@ begin
   //Revisar o uso na aba da tela de clientes onde tem o GRIDClientes.
   TermoPesquisa := EditPesquisa.Text;
 
-  // Percorra as cÈlulas do grid para encontrar correspondÍncias com o termo de pesquisa
+  // Percorra as c√©lulas do grid para encontrar correspond√™ncias com o termo de pesquisa
   for I := 0 to GridClientes.RowCount - 1 do
   begin
     for J := 0 to GridClientes.ColumnCount - 1 do
     begin
       if Pos(UpperCase(TermoPesquisa), UpperCase(GridClientes.Cells[J, I])) > 0 then
       begin
-        // Destaque a cÈlula encontrada
+        // Destaque a c√©lula encontrada
         GridClientes.SelectCell(J, I);
 
-        // FaÁa algo com a cÈlula encontrada, como exibir uma mensagem
+        // Fa√ßa algo com a c√©lula encontrada, como exibir uma mensagem
         ShowMessage('Encontrado em ' + GridClientes.Cells[J, 0] + ': ' + GridClientes.Cells[J, I]);
 
         //Preencher os Edits da Aba Cadastro
         PreencheDadosEncontradosDaCategoria;
 
-        // VocÍ pode retornar aqui se desejar encontrar apenas a primeira correspondÍncia
+        // Voc√™ pode retornar aqui se desejar encontrar apenas a primeira correspond√™ncia
          Exit;
       end;
 
@@ -411,7 +411,7 @@ begin
   try
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-    LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 373 - Carregar ConfiguraÁ„o - Criou o IniFile ‡s ' + DateTimeStr);
+    LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 373 - Carregar Configura√ß√£o - Criou o IniFile √†s ' + DateTimeStr);
     LogManager.SaveLogToFile('Log_Cadastro_de_Categorias.txt');
 
     LogManager.CarregarConfiguracao;
@@ -548,7 +548,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de cATEGORIAS: Linha : 405 - Criar DataSet - Criou o CDS ‡s ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de cATEGORIAS: Linha : 405 - Criar DataSet - Criou o CDS √†s ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Categorias.txt');
     finally
       LogManager.Free;
@@ -577,7 +577,7 @@ begin
       try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Categoias: Linha : 501 - Gravou os arquivos de Logs no Banco de Dados ‡s ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Categoias: Linha : 501 - Gravou os arquivos de Logs no Banco de Dados √†s ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Categorias.txt');
       finally
         LogManager.Free;
@@ -595,7 +595,7 @@ var
   TodosOsBotoes: array[TBotaoIndex] of TButton;
   Botao: TBotaoIndex;
 begin
-  // Mapeia os botıes para seus Ìndices correspondentes
+  // Mapeia os bot√µes para seus √≠ndices correspondentes
   TodosOsBotoes[biAlterar]  := BtnAlterar;
   TodosOsBotoes[biExcluir]  := BtnExcluir;
   TodosOsBotoes[biPrimeiro] := BtnPrimeiro;
@@ -605,11 +605,11 @@ begin
   TodosOsBotoes[biNovo]     := BtnNovo;
   TodosOsBotoes[biGravar]   := BtnGravar;
 
-  // Desabilita todos os botıes
+  // Desabilita todos os bot√µes
   for Botao := Low(TBotaoIndex) to High(TBotaoIndex) do
     TodosOsBotoes[Botao].Enabled := False;
 
-  // Habilita apenas os botıes do conjunto do par‚metro
+  // Habilita apenas os bot√µes do conjunto do par√¢metro
   for Botao in BotaoSet do
     TodosOsBotoes[Botao].Enabled := True;
 
@@ -677,7 +677,7 @@ begin
   else if ativoCliente = 'N' then
     CBATivo.ItemIndex := CBATivo.Items.IndexOf('N')
   else
-    CBATivo.ItemIndex := -1; // ou algum valor padr„o, caso Ativo n„o seja v·lido
+    CBATivo.ItemIndex := -1; // ou algum valor padr√£o, caso Ativo n√£o seja v√°lido
 
   //ver uma function que devolva o fabricante gravado no banco para setar o fabricante no combobox
   //SelecionarFabricantePorID(DataSet.FieldByName('IDFABRICANTE').AsInteger);
@@ -687,12 +687,12 @@ begin
     if CBCodFabricante.Items.IndexOf(codFabricante) > -1 then
       CBCodFabricante.ItemIndex := CBCodFabricante.Items.IndexOf(codFabricante)
     else
-      CBCodFabricante.ItemIndex := -1; // ou algum valor padr„o, caso IDFABRICANTE n„o seja v·lido
+      CBCodFabricante.ItemIndex := -1; // ou algum valor padr√£o, caso IDFABRICANTE n√£o seja v√°lido
   end
   else
-    CBCodFabricante.ItemIndex := -1; // ou algum valor padr„o, caso IDFABRICANTE seja nulo
+    CBCodFabricante.ItemIndex := -1; // ou algum valor padr√£o, caso IDFABRICANTE seja nulo
 
-  PopularCategoria;  //Popula a vari·vel FCategoria
+  PopularCategoria;  //Popula a vari√°vel FCategoria
 
 end;
 
@@ -706,7 +706,7 @@ begin
     try
        CurrentDateTime := Now;
        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-       LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 344 - Entrou na PopularCategoria e Criou FCategoria ‡s ' + DateTimeStr);
+       LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 344 - Entrou na PopularCategoria e Criou FCategoria √†s ' + DateTimeStr);
        LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
        LogManager.Free;
@@ -731,7 +731,7 @@ begin
       try
         CurrentDateTime := Now;
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-        LogManager.AddLog('Tela - Cadastro de Categoria: Linha : 367 - Finalizou a PopularCategoria e n„o deu Free na FCategoria ‡s ' + DateTimeStr);
+        LogManager.AddLog('Tela - Cadastro de Categoria: Linha : 367 - Finalizou a PopularCategoria e n√£o deu Free na FCategoria √†s ' + DateTimeStr);
         LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
       finally
         LogManager.Free;
@@ -781,12 +781,12 @@ begin
       try
         CurrentDateTime := Now;
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-        LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 623 - Finalizou a PopularDataSet - Free Model  ‡s ' + DateTimeStr);
+        LogManager.AddLog('Tela - Cadastro de Categorias: Linha : 623 - Finalizou a PopularDataSet - Free Model  √†s ' + DateTimeStr);
         LogManager.SaveLogToFile('Log_Cadastro_de_Categorias.txt');
 
         CurrentDateTime := Now;
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 936 - Finalizou a PopularDataSet - E n„o deu free no DadaSet ‡s ' + DateTimeStr);
+        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 936 - Finalizou a PopularDataSet - E n√£o deu free no DadaSet √†s ' + DateTimeStr);
         LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
       finally
         LogManager.Free;
@@ -812,7 +812,7 @@ begin
     try
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
-      LogManager.AddLog('Tela - Cadastro de Categorias  - Linha : 703 - Entrou na PreecheDadosEncontratosDaCategoria ‡s ' + DateTimeStr);
+      LogManager.AddLog('Tela - Cadastro de Categorias  - Linha : 703 - Entrou na PreecheDadosEncontratosDaCategoria √†s ' + DateTimeStr);
       LogManager.SaveLogToFile('Log_Cadastro_de_Categorias.txt');
     finally
       LogManager.Free;

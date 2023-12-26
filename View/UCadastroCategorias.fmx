@@ -379,8 +379,8 @@ object FrmCategorias: TFrmCategorias
           Size.Height = 144.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
-          Viewport.Width = 712.000000000000000000
-          Viewport.Height = 119.000000000000000000
+          Viewport.Width = 716.000000000000000000
+          Viewport.Height = 144.000000000000000000
         end
         object Panel1: TPanel
           Align = Bottom
