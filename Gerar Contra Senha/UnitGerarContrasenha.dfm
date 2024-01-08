@@ -109,13 +109,11 @@ object FRMGerarContraSenha: TFRMGerarContraSenha
       'Password=19741974'
       'Server=127.0.0.1'
       'DriverID=MySQL')
-    Connected = True
     LoginPrompt = False
     Left = 280
     Top = 56
   end
   object FDQuery1: TFDQuery
-    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'select * from registro')
@@ -173,7 +171,7 @@ object FRMGerarContraSenha: TFRMGerarContraSenha
     Top = 56
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
-    VendorLib = 'C:\Program Files (x86)\MySQL\MySQL Server 5.7\lib\libmysql.dll'
+    VendorLib = 'C:\Program Files\MySQL\MySQL Server 5.7\lib\libmysql.dll'
     Left = 552
     Top = 112
   end
@@ -183,7 +181,6 @@ object FRMGerarContraSenha: TFRMGerarContraSenha
     Top = 112
   end
   object FDQuery2: TFDQuery
-    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       

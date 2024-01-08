@@ -25,6 +25,8 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     ActivePage = TabSheet3
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 569
+    ExplicitHeight = 368
     object TabSheet1: TTabSheet
       Caption = 'Cadastro de novo cliente'
       object Label8: TLabel
@@ -348,7 +350,6 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
       'Password=19741974'
       'Server=192.168.15.178'
       'DriverID=MySQL')
-    Connected = True
     LoginPrompt = False
     Left = 32
     Top = 224
@@ -416,12 +417,11 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     Top = 296
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
-    VendorLib = 'C:\Program Files (x86)\MySQL\MySQL Server 5.7\lib\libmysql.dll'
+    VendorLib = 'C:\Program Files\MySQL\MySQL Server 5.7\lib\libmysql.dll'
     Left = 440
     Top = 104
   end
   object FDQuery2: TFDQuery
-    Active = True
     Connection = FDConnection2
     SQL.Strings = (
       'select * from chaves')
@@ -518,7 +518,6 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     Top = 216
   end
   object FDQuery3: TFDQuery
-    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT * FROM CHAVES')
@@ -650,7 +649,6 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
       'Password=19741974'
       'Server=192.168.15.178'
       'DriverID=MySQL')
-    Connected = True
     LoginPrompt = False
     Left = 444
     Top = 160

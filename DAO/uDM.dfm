@@ -15,7 +15,7 @@ object DM: TDM
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
     DriverID = 'MySQL'
-    VendorLib = 'C:\Fontes\WheelPro\WheelPro\Win64\Debug\libmysql.dll'
+    VendorLib = 'C:\Fontes\WheelPro\WheelPro\Win32\Debug\libmysql.dll'
     Left = 240
     Top = 56
   end

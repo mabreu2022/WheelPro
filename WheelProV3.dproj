@@ -5,7 +5,7 @@
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>32787</TargetedPlatforms>
         <AppType>Application</AppType>
         <MainSource>WheelProV3.dpr</MainSource>
@@ -193,9 +193,6 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="UPrincipal.pas">
-            <Form>FrmPrincipal</Form>
-        </DCCReference>
         <DCCReference Include="DAO\uDM.pas">
             <Form>DM</Form>
             <DesignClass>TDataModule</DesignClass>
@@ -261,6 +258,10 @@
         </DCCReference>
         <DCCReference Include="Controller\Controller.Produtos.pas"/>
         <DCCReference Include="Model\Model.Produtos.pas"/>
+        <DCCReference Include="UPrincipal.pas">
+            <Form>FrmPrincipal</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -464,6 +465,12 @@
                 <DeployFile LocalName="Win64\Debug\WheelProV3.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
                         <RemoteName>WheelProV3.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win64\Debug\WheelProV3.rsm" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win64">
+                        <RemoteName>WheelProV3.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

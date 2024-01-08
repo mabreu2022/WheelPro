@@ -619,7 +619,7 @@ begin
      qry.Close;
      qry.SQL.Text:='SELECT L.IDLINHA, L.LINHA, L.IDCATEGORIA '+
                    ' FROM LINHA L ' +
-                   ' INNER JOIN CATEGORIA C ON (L.IDCATEGORIA = C.IDCATEGORIAS)' +
+                   ' INNER JOIN CATEGORIAS C ON (L.IDCATEGORIA = C.IDCATEGORIAS)' +
                    ' WHERE L.ATIVO=''S'' ' +
                    '   AND L.IDCATEGORIA = :IDCATEGORIA' +
                    ' ORDER BY L.IDLINHA ASC';
@@ -656,7 +656,7 @@ begin
    qry.Connection:= DM.FDConnection1;
    try
      qry.Close;
-     qry.SQL.Text:='SELECT C.IDCATEGORIAS,  C.CATEGORIA FROM CATEGORIA C ' +
+     qry.SQL.Text:='SELECT C.IDCATEGORIAS,  C.CATEGORIA FROM CATEGORIAS C ' +
                    ' INNER JOIN FABRICANTES F ON(F.IDFABRICANTES = C.IDFABRICANTE)' +
                    ' WHERE C.ATIVO=''S'' ' +
                    '  AND IDFABRICANTE = :IDFABRICANTE' +
@@ -694,7 +694,7 @@ begin
    try
      qry.Close;
      qry.SQL.Text:='SELECT P.IDPRODUTOS, P.PRODUTO, P.FOTO, P.PRECO, P.IDFABRICANTE,' +
-                   ' P.ARO, P.LANCAMENTO,P.FURACAO, P.OFFSET_ET, P.IDACABAMENTO, P.IDLINHA' +
+                   ' P.ARO, P.LANCAMENTO,P.idFURACAO, P.OFFSET_ET, P.IDACABAMENTO, P.IDLINHA' +
                    ' FROM PRODUTOS P ' +
                    ' INNER JOIN LINHA L ON(L.IDLINHA = P.IDLINHA)' +
                    ' WHERE P.ATIVO=''S'' ' +
@@ -772,7 +772,7 @@ begin
   try
     qry.Close;
     qry.SQL.Text:='SELECT P.IDPRODUTOS, P.PRODUTO, P.FOTO, P.PRECO, P.IDFABRICANTE, ' +
-                  ' P.ARO, P.LANCAMENTO,P.FURACAO, P.OFFSET_ET, P.IDACABAMENTO, P.IDLINHA' +
+                  ' P.ARO, P.LANCAMENTO,P.IDFURACAO, P.OFFSET_ET, P.IDACABAMENTO, P.IDLINHA' +
                   ' FROM PRODUTOS P' +
                   ' WHERE P.IDPRODUTOS =:IDPRODUTOS';
     qry.ParamByName('IDPRODUTOS').DataType   := ftSmallint;

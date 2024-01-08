@@ -1,10 +1,8 @@
 program WheelProV3;
 
 uses
-
   System.StartUpCopy,
   FMX.Forms,
-  UPrincipal in 'UPrincipal.pas' {FrmPrincipal},
   uDM in 'DAO\uDM.pas' {DM: TDataModule},
   Login in 'View\Login.pas' {FrmLogin},
   Dao.Login in 'DAO\Dao.Login.pas',
@@ -42,7 +40,8 @@ uses
   Funcoes.EnviarEmail in 'Funcoes\Funcoes.EnviarEmail.pas',
   View.Produtos in 'View\View.Produtos.pas' {FrmCadastrodeProdutos},
   Controller.Produtos in 'Controller\Controller.Produtos.pas',
-  Model.Produtos in 'Model\Model.Produtos.pas';
+  Model.Produtos in 'Model\Model.Produtos.pas',
+  UPrincipal in 'UPrincipal.pas' {FrmPrincipal};
 
 {$R *.res}
 
@@ -51,8 +50,8 @@ begin
   Application.Initialize;
   Application.CreateForm(TDM, DM);
   Application.CreateForm(TFrmLogin, FrmLogin);
-  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.CreateForm(TFrmBackup, FrmBackup);
+  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   //Application.CreateForm(TFrmCadastrodeProdutos, FrmCadastrodeProdutos);
   Application.Run;
 end.

@@ -311,7 +311,7 @@ begin
   qry.Connection := TConnection.CreateConnection;
   try
     qry.SQL.Clear;
-    qry.SQL.Text := 'SELECT MAX(idcategorias) + 1 AS NextID FROM categoria';
+    qry.SQL.Text := 'SELECT MAX(idcategorias) + 1 AS NextID FROM categorias';
     qry.Open;
 
     NextID := qry.FieldByName('NextID').AsInteger;
