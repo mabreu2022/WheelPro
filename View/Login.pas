@@ -112,7 +112,7 @@ begin
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
 
         LogManager.AddLog('Tela Login - Linha : 113 - Usuário: ' + EdtUsuario.Text + ' fez login às ' + DateTimeStr);
-        LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+        //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
 
       end;
 
@@ -148,7 +148,7 @@ begin
         CurrentDateTime := Now;
         DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
         LogManager.AddLog('Tela Login - Linha : 111 - Usuário não encontrado às ' + DateTimeStr);
-        LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+        //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
       end;
 
       ShowMessage('usuario ou senha não encontrado');

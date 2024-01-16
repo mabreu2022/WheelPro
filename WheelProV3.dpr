@@ -41,7 +41,8 @@ uses
   View.Produtos in 'View\View.Produtos.pas' {FrmCadastrodeProdutos},
   Controller.Produtos in 'Controller\Controller.Produtos.pas',
   Model.Produtos in 'Model\Model.Produtos.pas',
-  UPrincipal in 'UPrincipal.pas' {FrmPrincipal};
+  UPrincipal in 'UPrincipal.pas' {FrmPrincipal},
+  Funcoes.EnviarPedido in 'Funcoes\Funcoes.EnviarPedido.pas';
 
 {$R *.res}
 

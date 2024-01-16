@@ -79,7 +79,9 @@ uses
   LogManager,
   Funcoes.PintarJante,
   View.Backup,
-  Model.Registro, View.Produtos;
+  Model.Registro,
+  View.Produtos, Winapi.Messages;
+
 
 type
   TFrmPrincipal = class(TForm)
@@ -203,6 +205,7 @@ type
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItemBackup: TMenuItem;
+    Button5: TButton;
     procedure Circle1Gesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -266,6 +269,7 @@ type
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
     procedure MenuItemBackupClick(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
 
 
   private
@@ -299,7 +303,9 @@ type
     procedure EnviarAnexoWhatsApp(const FileName: string);
     function ImageToBase64(const FileName: string): string;
     function DesabilitaEdtWhatsApp:Boolean;
-    
+
+    function CapturaTela:TBitMap;
+
   public
     { Public declarations }
      FidUsuario: Integer;
@@ -316,12 +322,17 @@ type
 var
   FrmPrincipal: TFrmPrincipal;
 
+
 implementation
 
 {$R *.fmx}
 
+
+
 uses Login;
 {$R *.LgXhdpiPh.fmx ANDROID}
+
+
 
 procedure TFrmPrincipal.SairExecute(Sender: TObject);
 begin
@@ -372,15 +383,15 @@ var
   DC: HDC;
   NomeArquivo: string;
 begin
-  keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), 0, 0); // Pressiona a tecla Alt
-  keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), 0, 0); // Pressiona a tecla Print Screen
-  keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Print Screen
-  keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
+//  keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), 0, 0); // Pressiona a tecla Alt
+//  keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), 0, 0); // Pressiona a tecla Print Screen
+//  keybd_event(VK_SNAPSHOT, MapVirtualKey(VK_SNAPSHOT, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Print Screen
+//  keybd_event(VK_MENU, MapVirtualKey(VK_MENU, 0), KEYEVENTF_KEYUP, 0); // Libera a tecla Alt
 
   PrintScreen := TBitmap.Create;
   try
     PrintScreen.Width  := Round(Screen.Width);  //1920-1536 = 384
-    PrintScreen.Width := PrintScreen.Width + 384;
+    PrintScreen.Width  := PrintScreen.Width + 384;
     PrintScreen.Height := Round(Screen.Height); //1080-864  = 216
     PrintScreen.Height := PrintScreen.Height + 216;
     DC := GetDC(0);
@@ -456,6 +467,13 @@ begin
     end;
 end;
 
+procedure TFrmPrincipal.Button5Click(Sender: TObject);
+begin
+ //Abrir navegador na página do produto campo url da tabela produtos
+ //mandar e-mail com os dados do cliente para a conectsolutions@hotmail.com / e-mail do cliente e e-mail da volcano.
+
+end;
+
 procedure TFrmPrincipal.BtnCarregarRodaCalotaClick(Sender: TObject);
 var
   OpenDialog: TOpenDialog;
@@ -470,6 +488,32 @@ begin
   finally
     OpenDialog.Free;
   end;
+end;
+
+function TFrmPrincipal.CapturaTela: TBitMap;
+var
+  dc: HDC;
+  cv: TCanvas;
+  RectSrc, RectDest: TRect;
+begin
+  Result := TBitmap.Create;
+  Result.Width := Round(Screen.Width);
+  Result.Height := Round(Screen.Height);
+
+  dc := GetDC(0);
+  cv := TCanvas.Create;
+  try
+    cv.Handle := dc;
+
+    RectSrc := Rect(0, 0, Round(Screen.Width), Round(Screen.Height));
+    RectDest := Rect(0, 0, Result.Width, Result.Height);
+
+    Result.Canvas.CopyRect(RectDest, cv, RectSrc);
+  finally
+    cv.Free;
+    ReleaseDC(0, dc);
+  end;
+
 end;
 
 procedure TFrmPrincipal.CarregarCores;
@@ -955,7 +999,7 @@ begin
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager.AddLog('Tela - Cadastro de Clientes - Entrou no FormClose : Linha 231 - e deu Free no LogManager às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+    //LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
   finally
     LogManager.Free;
   end;
@@ -976,6 +1020,7 @@ begin
   CarregarCores;
   CarregarLinguagem;
   CarregarLogo;
+
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);

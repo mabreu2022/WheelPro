@@ -201,7 +201,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
       Size.Width = 724.000000000000000000
       Size.Height = 336.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 0
+      TabIndex = 1
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -214,7 +214,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           item
           end>
         TextSettings.Trimming = None
-        IsSelected = True
+        IsSelected = False
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -521,7 +521,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
             Size.PlatformDefault = False
             TextSettings.Trimming = None
             Text = 'Fura'#231#227'o'
-            TabOrder = 4
+            TabOrder = 3
             object ShadowEffect37: TShadowEffect
               Distance = 3.000000000000000000
               Direction = 45.000000000000000000
@@ -672,7 +672,7 @@ object FrmCadastrodeProdutos: TFrmCadastrodeProdutos
           item
           end>
         TextSettings.Trimming = None
-        IsSelected = False
+        IsSelected = True
         Size.Width = 66.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False

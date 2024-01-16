@@ -1,0 +1,51 @@
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+--
+-- Host: localhost    Database: fulanorodas
+-- ------------------------------------------------------
+-- Server version	5.7.44-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `furacao`
+--
+
+DROP TABLE IF EXISTS `furacao`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `furacao` (
+  `idfuracao` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `furacao` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`idfuracao`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `furacao`
+--
+
+LOCK TABLES `furacao` WRITE;
+/*!40000 ALTER TABLE `furacao` DISABLE KEYS */;
+INSERT INTO `furacao` VALUES (1,'3x100/4x100'),(2,'4x100'),(3,'4x100/4x108'),(4,'4x100/4x114,3'),(5,'4x108'),(6,'4x114,3'),(7,'4x130/cb 122'),(8,'5x100'),(9,'5x105'),(10,'5x108'),(11,'5x110'),(12,'5x112'),(13,'5x112/CB 71,6'),(14,'5x114,3'),(15,'5x205/CB 166'),(16,'5x100/5x105'),(17,'5x100/5x108'),(18,'5x100/5x110'),(19,'5x100/5x112'),(20,'5x100/5x114,3'),(21,'4x130/CB 122'),(22,'5x205');
+/*!40000 ALTER TABLE `furacao` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-01-08 17:31:39

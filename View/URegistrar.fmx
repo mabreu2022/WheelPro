@@ -72,7 +72,7 @@ object FrmRegistrar: TFrmRegistrar
       Size.Width = 924.000000000000000000
       Size.Height = 508.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 0
+      TabIndex = 3
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -88,7 +88,7 @@ object FrmRegistrar: TFrmRegistrar
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -588,8 +588,8 @@ object FrmRegistrar: TFrmRegistrar
             Size.PlatformDefault = False
             TabOrder = 13
             Options = [ColLines, RowLines, Tabs, Header, AutoDisplacement]
-            Viewport.Width = 412.000000000000000000
-            Viewport.Height = 88.000000000000000000
+            Viewport.Width = 432.000000000000000000
+            Viewport.Height = 113.000000000000000000
             object Column1: TColumn
               Header = 'Data Inicio'
             end
@@ -730,15 +730,15 @@ object FrmRegistrar: TFrmRegistrar
           Size.Height = 339.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
-          Viewport.Width = 885.000000000000000000
-          Viewport.Height = 335.000000000000000000
+          Viewport.Width = 889.000000000000000000
+          Viewport.Height = 339.000000000000000000
         end
       end
       object TabItem4: TTabItem
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 127.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
