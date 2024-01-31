@@ -7,6 +7,7 @@ object DM: TDM
       'Database=fulanorodas'
       'User_Name=root'
       'Password=19741974'
+      'Server=localhost'
       'DriverID=MySQL')
     Connected = True
     LoginPrompt = False
@@ -15,11 +16,12 @@ object DM: TDM
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
     DriverID = 'MySQL'
-    VendorLib = 'C:\Fontes\WheelPro\WheelPro\Win32\Debug\libmysql.dll'
+    VendorLib = 'C:\Program Files (x86)\WheelPro\libmysql.dll'
     Left = 240
     Top = 56
   end
   object FDQVeiculos: TFDQuery
+    Active = True
     Connection = FDConnection1
     FormatOptions.AssignedValues = [fvDefaultParamDataType]
     SQL.Strings = (
@@ -28,6 +30,7 @@ object DM: TDM
     Top = 160
   end
   object FDQMarcas: TFDQuery
+    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT IDMARCA, MARCA FROM MARCA '
@@ -37,6 +40,7 @@ object DM: TDM
     Top = 248
   end
   object FDQProdutos: TFDQuery
+    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT * FROM PRODUTOS WHERE ATIVO='#39'S'#39)
@@ -44,6 +48,7 @@ object DM: TDM
     Top = 336
   end
   object FDQFabricantes: TFDQuery
+    Active = True
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT * FROM FABRICANTES WHERE ATIVO='#39'S'#39)

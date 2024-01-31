@@ -200,7 +200,7 @@ type
     ImageLogo: TImage;
     RectanguleLaretalDireito: TRectangle;
     VertScrollBoxRodas: TVertScrollBox;
-    MenuItem1: TMenuItem;
+    MenuItemFerramentas: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -589,6 +589,7 @@ begin
     MenuItemDeslogar.Text              := 'Deslogar';
     MenuItemBackup.Text                := 'Cópia de segurança';
     MenuItemSair.Text                  := 'Sair';
+    MenuItemFerramentas.Text           := 'Ferramentas';
   end
   else if FLinguagem = 'Ingles' then
   begin
@@ -632,7 +633,9 @@ begin
     MenuItemRegistrar.Text             := 'Register';
     MenuItemDeslogar.Text              := 'Log  Out';
     MenuItemBackup.Text                := 'Backup';
+    MenuItemFerramentas.Text           := 'Tools';
     MenuItemSair.Text                  := 'To go out';
+    MenuItemFerramentas.Text           := 'Tools';
   end;
 
 end;

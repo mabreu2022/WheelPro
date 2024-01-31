@@ -314,7 +314,7 @@ begin
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
       LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 295 - BtnnGravar - Criou a RegrasdeNegocios às ' +  DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      //LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
     finally
       LogManager.Free;
     end;
@@ -329,7 +329,7 @@ begin
        CurrentDateTime := Now;
        DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
        LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 310 - BtnnGravar - Criou a FModelContato às ' +  DateTimeStr);
-       LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+       //LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
      finally
        LogManager.Free;
      end;
@@ -409,7 +409,7 @@ begin
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
       LogManager.AddLog('Tela - Cadastro de Clientes: Linha : 383 - BtnnGravar - deu Free na FCliente às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
+      //LogManager.SaveLogToFile('Log_Cadastro_de_Clientes.txt');
       FCliente.Free;
 
       CurrentDateTime := Now;

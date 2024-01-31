@@ -12,6 +12,7 @@ object FrmRegistrar: TFrmRegistrar
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   DesignerMasterStyle = 0
   object Layout1: TLayout
     Align = Client
@@ -72,7 +73,7 @@ object FrmRegistrar: TFrmRegistrar
       Size.Width = 924.000000000000000000
       Size.Height = 508.000000000000000000
       Size.PlatformDefault = False
-      TabIndex = 3
+      TabIndex = 0
       TabOrder = 2
       TabPosition = PlatformDefault
       Sizes = (
@@ -88,7 +89,7 @@ object FrmRegistrar: TFrmRegistrar
         CustomIcon = <
           item
           end>
-        IsSelected = False
+        IsSelected = True
         Size.Width = 67.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -588,8 +589,8 @@ object FrmRegistrar: TFrmRegistrar
             Size.PlatformDefault = False
             TabOrder = 13
             Options = [ColLines, RowLines, Tabs, Header, AutoDisplacement]
-            Viewport.Width = 432.000000000000000000
-            Viewport.Height = 113.000000000000000000
+            Viewport.Width = 412.000000000000000000
+            Viewport.Height = 88.000000000000000000
             object Column1: TColumn
               Header = 'Data Inicio'
             end
@@ -629,19 +630,19 @@ object FrmRegistrar: TFrmRegistrar
         Text = 'Gerar Senha'
         ExplicitSize.cx = 85.000000000000000000
         ExplicitSize.cy = 26.000000000000000000
-        object Label1: TLabel
+        object lblEntreseuCNPJ: TLabel
           Position.X = 32.000000000000000000
           Position.Y = 46.000000000000000000
           Text = 'Entre seu CNPJ'
           TabOrder = 1
         end
-        object Label2: TLabel
+        object lblSeuSerial: TLabel
           Position.X = 32.000000000000000000
           Position.Y = 78.000000000000000000
           Text = 'Seu Serial '#233':'
           TabOrder = 2
         end
-        object Label3: TLabel
+        object lblNumserialHD: TLabel
           Position.X = 32.000000000000000000
           Position.Y = 110.000000000000000000
           Size.Width = 161.000000000000000000
@@ -650,7 +651,7 @@ object FrmRegistrar: TFrmRegistrar
           Text = 'O n'#250'mero serial do seu HD '#233':'
           TabOrder = 3
         end
-        object Label4: TLabel
+        object lblseuSErialBios: TLabel
           Position.X = 32.000000000000000000
           Position.Y = 142.000000000000000000
           Text = 'Seu Serial da Bios '#233' :'
@@ -676,6 +677,7 @@ object FrmRegistrar: TFrmRegistrar
           Position.Y = 46.000000000000000000
           TabOrder = 7
           Text = 'Pesquisar'
+          OnClick = Button1Click
         end
         object lblSerialHD: TLabel
           Position.X = 200.000000000000000000
@@ -730,15 +732,15 @@ object FrmRegistrar: TFrmRegistrar
           Size.Height = 339.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
-          Viewport.Width = 889.000000000000000000
-          Viewport.Height = 339.000000000000000000
+          Viewport.Width = 885.000000000000000000
+          Viewport.Height = 335.000000000000000000
         end
       end
       object TabItem4: TTabItem
         CustomIcon = <
           item
           end>
-        IsSelected = True
+        IsSelected = False
         Size.Width = 127.000000000000000000
         Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
@@ -765,7 +767,7 @@ object FrmRegistrar: TFrmRegistrar
           Text = 'Enviar'
           OnClick = BtnEnviarClick
         end
-        object Label5: TLabel
+        object lblContraSenha: TLabel
           Position.X = 16.000000000000000000
           Position.Y = 14.000000000000000000
           Text = 'Contra Senha'

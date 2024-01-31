@@ -169,10 +169,11 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Locale>1046</VerInfo_Locale>
         <Icon_MainIcon>WheelProV3_Icon.ico</Icon_MainIcon>
         <DCC_MapFile>3</DCC_MapFile>
         <DCC_Define>madExcept;LeakChecking;$(DCC_Define)</DCC_Define>
+        <VerInfo_Keys>CompanyName=Conect Solutions em Serviços em TI Ltda;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=Conect Solutions;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
@@ -263,6 +264,7 @@
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="Funcoes\Funcoes.EnviarPedido.pas"/>
+        <None Include="WheelProV3.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

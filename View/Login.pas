@@ -191,7 +191,7 @@ begin
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager.AddLog('Tela Login - Entrou no CarregarCores - Linha: 134 - e criou o IniFile às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+    //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
   end;
 
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
@@ -203,7 +203,7 @@ begin
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
       LogManager.AddLog('Tela Login - Finalizou a CarregarCores - Linha : 143 - e deu Free no IniFile às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
     end;
 
     IniFile.Free;
@@ -230,7 +230,7 @@ begin
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager.AddLog('Tela Login - Entrou na  CarregarLinguagem: Linha : 163 - Criou o IniFile às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+    //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
   end;
 
   IniFile := TIniFile.Create(ExtractFilePath(ParamStr(0)) + '\Config.ini');
@@ -264,7 +264,7 @@ begin
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
       LogManager.AddLog('Tela Login - Finalizou o CarregarLinguagem: Linha 194 - e deu Free no IniFile às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
     end;
 
     IniFile.Free;
@@ -283,7 +283,7 @@ begin
     CurrentDateTime := Now;
     DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
     LogManager.AddLog('Tela Login - Entrou no Create : Linha : 258 - e criou a FConexao às ' + DateTimeStr);
-    LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+    //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
   end;
 
   FConexao := TConnection.CreateConnection;
@@ -305,7 +305,7 @@ begin
 
     finally
       LogManager.AddLog('Tela Login - Entrou no Destroy : Linha 280 - e deu Free na LogManager e FConexao às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
       LogManager.Free;
     end;
   end;
@@ -323,7 +323,7 @@ begin
       CurrentDateTime := Now;
       DateTimeStr     := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime);
       LogManager.AddLog('Tela Login - Entrou no FormCreate : Linha 298 - e criou LogManager às ' + DateTimeStr);
-      LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
+      //LogManager.SaveLogToFile('Log_Tela_de_Login.txt');
     finally
       LogManager.Free;
     end;

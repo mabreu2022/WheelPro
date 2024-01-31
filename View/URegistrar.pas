@@ -136,10 +136,10 @@ type
     Column2: TColumn;
     Column3: TColumn;
     ShadowEffect17: TShadowEffect;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
+    lblEntreseuCNPJ: TLabel;
+    lblSeuSerial: TLabel;
+    lblNumserialHD: TLabel;
+    lblseuSErialBios: TLabel;
     lblSerial: TLabel;
     Edit1: TEdit;
     Button1: TButton;
@@ -152,7 +152,7 @@ type
     TabItem4: TTabItem;
     EdtContraSenha: TEdit;
     BtnEnviar: TButton;
-    Label5: TLabel;
+    lblContraSenha: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure BtnRegistrarClick(Sender: TObject);
     procedure EdtCnpjExit(Sender: TObject);
@@ -160,6 +160,8 @@ type
     procedure BtnGravarClick(Sender: TObject);
     procedure BtnEnviarClick(Sender: TObject);
     procedure EdtContraSenhaExit(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
     FLinguagem: string;
@@ -235,6 +237,12 @@ begin
   finally
     Registro.Free;
   end;
+
+end;
+
+procedure TFrmRegistrar.Button1Click(Sender: TObject);
+begin
+ // e agora o que é para pesquisar aqui?
 
 end;
 
@@ -363,7 +371,17 @@ begin
      LblEmail.Text        := 'E-mail';
      BtnRegistrar.Text    := '&Registrar';
      LblTitulo.Text       := 'Registro do Wheel Pro';
+     lblCEP.Text          := 'CEP';
      FrmRegistrar.Caption := 'Registro do Wheel Pro';
+     TabItem1.Text        := 'Cadastro';
+     TabItem2.Text        := 'Gerar senha';
+     TabItem3.Text        := 'Enviar Serial';
+     TabItem4.Text        := 'Inserir Contra-Senha';
+     lblEntreseuCNPJ.Text := 'Entre seu CNPJ';
+     lblSeuSerial.Text    := 'Seu Serial';
+     lblNumserialHD.Text  := 'O número serial do seu HD é:';
+     lblseuSErialBios.Text:= 'Seu Serial da Bios é :';
+     lblContraSenha.Text  := 'Contra - Senha';
    end
    else if FLinguagem = 'Ingles' then
    begin
@@ -383,9 +401,19 @@ begin
      LblResponnsavel.Text := 'Name of person responsible for registration';
      LblTelefone.Text     := 'Phone/WhatsApp';
      LblEmail.Text        := 'E-mail';
+     lblCEP.Text          := 'ZIP CODE';
      BtnRegistrar.Text    := '&Register';
      LblTitulo.Text       := 'Wheel Pro registration';
      FrmRegistrar.Caption := 'Wheel Pro registration';
+     TabItem1.Text        := 'Register';
+     TabItem2.Text        := 'Generate Password';
+     TabItem3.Text        := 'Send Serial';
+     TabItem4.Text        := 'Enter Password';
+     lblEntreseuCNPJ.Text := 'Enter your EIN';
+     lblSeuSerial.Text    := 'Your Serial';
+     lblNumserialHD.Text  := 'Serial number of your HD is:';
+     lblseuSErialBios.Text:= 'Your Bios Serial is:';
+     lblContraSenha.Text  := 'Password';
    end;
 
   finally
@@ -444,6 +472,11 @@ end;
 procedure TFrmRegistrar.FormDestroy(Sender: TObject);
 begin
   FConexao.Free;
+end;
+
+procedure TFrmRegistrar.FormShow(Sender: TObject);
+begin
+  TAbControl1.Index:=0;
 end;
 
 end.

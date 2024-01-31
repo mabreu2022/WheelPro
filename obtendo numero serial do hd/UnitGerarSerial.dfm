@@ -417,7 +417,7 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     Top = 296
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
-    VendorLib = 'C:\Program Files\MySQL\MySQL Server 5.7\lib\libmysql.dll'
+    VendorLib = 'C:\Program Files (x86)\WheelPro\libmysql.dll'
     Left = 440
     Top = 104
   end

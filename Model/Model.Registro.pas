@@ -255,7 +255,7 @@ begin
       On E: Exception do
       begin
         if linguagem='Portugues' then
-          ShowMessage('Ocorreu um erro ao enviar o registro' + e.Message)
+          ShowMessage('Ocorreu um erro ao enviar o registro, entre em contato com o suporte comercial@conectsolutionsti.com.br' + e.Message)
         else
           ShowMessage('An error occurred while sending the record' + e.Message);
       end;
@@ -726,7 +726,7 @@ begin
           //gravar na tabela Registros
           GravarRegistro(aRegistro, aRegistro.serial);
 
-      ShowMessage('Não foram localizados seus dados no sistema.Favor entrar em contato com o suporte.');
+      ShowMessage('Não foram localizados seus dados no sistema.Favor entrar em contato com o suporte comercial@conectsolutionsti.com.br');
     end;
 
   finally
@@ -768,6 +768,9 @@ begin
                  ':ativado,                 ' +
                  ':serialhd                 ' +
                  ')                         ');
+
+     qry.ParamByName('id').DataType :=ftinteger;
+     qry.ParamByName('id_chave').DataType:= ftInteger;
 
      qry.ParamByName('chave').DataType     := ftString;
      qry.ParamByName('chave').AsString      := aChave;
@@ -1031,7 +1034,7 @@ begin
 
     qry.Open;
 
-    if Qry.RecordCount = 0 then
+    if Qry.RecordCount > 0 then
       Result:= True  //Sistema Válido
     else
       Result:= False; //Sistema Expirado

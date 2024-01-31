@@ -276,6 +276,7 @@ begin
     FRMGERARSERIAL.Button1.Enabled:=True;
     FRMGERARSERIAL.Edit1.Enabled:=True;
     FRMGERARSERIAL.Gerarserial.Enabled:=True;
+    FDQuery3.Open;
     FDQuery3.edit;
     FDQuery3.FieldByName('razao').AsString:=Edit2.Text;
     FDQuery3.FieldByName('cnpj').AsString:=Edit3.Text;
@@ -478,6 +479,7 @@ begin
        if FieldByName('contrasenha')<>0 then
           FDQuery
    end;}
+   PageControl1.TabIndex:=0;
 end;
 
 end.
