@@ -36,14 +36,14 @@ uses
   FireDAC.Comp.Client,
   System.StrUtils,
   ShellAPI,
-  System.IOUtils, Funcoes.Criptografia;
+  System.IOUtils, Funcoes.Criptografia, System.ImageList, Vcl.ImgList;
 
 type
   TFrmPrincipal = class(TForm)
     Label1: TLabel;
     Edit1: TEdit;
     Panel1: TPanel;
-    Button1: TButton;
+    BtnCriarBase: TButton;
     Memo1: TMemo;
     FDConnection1: TFDConnection;
     FDQuery1: TFDQuery;
@@ -52,7 +52,7 @@ type
     DataSource1: TDataSource;
     Label2: TLabel;
     Edit2: TEdit;
-    Button2: TButton;
+    BtnGSetup: TButton;
     CBRemoto: TCheckBox;
     cbDemo: TCheckBox;
     GroupBox1: TGroupBox;
@@ -64,8 +64,19 @@ type
     Edit3: TEdit;
     Label6: TLabel;
     Edit5: TEdit;
+    ImageList1: TImageList;
+    BalloonHint1: TBalloonHint;
+    Button1: TButton;
+    Timer1: TTimer;
+    Timer2: TTimer;
+    Button3: TButton;
+    BalloonHint2: TBalloonHint;
+    procedure BtnCriarBaseClick(Sender: TObject);
+    procedure BtnGerarSetup(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     function ExtractDatabaseNameFromScript(const ScriptText: string): string;
     { Private declarations }
@@ -80,7 +91,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TFrmPrincipal.Button1Click(Sender: TObject);
+procedure TFrmPrincipal.BtnCriarBaseClick(Sender: TObject);
 var
   Connection: TFDConnection;
   Query: TFDQuery;
@@ -200,7 +211,16 @@ begin
 
 end;
 
-procedure TFrmPrincipal.Button2Click(Sender: TObject);
+procedure TFrmPrincipal.Button1Click(Sender: TObject);
+begin
+  BalloonHint1.Style := bhsBalloon;
+  BalloonHint1.HideAfter := 10000;
+  BalloonHint1.ShowHint(BtnCriarBase);
+  BalloonHint1.ShowHint(ClientToScreen(Tpoint.Create(BtnCriarBase.left+40,BtnCriarBase.top+618)));
+  BtnCriarBase.ShowHint:= True;
+end;
+
+procedure TFrmPrincipal.BtnGerarSetup(Sender: TObject);
 var
   InnoSetupPath : string;
   ScriptPath    : string;
@@ -213,9 +233,9 @@ var
 begin
   Memo1.Clear;
 
-  DestDir := 'C:\Fontes\WheelPro\WheelPro\Instalador';
+  DestDir := 'C:\Fontes\WhellPro\WheelPro\Instalador';
   // Define o caminho para o executável do Inno Setup
-  InnoSetupPath := 'C:\Fontes\WheelPro\WheelPro\Instalador\ISStudio.exe';
+  InnoSetupPath := 'C:\Program Files (x86)\Inno Script Studio\ISStudio.exe';// 'C:\Fontes\WheelPro\WheelPro\Instalador\ISStudio.exe';
 
   // Define o caminho para o arquivo de script do Inno Setup
   if CBRemoto.Checked then
@@ -223,21 +243,21 @@ begin
     Memo1.Lines.Add('Gerando Setup para Instalação remota...');
     //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
 
-    SourceDir  := 'C:\Fontes\WheelPro\WheelPro\Instalador\Server Remoto';
+    SourceDir  := 'C:\Fontes\WhellPro\WheelPro\Instalador\Server Remoto';
     SourceFile := TPath.Combine(SourceDir, 'Server.ini');
     DestFile   := TPath.Combine(DestDir, 'Server.ini');
     TFile.Copy(SourceFile, DestFile, True);
-    ScriptPath := 'C:\Fontes\WheelPro\WheelPro\Instalador\WheelPro_Script_Instalador.iss'
+    ScriptPath := 'C:\Fontes\WhellPro\WheelPro\Instalador\WheelPro_Script_Instalador.iss'
   end
   else
   begin
     Memo1.Lines.Add('Gerando Setup para instalação com banco local...');
     //Chamar rotina de incriptografação do Ini gerando o mesmo com o nome da base escolhida.
-    SourceDir := 'C:\Fontes\WheelPro\WheelPro\Instalador\Server Local';
+    SourceDir := 'C:\Fontes\Whellpro\WheelPro\Instalador\Server Local';
     SourceFile := TPath.Combine(SourceDir, 'Server.ini');
     DestFile := TPath.Combine(DestDir, 'Server.ini');
     TFile.Copy(SourceFile, DestFile, True);
-    ScriptPath := 'C:\Fontes\WheelPro\WheelPro\Instalador\WheelPro_Script_InstaladorLocal.iss';
+    ScriptPath := 'C:\Fontes\WhellPro\WheelPro\Instalador\WheelPro_Script_InstaladorLocal.iss';
   end;
   // Cria o comando para gerar o arquivo de instalação
   Command := '-compile "' + ScriptPath + '"';
@@ -245,6 +265,15 @@ begin
   // Executa o comando do Inno Setup para gerar o arquivo de instalação
   ShellExecute(0, 'open', PChar(InnoSetupPath), PChar(Command), '', SW_HIDE);
   Memo1.Lines.Add('Processo Finalizado com sucesso!');
+end;
+
+procedure TFrmPrincipal.Button3Click(Sender: TObject);
+begin
+  BalloonHint2.Style := bhsBalloon;
+  BalloonHint2.HideAfter := 10000;
+  BalloonHint2.ShowHint(BtnGSetup);
+  BalloonHint2.ShowHint(ClientToScreen(Tpoint.Create(BtnGSetup.left+80,BtnGSetup.top+618)));
+  BtnGSetup.ShowHint:= True;
 end;
 
 function TFrmPrincipal.ExtractDatabaseNameFromScript(const ScriptText: string): string;
@@ -272,6 +301,19 @@ begin
   end
   else
     Result := '';
+end;
+
+procedure TFrmPrincipal.Timer1Timer(Sender: TObject);
+begin
+  Button1.Click;
+  Timer1.Enabled:= False;
+  Timer2.Enabled:= True;
+end;
+
+procedure TFrmPrincipal.Timer2Timer(Sender: TObject);
+begin
+  Button3.Click;
+  Timer2.Enabled:= False;
 end;
 
 end.
