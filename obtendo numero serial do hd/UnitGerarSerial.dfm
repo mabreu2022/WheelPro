@@ -22,7 +22,7 @@ object FRMGERARSERIAL: TFRMGERARSERIAL
     Top = 0
     Width = 575
     Height = 377
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 569
